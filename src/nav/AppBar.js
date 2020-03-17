@@ -21,19 +21,7 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1),
     },
     toolbar: {
-        borderBottom: `1px solid ${theme.palette.divider}`
-    },
-    appbar: {
-        padding: 0
-    },
-    menuPaper: {
-        backgroundColor: theme.palette.background.default
-    },
-    menu: {
-        width: "180px",
-    },
-    menuButton: {
-        height: "100%",
+        borderBottom: `1px solid ${theme.palette.divider}`,
     },
     sectionDesktop: {
         display: 'none',
@@ -49,13 +37,6 @@ const useStyles = makeStyles(theme => ({
     },
     grow: {
         flexGrow: 1,
-    },
-    drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(0, 1),
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-start',
     },
 }));
 
@@ -84,7 +65,7 @@ const navText = {
             },
             {
                 "title": "Cloud",
-                "to": "/to"
+                "to": "/cloud"
             },
             {
                 "title": "Scalability",
