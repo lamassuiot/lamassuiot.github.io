@@ -90,10 +90,12 @@ const navText = {
     },
     "Support": {
         "title": "Support",
+        "to": "/support",
         "options": []
     },
     "Contact": {
         "title": "Contact",
+        "to": "/contact",
         "options": []
     }}
 
@@ -139,8 +141,8 @@ export function LamassuAppBar() {
                     <div className={classes.sectionDesktop}>
                     <Button variant="text" onClick={handleWhyClick} endIcon={<ArrowDropDownIcon/>}>{navText["Why Lamassu"].title}</Button>
                     <Button variant="text" endIcon={<ArrowDropDownIcon/>} onClick={handleLearnClick}>{navText.Learn.title}</Button>
-                    <Button variant="text">{navText.Support.title}</Button>
-                    <Button variant="text">{navText.Contact.title}</Button>
+                    <Button component={Link} to={navText.Support.to} variant="text">{navText.Support.title}</Button>
+                    <Button component={Link} to={navText.Contact.to} variant="text">{navText.Contact.title}</Button>
                     </div>
                         <div className={classes.sectionMobile}>
                             <IconButton onClick={handleMobileMenuOpen} color="inherit">
