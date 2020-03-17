@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -95,4 +96,10 @@ export function MenuMobileBar(props) {
             </div>
         </Drawer>
     );
+}
+
+MenuMobileBar.propTypes = {
+    options: PropTypes.object.isRequired,
+    menuAnchorEl: PropTypes.bool,
+    mobileClose: PropTypes.func.isRequired
 }

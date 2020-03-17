@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from 'react-router-dom';
@@ -27,6 +28,13 @@ export function MenuBar(props){
                 )}
             </Menu>  
     );
+}
+
+MenuBar.propTypes = {
+    options: PropTypes.array.isRequired,
+    menuAnchorEl: PropTypes.object,
+    clickMenu: PropTypes.func.isRequired,
+    clickMenuItem: PropTypes.func.isRequired
 }
 
  

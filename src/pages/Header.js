@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -52,4 +53,8 @@ export function Header(props) {
             </Grid>
         </Container>
     )
+}
+
+Header.propTypes = {
+    headerText: PropTypes.object.isRequired
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -38,4 +39,8 @@ export function Hero(props) {
                     </Box>
             </React.Fragment>
     );
+}
+
+Hero.propTypes = {
+    heroText: PropTypes.object.isRequired
 }

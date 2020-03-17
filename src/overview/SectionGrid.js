@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { SectionGridItem } from '.';
@@ -14,4 +15,8 @@ export function SectionGrid(props) {
             </Grid>
         </Container>
     );
+}
+
+SectionGrid.propTypes = {
+    sectionText: PropTypes.object.isRequired
 }

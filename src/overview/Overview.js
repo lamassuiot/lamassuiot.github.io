@@ -32,8 +32,7 @@ const sectionText = {
         "icon": <FastForwardOutline style={{height:"100%", width:"80%"}}></FastForwardOutline>
     }, {
         "title": "Lamassu IoT is more than a PKI",
-        "body": "HTTP servers, MQTT brokers, or in-house developed IoT gateways need to access to certificates to implement security services. Often these gateways are required to process requests in real time or near real time, for example, to predict that a financial transaction is experiencing fraud. Sin the data itself establishes its integrity, certificate data access is designed to minimize query response time.",
-        "icon": ""
+        "body": "HTTP servers, MQTT brokers, or in-house developed IoT gateways need to access to certificates to implement security services. Often these gateways are required to process requests in real time or near real time, for example, to predict that a financial transaction is experiencing fraud. Sin the data itself establishes its integrity, certificate data access is designed to minimize query response time."
     }]
 }
 

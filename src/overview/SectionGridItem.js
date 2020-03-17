@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -27,4 +28,10 @@ export function SectionGridItem(props) {
             </Grid>
         </Grid>
     );
+}
+
+SectionGridItem.propTypes = {
+    title: PropTypes.string.isRequired,
+    icon: PropTypes.element,
+    body: PropTypes.string.isRequired
 }
