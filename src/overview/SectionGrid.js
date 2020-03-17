@@ -10,7 +10,7 @@ export function SectionGrid(props) {
         <Container maxWidth="lg">
             <Grid container spacing={4}>
                 {props.sectionText.components.map((component) => 
-                    <SectionGridItem icon={component.icon} title={component.title} body={component.body}/>
+                    <SectionGridItem key={component.id} icon={component.icon} title={component.title} body={component.body}/>
                 )}
             </Grid>
         </Container>

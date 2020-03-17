@@ -22,7 +22,7 @@ export function MenuBar(props){
     return (
             <Menu anchorEl={props.menuAnchorEl} getContentAnchorEl={null} elevation={3} transformOrigin={{vertical: 'top', horizontal: 'right'}} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}} keepMounted open={Boolean(props.menuAnchorEl)} onClose={props.clickMenu} className={classes.menu}>
                 {props.options.map((option) => 
-                    <MenuItem component={Link} to={option.to} onClick={props.clickMenuItem} className={classes.menuItem}>
+                    <MenuItem key={option.to} component={Link} to={option.to} onClick={props.clickMenuItem} className={classes.menuItem}>
                         {option.title}
                     </MenuItem>
                 )}

@@ -59,7 +59,7 @@ export function MenuMobileBar(props) {
                     <Collapse in={whyOpen} component="li" timeout="auto" unmountOnExit>
                         <List disablePadding>
                             {props.options["Why Lamassu"].options.map((option) =>
-                                <React.Fragment>
+                                <React.Fragment key={option.to}>
                                     <ListItem button component={Link} to={option.to} className={classes.nested}>
                                         <ListItemText primary={option.title}/>
                                     </ListItem>
@@ -76,7 +76,7 @@ export function MenuMobileBar(props) {
                     <Collapse in={learnOpen} component="li" timeout="auto" unmountOnExit>
                         <List disablePadding>
                             {props.options.Learn.options.map((option) =>
-                                <React.Fragment>
+                                <React.Fragment key={option.to}>
                                     <ListItem button component={Link} to={option.to} className={classes.nested}>
                                         <ListItemText primary={option.title}/>
                                     </ListItem>

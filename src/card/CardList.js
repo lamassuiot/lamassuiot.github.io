@@ -60,7 +60,7 @@ export function CardList(props) {
                 </Box>
                 <Grid container spacing={4} justify="center" alignItems="stretch">
                 {cardItemText.components.map((component) => 
-                    <CardItem to={component.to} xs={12} sm={6} md={6} lg={3} icon={component.icon} bodyTitle={component.title} bodyContent={component.body}/>
+                    <CardItem key={component.to} to={component.to} xs={12} sm={6} md={6} lg={3} icon={component.icon} bodyTitle={component.title} bodyContent={component.body}/>
 
                 )}
                 </Grid>  
