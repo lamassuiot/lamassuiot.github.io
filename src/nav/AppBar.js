@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { More as MoreIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
+import { MoreVert as MoreIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
 
 import {MenuBar, MenuMobileBar} from '.';
 
