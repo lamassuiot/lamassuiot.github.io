@@ -1,9 +1,6 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import { Container, Typography, Grid, Box } from '@material-ui/core';
+import { FormatQuote as FormatQuoteIcon } from '@material-ui/icons';
 
 export function Quote() {
     return (

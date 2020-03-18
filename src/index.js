@@ -2,12 +2,12 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import { CssBaseline } from '@material-ui/core';
 import { Home } from './home';
 import { Footer } from './footer';
 import { Overview, InHouse, OpenSource, ApiPage, IoT, CloudPage, Scalability, FaultTolerance } from './why';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import {LamassuAppBar} from './nav';
-import {ScrollToTop, NoMatch, WIP} from './utils';
+import { LamassuAppBar } from './nav';
+import { ScrollToTop, NoMatch, WIP } from './utils';
 
 render((
     <BrowserRouter>

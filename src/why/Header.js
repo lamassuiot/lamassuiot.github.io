@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';        
-import {makeStyles} from '@material-ui/core/styles';
-
+import { Container, Grid, Typography, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     headerContent: {

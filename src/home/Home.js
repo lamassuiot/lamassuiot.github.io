@@ -1,7 +1,7 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import {Hero, Section, Quote} from '.'
-import {CardList} from '../card';
+import { Typography } from '@material-ui/core';
+import { Hero, Section, Quote } from '.'
+import { CardList } from '../card';
 
 const heroText = {
     "title": "Lamassu IoT",

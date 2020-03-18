@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import Box from '@material-ui/core/Box';
+import { Container, Grid, Typography, Divider, Box } from '@material-ui/core';
 
 export function Section(props) {
     return (

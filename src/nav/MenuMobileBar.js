@@ -1,17 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import {makeStyles} from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Collapse from '@material-ui/core/Collapse';
 import { Link } from 'react-router-dom';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import { Drawer, List, ListItem, ListItemText, Divider, IconButton, Collapse } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { ChevronRight as ChevronRightIcon, ExpandLess as ExpandLessIcon, ExpandMore as ExpandMoreIcon} from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
     drawerHeader: {
@@ -53,7 +45,7 @@ export function MenuMobileBar(props) {
                 <List>
                     <ListItem button onClick={handleWhy}>
                         <ListItemText primary={props.options["Why Lamassu"].title}/>
-                            {whyOpen ? <ExpandLess/> : <ExpandMore/>}
+                            {whyOpen ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
                     </ListItem>
                     <Divider/>
                     <Collapse in={whyOpen} component="li" timeout="auto" unmountOnExit>
@@ -70,7 +62,7 @@ export function MenuMobileBar(props) {
                     </Collapse>
                         <ListItem button variant="text" onClick={handleLearn}>
                             <ListItemText primary={props.options.Learn.title}/>
-                            {learnOpen ? <ExpandLess/> : <ExpandMore/>}
+                            {learnOpen ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
                         </ListItem>
                     <Divider/>
                     <Collapse in={learnOpen} component="li" timeout="auto" unmountOnExit>

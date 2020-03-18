@@ -1,11 +1,8 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
+import { HexagonMultipleOutline, LockOutline, VectorLink, FastForwardOutline } from 'mdi-material-ui';
 import { Hero, SectionGrid } from '.';
 import { CardList } from '../../card';
-import HexagonMultipleOutline from 'mdi-material-ui/HexagonMultipleOutline';
-import LockOutline from 'mdi-material-ui/LockOutline';
-import VectorLink from 'mdi-material-ui/VectorLink';
-import FastForwardOutline from 'mdi-material-ui/FastForwardOutline';
 
 const heroText = {
     "title": "Why Lamassu",

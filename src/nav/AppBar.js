@@ -1,14 +1,9 @@
 import React, {useState} from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import {makeStyles} from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { Avatar, AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { More as MoreIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
+
 import {MenuBar, MenuMobileBar} from '.';
 
 const useStyles = makeStyles(theme => ({

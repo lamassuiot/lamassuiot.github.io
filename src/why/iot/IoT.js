@@ -1,8 +1,8 @@
 import React from 'react';
-import {Header, Body, Footer} from '..';
 import { Container } from '@material-ui/core';
-import RadioTower from 'mdi-material-ui/RadioTower';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { RadioTower } from 'mdi-material-ui';
+import { Header, Body, Footer } from '..';
 
 const useStyles = makeStyles(theme => ({
     headerIcon: {

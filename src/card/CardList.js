@@ -1,16 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import HomeCity from 'mdi-material-ui/HomeCity';
-import Api from 'mdi-material-ui/Api';
-import RadioTower from 'mdi-material-ui/RadioTower';
-import Cloud from 'mdi-material-ui/Cloud';
-import OpenSourceInitiative from 'mdi-material-ui/OpenSourceInitiative';
-import ArrangeBringToFront from 'mdi-material-ui/ArrangeBringToFront';
-import ServerSecurity from 'mdi-material-ui/ServerSecurity';
-import {CardItem} from '.';
+import { Container, Grid, Box } from '@material-ui/core';
+import { HomeCity, Api, RadioTower, Cloud, OpenSourceInitiative, ArrangeBringToFront, ServerSecurity } from 'mdi-material-ui';
+import { CardItem } from '.';
 
 const cardItemText = {
     "components":[{

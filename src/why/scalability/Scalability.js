@@ -1,8 +1,8 @@
 import React from 'react';
-import {Header, Body, Footer} from '..';
+import { Header, Body, Footer } from '..';
 import { Container } from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
-import ArrangeBringToFront from 'mdi-material-ui/ArrangeBringToFront';
+import { makeStyles } from '@material-ui/core/styles';
+import { ArrangeBringToFront } from 'mdi-material-ui';
 
 const useStyles = makeStyles(theme => ({
     headerIcon: {

@@ -1,8 +1,9 @@
 import React from 'react';
-import {Header, Body, Footer} from '..';
 import { Container } from '@material-ui/core';
-import Api from 'mdi-material-ui/Api';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { Api } from 'mdi-material-ui';
+import { Header, Body, Footer } from '..';
+
 
 const useStyles = makeStyles(theme => ({
     headerIcon: {
