@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Hero, SectionGrid } from '.';
-import { CardList } from '../card';
+import { CardList } from '../../card';
 import HexagonMultipleOutline from 'mdi-material-ui/HexagonMultipleOutline';
 import LockOutline from 'mdi-material-ui/LockOutline';
 import VectorLink from 'mdi-material-ui/VectorLink';

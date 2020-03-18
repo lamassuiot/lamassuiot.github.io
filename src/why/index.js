@@ -9,3 +9,4 @@ export {InHouse} from './inhouse/InHouse';
 export {IoT} from './iot/IoT';
 export {OpenSource} from './opensource/OpenSource';
 export {Scalability} from './scalability/Scalability';
+export {Overview} from './overview';
