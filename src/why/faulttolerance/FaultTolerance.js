@@ -5,7 +5,7 @@ import { ServerSecurity } from 'mdi-material-ui';
 import { Header, Body, Footer } from '..';
 
 const useStyles = makeStyles(theme => ({
-    headerIcon: {
+    iconHeader: {
         width: "100%",
         height: "80%", 
     }
@@ -33,7 +33,7 @@ export function FaultTolerance(){
     return (
         <React.Fragment>
             <Container maxWidth="lg">
-                <Header headerText={headerText} icon={<ServerSecurity className={classes.headerIcon}/>}/>
+                <Header headerText={headerText} icon={<ServerSecurity className={classes.iconHeader}/>}/>
                 <Body bodyText={bodyText}/>
                 <Footer/>
             </Container>

@@ -5,12 +5,17 @@ import { Grid, Card, CardContent, Typography, Divider, Box, CardActionArea } fro
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
+    cardActionArea: {
+        textAlign: "center",
+        width: "100%",
+        height: "100%"
+    },
     card: {
         textAlign: "center",
         width: "100%",
         height: "100%"
     },
-    cardTitle: {
+    typoCardTitle: {
         fontWeight: "bold"
     }
     
@@ -20,13 +25,13 @@ export function CardItem(props) {
     const classes = useStyles();
     return (
         <Grid item xs={props.xs} sm={props.sm} md={props.md} lg={props.lg}>
-            <CardActionArea className={classes.card} component={Link} to={props.to}>
+            <CardActionArea className={classes.cardActionArea} component={Link} to={props.to}>
                 <Card className={classes.card}>
                     <CardContent>
                         {props.icon}
                         <Divider light/>
                         <Box pt={2} pb={1} px={3}>
-                            <Typography variant="h6" className={classes.cardTitle} gutterBottom>
+                            <Typography variant="h6" className={classes.typoCardTitle} gutterBottom>
                                 {props.bodyTitle}
                             </Typography>
                             <Typography variant="body1">

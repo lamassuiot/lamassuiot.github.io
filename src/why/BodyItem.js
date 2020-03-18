@@ -4,7 +4,7 @@ import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-    container: {
+    root: {
         marginTop: theme.spacing(4),
         marginBottom: theme.spacing(4)
     }
@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 export function BodyItem(props) {
     const classes = useStyles();
     return (
-        <Grid container spacing={2} className={classes.container}>
+        <Grid container spacing={2} className={classes.root}>
             <Grid item xs={12} sm={12} md={4} lg={4}>
                 <Typography variant="h3">
                      {props.title}

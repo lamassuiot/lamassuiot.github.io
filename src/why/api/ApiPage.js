@@ -6,7 +6,7 @@ import { Header, Body, Footer } from '..';
 
 
 const useStyles = makeStyles(theme => ({
-    headerIcon: {
+    iconHeader: {
         width: "100%",
         height: "80%", 
     }
@@ -41,7 +41,7 @@ export function ApiPage(){
     return (
         <React.Fragment>
             <Container maxWidth="lg">
-                <Header headerText={headerText} icon={<Api className={classes.headerIcon}/>}/>
+                <Header headerText={headerText} icon={<Api className={classes.iconHeader}/>}/>
                 <Body bodyText={bodyText}/>
                 <Footer/>
             </Container>

@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles(theme => ({
-    heroButtons: {
+    buttonHero: {
         border: `1px solid black`,
         borderRadius: 0
     }
@@ -26,12 +26,12 @@ export function Hero(props) {
                 <Box mt={4} textAlign="center">
                     <Grid container spacing={2} justify="center">
                         <Grid item>
-                            <Button component={Link} to="/overview" variant="outlined" size="large" className={classes.heroButtons}>
+                            <Button component={Link} to="/overview" variant="outlined" size="large" className={classes.buttonHero}>
                                 Why Lamassu
                             </Button>
                         </Grid>
                         <Grid item>
-                            <Button component={Link} to="/manufacturing" variant="outlined" size="large" className={classes.heroButtons}>
+                            <Button component={Link} to="/manufacturing" variant="outlined" size="large" className={classes.buttonHero}>
                                 Learn
                             </Button>
                         </Grid>

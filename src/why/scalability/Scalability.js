@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ArrangeBringToFront } from 'mdi-material-ui';
 
 const useStyles = makeStyles(theme => ({
-    headerIcon: {
+    iconHeader: {
         width: "100%",
         height: "80%", 
     }
@@ -26,7 +26,7 @@ export function Scalability(){
     return (
         <React.Fragment>
             <Container maxWidth="lg">
-                <Header headerText={headerText} icon={<ArrangeBringToFront className={classes.headerIcon}/>}/>
+                <Header headerText={headerText} icon={<ArrangeBringToFront className={classes.iconHeader}/>}/>
                 <Body bodyText={bodyText}/>
                 <Footer/>
             </Container>

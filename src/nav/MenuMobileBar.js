@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-start',
     },
-    nested: {
+    listItemNested: {
         paddingLeft: theme.spacing(4)
     }
 }));
@@ -52,7 +52,7 @@ export function MenuMobileBar(props) {
                         <List disablePadding>
                             {props.options["Why Lamassu"].options.map((option) =>
                                 <React.Fragment key={option.to}>
-                                    <ListItem button component={Link} to={option.to} className={classes.nested}>
+                                    <ListItem button component={Link} to={option.to} className={classes.listItemNested}>
                                         <ListItemText primary={option.title}/>
                                     </ListItem>
                                     <Divider/>
@@ -69,7 +69,7 @@ export function MenuMobileBar(props) {
                         <List disablePadding>
                             {props.options.Learn.options.map((option) =>
                                 <React.Fragment key={option.to}>
-                                    <ListItem button component={Link} to={option.to} className={classes.nested}>
+                                    <ListItem button component={Link} to={option.to} className={classes.listItemNested}>
                                         <ListItemText primary={option.title}/>
                                     </ListItem>
                                     <Divider/>

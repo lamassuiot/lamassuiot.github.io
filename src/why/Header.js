@@ -4,7 +4,7 @@ import { Container, Grid, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-    headerContent: {
+    root: {
         paddingTop: theme.spacing(8),
         paddingBottom: theme.spacing(6)
     },
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 export function Header(props) {
     const classes = useStyles();
     return (
-        <Container maxWidth="lg" className={classes.headerContent}>
+        <Container maxWidth="lg" className={classes.root}>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={12} md={8} lg={8}>
                     <Grid container spacing={4}>

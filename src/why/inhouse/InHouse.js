@@ -5,7 +5,7 @@ import { HomeCity } from 'mdi-material-ui';
 import { Header, Body, Footer } from '..';
 
 const useStyles = makeStyles(theme => ({
-    headerIcon: {
+    iconHeader: {
         width: "100%",
         height: "80%", 
     }
@@ -44,7 +44,7 @@ export function InHouse(){
     return (
         <React.Fragment>
             <Container maxWidth="lg">
-                <Header headerText={headerText} icon={<HomeCity className={classes.headerIcon}/>}/>
+                <Header headerText={headerText} icon={<HomeCity className={classes.iconHeader}/>}/>
                 <Body bodyText={bodyText}/>
                 <Footer/>
             </Container>

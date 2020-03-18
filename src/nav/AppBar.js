@@ -11,26 +11,26 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.default
     },
-    title: {
+    typoAppBarTitle: {
         flexGrow: 1,
         marginLeft: theme.spacing(1),
     },
     toolbar: {
         borderBottom: `1px solid ${theme.palette.divider}`,
     },
-    sectionDesktop: {
+    divSectionDesktop: {
         display: 'none',
         [theme.breakpoints.up('md')]: {
             display: 'flex'
         },
     },
-    sectionMobile: {
+    divSectionMobile: {
         display: 'flex',
         [theme.breakpoints.up('md')]: {
             display: 'none'
         },
     },
-    grow: {
+    divGrow: {
         flexGrow: 1,
     },
 }));
@@ -131,15 +131,15 @@ export function LamassuAppBar() {
             <AppBar position="static" color="transparent" elevation={0}>
                 <Toolbar className={classes.toolbar}>
                     <Avatar component={Link} to="/" variant="square" alt="Lamassu Logo" src="lamassu_logo.png"></Avatar>
-                    <Typography variant="h6" noWrap className={classes.title}>Lamassu</Typography>
-                    <div className={classes.grow}/>
-                    <div className={classes.sectionDesktop}>
+                    <Typography variant="h6" noWrap className={classes.typoAppBarTitle}>Lamassu</Typography>
+                    <div className={classes.divGrow}/>
+                    <div className={classes.divSectionDesktop}>
                     <Button variant="text" onClick={handleWhyClick} endIcon={<ArrowDropDownIcon/>}>{navText["Why Lamassu"].title}</Button>
                     <Button variant="text" endIcon={<ArrowDropDownIcon/>} onClick={handleLearnClick}>{navText.Learn.title}</Button>
                     <Button component={Link} to={navText.Support.to} variant="text">{navText.Support.title}</Button>
                     <Button component={Link} to={navText.Contact.to} variant="text">{navText.Contact.title}</Button>
                     </div>
-                        <div className={classes.sectionMobile}>
+                        <div className={classes.divSectionMobile}>
                             <IconButton onClick={handleMobileMenuOpen} color="inherit">
                                 <MoreIcon/>
                             </IconButton>
