@@ -65,11 +65,11 @@ export default function MenuMobileBar(props) {
                             )}
                         </List>
                     </Collapse>
-                        <ListItem>
+                        <ListItem button component={Link} to={props.options.Support.to}>
                             <ListItemText primary={props.options.Support.title}/>
                         </ListItem>
                     <Divider/>
-                        <ListItem>
+                        <ListItem button component={Link} to={props.options.Contact.to}>
                             <ListItemText primary={props.options.Contact.title}/>
                         </ListItem>
                 </List>
