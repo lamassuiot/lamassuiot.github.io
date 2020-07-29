@@ -1,0 +1,1 @@
+export { default } from './in-house-security-item';
