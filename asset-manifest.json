@@ -1,30 +1,31 @@
 {
   "files": {
-    "main.js": "/static/js/main.740f81a0.chunk.js",
-    "main.js.map": "/static/js/main.740f81a0.chunk.js.map",
+    "main.js": "/static/js/main.9628a1ef.chunk.js",
+    "main.js.map": "/static/js/main.9628a1ef.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.8dd9c296.js",
     "runtime-main.js.map": "/static/js/runtime-main.8dd9c296.js.map",
     "static/css/2.e3d0dd9d.chunk.css": "/static/css/2.e3d0dd9d.chunk.css",
-    "static/js/2.35920090.chunk.js": "/static/js/2.35920090.chunk.js",
-    "static/js/2.35920090.chunk.js.map": "/static/js/2.35920090.chunk.js.map",
+    "static/js/2.4dd665a6.chunk.js": "/static/js/2.4dd665a6.chunk.js",
+    "static/js/2.4dd665a6.chunk.js.map": "/static/js/2.4dd665a6.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.1dd35a6362b54adbb8c9abfe65553519.js": "/precache-manifest.1dd35a6362b54adbb8c9abfe65553519.js",
+    "precache-manifest.3e8c392f061edfa7d6d6ba0a87c3f102.js": "/precache-manifest.3e8c392f061edfa7d6d6ba0a87c3f102.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.e3d0dd9d.chunk.css.map": "/static/css/2.e3d0dd9d.chunk.css.map",
-    "static/js/2.35920090.chunk.js.LICENSE.txt": "/static/js/2.35920090.chunk.js.LICENSE.txt",
+    "static/js/2.4dd665a6.chunk.js.LICENSE.txt": "/static/js/2.4dd665a6.chunk.js.LICENSE.txt",
     "static/media/hero.jpeg": "/static/media/hero.1b7c348e.jpeg",
     "static/media/logo_docker.png": "/static/media/logo_docker.2103c445.png",
+    "static/media/logo_indaba.png": "/static/media/logo_indaba.5c945fe7.png",
     "static/media/logo_kubernetes.png": "/static/media/logo_kubernetes.e41528f5.png",
     "static/media/logo_lks.png": "/static/media/logo_lks.1cd4e08f.png",
     "static/media/logo_spri.png": "/static/media/logo_spri.83bfc738.png",
-    "static/media/overview_hero.jpg": "/static/media/overview_hero.c59693c1.jpg",
+    "static/media/overview_hero.jpg": "/static/media/overview_hero.9ab8f065.jpg",
     "static/media/index.css": "/static/media/roboto-latin-900-normal.bb1e4dc6.woff",
     "static/media/security_compliance.png": "/static/media/security_compliance.28edbee7.png"
   },
   "entrypoints": [
     "static/js/runtime-main.8dd9c296.js",
     "static/css/2.e3d0dd9d.chunk.css",
-    "static/js/2.35920090.chunk.js",
-    "static/js/main.740f81a0.chunk.js"
+    "static/js/2.4dd665a6.chunk.js",
+    "static/js/main.9628a1ef.chunk.js"
   ]
 }

@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "daddf57aef9ec121f70f208e8a795e94",
+    "revision": "0b95394b5d80fcf3ddb7b0f9c08b6e83",
     "url": "/index.html"
   },
   {
-    "revision": "86dcc472e7f374cfc8eb",
+    "revision": "090da126e2ced7f96d61",
     "url": "/static/css/2.e3d0dd9d.chunk.css"
   },
   {
-    "revision": "86dcc472e7f374cfc8eb",
-    "url": "/static/js/2.35920090.chunk.js"
+    "revision": "090da126e2ced7f96d61",
+    "url": "/static/js/2.4dd665a6.chunk.js"
   },
   {
     "revision": "3adc01bea76e7956dc3633ee898f6936",
-    "url": "/static/js/2.35920090.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.4dd665a6.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "44a1adbc15d220288ebd",
-    "url": "/static/js/main.740f81a0.chunk.js"
+    "revision": "d7b44e2dc235e0cdac97",
+    "url": "/static/js/main.9628a1ef.chunk.js"
   },
   {
     "revision": "4bf218c1cbb4126bca21",
@@ -32,6 +32,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/logo_docker.2103c445.png"
   },
   {
+    "revision": "5c945fe7f92e8aa507234fbcfbc8b921",
+    "url": "/static/media/logo_indaba.5c945fe7.png"
+  },
+  {
     "revision": "e41528f5257d89d58028ff39c3c2f712",
     "url": "/static/media/logo_kubernetes.e41528f5.png"
   },
@@ -44,8 +48,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/logo_spri.83bfc738.png"
   },
   {
-    "revision": "c59693c146688eb34f12e01c3c155e45",
-    "url": "/static/media/overview_hero.c59693c1.jpg"
+    "revision": "9ab8f06568a77eb66214164286d575e8",
+    "url": "/static/media/overview_hero.9ab8f065.jpg"
   },
   {
     "revision": "f8b1df51ba843179fa1cc9b53d58127a",
