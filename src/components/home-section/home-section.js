@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Grid, Typography, Divider, Box } from '@material-ui/core';
+import { Container, Grid, Typography, Box } from '@material-ui/core';
+
+import { useStyles } from './home-section-styles';
 
 export default function Section(props) {
+    const classes = useStyles();
+
     return (
         <Box mb={4}>
             <Container maxWidth="lg">
-                <Grid container spacing={4}>
-                    <Grid item xs={12} sm={12} md={7} lg={7}>
-                        <Box borderRadius="borderRadius" boxShadow={1} height={260} width="100%" bgcolor="text.primary"></Box>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={5} lg={5}>
+                <Grid container spacing={4} justify="center">
+                    <Grid item xs={10} sm={10} md={7} lg={7} className={classes.gridItem}>
                         <Box>
-                            <Typography variant="h4" gutterBottom>
+                            <Typography variant="h4" className={classes.typoSectionTitle} gutterBottom>
                                 {props.sectionText.title}
                             </Typography>
-                            <Divider/>
                             <Typography variant="subtitle1" gutterBottom>
                                 {props.sectionText.body1}
                             </Typography>

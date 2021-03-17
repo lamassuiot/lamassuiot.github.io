@@ -1,5 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 
+import { grey } from '@material-ui/core/colors';
+
+
 export const useStyles = makeStyles(theme => ({
     typoAppBarTitle: {
         flexGrow: 1,
@@ -10,6 +13,9 @@ export const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('md')]: {
             display: 'flex'
         },
+    },
+    icon: {
+        color: grey[900]
     },
     divSectionMobile: {
         display: 'flex',

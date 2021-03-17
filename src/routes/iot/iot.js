@@ -5,7 +5,6 @@ import { RadioTower } from 'mdi-material-ui';
 
 import Header from '../../components/why-header';
 import Body from '../../components/why-body';
-import Footer from '../../components/why-footer';
 import { useStyles } from './iot-styles';
 import { headerText, bodyText } from '../../assets/texts/iot-texts';
 
@@ -16,7 +15,6 @@ export default function IoT(){
             <Container maxWidth="lg">
                 <Header headerText={headerText} icon={<RadioTower className={classes.iconHeader}/>}/>
                 <Body bodyText={bodyText}/>
-                <Footer/>
             </Container>
         </React.Fragment>
     )

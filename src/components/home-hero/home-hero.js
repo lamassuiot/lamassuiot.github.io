@@ -19,14 +19,9 @@ export default function Hero(props) {
                 </Typography>
                 <Box mt={4} textAlign="center">
                     <Grid container spacing={2} justify="center">
-                        <Grid item>
-                            <Button component={Link} to="/overview" variant="outlined" size="large" className={classes.buttonHero}>
+                        <Grid item xs={6}>
+                            <Button fullWidth component={Link} to="/overview" variant="outlined" size="large" className={classes.buttonHero}>
                                 Why Lamassu
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button component={Link} to="/manufacturing" variant="outlined" size="large" className={classes.buttonHero}>
-                                Learn
                             </Button>
                         </Grid>
                     </Grid>

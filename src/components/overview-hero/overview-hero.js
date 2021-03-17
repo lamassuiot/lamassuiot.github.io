@@ -7,7 +7,7 @@ import { useStyles } from './overview-hero-styles';
 export default function Hero(props) {
     const classes = useStyles();
     return (
-            <Box bgcolor="background.paper" pt={8} pb={6} width="100%">
+            <Box bgcolor="background.paper" pt={8} pb={6} mb={2} width="100%" className={classes.modalImage}>
                 <Container maxWidth="lg">  
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={5}>
@@ -19,21 +19,14 @@ export default function Hero(props) {
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={7}>
-                            <Box height={260} boxShadow={1} borderRadius={4} bgcolor="text.primary"/>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Grid container justify="center">
-                                <Grid item xs={8}>
-                                    <Box mt={-6} p={3} bgcolor="#81c784" boxShadow={1} width="100%" className={classes.modalImage}>
-                                        <Typography variant="h6" paragraph>
-                                            {props.heroText.modal}
-                                        </Typography>  
-                                        <Typography variant="subtitle2">
-                                            {props.heroText.quote}
-                                        </Typography>
-                                    </Box>
-                                </Grid>
-                            </Grid>
+                            <Box p={3} borderLeft={2} width="100%">
+                                    <Typography variant="h6" paragraph>
+                                        {props.heroText.modal}
+                                    </Typography>  
+                                    <Typography variant="subtitle2">
+                                        {props.heroText.quote}
+                                    </Typography>
+                            </Box>                        
                         </Grid>
                     </Grid>
                 </Container>

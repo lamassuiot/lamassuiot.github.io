@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
-import { Drawer, List, ListItem, ListItemText, Divider, IconButton, Collapse } from '@material-ui/core';
-import { ChevronRight as ChevronRightIcon, ExpandLess as ExpandLessIcon, ExpandMore as ExpandMoreIcon} from '@material-ui/icons';
+import { Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton, Collapse } from '@material-ui/core';
+import { ChevronRight as ChevronRightIcon, ExpandLess as ExpandLessIcon, ExpandMore as ExpandMoreIcon, GitHub as GitHubIcon} from '@material-ui/icons';
 
 import { useStyles } from './app-header-mobile-styles';
 
@@ -71,6 +71,12 @@ export default function MenuMobileBar(props) {
                     <Divider/>
                         <ListItem button component={Link} to={props.options.Contact.to}>
                             <ListItemText primary={props.options.Contact.title}/>
+                        </ListItem>
+                    <Divider/>
+                        <ListItem button component="a" href="https://github.com/lamassuiot">
+                                <ListItemIcon className={classes.icon}>
+                                    <GitHubIcon/>
+                                </ListItemIcon>
                         </ListItem>
                 </List>
             </div>

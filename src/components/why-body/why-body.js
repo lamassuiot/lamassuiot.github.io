@@ -11,10 +11,11 @@ export default function Body(props){
     return (
         <Container maxWidth="lg">
             <Divider className={classes.divider}/>
-            {props.bodyText.components.map((component)=>
+            {props.bodyText.components.map((component, i)=>
                 <React.Fragment>
                     <BodyItem title={component.title} element={component.element}/>
-                    <Divider className={classes.divider}/>
+                    {i+1 < props.bodyText.components.length && (
+                    <Divider className={classes.divider}/>)}
                 </React.Fragment>
             )}
         </Container>

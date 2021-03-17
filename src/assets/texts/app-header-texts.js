@@ -1,10 +1,7 @@
 export const navText = {
     "Why Lamassu": {
         "title": "Why Lamassu",
-        "options": [{
-            "title": "Overview",
-            "to": "/overview"
-        },
+        "options": [
         {
             "title": "In House PKI",
             "to": "/inhousepki"
@@ -54,5 +51,10 @@ export const navText = {
 "Contact": {
     "title": "Contact",
     "to": "/contact",
+    "options": []
+},
+"Overview": {
+    "title": "Overview",
+    "to": "/overview",
     "options": []
 }}

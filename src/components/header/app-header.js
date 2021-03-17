@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
 import { Avatar, AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
-import { MoreVert as MoreIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
+import { MoreVert as MoreIcon, ArrowDropDown as ArrowDropDownIcon, GitHub as GitHubIcon } from '@material-ui/icons';
 
 import MenuBar from './components/menu';
 import MenuMobileBar from './components/mobile';
@@ -33,13 +33,13 @@ export default function LamassuAppHeader() {
         setMobileAnchorEl(false);
     }
 
-    const handleLearnClick = event => {
-        setLearnAnchorEl(event.currentTarget);
-    }
-
     const handleLearnClose = () => {
         setLearnAnchorEl(null);
         setMobileAnchorEl(false);
+    }
+
+    const handleGithub = () => {
+        window.open('https://github.com/lamassuiot', '_blank')
     }
 
     return (
@@ -50,10 +50,11 @@ export default function LamassuAppHeader() {
                     <Typography variant="h6" noWrap className={classes.typoAppBarTitle}>Lamassu</Typography>
                     <div className={classes.divGrow}/>
                     <div className={classes.divSectionDesktop}>
+                    <Button component={Link} to={navText.Overview.to} variant="text">{navText.Overview.title}</Button>
                     <Button variant="text" onClick={handleWhyClick} endIcon={<ArrowDropDownIcon/>}>{navText["Why Lamassu"].title}</Button>
-                    <Button variant="text" endIcon={<ArrowDropDownIcon/>} onClick={handleLearnClick}>{navText.Learn.title}</Button>
-                    <Button component={Link} to={navText.Support.to} variant="text">{navText.Support.title}</Button>
-                    <Button component={Link} to={navText.Contact.to} variant="text">{navText.Contact.title}</Button>
+                    <IconButton className={classes.icon} aria-label="Lamassu GitHub" component="span" onClick={handleGithub}>
+                        <GitHubIcon/>
+                    </IconButton>
                     </div>
                         <div className={classes.divSectionMobile}>
                             <IconButton onClick={handleMobileMenuOpen} color="inherit">
