@@ -1,0 +1,367 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*** NAVBAR ***/
+
+header {
+	-webkit-box-shadow: 0px 4px 15px -5px rgba(0,0,0,0.41); 
+	box-shadow: 0px 4px 15px -5px rgba(0,0,0,0.41);
+}
+
+.container.header-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+	min-height: 75px;
+}
+
+
+.brand a {
+    width: 280px;
+    background: url(../../brand/lamassu-brand.png) no-repeat;
+    height: 50px;
+	text-indent:-9999px;
+}
+
+.blockMenu {
+	margin-left:auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    align-content: center;
+	margin-top: 10px;
+	
+}
+
+
+/*.navbar {
+	margin:10px 20px 10px auto;
+}*/
+
+.navbar-collapse {
+    position: absolute;
+    border: 10px solid blue;
+    top: 50px;
+    width: 200px;
+    right: 12px;
+    border-radius:4px;
+	background:#fff;
+	border:1px solid #eee;
+	-webkit-box-shadow: 3px 4px 15px -4px rgba(0,0,0,0.44); 
+	box-shadow: 3px 4px 15px -4px rgba(0,0,0,0.44);
+}
+
+.itemMenu a {
+	color:#393a42;
+	text-decoration:none;
+	font-size:18px;
+	font-weight:600;
+	text-transform:uppercase;
+	padding:10px;
+	}
+.itemMenu a:hover, .itemMenu a:focus {
+	color:#0005f2;
+	}
+.navbar-dark .navbar-toggler {
+    color:#393a42;
+    border:0;
+	display: flex;
+    align-items: center;
+}
+.navbar-toggler:focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: none;
+	background:#eee;
+}
+.navbar-dark .navbar-text {
+    color:#393a42;
+	font-size:18px;
+	font-weight:600;
+	margin-right:5px;
+}
+
+.navbar-dark .navbar-text:hover, .navbar-dark .navbar-text:focus .navbar-dark svg:hover, .navbar-dark svg:focus{
+    color:#0005f2;
+}
+ul.navbar-nav {
+    padding: 0.5em;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: #666;
+	font-weight:500;
+	padding-left:0.5em;
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+	background:#eee;
+    color:#0005f2;
+}
+.navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show>.nav-link {
+    color:#0005f2;
+	font-weight:600;
+}
+
+li.nav-item.dropdown:focus {
+    background: red;
+}
+.navbar-dark .dropdown-menu.show {
+    border:0;
+}
+
+.navbar-dark li.nav-item.dropdown a.dropdown-item {
+    font-size: 15px;
+}
+
+/*** Layout **/
+
+body {
+	font-family: 'Raleway', sans-serif;
+	font-weight:400;
+	font-size:14px;
+	}
+
+
+
+
+h1, h2, h3, h4, h5 {
+	font-family: 'Raleway', sans-serif;
+	color:#0927ca;
+	}
+header {
+    background: #fff;
+}
+
+section.section-header {
+    margin-top: 3.5em;
+}
+
+.py-5 {
+    padding-top: 2rem!important;
+    padding-bottom: 2rem!important;
+}
+
+footer {
+    background: #0005f2;
+    padding: 1.5em 0 0.5em;
+	color:#fff;
+}
+
+/**** TIPOGRAFIA ***/
+
+.lead {
+	font-size:0.9rem;
+	font-weight:500;
+	color:#77788a;
+	line-height: 1.7em;
+	}
+
+
+
+/***** FEATURES ***/
+
+
+.feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #fff;
+  border-radius: .75rem;
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+}
+.icon-link > .bi {
+  margin-top: .125rem;
+  margin-left: .125rem;
+  transition: transform .25s ease-in-out;
+  fill: currentColor;
+}
+.icon-link:hover > .bi {
+  transform: translate(.25rem);
+}
+
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.5rem;
+  border-radius: 10rem;
+  border:6px solid #56e2f3;
+}
+
+.rounded-4 { border-radius: .5rem; }
+.rounded-5 { border-radius: 1rem; }
+
+.text-shadow-1 { text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .25); }
+.text-shadow-2 { text-shadow: 0 .25rem .5rem rgba(0, 0, 0, .25); }
+.text-shadow-3 { text-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25); }
+
+.card-cover {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+.icon-circle svg {
+	color:#56e2f3;
+	}
+
+/*** CARD LINKS ***/
+
+.card-link {
+    /*border: 1px solid blue;*/
+    display: flex;
+    flex-direction: column;
+	text-decoration:none;
+	color:#77788a;
+	padding:1em;
+	border-radius:6px;
+	height: 100%;
+}
+.card-link:hover {
+    background:#e7f6fa;
+}
+
+.section-blue .card-link:hover {
+    background:#fff;
+}
+
+.card-link h3 {
+	color:#0927ca;
+	font-weight:700;
+}
+.feature-icon {
+    width: 6rem;
+    height: 6rem;
+}
+
+.section-header {
+	background:url(../../images/background-header-section.jpg) no-repeat;
+	background-position:right;
+	background-size: cover;
+    margin-top: 70px;
+	}
+.section-header h1.display-5 {
+    color: #fff;
+}
+.section-header p.lead {
+    color: #fff;
+	width:80%
+}
+
+
+.section-header-home {
+	background:url(../../images/background-header-section-home.jpg) no-repeat;
+	background-position:right;
+	background-size: cover;
+    padding-top: 4rem!important;
+    padding-bottom: 4rem!important;
+	margin-top: 70px;
+	}
+	.section-header-home h1.display-5 {
+		font-weight: 900 !IMPORTANT;
+		color: #fff;
+	}
+	.section-header-home p.lead {
+		color: #fff;
+		width:80%
+	}
+.lamassu {
+    width: 350px;
+    background: url(../../images/lamassu-iot.png) no-repeat;
+    height: 42px;
+	text-indent:-9999px;	
+	}
+
+
+.section-header-home .btn-outline-light {
+	border-color:#00ecf7;
+	text-transform:uppercase;
+	font-size: 1.25em;
+	}
+	.section-header-home .btn-outline-light:hover {
+	background-color:#00ecf7;
+	color:#0927ca;
+	}
+	
+.section-blue {
+	background:#f5f8ff;
+	}
+	
+.row-contact {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+}
+.logos {
+	display:flex;
+	}
+	.logos img {
+	height:80px;
+	}
+	.logos .logo-lks {
+	border-right:1px solid #c7c7c7;
+	margin-right:0.5em;
+	}
+	.logos .item-logo {
+	padding-right:1.5em;
+	}
+.black {
+	color:#000;
+	}
+	a.link-no-decoration {
+		text-decoration:none;
+		}
+		.txt300 {
+			font-weight:300;
+			}
+		.txt500 {
+			font-weight:500;
+			}
+		.txt600 {
+			font-weight:600;
+			}
+.py-10 {
+    padding-top: 5rem!important;
+    padding-bottom: 5rem!important;
+}
+
+.list-feature {
+	list-style:none;
+	margin:0;
+	padding:0;
+	}
+.list-feature li {
+	list-style:none;
+	line-height: 1.7em;
+	margin-bottom:0.5em;
+	padding:7px 0 7px 40px;
+	background:url(../../images/icon-list.png) 0 5px no-repeat;
+	}
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    line-height: 1.7em;
+}
+
+blockquote p {
+	font-size:1.1rem;
+	font-style:italic;
+	font-weight:500;
+	}
+p.cita {
+	color:#0005f2;
+	font-weight:500;
+	}
+	
+#contact-and-info h3 {
+	font-size:1.5rem !important;
+	}
