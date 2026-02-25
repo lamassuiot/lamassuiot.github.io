@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lamassu IoT | Industrial PKI Homepage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050722;
+      --bg-2: #0a1042;
+      --surface: #101738;
+      --surface-2: #121f49;
+      --line: #344988;
+      --line-soft: rgba(72, 94, 164, 0.45);
+      --text: #cfd8ff;
+      --text-soft: #98a8d4;
+      --title: #f7fbff;
+      --mint: #2fe8ff;
+      --mint-soft: rgba(47, 232, 255, 0.18);
+      --blue: #90aaff;
+      --violet: #5c2bff;
+      --violet-soft: rgba(92, 43, 255, 0.28);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 26px 68px rgba(3, 9, 25, 0.58);
+      --header-h: 88px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 20% -12%, rgba(95, 49, 255, 0.22), transparent 56%),
+        radial-gradient(circle at 84% 0%, rgba(28, 172, 255, 0.16), transparent 46%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Space Grotesk", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    .page {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .top-stripe {
+      height: 5px;
+      width: 100%;
+      background: linear-gradient(90deg, #5b2cff, #3a72ff 52%, #19d8ff);
+    }
+
+    .site-header {
+      height: var(--header-h);
+      width: min(1300px, 100% - 56px);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--title);
+      text-decoration: none;
+      font-size: 43px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 32px;
+      display: inline-grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .lamassu-logo {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 0 8px rgba(120, 198, 255, 0.4));
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .nav a {
+      color: var(--text-soft);
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+
+    .nav a.github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+
+    .nav a.github-link svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      display: block;
+    }
+
+    .nav a:hover {
+      color: var(--title);
+    }
+
+    .header-cta {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #44cbff 0%, #80f7ff 100%);
+      color: #07223b;
+      border-radius: 999px;
+      text-decoration: none;
+      padding: 12px 22px;
+      font-weight: 600;
+      font-size: 16px;
+      white-space: nowrap;
+      box-shadow: 0 14px 34px rgba(64, 209, 255, 0.24);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .header-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 42px rgba(64, 209, 255, 0.33);
+    }
+
+    .hero {
+      min-height: calc(100vh - var(--header-h) - 5px);
+      display: grid;
+      place-items: center;
+      padding: 58px 24px 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      width: 55vmax;
+      height: 55vmax;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero::before {
+      top: 8%;
+      left: -20%;
+      background: radial-gradient(circle, rgba(92, 43, 255, 0.28) 0%, rgba(92, 43, 255, 0) 70%);
+      animation: driftA 18s ease-in-out infinite;
+    }
+
+    .hero::after {
+      right: -26%;
+      bottom: -34%;
+      background: radial-gradient(circle, rgba(47, 232, 255, 0.14) 0%, rgba(47, 232, 255, 0) 72%);
+      animation: driftB 20s ease-in-out infinite;
+    }
+
+    .flow-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.95;
+      pointer-events: none;
+    }
+
+    .flow-svg path {
+      fill: none;
+      stroke: rgba(166, 188, 255, 0.18);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-dasharray: 280;
+      stroke-dashoffset: 280;
+      animation: drawLine 8s ease-out forwards;
+    }
+
+    .flow-svg path.accent {
+      stroke: rgba(47, 232, 255, 0.58);
+      stroke-width: 2.2;
+      animation: drawLine 4.2s ease-out forwards;
+    }
+
+    .hero-inner {
+      width: min(1220px, 100%);
+      position: relative;
+      z-index: 3;
+      display: grid;
+      justify-items: center;
+      text-align: center;
+      animation: riseIn 0.95s ease both;
+    }
+
+    .eyebrow {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #a9b8ff;
+      margin-bottom: 8px;
+    }
+
+    .hero-kicker {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(11px, 1.4vw, 13px);
+      letter-spacing: 0.08em;
+      color: #8fd7ff;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      color: var(--title);
+      font-size: clamp(50px, 8vw, 116px);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      max-width: 1150px;
+      text-wrap: balance;
+    }
+
+    .hero .hero-lead {
+      margin-top: 22px;
+      max-width: 760px;
+      font-size: clamp(17px, 2vw, 23px);
+      line-height: 1.46;
+      color: var(--text-soft);
+    }
+
+    .hero-actions {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .hero-platforms {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      max-width: 900px;
+    }
+
+    .platform-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(143, 175, 232, 0.28);
+      background: rgba(6, 18, 42, 0.66);
+      color: #b9cced;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: blur(5px);
+    }
+
+    .platform-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #43dcff;
+      box-shadow: 0 0 14px rgba(67, 220, 255, 0.56);
+    }
+
+    .btn {
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--mint);
+      color: #06172f;
+      box-shadow: 0 14px 40px rgba(47, 232, 255, 0.24);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 46px rgba(47, 232, 255, 0.34);
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .btn-ghost:hover {
+      border-color: #4f77a7;
+      color: var(--title);
+      transform: translateY(-1px);
+    }
+
+    .chip-scene {
+      margin-top: 68px;
+      width: min(640px, 100% - 20px);
+      position: relative;
+      height: 250px;
+      display: grid;
+      place-items: center;
+    }
+
+    .chip-glow {
+      position: absolute;
+      width: 370px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(81, 195, 255, 0.58) 0%, rgba(81, 195, 255, 0.1) 54%, rgba(81, 195, 255, 0) 72%);
+      filter: blur(8px);
+      transform: translateY(48px);
+      z-index: 1;
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    .chip {
+      width: 300px;
+      height: 300px;
+      transform: rotate(45deg) translateY(28px);
+      border-radius: 28px;
+      background: linear-gradient(132deg, rgba(100, 108, 222, 0.97), rgba(40, 185, 255, 0.9));
+      box-shadow:
+        0 18px 68px rgba(81, 195, 255, 0.35),
+        inset 0 1px 1px rgba(255, 255, 255, 0.25),
+        inset 0 -16px 26px rgba(6, 17, 45, 0.45);
+      position: relative;
+      z-index: 2;
+      overflow: visible;
+      animation: floatChip 6s ease-in-out infinite;
+    }
+
+    .chip::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(230, 244, 255, 0.3);
+      border-radius: 24px;
+      box-shadow: inset 0 0 20px rgba(13, 28, 62, 0.35);
+    }
+
+    .chip::after {
+      content: "";
+      position: absolute;
+      inset: 26px;
+      border-radius: 18px;
+      border: 1px solid rgba(123, 225, 255, 0.32);
+      background:
+        linear-gradient(90deg, rgba(151, 187, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(151, 187, 255, 0.08) 1px, transparent 1px);
+      background-size: 18px 100%, 100% 18px;
+      opacity: 0.78;
+      pointer-events: none;
+    }
+
+    .chip-pins {
+      position: absolute;
+      border-radius: 8px;
+      background:
+        repeating-linear-gradient(90deg,
+          rgba(198, 235, 255, 0.9) 0 8px,
+          rgba(76, 111, 162, 0.95) 8px 12px);
+      box-shadow:
+        0 3px 9px rgba(7, 19, 50, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      z-index: -1;
+    }
+
+    .chip-pins.top,
+    .chip-pins.bottom {
+      height: 14px;
+      width: 72%;
+      left: 14%;
+    }
+
+    .chip-pins.top {
+      top: -11px;
+    }
+
+    .chip-pins.bottom {
+      bottom: -11px;
+    }
+
+    .chip-pins.left,
+    .chip-pins.right {
+      width: 14px;
+      height: 72%;
+      top: 14%;
+      background:
+        repeating-linear-gradient(0deg,
+          rgba(198, 235, 255, 0.9) 0 8px,
+          rgba(76, 111, 162, 0.95) 8px 12px);
+    }
+
+    .chip-pins.left {
+      left: -11px;
+    }
+
+    .chip-pins.right {
+      right: -11px;
+    }
+
+    .chip-face {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      width: 150px;
+      display: grid;
+      justify-items: center;
+      z-index: 3;
+      text-align: center;
+    }
+
+    .chip-logo {
+      width: 76px;
+      height: 74px;
+      z-index: 2;
+      filter: drop-shadow(0 0 10px rgba(91, 223, 255, 0.42));
+    }
+
+    .chip-brand {
+      margin-top: 10px;
+      font-family: "IBM Plex Mono", monospace;
+      letter-spacing: 0.18em;
+      font-size: 11px;
+      color: rgba(204, 234, 255, 0.85);
+    }
+
+    .chip-tag {
+      position: absolute;
+      z-index: 3;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--title);
+      padding: 8px 10px;
+      border: 1px solid rgba(155, 178, 255, 0.42);
+      border-radius: 999px;
+      background: rgba(5, 16, 38, 0.6);
+      backdrop-filter: blur(5px);
+      animation: bob 3.8s ease-in-out infinite;
+    }
+
+    .tag-1 {
+      top: 18px;
+      left: 24px;
+    }
+
+    .tag-2 {
+      right: 34px;
+      top: 30px;
+      animation-delay: 0.4s;
+    }
+
+    .tag-3 {
+      left: 20%;
+      bottom: 20px;
+      animation-delay: 0.8s;
+    }
+
+    .tag-4 {
+      right: 14%;
+      bottom: 8px;
+      animation-delay: 1.15s;
+    }
+
+    .iot-radar-band {
+      width: min(1220px, calc(100% - 48px));
+      margin: -6px auto 18px;
+      height: 170px;
+      border-radius: 16px;
+      border: 1px solid rgba(124, 156, 255, 0.38);
+      background: linear-gradient(90deg, #4a1bff 0%, #4330ff 36%, #1f74ff 68%, #1ddfff 100%);
+      box-shadow: 0 20px 52px rgba(18, 34, 86, 0.5);
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .iot-radar-band::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(0deg, rgba(255, 255, 255, 0.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.11) 1px, transparent 1px);
+      background-size: 100% 32px, 70px 100%;
+      opacity: 0.28;
+      z-index: -1;
+    }
+
+    .radar-sweep {
+      position: absolute;
+      width: 58%;
+      height: 240%;
+      left: -16%;
+      top: -70%;
+      background: radial-gradient(circle, rgba(129, 255, 255, 0.38) 0%, rgba(129, 255, 255, 0.06) 32%, rgba(129, 255, 255, 0) 68%);
+      transform-origin: 80% 72%;
+      animation: radarSweep 8s linear infinite;
+      pointer-events: none;
+    }
+
+    .radar-hud {
+      position: absolute;
+      right: 10%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(111, 249, 255, 0.48);
+      box-shadow:
+        0 0 0 26px rgba(26, 227, 255, 0.1),
+        0 0 0 54px rgba(23, 188, 255, 0.08),
+        0 0 90px rgba(0, 229, 255, 0.34);
+      background: radial-gradient(circle, rgba(32, 222, 255, 0.26) 0%, rgba(37, 145, 255, 0.08) 52%, rgba(37, 145, 255, 0) 70%);
+    }
+
+    .radar-iot {
+      font-size: 56px;
+      font-weight: 700;
+      color: #d8fdff;
+      letter-spacing: -0.03em;
+      text-shadow: 0 0 22px rgba(29, 239, 255, 0.66);
+      line-height: 1;
+    }
+
+    .radar-mini {
+      position: absolute;
+      top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: #c9eeff;
+      white-space: nowrap;
+      opacity: 0.86;
+    }
+
+    .radar-numbers {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      font-family: "IBM Plex Mono", monospace;
+      color: rgba(210, 242, 255, 0.86);
+      font-size: 20px;
+      letter-spacing: 0.12em;
+    }
+
+    .trust-strip {
+      width: min(1220px, calc(100% - 48px));
+      margin: -10px auto 10px;
+      border: 1px solid var(--line-soft);
+      border-radius: 999px;
+      background: rgba(6, 16, 36, 0.78);
+      backdrop-filter: blur(7px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 14px;
+    }
+
+    .trust-label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #9cc0f8;
+      white-space: nowrap;
+      padding: 0 4px;
+    }
+
+    .trust-marquee {
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    }
+
+    .trust-track {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+
+    .trust-logo {
+      border: 1px solid rgba(143, 175, 232, 0.3);
+      background: rgba(255, 255, 255, 0.02);
+      color: #d4e3fb;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .section {
+      width: min(1220px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 42px 0;
+    }
+
+    .section-title {
+      color: var(--title);
+      font-size: clamp(30px, 3.6vw, 52px);
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+      line-height: 1.04;
+    }
+
+    .section-lead {
+      color: var(--text-soft);
+      max-width: 820px;
+      font-size: 18px;
+      line-height: 1.58;
+    }
+
+    .overview {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .card {
+      border: 1px solid var(--line-soft);
+      background: linear-gradient(180deg, rgba(12, 24, 48, 0.95), rgba(11, 20, 39, 0.95));
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      color: var(--title);
+      font-size: 24px;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .card p,
+    .card li {
+      color: var(--text-soft);
+      font-size: 16px;
+      line-height: 1.64;
+    }
+
+    .card ul {
+      margin-top: 8px;
+      padding-left: 20px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .mini {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .mini .k {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #93bbff;
+    }
+
+    .mini .v {
+      display: block;
+      color: var(--title);
+      font-size: 29px;
+      font-weight: 700;
+      margin-top: 5px;
+      letter-spacing: -0.03em;
+    }
+
+    .outcome-wrap {
+      margin-top: 24px;
+      border: 1px solid rgba(47, 232, 255, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(47, 232, 255, 0.14), transparent 48%),
+        radial-gradient(circle at 88% 90%, rgba(115, 149, 255, 0.14), transparent 52%),
+        linear-gradient(160deg, rgba(11, 25, 49, 0.95), rgba(8, 20, 41, 0.95));
+      box-shadow: var(--shadow);
+    }
+
+    .outcome-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .outcome {
+      border: 1px solid rgba(138, 175, 237, 0.3);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .outcome b {
+      display: block;
+      color: var(--title);
+      font-size: 34px;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .outcome span {
+      display: block;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.55;
+      margin-top: 7px;
+    }
+
+    .grid-3 {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .cap {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      padding: 18px;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .cap:hover {
+      transform: translateY(-3px);
+      border-color: rgba(47, 232, 255, 0.42);
+    }
+
+    .cap .label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8fc6ff;
+      margin-bottom: 9px;
+    }
+
+    .cap h4 {
+      color: var(--title);
+      font-size: 20px;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .cap p {
+      color: var(--text-soft);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .deployment {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .deploy {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      padding: 18px;
+    }
+
+    .deploy h4 {
+      color: var(--title);
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      margin: 8px 0 10px;
+    }
+
+    .deploy p {
+      color: var(--text-soft);
+      line-height: 1.62;
+      font-size: 15px;
+    }
+
+    .table-wrap {
+      margin-top: 12px;
+      overflow-x: auto;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+    }
+
+    table {
+      border-collapse: collapse;
+      min-width: 680px;
+      width: 100%;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--line-soft);
+      border-right: 1px solid var(--line-soft);
+      font-size: 14px;
+    }
+
+    td:last-child,
+    th:last-child {
+      border-right: 0;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    th {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #aad0ff;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .integration {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .integration .card {
+      padding: 20px;
+    }
+
+    .integration code {
+      font-family: "IBM Plex Mono", monospace;
+      color: #b7d5ff;
+      font-size: 13px;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      display: block;
+      margin-top: 10px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+      background: rgba(5, 15, 31, 0.72);
+      padding: 12px;
+    }
+
+    .compare-grid {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .compare-card {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      background: var(--surface);
+    }
+
+    .compare-card h3 {
+      color: var(--title);
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .compare-card ul {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .compare-card li {
+      position: relative;
+      padding-left: 21px;
+      color: var(--text-soft);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .compare-card li::before {
+      content: "•";
+      position: absolute;
+      left: 7px;
+      top: 0;
+      color: #7fa9e9;
+    }
+
+    .compare-card.good {
+      border-color: rgba(47, 232, 255, 0.38);
+      background:
+        radial-gradient(circle at 85% 14%, rgba(47, 232, 255, 0.14), transparent 42%),
+        linear-gradient(170deg, rgba(13, 35, 53, 0.95), rgba(9, 27, 43, 0.95));
+    }
+
+    .compare-card.good li::before {
+      color: var(--mint);
+      text-shadow: 0 0 12px rgba(47, 232, 255, 0.42);
+    }
+
+    .cta-band {
+      margin: 48px auto 60px;
+      width: min(1220px, calc(100% - 48px));
+      border: 1px solid rgba(47, 232, 255, 0.36);
+      border-radius: 20px;
+      background: linear-gradient(130deg, rgba(12, 28, 50, 0.95), rgba(7, 21, 43, 0.95));
+      padding: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .cta-band h3 {
+      color: var(--title);
+      font-size: clamp(26px, 4vw, 42px);
+      letter-spacing: -0.03em;
+    }
+
+    .cta-band p {
+      margin-top: 8px;
+      color: var(--text-soft);
+      font-size: 16px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes drawLine {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes riseIn {
+      from {
+        transform: translateY(18px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes floatChip {
+
+      0%,
+      100% {
+        transform: rotate(45deg) translateY(28px);
+      }
+
+      50% {
+        transform: rotate(45deg) translateY(16px);
+      }
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        opacity: 0.8;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes bob {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    @keyframes driftA {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      50% {
+        transform: translate(20px, -16px);
+      }
+    }
+
+    @keyframes driftB {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      50% {
+        transform: translate(-18px, 14px);
+      }
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes radarSweep {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .site-header {
+        width: min(1300px, calc(100% - 32px));
+      }
+
+      .nav {
+        gap: 18px;
+      }
+
+      .brand {
+        font-size: 33px;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero h1 {
+        font-size: clamp(44px, 10vw, 78px);
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .overview,
+      .grid-3,
+      .deployment,
+      .integration,
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .outcome-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .iot-radar-band {
+        height: 150px;
+      }
+
+      .radar-hud {
+        width: 220px;
+        height: 220px;
+        right: 6%;
+      }
+
+      .radar-iot {
+        font-size: 46px;
+      }
+
+      .radar-mini {
+        top: 44px;
+      }
+
+      .chip-scene {
+        margin-top: 52px;
+        height: 210px;
+      }
+
+      .chip {
+        width: 235px;
+        height: 235px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .site-header {
+        width: calc(100% - 22px);
+        gap: 10px;
+        height: 78px;
+      }
+
+      .brand {
+        font-size: 26px;
+      }
+
+      .header-cta {
+        font-size: 13px;
+        padding: 10px 14px;
+      }
+
+      .hero {
+        padding: 34px 12px 24px;
+      }
+
+      .hero .hero-lead {
+        font-size: 16px;
+      }
+
+      .hero-actions {
+        width: 100%;
+      }
+
+      .hero-platforms {
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .chip-tag {
+        font-size: 10px;
+        padding: 6px 8px;
+      }
+
+      .tag-1 {
+        left: 2%;
+      }
+
+      .tag-2 {
+        right: 2%;
+      }
+
+      .tag-3,
+      .tag-4 {
+        bottom: -2px;
+      }
+
+      .mini-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        width: calc(100% - 22px);
+        padding: 30px 0;
+      }
+
+      .iot-radar-band {
+        width: calc(100% - 22px);
+        height: 122px;
+        margin-top: 8px;
+      }
+
+      .radar-hud {
+        width: 146px;
+        height: 146px;
+        right: 2%;
+        box-shadow:
+          0 0 0 12px rgba(26, 227, 255, 0.1),
+          0 0 0 25px rgba(23, 188, 255, 0.08),
+          0 0 46px rgba(0, 229, 255, 0.34);
+      }
+
+      .radar-iot {
+        font-size: 30px;
+      }
+
+      .radar-mini {
+        top: 24px;
+        font-size: 8px;
+      }
+
+      .radar-numbers {
+        font-size: 12px;
+      }
+
+      .trust-strip {
+        width: calc(100% - 22px);
+        margin-top: -2px;
+        grid-template-columns: 1fr;
+      }
+
+      .trust-label {
+        padding-left: 4px;
+      }
+
+      .outcome-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-band {
+        width: calc(100% - 22px);
+        margin: 36px auto 42px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+      <defs>
+        <symbol id="lamassu-logo-symbol" viewBox="0 0 495 476">
+          <path d="M36.9845 82.4277C23.6637 77.8266 12.0899 67.5286 5.32059 54.8209 1.8264 48.0285 0.734805 40.5791-0.138832 22.1746-1.01211 0.264271-0.793791-1.70749 2.48172-0.392981 4.66527 0.483475 9.68806 1.14073 13.8368 1.14073L21.2615 1.14073 21.2615 21.5174C21.2615 44.523 24.7557 52.6296 36.9845 60.2985 51.3968 69.0623 71.0502 63.804 80.2218 48.9049 83.716 42.9893 84.5892 37.7309 84.5892 21.5174L84.5892 1.14073 92.0139 1.14073C96.1631 1.14073 101.185 0.483475 103.151-0.392981 106.645-1.48828 106.863 0.483475 105.99 22.1746 105.335 41.0175 104.243 48.0285 100.531 55.0398 93.7608 67.7478 80.2218 79.1411 66.9014 83.0849 52.7071 87.4669 51.1785 87.4669 36.9845 82.4277Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 338 87)" />
+          <path d="M7.8986 29.406C-3.26435 23.3532-2.38869 5.19525 8.99272 0.487654 21.2502-4.21994 33.7261 6.76444 30.443 19.5423 28.0352 29.6299 17.0914 34.3375 7.8986 29.406Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 1 113)" />
+          <path d="M0.5722 168.742 1.44708 159.952 69.7036 159.952 137.741 159.952 217.593 79.7419 297.444-0.468278 310.571-0.468278 323.697-0.468278 235.095 88.5318 146.492 177.532 73.2042 177.532-0.303036 177.532 0.5722 168.742Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 43 265)" />
+          <path d="M3.79503 149.174C-0.359802 145.018-0.578421 141.955-0.578421 98.2051L-0.578421 51.8299 25.4433 25.7987 51.6837-0.451384 79.0174 25.7987 106.352 51.8299 106.352 99.299C106.57 145.893 106.57 146.768 101.76 150.049 97.6047 152.893 89.0764 153.549 52.5585 153.549 11.0109 153.549 7.9495 153.33 3.79503 149.174ZM67.2095 128.393C75.3002 124.236 80.3295 114.83 80.3295 103.893 80.3295 94.2676 73.7695 82.4549 67.4281 80.2675 63.4919 79.174 62.8361 77.205 62.8361 65.83L62.8361 52.9239 54.0892 52.9239 45.3423 52.9239 45.3423 64.7361C45.3423 75.4553 44.6864 77.205 36.5954 85.2989 28.9419 92.9552 27.8488 95.1426 27.8488 103.893 27.8488 124.674 49.0599 137.799 67.2095 128.393Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 338 261)" />
+          <path d="M7.85642 28.5539C-3.30652 22.6902-2.43087 5.09971 8.95055 0.539238 21.208-4.02124 33.6839 6.61987 30.4008 18.9984 27.993 28.7708 17.0492 33.3313 7.85642 28.5539Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 30 150)" />
+          <path d="M-0.284177 131.767-0.284177 122.968 48.4475 122.968 97.3987 122.968 159.082 61.1569 220.545-0.434353 231.74 0.225501 242.716 0.885356 175.545 70.6156 108.374 140.126 54.1549 140.346-0.284177 140.566-0.284177 131.767Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 70 265)" />
+          <path d="M7.81433 28.621C-3.34874 22.7573-2.47307 5.1666 8.90847 0.606069 21.166-3.95446 33.6421 6.68677 30.359 19.0655 27.9511 28.838 17.0072 33.3985 7.81433 28.621Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 58 187)" />
+          <path d="M0.606527 93.8345 1.47895 85.0688 27.2219 85.0688 52.9644 85.0688 95.0688 42.3346 137.391-0.399557 148.953-0.399557 160.734-0.399557 110.994 51.1007 61.4723 102.601 30.7123 102.601-0.266254 102.601 0.606527 93.8345Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 100 265)" />
+          <path d="M70.7343 246.841C67.665 242.902 57.3608 225.173 47.4954 207.663L29.7372 175.928 31.7102 136.531 33.9027 97.3537 16.1445 79.4063C3.86731 67.1497-1.175 60.5834-0.298263 58.1762 0.578833 56.2062 1.8943 54.6741 2.77103 54.6741 3.86731 54.6741 13.9523 63.8666 25.1332 75.2477L45.7416 96.0402 44.4261 135.218 43.1106 174.614 58.8955 186.652C78.1884 201.535 77.5308 203.067 77.75 153.603 77.9692 114.863 77.9692 114.863 64.3765 97.7913L56.0454 87.0667 56.0454 46.1381C56.0454 17.2476 56.9225 4.33441 58.6763 2.58336 60.4301 0.832308 71.6114-0.043218 94.8503-0.043218 122.474-0.043218 128.832 0.613336 129.709 3.23991 130.805 6.0851 118.528 29.0663 111.293 37.8212 109.101 40.2288 104.716 41.5419 98.358 41.5419L88.9309 41.5419 88.9309 55.3306 88.9309 68.9007 116.116 87.9422C130.805 98.4478 144.398 107.64 146.152 108.297 148.563 109.172 154.702 99.7613 168.733 72.8404 186.71 38.9157 188.245 34.976 189.341 20.7493 189.78 12.4324 191.314 4.11544 192.41 2.58336 195.26-0.918744 252.481-1.13735 254.454 2.36439 257.962 7.61718 234.504 34.976 226.392 34.976 222.007 34.976 218.938 38.0402 210.826 50.7344L200.741 66.4931 200.741 91.2254 200.741 115.958 264.539 115.958C324.171 115.958 328.118 115.739 327.021 112.237 326.364 110.048 320.444 90.3498 313.648 68.4628 303.563 35.8515 301.371 26.6591 302.029 15.9341L302.686 3.23991 334.037 2.58336C370.211 1.9268 370.869 2.36439 356.838 20.7493 349.822 29.9418 347.191 31.6929 340.395 32.3494 336.01 32.7874 332.283 33.6625 332.283 34.3195 332.283 36.5081 363.415 110.486 365.168 112.237 366.045 113.331 371.965 98.0103 378.542 78.3118 386.654 52.923 390.381 38.2588 390.819 27.3156 392.354-0.261829 389.284 2.14542 423.266 2.14542 457.686 2.14542 457.906 2.36439 443.874 20.7493 436.64 30.3798 433.57 32.7874 428.747 32.7874 414.716 32.7874 415.593 25.3456 415.593 138.939 415.593 221.234 414.935 242.902 412.743 244.652 410.55 246.622 403.316 240.494 381.611 218.826L353.111 190.373 270.02 190.373 186.71 190.373 155.579 222.109 124.667 253.845 100.331 253.845 75.9962 253.845 70.7343 246.841Z" fill="#FFFFFF" fill-rule="evenodd" transform="matrix(1 0 0 -1 40 475)" />
+        </symbol>
+      </defs>
+    </svg>
+    <div class="top-stripe"></div>
+
+    <header class="site-header">
+      <a href="#" class="brand" aria-label="Lamassu home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg class="lamassu-logo" viewBox="0 0 495 476" role="img" aria-label="Lamassu logo">
+            <use href="#lamassu-logo-symbol"></use>
+          </svg>
+        </span>
+        Lamassu
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#overview">Plataforma</a>
+        <a href="#capabilities">Funcionalidades</a>
+        <a href="#outcomes">Valor</a>
+        <a href="#deployment">Despliegue</a>
+        <a href="/docs/">Docs</a>
+        <a href="/arch/">Arch</a>
+        <a class="github-link" href="https://github.com/lamassuiot" target="_blank" rel="noopener" aria-label="GitHub de Lamassu">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M8 0C3.58 0 0 3.67 0 8.2C0 11.82 2.29 14.89 5.47 15.97C5.87 16.05 6.02 15.79 6.02 15.56C6.02 15.35 6.01 14.63 6.01 13.86C4 14.24 3.48 13.36 3.32 12.9C3.23 12.67 2.84 11.95 2.5 11.76C2.22 11.6 1.83 11.2 2.49 11.19C3.11 11.18 3.55 11.78 3.7 12.02C4.41 13.24 5.55 12.9 6.03 12.7C6.1 12.17 6.31 11.81 6.54 11.61C4.76 11.4 2.9 10.7 2.9 7.58C2.9 6.69 3.21 5.97 3.73 5.41C3.65 5.21 3.37 4.39 3.81 3.29C3.81 3.29 4.48 3.07 6.01 4.13C6.65 3.95 7.33 3.86 8.01 3.86C8.69 3.86 9.37 3.95 10.01 4.13C11.54 3.06 12.21 3.29 12.21 3.29C12.65 4.39 12.37 5.21 12.29 5.41C12.81 5.97 13.12 6.68 13.12 7.58C13.12 10.71 11.25 11.4 9.47 11.61C9.76 11.87 10.01 12.37 10.01 13.15C10.01 14.27 10 15.18 10 15.56C10 15.79 10.15 16.06 10.55 15.97C13.72 14.89 16 11.81 16 8.2C16 3.67 12.42 0 8 0Z"></path>
+          </svg>
+        </a>
+      </nav>
+      <a href="#contact" class="header-cta">Habla con expertos</a>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <svg class="flow-svg" viewBox="0 0 1920 980" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 620C210 530 290 530 480 620C700 730 840 770 1060 640C1260 525 1470 500 1920 710" />
+          <path d="M0 760C250 660 320 650 520 740C780 860 910 870 1180 730C1410 610 1550 590 1920 790" />
+          <path d="M0 460C180 350 330 340 520 440C740 560 900 620 1120 500C1360 368 1510 330 1920 530" />
+          <path d="M180 980C420 780 670 620 900 560C1190 485 1450 380 1770 230" />
+          <path d="M420 980C620 840 760 760 980 700C1240 628 1510 530 1860 330" />
+          <path class="accent" d="M350 530C470 590 530 650 530 740" />
+          <path class="accent" d="M1360 690C1230 620 1090 590 930 640" />
+        </svg>
+
+        <div class="hero-inner">
+          <p class="eyebrow">LAMASSU IoT</p>
+          <p class="hero-kicker">IoT-First PKI Platform · Industrial Certificate Lifecycle Management</p>
+          <h1>PKI industrial para gestionar identidades IoT de extremo a extremo</h1>
+          <p class="hero-lead">
+            Centraliza claves, autoridades de certificación, emisión, validación y ciclo de vida de dispositivos en una
+            sola plataforma preparada para operación industrial.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#capabilities">Ver funcionalidades</a>
+            <a class="btn btn-ghost" href="#deployment">Ver modelos de despliegue</a>
+          </div>
+          <div class="hero-platforms" aria-label="Plataformas conectadas">
+            <span class="platform-pill"><span class="platform-dot"></span>AWS IoT Core</span>
+            <span class="platform-pill"><span class="platform-dot"></span>Kubernetes</span>
+            <span class="platform-pill"><span class="platform-dot"></span>HashiCorp Vault</span>
+            <span class="platform-pill"><span class="platform-dot"></span>PKCS#11 HSM</span>
+            <span class="platform-pill"><span class="platform-dot"></span>RabbitMQ</span>
+            <span class="platform-pill"><span class="platform-dot"></span>SNS/SQS</span>
+          </div>
+
+          <div class="chip-scene" aria-hidden="true">
+            <div class="chip-glow"></div>
+            <div class="chip">
+              <span class="chip-pins top"></span>
+              <span class="chip-pins right"></span>
+              <span class="chip-pins bottom"></span>
+              <span class="chip-pins left"></span>
+              <div class="chip-face">
+                <svg class="chip-logo" viewBox="0 0 495 476" role="img" aria-label="Lamassu logo">
+                  <use href="#lamassu-logo-symbol"></use>
+                </svg>
+                <span class="chip-brand">LAMASSU</span>
+              </div>
+            </div>
+            <span class="chip-tag tag-1">EST RFC 7030</span>
+            <span class="chip-tag tag-2">AWS KMS / HSM</span>
+            <span class="chip-tag tag-3">OCSP + CRL</span>
+            <span class="chip-tag tag-4">Zero-touch enrollment</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="iot-radar-band reveal" aria-hidden="true">
+        <div class="radar-sweep"></div>
+        <div class="radar-numbers">89 24</div>
+        <div class="radar-hud">
+          <span class="radar-mini">Lamassu trusted mesh</span>
+          <span class="radar-iot">IoT</span>
+        </div>
+      </section>
+
+      <section class="trust-strip reveal" aria-label="Ecosystem">
+        <p class="trust-label">Diseñado para infraestructura real</p>
+        <div class="trust-marquee">
+          <div class="trust-track">
+            <span class="trust-logo">KMS Multi-Motor</span>
+            <span class="trust-logo">CA + RA + VA</span>
+            <span class="trust-logo">EST RFC 7030</span>
+            <span class="trust-logo">PKCS#11</span>
+            <span class="trust-logo">OCSP + CRL</span>
+            <span class="trust-logo">End Entities</span>
+            <span class="trust-logo">AWS IoT Core</span>
+            <span class="trust-logo">Alertas y Eventos</span>
+            <span class="trust-logo">KMS Multi-Motor</span>
+            <span class="trust-logo">CA + RA + VA</span>
+            <span class="trust-logo">EST RFC 7030</span>
+            <span class="trust-logo">PKCS#11</span>
+            <span class="trust-logo">OCSP + CRL</span>
+            <span class="trust-logo">End Entities</span>
+            <span class="trust-logo">AWS IoT Core</span>
+            <span class="trust-logo">Alertas y Eventos</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="overview">
+        <h2 class="section-title">Una plataforma única para el ciclo de vida criptográfico IoT</h2>
+        <p class="section-lead">
+          Lamassu IoT unifica los componentes críticos de una PKI industrial: gestión de claves, autoridades de
+          certificación, automatización de emisión, validación de certificados e identidad de dispositivos.
+        </p>
+
+        <div class="overview">
+          <article class="card">
+            <h3>Qué resuelve</h3>
+            <p>
+              Reduce la complejidad operativa de PKI en entornos IoT al centralizar los flujos de creación de claves,
+              emisión/revocación de certificados, validación y gestión de identidades de dispositivos.
+            </p>
+            <div class="mini-stats">
+              <div class="mini">
+                <span class="k">Motores Crypto</span>
+                <span class="v">4</span>
+              </div>
+              <div class="mini">
+                <span class="k">Flujos EST</span>
+                <span class="v">4</span>
+              </div>
+              <div class="mini">
+                <span class="k">Servicios VA</span>
+                <span class="v">2</span>
+              </div>
+              <div class="mini">
+                <span class="k">Dominios Core</span>
+                <span class="v">4</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Áreas cubiertas</h3>
+            <ul>
+              <li>KMS con generación, importación, CSR, firma/verificación y uso local PKCS#11.</li>
+              <li>Gestión completa de entidades de confianza y autoridades de certificación.</li>
+              <li>Automatización RA con EST para enrollment, reenrollment y server key generation.</li>
+              <li>Gestión de dispositivos e identidades (end entities) con trazabilidad operativa.</li>
+              <li>Validación OCSP/CRL, integración AWS IoT Core y sistema de alertas por eventos.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="capabilities">
+        <h2 class="section-title">Funcionalidades clave (sin fricción operativa)</h2>
+        <p class="section-lead">Titulares funcionales del manual, llevados a formato landing para evaluación rápida de producto.</p>
+
+        <div class="grid-3">
+          <article class="cap">
+            <p class="label">KMS</p>
+            <h4>Motores criptográficos pluggables</h4>
+            <p>
+              Opera con File System, Hashicorp Vault, AWS KMS y PKCS#11 para adaptar custodia y nivel de seguridad al
+              contexto regulatorio y operativo.
+            </p>
+          </article>
+          <article class="cap">
+            <p class="label">KMS</p>
+            <h4>Gestión de claves completa</h4>
+            <p>
+              Crea o importa claves (BYOK), administra metadatos, genera CSR y ejecuta firma/verificación desde una
+              consola unificada.
+            </p>
+          </article>
+          <article class="cap">
+            <p class="label">PKCS#11</p>
+            <h4>Firma local con herramientas estándar</h4>
+            <p>
+              Integra claves custodiadas con OpenSSL y toolchains locales usando módulo PKCS#11 sin exponer material
+              privado.
+            </p>
+          </article>
+          <article class="cap">
+            <p class="label">Entidades de confianza</p>
+            <h4>Gestión de CAs y cadena de confianza</h4>
+            <p>Crea, importa y opera autoridades raíz/intermedias y emite certificados con políticas de confianza consistentes.</p>
+          </article>
+          <article class="cap">
+            <p class="label">Certificados</p>
+            <h4>Emisión y revocación centralizadas</h4>
+            <p>Gestiona el ciclo de vida X.509 con trazabilidad, reduciendo errores manuales en renovación y revocación.</p>
+          </article>
+          <article class="cap">
+            <p class="label">VA</p>
+            <h4>OCSP + CRL en producción</h4>
+            <p>Publica estado de certificados en tiempo real con OCSP y distribución de CRL para ecosistemas heterogéneos.</p>
+          </article>
+          <article class="cap">
+            <p class="label">RA</p>
+            <h4>Automatización EST</h4>
+            <p>Flujos `/cacerts`, `/enroll`, `/reenroll` y `/serverkeygen` para onboarding masivo de dispositivos IoT.</p>
+          </article>
+          <article class="cap">
+            <p class="label">Dispositivos</p>
+            <h4>Identidades de dispositivos</h4>
+            <p>Visualiza inventario, historial de certificados, eventos y acciones de decommissioning en una vista operativa.</p>
+          </article>
+          <article class="cap">
+            <p class="label">Integraciones</p>
+            <h4>AWS IoT Core y alertas</h4>
+            <p>Sincroniza estado de certificados con Device Shadow y orquesta eventos/suscripciones con filtros y confirmación.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="outcomes">
+        <h2 class="section-title">Valor tangible para equipos de seguridad y operación</h2>
+        <p class="section-lead">
+          Menos tareas manuales, más control sobre la custodia de claves y una operación PKI coherente desde el alta de
+          dispositivos hasta la validación continua.
+        </p>
+        <div class="outcome-wrap">
+          <div class="outcome-grid">
+            <article class="outcome">
+              <b>Automatiza</b>
+              <span>Enrollment y renovación con EST para reducir carga operativa en despliegues IoT.</span>
+            </article>
+            <article class="outcome">
+              <b>Protege</b>
+              <span>Custodia de claves con motores de seguridad adaptados a cloud, on-prem y HSM.</span>
+            </article>
+            <article class="outcome">
+              <b>Valida</b>
+              <span>Estado de certificados mediante OCSP y CRL para mantener confianza en tiempo real.</span>
+            </article>
+            <article class="outcome">
+              <b>Orquesta</b>
+              <span>Eventos y alertas para activar acciones automáticas sobre certificados y dispositivos.</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" aria-label="Comparison">
+        <h2 class="section-title">Antes y después de centralizar PKI con Lamassu</h2>
+        <p class="section-lead">Una vista rápida del cambio operativo cuando se pasa de procesos sueltos a una plataforma integrada.</p>
+        <div class="compare-grid">
+          <article class="compare-card">
+            <h3>Sin Lamassu</h3>
+            <ul>
+              <li>Flujos de claves y certificados repartidos entre herramientas desconectadas.</li>
+              <li>Mayor riesgo de expiraciones por procesos de renovación manuales.</li>
+              <li>Dificultad para escalar onboarding de dispositivos con garantías homogéneas.</li>
+              <li>Poca visibilidad del estado real de revocación y validación.</li>
+              <li>Integraciones cloud/IoT hechas ad-hoc y con alto mantenimiento.</li>
+            </ul>
+          </article>
+          <article class="compare-card good">
+            <h3>Con Lamassu</h3>
+            <ul>
+              <li>Emisión y enrollment estandarizados con políticas consistentes.</li>
+              <li>Automatización del ciclo de vida de certificados e identidades.</li>
+              <li>Custodia flexible con motores criptográficos según cada entorno.</li>
+              <li>Validación confiable con OCSP/CRL integrada en la operación.</li>
+              <li>Integración nativa con AWS IoT y alertas basadas en eventos.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="deployment">
+        <h2 class="section-title">Despliegue adaptable a tu madurez operativa</h2>
+        <p class="section-lead">Desde una puesta en marcha rápida hasta arquitectura distribuida para operación a gran escala.</p>
+
+        <div class="deployment">
+          <article class="deploy">
+            <p class="label">Despliegue monolítico</p>
+            <h4><code>cmd/monolithic</code></h4>
+            <p>
+              Un único binario con proxy embebido para acelerar pilotos, laboratorios y entornos edge con restricciones
+              de infraestructura.
+            </p>
+          </article>
+          <article class="deploy">
+            <p class="label">Despliegue distribuido</p>
+            <h4>Servicios independientes</h4>
+            <p>
+              CA, RA/DMS, VA, Device Manager y Alerts desacoplados para escalar por dominio funcional y aislar fallos
+              en producción.
+            </p>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table aria-label="Distributed services">
+            <thead>
+              <tr>
+                <th>Servicio</th>
+                <th>Binario</th>
+                <th>Función</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CA Service</td>
+                <td><code>cmd/ca</code></td>
+                <td>Gestión de autoridades y firma de certificados.</td>
+              </tr>
+              <tr>
+                <td>DMS Manager</td>
+                <td><code>cmd/dmsmanager</code></td>
+                <td>Enrollment de dispositivos y gestión del protocolo EST.</td>
+              </tr>
+              <tr>
+                <td>VA Service</td>
+                <td><code>cmd/va</code></td>
+                <td>Validación con OCSP y publicación de CRL.</td>
+              </tr>
+              <tr>
+                <td>Device Manager</td>
+                <td><code>cmd/devicemanager</code></td>
+                <td>Registro de dispositivos y estados de ciclo de vida.</td>
+              </tr>
+              <tr>
+                <td>Alerts Service</td>
+                <td><code>cmd/alerts</code></td>
+                <td>Procesamiento de eventos y notificaciones automáticas.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section reveal" id="integrations">
+        <h2 class="section-title">Integraciones orientadas a operación</h2>
+        <p class="section-lead">Conecta la PKI con tu ecosistema cloud y tus flujos de monitorización en tiempo real.</p>
+
+        <div class="integration">
+          <article class="card">
+            <h3>AWS IoT Core</h3>
+            <p>
+              Sincroniza el estado de certificados con AWS IoT Core para mantener Device Shadow alineado con la
+              confianza criptográfica real del dispositivo.
+            </p>
+            <code>Lamassu Event Bus (SNS/SQS)
+-> Connector
+-> AWS IoT Core UpdateCertificate
+-> Thing shadow status update</code>
+          </article>
+
+          <article class="card">
+            <h3>Alertas y suscripciones por eventos</h3>
+            <p>Define suscripciones, filtros y condiciones para activar respuestas automáticas ante eventos críticos.</p>
+            <code>Eventos: emisión, revocación, expiración, cambios de estado
+Suscripciones: alta, confirmación y gestión
+Acciones: notificación y automatización operativa</code>
+          </article>
+        </div>
+      </section>
+
+      <section class="cta-band reveal" id="contact">
+        <div>
+          <h3>Lleva tu PKI IoT de manual operativo a plataforma productiva</h3>
+          <p>Te ayudamos a definir arquitectura, modelo de custodia de claves y flujo de enrolamiento para tu caso real.</p>
+        </div>
+        <a class="btn btn-primary" href="https://www.lamassu.io" target="_blank" rel="noopener">Solicitar sesión de arquitectura</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const revealItems = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.14 }
+      );
+
+      revealItems.forEach((el) => io.observe(el));
+    })();
+  </script>
+</body>
+
+</html>
