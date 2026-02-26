@@ -1,0 +1,560 @@
+---
+interface KPI {
+  label: string;
+  value: string;
+}
+
+interface Block {
+  title: string;
+  body: string;
+}
+
+interface Props {
+  sector: string;
+  heroTitle: string;
+  heroLead: string;
+  heroImageSrc?: string;
+  heroImageAlt?: string;
+  hideHeroActions?: boolean;
+  justifyHeroLead?: boolean;
+  heroFullWidthText?: boolean;
+  whiteTextOnly?: boolean;
+  whiteTitle?: string;
+  whiteParagraphs?: string[];
+  whiteImageSrc?: string;
+  whiteImageAlt?: string;
+  kpis: KPI[];
+  challenges: string[];
+  solutionBlocks: Block[];
+  architectureSteps: string[];
+  outcomes: string[];
+  ctaTitle?: string;
+  ctaLead?: string;
+}
+
+const {
+  sector,
+  heroTitle,
+  heroLead,
+  heroImageSrc,
+  heroImageAlt = '',
+  hideHeroActions = false,
+  justifyHeroLead = false,
+  heroFullWidthText = false,
+  whiteTextOnly = false,
+  whiteTitle = '',
+  whiteParagraphs = [],
+  whiteImageSrc,
+  whiteImageAlt = '',
+  kpis,
+  challenges,
+  solutionBlocks,
+  architectureSteps,
+  outcomes,
+  ctaTitle = 'Diseñamos contigo la arquitectura para este vertical',
+  ctaLead = 'Alineamos seguridad, operación y escalabilidad con un roadmap realista de despliegue.',
+} = Astro.props;
+---
+
+<main class="sector-page">
+  <section class="hero-wrap">
+    <section class:list={['hero', heroImageSrc && 'hero-split']}>
+      <div class:list={['hero-content', heroFullWidthText && 'hero-content-full']}>
+        <p class="eyebrow">{sector}</p>
+        <h1>{heroTitle}</h1>
+        <p class:list={['lead', justifyHeroLead && 'lead-justify']}>{heroLead}</p>
+        {
+          !hideHeroActions && (
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/#contact">Solicitar sesión técnica</a>
+              <a class="btn btn-ghost" href="/#cases">Volver a casos</a>
+            </div>
+          )
+        }
+      </div>
+      {
+        heroImageSrc && (
+          <div class="hero-media">
+            <img class="hero-image" src={heroImageSrc} alt={heroImageAlt} loading="eager" decoding="async" />
+          </div>
+        )
+      }
+    </section>
+  </section>
+
+  <section class="content-cut">
+    <div class="content-inner">
+      {
+        whiteTextOnly ? (
+          <section class="white-text-only">
+            <div class="white-copy">
+              {whiteTitle && <h2>{whiteTitle}</h2>}
+              {whiteParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+            {
+              whiteImageSrc && (
+                <div class="white-media">
+                  <img class="white-image" src={whiteImageSrc} alt={whiteImageAlt} loading="eager" decoding="async" />
+                </div>
+              )
+            }
+          </section>
+        ) : (
+          <Fragment>
+            <section class="band">
+              <div class="kpi-grid" aria-label="Indicadores objetivo">
+                {
+                  kpis.map((kpi) => (
+                    <article class="kpi">
+                      <p class="kpi-label">{kpi.label}</p>
+                      <p class="kpi-value">{kpi.value}</p>
+                    </article>
+                  ))
+                }
+              </div>
+            </section>
+
+            <section class="section-grid">
+              <article class="section-card">
+                <h2>Retos del sector</h2>
+                <ul>
+                  {challenges.map((item) => <li>{item}</li>)}
+                </ul>
+              </article>
+
+              <article class="section-card">
+                <h2>Solución Lamassu</h2>
+                <div class="solution-grid">
+                  {
+                    solutionBlocks.map((block) => (
+                      <div class="solution">
+                        <h3>{block.title}</h3>
+                        <p>{block.body}</p>
+                      </div>
+                    ))
+                  }
+                </div>
+              </article>
+            </section>
+
+            <section class="section-card blueprint">
+              <h2>Blueprint operativo</h2>
+              <ol>
+                {architectureSteps.map((step) => <li>{step}</li>)}
+              </ol>
+            </section>
+
+            <section class="section-card impact">
+              <h2>Impacto esperado</h2>
+              <div class="impact-grid">
+                {outcomes.map((item) => <p>{item}</p>)}
+              </div>
+            </section>
+
+            <section class="cta">
+              <div>
+                <h2>{ctaTitle}</h2>
+                <p>{ctaLead}</p>
+              </div>
+              <a class="btn btn-primary" href="/#contact">Hablar con especialistas</a>
+            </section>
+          </Fragment>
+        )
+      }
+    </div>
+  </section>
+</main>
+
+<style>
+  .sector-page {
+    width: 100%;
+    margin-top: 28px;
+  }
+
+  .hero-wrap,
+  .content-inner {
+    width: min(1240px, calc(100% - 48px));
+    margin: 0 auto;
+  }
+
+  .hero {
+    border: 1px solid rgba(72, 94, 164, 0.45);
+    border-radius: 18px;
+    background:
+      radial-gradient(circle at 84% 0%, rgba(47, 232, 255, 0.08), transparent 38%),
+      rgba(16, 23, 56, 0.92);
+    padding: 20px 22px;
+  }
+
+  .hero-split {
+    display: grid;
+    grid-template-columns: minmax(0, 65%) minmax(0, 35%);
+    gap: clamp(20px, 3vw, 44px);
+    align-items: center;
+  }
+
+  .hero-content {
+    max-width: 900px;
+  }
+
+  .hero-content-full {
+    max-width: none;
+    width: 100%;
+  }
+
+  .hero-media {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: clamp(260px, 30vw, 440px);
+    border-radius: 14px;
+    border: 1px solid rgba(143, 175, 232, 0.32);
+    object-fit: cover;
+    object-position: center;
+    box-shadow: 0 22px 42px rgba(8, 16, 42, 0.46);
+  }
+
+  .content-cut {
+    margin-top: 20px;
+    background: #ffffff;
+    border-top: 1px solid #dfe7f7;
+    padding: 28px 0 54px;
+  }
+
+  .content-inner {
+    display: grid;
+    gap: 16px;
+  }
+
+  .white-text-only {
+    display: grid;
+    grid-template-columns: minmax(0, 65%) minmax(0, 35%);
+    gap: clamp(20px, 3vw, 42px);
+    align-items: center;
+  }
+
+  .white-copy h2 {
+    color: #12203d;
+    font-size: clamp(26px, 3.6vw, 42px);
+    letter-spacing: -0.02em;
+  }
+
+  .white-copy p {
+    margin-top: 14px;
+    color: #2b3e63;
+    font-size: clamp(16px, 1.4vw, 20px);
+    line-height: 1.68;
+    max-width: 74ch;
+    text-align: justify;
+  }
+
+  .white-media {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .white-image {
+    width: 100%;
+    height: clamp(360px, 36vw, 560px);
+    border-radius: 24px;
+    border: 1px solid #d7e1f4;
+    object-fit: cover;
+    object-position: 70% center;
+    box-shadow: 0 20px 36px rgba(18, 32, 61, 0.16);
+  }
+
+  .band,
+  .section-card,
+  .cta {
+    border: 1px solid #d7e1f4;
+    border-radius: 18px;
+    background: #ffffff;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9ac9ff;
+  }
+
+  h1 {
+    color: #f7fbff;
+    margin-top: 8px;
+    font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-content-full h1 {
+    width: 100%;
+    max-width: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: clamp(24px, 3.1vw, 46px);
+  }
+
+  .lead {
+    margin-top: 10px;
+    color: #a9b7dd;
+    font-size: 17px;
+    line-height: 1.45;
+    max-width: 880px;
+  }
+
+  .hero-content-full .lead {
+    max-width: none;
+  }
+
+  .lead-justify {
+    text-align: justify;
+  }
+
+  .hero-actions {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .btn {
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: 0.2s ease;
+  }
+
+  .btn-primary {
+    background: #2fe8ff;
+    color: #06172f;
+    box-shadow: 0 14px 40px rgba(47, 232, 255, 0.24);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 42px rgba(47, 232, 255, 0.34);
+  }
+
+  .btn-ghost {
+    border: 1px solid #344988;
+    color: #cfd8ff;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .btn-ghost:hover {
+    border-color: #4f77a7;
+    color: #f7fbff;
+    transform: translateY(-1px);
+  }
+
+  .band {
+    padding: 18px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .kpi {
+    border: 1px solid #dce4f5;
+    border-radius: 12px;
+    background: #f7f9ff;
+    padding: 12px 14px;
+  }
+
+  .kpi-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5a6d93;
+  }
+
+  .kpi-value {
+    margin-top: 8px;
+    color: #1b2f59;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .section-card {
+    padding: 22px;
+  }
+
+  h2 {
+    color: #12203d;
+    font-size: clamp(24px, 3.4vw, 36px);
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    color: #f7fbff;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  ul,
+  ol {
+    display: grid;
+    gap: 10px;
+  }
+
+  li {
+    color: #24314f;
+    line-height: 1.56;
+    font-size: 16px;
+  }
+
+  .section-card > ul,
+  .section-card > ol {
+    margin-top: 14px;
+    padding: 14px 14px 14px 34px;
+    border-radius: 12px;
+    border: 1px solid #d9e1f4;
+    background: #ffffff;
+  }
+
+  .solution-grid {
+    margin-top: 14px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #d9e1f4;
+    background: #ffffff;
+    display: grid;
+    gap: 10px;
+  }
+
+  .solution {
+    border: 1px solid #dce4f5;
+    border-radius: 12px;
+    background: #f5f8ff;
+    padding: 14px;
+  }
+
+  .solution h3 {
+    color: #12203d;
+  }
+
+  .solution p {
+    margin-top: 8px;
+    color: #3a4869;
+    line-height: 1.56;
+    font-size: 15px;
+  }
+
+  .impact-grid {
+    margin-top: 14px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #d9e1f4;
+    background: #ffffff;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .impact-grid p {
+    border: 1px solid #dce4f5;
+    border-radius: 12px;
+    background: #f5f8ff;
+    padding: 12px;
+    color: #2d3c5f;
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  .cta {
+    margin-top: 2px;
+    padding: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .cta p {
+    margin-top: 8px;
+    color: #3f5074;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 760px;
+  }
+
+  @media (max-width: 980px) {
+    .hero-split {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-image {
+      max-width: 720px;
+      height: clamp(220px, 52vw, 360px);
+    }
+
+    .white-text-only {
+      grid-template-columns: 1fr;
+    }
+
+    .white-image {
+      max-width: 720px;
+      height: clamp(220px, 54vw, 360px);
+    }
+
+    .section-grid,
+    .kpi-grid,
+    .impact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-wrap,
+    .content-inner {
+      width: calc(100% - 22px);
+    }
+
+    .hero,
+    .band,
+    .section-card,
+    .cta {
+      padding: 16px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 7vw, 34px);
+    }
+
+    .content-cut {
+      margin-top: 14px;
+      padding: 18px 0 36px;
+    }
+
+    .lead {
+      font-size: 17px;
+    }
+
+    .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

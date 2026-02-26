@@ -1,0 +1,50 @@
+---
+import SectorLayout from '../../layouts/SectorLayout.astro';
+import SectorPage from '../../components/SectorPage.astro';
+---
+
+<SectorLayout title="Lamassu | Hostelería conectada">
+  <SectorPage
+    sector="Hostelería conectada"
+    heroTitle="Seguridad de identidades para hoteles, restaurantes y retail hospitality"
+    heroLead="Conecta cerraduras inteligentes, TPV, kioscos de autoservicio y dispositivos IoT con políticas PKI consistentes en toda la cadena."
+    kpis={[
+      { label: 'Alta segura de sedes', value: 'x3 más rápida' },
+      { label: 'Ciclo de renovación', value: 'Automatizado' },
+      { label: 'Canales conectados', value: 'POS · IoT · Cloud' },
+      { label: 'Cumplimiento', value: 'Auditoría central' },
+    ]}
+    challenges={[
+      'Gran dispersión geográfica de sedes con personal no técnico en primera línea.',
+      'Superficie digital amplia: TPV, cerraduras, sensores ambientales, cartelería y kioscos.',
+      'Rotación de equipamiento y proveedores con configuraciones heterogéneas.',
+      'Necesidad de minimizar fricción operativa en aperturas y cambios de temporada.',
+    ]}
+    solutionBlocks={[
+      {
+        title: 'PKI multi-sede',
+        body: 'Identidad por dispositivo y por establecimiento con plantillas de política replicables en franquicias o cadenas.',
+      },
+      {
+        title: 'Onboarding zero-touch',
+        body: 'Provisionado inicial y renovación automática para reducir tickets de soporte y despliegues manuales.',
+      },
+      {
+        title: 'Visibilidad en tiempo real',
+        body: 'Estado de certificados y eventos operativos centralizados para detectar riesgos antes de impactar al cliente final.',
+      },
+    ]}
+    architectureSteps={[
+      'Segmentación por marca, región o tipo de establecimiento.',
+      'Integración de enrollment con procesos de instalación de dispositivos en tienda/hotel.',
+      'Activación de revocación y validación en tiempo real para credenciales comprometidas.',
+      'Automatización de alertas para expiración, reemplazo de hardware y cambios de configuración.',
+    ]}
+    outcomes={[
+      'Menor carga operativa en equipos de soporte de campo.',
+      'Reducción de interrupciones por fallos de confianza entre dispositivos y backend.',
+      'Despliegues más rápidos en nuevas aperturas o remodelaciones.',
+      'Postura de seguridad homogénea en toda la red de establecimientos.',
+    ]}
+  />
+</SectorLayout>

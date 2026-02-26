@@ -1,0 +1,62 @@
+---
+import SectorLayout from '../../layouts/SectorLayout.astro';
+import SectorPage from '../../components/SectorPage.astro';
+---
+
+<SectorLayout title="Lamassu | Ferroviario conectado">
+  <SectorPage
+    sector="Ferroviario"
+    heroTitle="Identidad criptográfica para operación ferroviaria conectada"
+    heroLead="Lamassu protege trenes, señalización y estaciones con una PKI IoT operativa, escalable y preparada para continuidad de servicio en toda la red."
+    hideHeroActions={true}
+    justifyHeroLead={true}
+    heroFullWidthText={true}
+    whiteTextOnly={true}
+    whiteTitle="Operación ferroviaria conectada con confianza continua"
+    whiteParagraphs={[
+      'En redes ferroviarias modernas, la seguridad no puede depender de tareas manuales ni de ciclos aislados por equipo. Lamassu habilita un modelo operativo donde cada activo, desde trenes y enclavamientos hasta sistemas de estación y diagnóstico remoto, mantiene identidad criptográfica verificable y vigente durante todo su ciclo de vida.',
+      'La plataforma centraliza políticas de emisión, renovación y revocación para que el cambio de certificados no interrumpa el servicio. Esto reduce riesgos de indisponibilidad, evita ventanas de exposición por credenciales vencidas y permite escalar nuevos proyectos digitales sobre una base homogénea de confianza técnica y trazabilidad.',
+      'Con este enfoque, operadores y equipos de ciberseguridad pueden coordinar despliegues de forma progresiva, mantener control por dominios operativos y responder auditorías con evidencia completa de quién emitió, renovó o invalidó cada credencial en campo.',
+    ]}
+    whiteImageSrc="https://cdn.britannica.com/28/233928-050-CC617C2B/high-speed-railway-commuter-train.jpg"
+    whiteImageAlt="High-speed commuter train on railway tracks"
+    kpis={[
+      { label: 'Disponibilidad objetivo', value: '99.99%' },
+      { label: 'Renovación masiva', value: '< 24 h' },
+      { label: 'Dominios', value: 'Tren · Vía · Estación' },
+      { label: 'Trazabilidad', value: '100% auditable' },
+    ]}
+    challenges={[
+      'Miles de activos con ciclos de vida diferentes y ventanas mínimas de parada.',
+      'Integración OT/IT con requisitos estrictos de seguridad funcional y ciberseguridad.',
+      'Riesgo operativo por expiración de certificados en sistemas críticos de campo.',
+      'Necesidad de segmentar confianza por línea, operador, concesión o país.',
+    ]}
+    solutionBlocks={[
+      {
+        title: 'Identidad por activo crítico',
+        body: 'Modelo de certificados por tren, subsistema y gateway para aislar dominios y reducir superficie de impacto.',
+      },
+      {
+        title: 'Renovación sin fricción',
+        body: 'Flujos EST automatizados para renovar certificados con políticas centralizadas y mínima intervención local.',
+      },
+      {
+        title: 'Custodia robusta',
+        body: 'Motores KMS/HSM para proteger claves y cumplir requerimientos de seguridad en infraestructura crítica.',
+      },
+    ]}
+    architectureSteps={[
+      'Inventario y clasificación de activos ferroviarios por criticidad y dominio operativo.',
+      'Definición de políticas PKI por entorno: señalización, comunicaciones, mantenimiento y backoffice.',
+      'Despliegue gradual de enrollment/reenrollment con validación OCSP/CRL integrada.',
+      'Operación continua con alertas tempranas de expiración, revocación y desviaciones de política.',
+    ]}
+    outcomes={[
+      'Reducción de incidencias asociadas a certificados caducados en sistemas de campo.',
+      'Mayor velocidad de alta segura de nuevos trenes, sensores y equipos de vía.',
+      'Aislamiento criptográfico entre líneas o concesiones para mejorar resiliencia.',
+      'Mejor capacidad de auditoría para organismos reguladores y equipos internos.',
+    ]}
+  />
+</SectorLayout>

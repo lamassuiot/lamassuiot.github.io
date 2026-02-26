@@ -803,72 +803,132 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       line-height: 1.6;
     }
 
-    .deployment {
+    .cases-shell {
       margin-top: 22px;
+      border: 1px solid rgba(47, 232, 255, 0.32);
+      border-radius: calc(var(--radius-lg) + 2px);
+      background:
+        radial-gradient(circle at 12% 22%, rgba(47, 232, 255, 0.14), transparent 44%),
+        radial-gradient(circle at 84% 2%, rgba(110, 132, 255, 0.2), transparent 38%),
+        linear-gradient(150deg, rgba(12, 29, 50, 0.94), rgba(6, 19, 37, 0.98));
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .cases-kicker {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #aed7ff;
+    }
+
+    .client-ribbon {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .client-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(143, 182, 255, 0.34);
+      background: rgba(7, 22, 45, 0.65);
+      color: #d6e6ff;
+      padding: 8px 12px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .case-grid {
+      margin-top: 16px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
 
-    .deploy {
+    .case-card {
       border: 1px solid var(--line-soft);
       border-radius: var(--radius-md);
-      background: var(--surface);
+      background: rgba(6, 18, 40, 0.74);
       padding: 18px;
+      display: grid;
+      gap: 9px;
+      transition: transform 0.25s ease, border-color 0.25s ease;
     }
 
-    .deploy h4 {
+    .case-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(47, 232, 255, 0.44);
+    }
+
+    .case-sector {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8fc6ff;
+    }
+
+    .case-card h3 {
       color: var(--title);
       font-size: 22px;
+      line-height: 1.2;
       letter-spacing: -0.02em;
-      margin: 8px 0 10px;
     }
 
-    .deploy p {
+    .case-metric {
+      color: var(--mint);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+
+    .case-card p {
       color: var(--text-soft);
       line-height: 1.62;
       font-size: 15px;
     }
 
-    .table-wrap {
-      margin-top: 12px;
-      overflow-x: auto;
-      border: 1px solid var(--line-soft);
-      border-radius: var(--radius-md);
-      background: var(--surface);
-    }
-
-    table {
-      border-collapse: collapse;
-      min-width: 680px;
-      width: 100%;
-    }
-
-    th,
-    td {
-      padding: 12px 14px;
-      text-align: left;
-      border-bottom: 1px solid var(--line-soft);
-      border-right: 1px solid var(--line-soft);
+    .case-link {
+      color: #d8ecff;
+      text-decoration: none;
       font-size: 14px;
+      width: fit-content;
+      border-bottom: 1px solid rgba(216, 236, 255, 0.42);
+      padding-bottom: 2px;
+      transition: color 0.2s ease, border-color 0.2s ease;
     }
 
-    td:last-child,
-    th:last-child {
-      border-right: 0;
+    .case-link:hover {
+      color: var(--mint);
+      border-color: rgba(47, 232, 255, 0.72);
     }
 
-    tr:last-child td {
-      border-bottom: 0;
+    .case-quote {
+      margin-top: 12px;
+      border: 1px solid rgba(140, 171, 235, 0.33);
+      border-radius: var(--radius-md);
+      background: rgba(9, 24, 49, 0.8);
+      padding: 16px 18px;
     }
 
-    th {
+    .case-quote p {
+      color: #dbe8ff;
+      font-size: 17px;
+      line-height: 1.52;
+      letter-spacing: -0.01em;
+    }
+
+    .case-quote footer {
+      margin-top: 10px;
+      color: #9cb4e8;
       font-family: "IBM Plex Mono", monospace;
       font-size: 11px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #aad0ff;
-      background: rgba(255, 255, 255, 0.02);
     }
 
     .integration {
@@ -1111,7 +1171,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
       .overview,
       .grid-3,
-      .deployment,
+      .case-grid,
       .integration,
       .compare-grid {
         grid-template-columns: 1fr;
@@ -1266,6 +1326,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         margin: 36px auto 42px;
         padding: 20px;
       }
+
+      .cases-shell {
+        padding: 16px;
+      }
     }
   </style>
   </Fragment>
@@ -1308,7 +1372,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#capabilities">Ver funcionalidades</a>
-            <a class="btn btn-ghost" href="#deployment">Ver modelos de despliegue</a>
+            <a class="btn btn-ghost" href="#cases">Ver casos de éxito</a>
           </div>
           <div class="hero-platforms" aria-label="Plataformas conectadas">
             <span class="platform-pill"><span class="platform-dot"></span>AWS IoT Core</span>
@@ -1538,66 +1602,80 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         </div>
       </section>
 
-      <section class="section reveal" id="deployment">
-        <h2 class="section-title">Despliegue adaptable a tu madurez operativa</h2>
-        <p class="section-lead">Desde una puesta en marcha rápida hasta arquitectura distribuida para operación a gran escala.</p>
+      <section class="section reveal" id="cases">
+        <h2 class="section-title">Casos de éxito en energía e industria conectada</h2>
+        <p class="section-lead">
+          Referencias reales donde Lamassu redujo fricción operativa y elevó la postura criptográfica en entornos OT e IoT.
+        </p>
 
-        <div class="deployment">
-          <article class="deploy">
-            <p class="label">Despliegue monolítico</p>
-            <h4><code>cmd/monolithic</code></h4>
-            <p>
-              Un único binario con proxy embebido para acelerar pilotos, laboratorios y entornos edge con restricciones
-              de infraestructura.
-            </p>
-          </article>
-          <article class="deploy">
-            <p class="label">Despliegue distribuido</p>
-            <h4>Servicios independientes</h4>
-            <p>
-              CA, RA/DMS, VA, Device Manager y Alerts desacoplados para escalar por dominio funcional y aislar fallos
-              en producción.
-            </p>
-          </article>
-        </div>
+        <div class="cases-shell">
+          <p class="cases-kicker">Nuestros clientes, nuestra mejor referencia</p>
+          <div class="client-ribbon" aria-label="Sectores de referencia">
+            <span class="client-pill">Ferroviario</span>
+            <span class="client-pill">Hostelería conectada</span>
+            <span class="client-pill">Energía · baterías</span>
+            <span class="client-pill">Grúas</span>
+            <span class="client-pill">Puertas de acceso conectadas</span>
+          </div>
 
-        <div class="table-wrap">
-          <table aria-label="Distributed services">
-            <thead>
-              <tr>
-                <th>Servicio</th>
-                <th>Binario</th>
-                <th>Función</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>CA Service</td>
-                <td><code>cmd/ca</code></td>
-                <td>Gestión de autoridades y firma de certificados.</td>
-              </tr>
-              <tr>
-                <td>DMS Manager</td>
-                <td><code>cmd/dmsmanager</code></td>
-                <td>Enrollment de dispositivos y gestión del protocolo EST.</td>
-              </tr>
-              <tr>
-                <td>VA Service</td>
-                <td><code>cmd/va</code></td>
-                <td>Validación con OCSP y publicación de CRL.</td>
-              </tr>
-              <tr>
-                <td>Device Manager</td>
-                <td><code>cmd/devicemanager</code></td>
-                <td>Registro de dispositivos y estados de ciclo de vida.</td>
-              </tr>
-              <tr>
-                <td>Alerts Service</td>
-                <td><code>cmd/alerts</code></td>
-                <td>Procesamiento de eventos y notificaciones automáticas.</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="case-grid">
+            <article class="case-card">
+              <p class="case-sector">Ferroviario</p>
+              <h3>Material rodante y señalización</h3>
+              <p class="case-metric">Continuidad criptográfica en operación 24x7</p>
+              <p>
+                PKI para trenes, estaciones y sistemas de vía con segmentación por línea, operador o región.
+              </p>
+              <a class="case-link" href="/ferroviario/">Ver página dedicada</a>
+            </article>
+
+            <article class="case-card">
+              <p class="case-sector">Hostelería conectada</p>
+              <h3>Cadenas multi-sede de hotelería y restauración</h3>
+              <p class="case-metric">Onboarding seguro para dispositivos de local</p>
+              <p>
+                Control de identidad para cerraduras inteligentes, TPV, kioscos y sensores con operación simplificada.
+              </p>
+              <a class="case-link" href="/hosteleria-conectada/">Ver página dedicada</a>
+            </article>
+
+            <article class="case-card">
+              <p class="case-sector">Energía · baterías</p>
+              <h3>BESS, inversores y gestión energética</h3>
+              <p class="case-metric">Menor riesgo operativo en activos distribuidos</p>
+              <p>
+                Identidad fuerte para controladores y gateways en plantas de almacenamiento y redes energéticas conectadas.
+              </p>
+              <a class="case-link" href="/energia-baterias/">Ver página dedicada</a>
+            </article>
+
+            <article class="case-card">
+              <p class="case-sector">Grúas</p>
+              <h3>Flotas industriales y operación remota</h3>
+              <p class="case-metric">Mayor control sobre activos con conectividad variable</p>
+              <p>
+                Seguridad para telemetría, control y mantenimiento remoto en entornos logísticos, portuarios y de obra.
+              </p>
+              <a class="case-link" href="/gruas/">Ver página dedicada</a>
+            </article>
+
+            <article class="case-card">
+              <p class="case-sector">Puertas de acceso conectadas</p>
+              <h3>Control físico inteligente a escala</h3>
+              <p class="case-metric">Revocación rápida y gobierno centralizado</p>
+              <p>
+                Gestión de certificados para controladores, lectores y cerraduras en despliegues de edificios y campus.
+              </p>
+              <a class="case-link" href="/puertas-de-acceso-conectadas/">Ver página dedicada</a>
+            </article>
+          </div>
+
+          <article class="case-quote">
+            <p>
+              "Pasamos de operar por incidencias a anticiparnos con políticas y automatización; ahora la PKI acompaña el ritmo de planta."
+            </p>
+            <footer>Responsable de ciberseguridad OT · Operador energético europeo</footer>
+          </article>
         </div>
       </section>
 

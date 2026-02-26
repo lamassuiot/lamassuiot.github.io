@@ -1,0 +1,50 @@
+---
+import SectorLayout from '../../layouts/SectorLayout.astro';
+import SectorPage from '../../components/SectorPage.astro';
+---
+
+<SectorLayout title="Lamassu | Grúas conectadas">
+  <SectorPage
+    sector="Grúas"
+    heroTitle="Seguridad criptográfica para grúas industriales y flotas conectadas"
+    heroLead="Asegura telemetría, control remoto y mantenimiento predictivo en entornos portuarios, logísticos y de obra con identidad digital robusta."
+    kpis={[
+      { label: 'Onboarding de equipos', value: '+40% ágil' },
+      { label: 'Mantenimiento remoto', value: 'Seguro' },
+      { label: 'Entornos', value: 'Puerto · Obra · Logística' },
+      { label: 'Visibilidad', value: 'Tiempo real' },
+    ]}
+    challenges={[
+      'Equipos en movilidad y condiciones de conectividad intermitente.',
+      'Combinación de electrónica moderna con sistemas heredados de control.',
+      'Riesgo operacional alto ante accesos no autorizados a sistemas críticos.',
+      'Necesidad de trazabilidad de acciones para seguridad y cumplimiento contractual.',
+    ]}
+    solutionBlocks={[
+      {
+        title: 'Identidad por máquina y subsistema',
+        body: 'Certificados para controladores, consolas y módulos de telemetría con separación por perfil operativo.',
+      },
+      {
+        title: 'Políticas para conectividad variable',
+        body: 'Estrategias de renovación y validación diseñadas para entornos con latencia y disponibilidad de red no uniformes.',
+      },
+      {
+        title: 'Orquestación de eventos críticos',
+        body: 'Alertas y automatizaciones para anticipar expiraciones y anomalías en componentes con mayor riesgo operativo.',
+      },
+    ]}
+    architectureSteps={[
+      'Inventario técnico de activos en flota y clasificación por criticidad operativa.',
+      'Diseño de flujo de onboarding seguro para nuevas grúas y retrofit de equipos existentes.',
+      'Integración de certificados en mantenimiento remoto y canales de soporte técnico.',
+      'Monitorización continua de estado criptográfico y acciones de mitigación automatizadas.',
+    ]}
+    outcomes={[
+      'Menor exposición a accesos indebidos sobre sistemas de control.',
+      'Reducción de interrupciones en operaciones por fallos de certificados.',
+      'Incremento de productividad en despliegue y reposición de equipos.',
+      'Gobierno de seguridad más claro entre fabricante, operador y mantenedor.',
+    ]}
+  />
+</SectorLayout>

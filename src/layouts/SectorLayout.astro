@@ -1,0 +1,31 @@
+---
+import SiteLayout from './SiteLayout.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<SiteLayout title={title} lang="es" activeNav="home">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style is:global>
+      body {
+        background:
+          radial-gradient(circle at 18% -12%, rgba(95, 49, 255, 0.2), transparent 52%),
+          radial-gradient(circle at 80% 0%, rgba(28, 172, 255, 0.14), transparent 44%),
+          #050722;
+        color: #cfd8ff;
+        font-family: "Space Grotesk", sans-serif;
+      }
+    </style>
+  </Fragment>
+  <slot />
+</SiteLayout>

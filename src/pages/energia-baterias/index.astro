@@ -1,0 +1,50 @@
+---
+import SectorLayout from '../../layouts/SectorLayout.astro';
+import SectorPage from '../../components/SectorPage.astro';
+---
+
+<SectorLayout title="Lamassu | Energía y baterías">
+  <SectorPage
+    sector="Energía · Baterías"
+    heroTitle="PKI para BESS, inversores y redes energéticas distribuidas"
+    heroLead="Asegura la identidad de sistemas de almacenamiento, controladores e infraestructura de campo para operar energía conectada con confianza continua."
+    kpis={[
+      { label: 'Activos protegidos', value: 'BESS + EMS + PCS' },
+      { label: 'Incidentes por expiración', value: 'Casi 0' },
+      { label: 'Escalado multi-site', value: 'Nativo' },
+      { label: 'Integridad operativa', value: 'Alta' },
+    ]}
+    challenges={[
+      'Crecimiento acelerado de plantas de baterías con topologías híbridas y distribuidas.',
+      'Necesidad de proteger comunicaciones entre EMS, inversores, SCADA y cloud.',
+      'Riesgo de impacto económico por indisponibilidad en nodos de control energético.',
+      'Exigencia de trazabilidad para auditorías técnicas y regulatorias.',
+    ]}
+    solutionBlocks={[
+      {
+        title: 'Identidad extremo a extremo',
+        body: 'Certificados para controladores, gateways y servicios backend con políticas específicas por rol operativo.',
+      },
+      {
+        title: 'Renovación segura continua',
+        body: 'Automatización de ciclo de vida con EST y validación OCSP/CRL para sostener disponibilidad en operación 24x7.',
+      },
+      {
+        title: 'Custodia de claves por criticidad',
+        body: 'Uso combinado de KMS y HSM para separar entornos de operación, ingeniería y administración.',
+      },
+    ]}
+    architectureSteps={[
+      'Modelado de dominios de confianza por planta, clúster y tipo de activo.',
+      'Diseño de perfiles de certificado para telemetría, control y operaciones remotas.',
+      'Integración con buses de eventos y alertas para actuar ante riesgo criptográfico.',
+      'Operación continua con paneles de estado y gestión de excepciones en tiempo real.',
+    ]}
+    outcomes={[
+      'Mayor continuidad del servicio energético en entornos distribuidos.',
+      'Reducción del riesgo de intervención manual en componentes críticos.',
+      'Escalado más rápido para nuevas plantas o ampliaciones de capacidad.',
+      'Mejora de cumplimiento normativo y respuesta ante auditorías.',
+    ]}
+  />
+</SectorLayout>

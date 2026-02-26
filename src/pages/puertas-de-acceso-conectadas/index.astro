@@ -1,0 +1,50 @@
+---
+import SectorLayout from '../../layouts/SectorLayout.astro';
+import SectorPage from '../../components/SectorPage.astro';
+---
+
+<SectorLayout title="Lamassu | Puertas de acceso conectadas">
+  <SectorPage
+    sector="Puertas de acceso conectadas"
+    heroTitle="Confianza digital para control de acceso físico inteligente"
+    heroLead="Gestiona identidades y certificados de controladores, cerraduras, lectores y gateways para operar accesos conectados con seguridad y continuidad."
+    kpis={[
+      { label: 'Credenciales activas', value: 'Escala masiva' },
+      { label: 'Revocación', value: 'Inmediata' },
+      { label: 'Integración', value: 'IoT + Cloud + BMS' },
+      { label: 'Operación', value: '24x7' },
+    ]}
+    challenges={[
+      'Altísimo volumen de puntos de acceso distribuidos en edificios y campus.',
+      'Dependencia de operación continua en entornos corporativos, residenciales o industriales.',
+      'Riesgo de clonación o suplantación en nodos de borde si no hay identidad fuerte.',
+      'Necesidad de integrar múltiples fabricantes y plataformas de gestión de accesos.',
+    ]}
+    solutionBlocks={[
+      {
+        title: 'Identidad fuerte por dispositivo',
+        body: 'Certificados únicos para cada controlador, lector o puerta con trazabilidad del ciclo de vida completo.',
+      },
+      {
+        title: 'Revocación y respuesta rápida',
+        body: 'Mecanismos OCSP/CRL para invalidar credenciales comprometidas y limitar impacto operativo.',
+      },
+      {
+        title: 'Arquitectura interoperable',
+        body: 'Integración con plataformas de building management, IAM y analítica para una operación coordinada.',
+      },
+    ]}
+    architectureSteps={[
+      'Segmentación por edificio, zona sensible y tipo de activo.',
+      'Definición de perfiles de certificado y políticas de renovación por criticidad.',
+      'Automatización de altas, bajas y rotación en despliegues masivos.',
+      'Supervisión continua del estado criptográfico y respuesta ante incidentes.',
+    ]}
+    outcomes={[
+      'Disminución de riesgo de acceso no autorizado por credenciales débiles o expuestas.',
+      'Mayor continuidad en sistemas de control físico sin mantenimiento manual intensivo.',
+      'Escalabilidad para nuevas sedes y ampliaciones de infraestructura.',
+      'Mejor coordinación entre seguridad física, ciberseguridad y operaciones.',
+    ]}
+  />
+</SectorLayout>
