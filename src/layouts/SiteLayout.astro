@@ -48,7 +48,6 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
               <h4>Resources</h4>
               <a href="https://www.lamassu.io" target="_blank" rel="noopener">Blog</a>
               <a href="/#contact">Support</a>
-              <a href="/#contact">Pricing</a>
               <a href="https://www.lamassu.io" target="_blank" rel="noopener">Slack</a>
             </div>
             <div class="site-footer-col">
@@ -353,6 +352,12 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     text-shadow: 0 0 0.01px currentColor;
   }
 
+  .site-shell-cta-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
   .site-shell-cta {
     border: 1px solid transparent;
     background: linear-gradient(135deg, #44cbff 0%, #80f7ff 100%);
@@ -368,9 +373,20 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     font-family: 'Space Grotesk', sans-serif;
   }
 
+  .site-shell-cta-login {
+    border-color: rgba(133, 174, 255, 0.45);
+    background: rgba(8, 20, 50, 0.66);
+    color: #d9e8ff;
+    box-shadow: none;
+  }
+
   .site-shell-cta:hover {
     transform: translateY(-1px);
     box-shadow: 0 18px 42px rgba(64, 209, 255, 0.33);
+  }
+
+  .site-shell-cta-login:hover {
+    box-shadow: 0 10px 24px rgba(10, 24, 58, 0.42);
   }
 
   @keyframes siteShellStickyIn {
@@ -536,12 +552,16 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     }
 
     .site-shell-brand {
-      font-size: 26px;
+      font-size: 22px;
+    }
+
+    .site-shell-cta-group {
+      gap: 6px;
     }
 
     .site-shell-cta {
-      font-size: 13px;
-      padding: 10px 14px;
+      font-size: 11px;
+      padding: 8px 10px;
     }
 
     .site-footer {

@@ -652,11 +652,34 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       line-height: 1.58;
     }
 
-    .overview {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr;
-      gap: 16px;
+    .dashboard-preview {
       margin-top: 24px;
+    }
+
+    .dashboard-preview img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .overview {
+      margin-top: 24px;
+    }
+
+    .areas-title {
+      margin-bottom: 14px;
+    }
+
+    .areas-list {
+      padding-left: 20px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .areas-list li {
+      color: var(--text-soft);
+      font-size: 16px;
+      line-height: 1.64;
     }
 
     .card {
@@ -719,20 +742,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       letter-spacing: -0.03em;
     }
 
-    .outcome-wrap {
-      margin-top: 24px;
-      border: 1px solid rgba(47, 232, 255, 0.3);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      background:
-        radial-gradient(circle at 12% 8%, rgba(47, 232, 255, 0.14), transparent 48%),
-        radial-gradient(circle at 88% 90%, rgba(115, 149, 255, 0.14), transparent 52%),
-        linear-gradient(160deg, rgba(11, 25, 49, 0.95), rgba(8, 20, 41, 0.95));
-      box-shadow: var(--shadow);
-    }
-
     .outcome-grid {
-      margin-top: 12px;
+      margin-top: 24px;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
@@ -1382,7 +1393,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             <span class="platform-pill"><span class="platform-dot"></span>RabbitMQ</span>
             <span class="platform-pill"><span class="platform-dot"></span>SNS/SQS</span>
           </div>
-
           <div class="chip-scene" aria-hidden="true">
             <div class="chip-glow"></div>
             <div class="chip">
@@ -1444,44 +1454,19 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           Lamassu IoT unifica los componentes críticos de una PKI industrial: gestión de claves, autoridades de
           certificación, automatización de emisión, validación de certificados e identidad de dispositivos.
         </p>
+        <figure class="dashboard-preview">
+          <img src="/dashboard.png" alt="Vista del dashboard de Lamassu IoT" loading="lazy" />
+        </figure>
 
         <div class="overview">
-          <article class="card">
-            <h3>Qué resuelve</h3>
-            <p>
-              Reduce la complejidad operativa de PKI en entornos IoT al centralizar los flujos de creación de claves,
-              emisión/revocación de certificados, validación y gestión de identidades de dispositivos.
-            </p>
-            <div class="mini-stats">
-              <div class="mini">
-                <span class="k">Motores Crypto</span>
-                <span class="v">4</span>
-              </div>
-              <div class="mini">
-                <span class="k">Flujos EST</span>
-                <span class="v">4</span>
-              </div>
-              <div class="mini">
-                <span class="k">Servicios VA</span>
-                <span class="v">2</span>
-              </div>
-              <div class="mini">
-                <span class="k">Dominios Core</span>
-                <span class="v">4</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <h3>Áreas cubiertas</h3>
-            <ul>
-              <li>KMS con generación, importación, CSR, firma/verificación y uso local PKCS#11.</li>
-              <li>Gestión completa de entidades de confianza y autoridades de certificación.</li>
-              <li>Automatización RA con EST para enrollment, reenrollment y server key generation.</li>
-              <li>Gestión de dispositivos e identidades (end entities) con trazabilidad operativa.</li>
-              <li>Validación OCSP/CRL, integración AWS IoT Core y sistema de alertas por eventos.</li>
-            </ul>
-          </article>
+          <h2 class="section-title areas-title">Áreas cubiertas</h2>
+          <ul class="areas-list">
+            <li>KMS con generación, importación, CSR, firma/verificación y uso local PKCS#11.</li>
+            <li>Gestión completa de entidades de confianza y autoridades de certificación.</li>
+            <li>Automatización RA con EST para enrollment, reenrollment y server key generation.</li>
+            <li>Gestión de dispositivos e identidades (end entities) con trazabilidad operativa.</li>
+            <li>Validación OCSP/CRL, integración AWS IoT Core y sistema de alertas por eventos.</li>
+          </ul>
         </div>
       </section>
 
@@ -1553,25 +1538,23 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           Menos tareas manuales, más control sobre la custodia de claves y una operación PKI coherente desde el alta de
           dispositivos hasta la validación continua.
         </p>
-        <div class="outcome-wrap">
-          <div class="outcome-grid">
-            <article class="outcome">
-              <b>Automatiza</b>
-              <span>Enrollment y renovación con EST para reducir carga operativa en despliegues IoT.</span>
-            </article>
-            <article class="outcome">
-              <b>Protege</b>
-              <span>Custodia de claves con motores de seguridad adaptados a cloud, on-prem y HSM.</span>
-            </article>
-            <article class="outcome">
-              <b>Valida</b>
-              <span>Estado de certificados mediante OCSP y CRL para mantener confianza en tiempo real.</span>
-            </article>
-            <article class="outcome">
-              <b>Orquesta</b>
-              <span>Eventos y alertas para activar acciones automáticas sobre certificados y dispositivos.</span>
-            </article>
-          </div>
+        <div class="outcome-grid">
+          <article class="outcome">
+            <b>Automatiza</b>
+            <span>Enrollment y renovación con EST para reducir carga operativa en despliegues IoT.</span>
+          </article>
+          <article class="outcome">
+            <b>Protege</b>
+            <span>Custodia de claves con motores de seguridad adaptados a cloud, on-prem y HSM.</span>
+          </article>
+          <article class="outcome">
+            <b>Valida</b>
+            <span>Estado de certificados mediante OCSP y CRL para mantener confianza en tiempo real.</span>
+          </article>
+          <article class="outcome">
+            <b>Orquesta</b>
+            <span>Eventos y alertas para activar acciones automáticas sobre certificados y dispositivos.</span>
+          </article>
         </div>
       </section>
 
