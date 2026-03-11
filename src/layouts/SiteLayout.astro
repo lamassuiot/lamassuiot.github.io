@@ -20,66 +20,82 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <slot name="head" />
+    <script is:inline>
+      (function () {
+        var theme = localStorage.getItem('ls-theme');
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
   </head>
   <body>
     <div class="site-shell-top-stripe"></div>
     <SiteHeader activeNav={activeNav} />
     <slot />
+
     <footer class="site-footer" aria-label="Site footer">
       <div class="site-footer-inner">
         <div class="site-footer-main">
           <div class="site-footer-grid">
-            <div class="site-footer-col">
-              <h4>Documentation</h4>
-              <a href="/docs/">SDKs</a>
-              <a href="/docs/">Docs</a>
-              <a href="/#contact">Ask Lamassu</a>
-              <a href="/arch/">CLI Reference</a>
-            </div>
-            <div class="site-footer-col">
-              <h4>API Definitions</h4>
-              <a href="/docs/">OpenAPI</a>
-              <a href="/docs/">AsyncAPI</a>
-              <a href="/docs/">OpenRPC</a>
-              <a href="/docs/">gRPC</a>
-              <a href="/docs/">Lamassu Definition</a>
-            </div>
-            <div class="site-footer-col">
-              <h4>Resources</h4>
-              <a href="https://www.lamassu.io" target="_blank" rel="noopener">Blog</a>
-              <a href="/#contact">Support</a>
-              <a href="https://www.lamassu.io" target="_blank" rel="noopener">Slack</a>
-            </div>
-            <div class="site-footer-col">
-              <h4>Company</h4>
-              <a href="https://www.lamassu.io" target="_blank" rel="noopener">Brand Kit</a>
-              <a href="https://www.lamassu.io" target="_blank" rel="noopener">Privacy Policy</a>
-              <a href="https://www.lamassu.io" target="_blank" rel="noopener">Terms of Service</a>
-            </div>
-          </div>
+            <section class="site-footer-col" aria-label="Enlaces rápidos y documentación">
+              <h4>Enlaces rápidos / Docs</h4>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Guía de inicio rápido →</a>
+              <a class="site-footer-link" href="/arch/">Arquitectura del sistema →</a>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Referencia de API →</a>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Gestión de CAs →</a>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Enrollment EST →</a>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">SDK de Go →</a>
+            </section>
 
-          <div class="site-footer-social" aria-label="Social links">
-            <a href="https://github.com/lamassuiot" target="_blank" rel="noopener" aria-label="GitHub">
-              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                <path d="M8 0C3.58 0 0 3.67 0 8.2C0 11.82 2.29 14.89 5.47 15.97C5.87 16.05 6.02 15.79 6.02 15.56C6.02 15.35 6.01 14.63 6.01 13.86C4 14.24 3.48 13.36 3.32 12.9C3.23 12.67 2.84 11.95 2.5 11.76C2.22 11.6 1.83 11.2 2.49 11.19C3.11 11.18 3.55 11.78 3.7 12.02C4.41 13.24 5.55 12.9 6.03 12.7C6.1 12.17 6.31 11.81 6.54 11.61C4.76 11.4 2.9 10.7 2.9 7.58C2.9 6.69 3.21 5.97 3.73 5.41C3.65 5.21 3.37 4.39 3.81 3.29C3.81 3.29 4.48 3.07 6.01 4.13C6.65 3.95 7.33 3.86 8.01 3.86C8.69 3.86 9.37 3.95 10.01 4.13C11.54 3.06 12.21 3.29 12.21 3.29C12.65 4.39 12.37 5.21 12.29 5.41C12.81 5.97 13.12 6.68 13.12 7.58C13.12 10.71 11.25 11.4 9.47 11.61C9.76 11.87 10.01 12.37 10.01 13.15C10.01 14.27 10 15.18 10 15.56C10 15.79 10.15 16.06 10.55 15.97C13.72 14.89 16 11.81 16 8.2C16 3.67 12.42 0 8 0Z" />
-              </svg>
-            </a>
-            <a href="#" aria-label="X">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M18.9 2H22L15.22 9.76L23 22H16.91L12.14 14.57L5.62 22H2.52L9.77 13.72L2.3 2H8.54L12.85 8.79L18.9 2ZM17.8 20.01H19.52L7.6 3.89H5.76L17.8 20.01Z"></path>
-              </svg>
-            </a>
-            <a href="#" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M6.94 8.12A2.06 2.06 0 1 1 6.94 4A2.06 2.06 0 0 1 6.94 8.12ZM5.1 9.75H8.78V20H5.1V9.75ZM11.08 9.75H14.61V11.15H14.66C15.15 10.22 16.34 9.23 18.12 9.23C21.8 9.23 22.48 11.56 22.48 14.58V20H18.8V15.2C18.8 14.05 18.77 12.56 17.18 12.56C15.57 12.56 15.32 13.8 15.32 15.11V20H11.08V9.75Z"></path>
-              </svg>
-            </a>
+            <section class="site-footer-col" aria-label="Comunidad y soporte">
+              <h4>Comunidad y soporte</h4>
+              <p class="site-footer-note">
+                Documentación, soporte técnico y colaboración abierta para desplegar Lamassu IoT en producción.
+              </p>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Documentación: https://www.lamassu.io/docs/</a>
+              <a class="site-footer-link" href="https://github.com/lamassuiot/lamassuiot/issues" target="_blank" rel="noopener">GitHub Issues: https://github.com/lamassuiot/lamassuiot/issues</a>
+              <a class="site-footer-link" href="https://github.com/lamassuiot/lamassuiot/discussions" target="_blank" rel="noopener">GitHub Discussions: https://github.com/lamassuiot/lamassuiot/discussions</a>
+            </section>
           </div>
         </div>
 
-        <p class="site-footer-copy">© 2026 Lamassu • Located in Arrasate, ES</p>
+        <p class="site-footer-copy">
+          Licensed under Mozilla Public License 2.0
+          <a class="site-footer-copy-link" href="https://github.com/lamassuiot/lamassuiot" target="_blank" rel="noopener">
+            GitHub link: https://github.com/lamassuiot/lamassuiot
+          </a>
+        </p>
       </div>
     </footer>
+    <script is:inline>
+      (function () {
+        var body = document.body;
+        var header = document.querySelector('.site-shell-header');
+        if (!body || !header) return;
+
+        var overview = document.getElementById('overview');
+
+        function shouldStick() {
+          if (window.innerWidth <= 940) return false;
+
+          if (overview) {
+            var headerHeight = header.getBoundingClientRect().height;
+            return overview.getBoundingClientRect().top <= headerHeight + 6;
+          }
+
+          return window.scrollY > 180;
+        }
+
+        function syncStickyHeader() {
+          body.classList.toggle('site-shell-header-sticky', shouldStick());
+        }
+
+        syncStickyHeader();
+        window.addEventListener('scroll', syncStickyHeader, { passive: true });
+        window.addEventListener('resize', syncStickyHeader);
+      })();
+    </script>
   </body>
 </html>
 
@@ -93,15 +109,285 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
   }
 
   :root {
-    --site-shell-header-h: 88px;
-    --site-shell-title: #f7fbff;
-    --site-shell-text-soft: #98a8d4;
+    --shell-bg: #09111f;
+    --shell-surface: #10192c;
+    --shell-surface-alt: #15233a;
+    --shell-border: #243550;
+    --shell-text: #edf3ff;
+    --shell-muted: #8fa1c3;
+    --shell-accent: #7e9cff;
+    --shell-accent-soft: rgba(137, 162, 255, 0.16);
+    --shell-header-h: 82px;
+  }
+
+  [data-theme='light'] {
+    --shell-bg: #f4f6fa;
+    --shell-surface: #ffffff;
+    --shell-surface-alt: #f8f9fc;
+    --shell-border: #d9dfeb;
+    --shell-text: #0f1728;
+    --shell-muted: #55627f;
+    --shell-accent: #3f63ff;
+    --shell-accent-soft: rgba(63, 99, 255, 0.1);
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 50% -15%, rgba(98, 124, 205, 0.18), transparent 45%),
+      radial-gradient(circle at 85% 0%, rgba(47, 74, 136, 0.14), transparent 28%),
+      var(--shell-bg);
+    color: var(--shell-text);
+    font-family: 'Space Grotesk', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
 
   .site-shell-top-stripe {
     height: 5px;
     width: 100%;
-    background: linear-gradient(90deg, #5b2cff, #3a72ff 52%, #19d8ff);
+    background: linear-gradient(90deg, #2a49f8 0%, #4c7fff 52%, #35b9ff 100%);
+  }
+
+  .site-shell-header {
+    height: var(--shell-header-h);
+    width: min(1360px, calc(100% - 48px));
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .site-shell-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .site-shell-logo-full {
+    height: 30px;
+    width: auto;
+    display: block;
+  }
+
+  .site-shell-logo-full.logo-light {
+    display: none;
+  }
+
+  [data-theme='light'] .site-shell-logo-full.logo-dark {
+    display: none;
+  }
+
+  [data-theme='light'] .site-shell-logo-full.logo-light {
+    display: block;
+  }
+
+  .site-shell-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .site-shell-nav a {
+    color: var(--shell-muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+
+  .site-shell-nav a:hover,
+  .site-shell-nav a.is-active {
+    color: var(--shell-text);
+  }
+
+  .site-shell-nav a.github-link {
+    display: inline-grid;
+    place-items: center;
+    line-height: 0;
+  }
+
+  .site-shell-nav a.github-link svg {
+    width: 17px;
+    height: 17px;
+    display: block;
+    fill: currentColor;
+  }
+
+  .site-shell-cta-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--shell-border);
+    border-radius: 8px;
+    color: var(--shell-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    padding: 0;
+  }
+
+  .theme-toggle:hover {
+    color: var(--shell-text);
+    border-color: var(--shell-muted);
+  }
+
+  .theme-toggle .icon-moon {
+    display: none;
+  }
+
+  .theme-toggle .icon-sun {
+    display: block;
+  }
+
+  [data-theme='light'] .theme-toggle .icon-moon {
+    display: block;
+  }
+
+  [data-theme='light'] .theme-toggle .icon-sun {
+    display: none;
+  }
+
+  .theme-toggle svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    display: block;
+  }
+
+  .site-shell-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    box-sizing: border-box;
+    border: 1px solid var(--shell-border);
+    background: var(--shell-surface);
+    color: var(--shell-text);
+    border-radius: 8px;
+    text-decoration: none;
+    padding: 9px 13px;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 600;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .site-shell-cta:hover {
+    border-color: var(--shell-muted);
+  }
+
+  .site-shell-cta-login {
+    background: var(--shell-accent);
+    color: #0b1122;
+    border-color: transparent;
+  }
+
+  .site-shell-cta-login:hover {
+    background: #96b0ff;
+    border-color: transparent;
+  }
+
+  @keyframes siteShellStickyIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes siteShellStickyLinkIn {
+    from {
+      opacity: 0;
+      transform: translateY(-3px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (min-width: 941px) {
+    body.site-shell-header-sticky .site-shell-header {
+      position: fixed;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      height: auto;
+      margin: 0;
+      justify-content: center;
+      gap: 0;
+      z-index: 70;
+    }
+
+    body.site-shell-header-sticky .site-shell-brand,
+    body.site-shell-header-sticky .site-shell-cta-group {
+      display: none;
+    }
+
+    body.site-shell-header-sticky .site-shell-nav {
+      gap: 16px;
+      padding: 11px 18px;
+      border: 1px solid rgba(63, 80, 119, 0.72);
+      border-radius: 14px;
+      background: rgba(9, 15, 28, 0.88);
+      box-shadow: 0 12px 30px rgba(2, 6, 16, 0.34);
+      backdrop-filter: blur(8px);
+      animation: siteShellStickyIn 230ms ease both;
+    }
+
+    [data-theme='light'] body.site-shell-header-sticky .site-shell-nav {
+      border-color: rgba(197, 207, 227, 0.92);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 26px rgba(13, 26, 51, 0.14);
+    }
+
+    body.site-shell-header-sticky .site-shell-nav a {
+      opacity: 0;
+      transform: translateY(-3px);
+      animation: siteShellStickyLinkIn 180ms ease forwards;
+    }
+
+    body.site-shell-header-sticky .site-shell-nav a:nth-child(1) { animation-delay: 30ms; }
+    body.site-shell-header-sticky .site-shell-nav a:nth-child(2) { animation-delay: 55ms; }
+    body.site-shell-header-sticky .site-shell-nav a:nth-child(3) { animation-delay: 80ms; }
+    body.site-shell-header-sticky .site-shell-nav a:nth-child(4) { animation-delay: 105ms; }
+    body.site-shell-header-sticky .site-shell-nav a:nth-child(5) { animation-delay: 130ms; }
+    body.site-shell-header-sticky .site-shell-nav a:nth-child(6) { animation-delay: 155ms; }
+    body.site-shell-header-sticky .site-shell-nav a:nth-child(7) { animation-delay: 180ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      body.site-shell-header-sticky .site-shell-nav,
+      body.site-shell-header-sticky .site-shell-nav a {
+        animation: none;
+      }
+
+      body.site-shell-header-sticky .site-shell-nav a {
+        opacity: 1;
+        transform: none;
+      }
+    }
   }
 
   .site-footer {
@@ -111,7 +397,6 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
       radial-gradient(circle at 18% 22%, rgba(34, 74, 164, 0.14), transparent 48%),
       radial-gradient(circle at 86% 12%, rgba(68, 115, 255, 0.1), transparent 45%),
       #060914;
-    color: #a4adbe;
   }
 
   .site-footer-inner {
@@ -120,100 +405,24 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     padding: 54px 0 48px;
   }
 
-  .site-footer-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 22px;
-    align-items: center;
-  }
-
-  .site-footer-built {
-    margin: 0;
-    color: #aeb4c1;
-    font-size: 18px;
-    letter-spacing: -0.01em;
-    font-family: 'Space Grotesk', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .site-footer-built strong {
-    color: #f0f3fb;
-    font-weight: 700;
-  }
-
-  .site-footer-built-mark {
-    width: 16px;
-    height: 16px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-  }
-
-  .site-footer-built-mark span {
-    border-radius: 50%;
-    background: #9aa1b3;
-    opacity: 0.9;
-  }
-
-  .site-footer-status {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .site-footer-status-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: #929aaa;
-    font-size: 13px;
-    font-family: 'Space Grotesk', sans-serif;
-  }
-
-  .site-footer-status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #f4c430;
-    box-shadow: 0 0 0 6px rgba(244, 196, 48, 0.14);
-  }
-
-  .site-footer-soc-badge {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: inline-grid;
-    place-items: center;
-    border: 1px solid rgba(178, 186, 201, 0.46);
-    background: radial-gradient(circle at 30% 30%, #d5d9e3, #9aa0ae);
-    color: #111526;
-    font-size: 7px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-  }
-
   .site-footer-main {
-    margin-top: 86px;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     gap: 34px;
     align-items: start;
   }
 
   .site-footer-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 54px;
     width: min(920px, 100%);
-    margin-left: auto;
   }
 
   .site-footer-col {
     display: grid;
-    gap: 10px;
     align-content: start;
+    gap: 10px;
   }
 
   .site-footer-col h4 {
@@ -221,292 +430,65 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     color: #e2e6ef;
     font-size: 16px;
     font-weight: 700;
-    font-family: 'Space Grotesk', sans-serif;
   }
 
-  .site-footer-col a {
+  .site-footer-note {
+    margin: 0;
+    color: #a4adbe;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 56ch;
+  }
+
+  .site-footer-link {
     color: #a4adbe;
     text-decoration: none;
     font-size: 16px;
     line-height: 1.5;
     transition: color 0.2s;
-    font-family: 'Space Grotesk', sans-serif;
   }
 
-  .site-footer-col a:hover {
+  .site-footer-link:hover {
     color: #ffffff;
-  }
-
-  .site-footer-social {
-    display: grid;
-    gap: 16px;
-    justify-items: center;
-    padding-top: 4px;
-  }
-
-  .site-footer-social a {
-    width: 24px;
-    height: 24px;
-    display: inline-grid;
-    place-items: center;
-    color: #a4adbe;
-    text-decoration: none;
-    transition: color 0.2s ease, transform 0.2s ease;
-  }
-
-  .site-footer-social a:hover {
-    color: #ffffff;
-    transform: translateY(-1px);
-  }
-
-  .site-footer-social svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-    fill: currentColor;
   }
 
   .site-footer-copy {
     margin: 78px 0 0;
     color: #8d95a6;
     font-size: 16px;
-    font-family: 'Space Grotesk', sans-serif;
   }
 
-  .site-shell-header {
-    height: var(--site-shell-header-h);
-    width: min(1300px, calc(100% - 56px));
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    position: relative;
-    z-index: 10;
-    transition: background-color 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, color 0.24s ease;
-  }
-
-  .site-shell-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--site-shell-title);
+  .site-footer-copy-link {
+    color: inherit;
     text-decoration: none;
-    font-size: 42px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    font-family: 'Space Grotesk', sans-serif;
-    flex-shrink: 0;
+    margin-left: 14px;
+    transition: color 0.2s ease;
   }
 
-  .site-shell-mark {
-    width: 34px;
-    height: 32px;
-    display: inline-grid;
-    place-items: center;
-    flex-shrink: 0;
+  .site-footer-copy-link:hover {
+    color: #ffffff;
   }
 
-  .site-shell-logo {
-    width: 100%;
-    height: 100%;
-    display: block;
-    filter: drop-shadow(0 0 8px rgba(120, 198, 255, 0.4));
-  }
-
-  .site-shell-nav {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-  }
-
-  .site-shell-nav a {
-    color: var(--site-shell-text-soft);
-    text-decoration: none;
-    font-size: 15px;
-    transition: color 0.2s;
-    font-family: 'Space Grotesk', sans-serif;
-  }
-
-  .site-shell-nav a.github-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 0;
-  }
-
-  .site-shell-nav a.github-link svg {
-    width: 18px;
-    height: 18px;
-    fill: currentColor;
-    display: block;
-  }
-
-  .site-shell-nav a:hover,
-  .site-shell-nav a.is-active {
-    color: var(--site-shell-title);
-  }
-
-  .site-shell-nav a.is-active {
-    font-weight: 800;
-    text-shadow: 0 0 0.01px currentColor;
-  }
-
-  .site-shell-cta-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .site-shell-cta {
-    border: 1px solid transparent;
-    background: linear-gradient(135deg, #44cbff 0%, #80f7ff 100%);
-    color: #07223b;
-    border-radius: 999px;
-    text-decoration: none;
-    padding: 12px 22px;
-    font-weight: 600;
-    font-size: 16px;
-    white-space: nowrap;
-    box-shadow: 0 14px 34px rgba(64, 209, 255, 0.24);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    font-family: 'Space Grotesk', sans-serif;
-  }
-
-  .site-shell-cta-login {
-    border-color: rgba(133, 174, 255, 0.45);
-    background: rgba(8, 20, 50, 0.66);
-    color: #d9e8ff;
-    box-shadow: none;
-  }
-
-  .site-shell-cta:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 18px 42px rgba(64, 209, 255, 0.33);
-  }
-
-  .site-shell-cta-login:hover {
-    box-shadow: 0 10px 24px rgba(10, 24, 58, 0.42);
-  }
-
-  @keyframes siteShellStickyIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px) scale(0.96);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  @keyframes siteShellLinkIn {
-    from {
-      opacity: 0;
-      transform: translateY(-4px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @media (min-width: 981px) {
-    body.site-shell-header-light .site-shell-header {
-      position: fixed;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: auto;
-      height: auto;
-      margin: 0;
-      padding-top: 8px;
-      gap: 0;
-      justify-content: center;
-      background: transparent;
-      border: 0;
-      border-radius: 0;
-      box-shadow: none;
-      backdrop-filter: none;
-      z-index: 60;
-    }
-
-    body.site-shell-header-light .site-shell-brand,
-    body.site-shell-header-light .site-shell-cta {
-      display: none;
-    }
-
-    body.site-shell-header-light .site-shell-nav {
-      gap: 20px;
-      padding: 12px 20px;
-      border: 1px solid rgba(8, 24, 57, 0.14);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.97);
-      box-shadow: 0 12px 30px rgba(4, 18, 48, 0.16);
-      backdrop-filter: blur(7px);
-      transform-origin: top center;
-      animation: siteShellStickyIn 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
-      will-change: transform, opacity;
-    }
-
-    body.site-shell-header-light .site-shell-nav a {
-      color: #47648f;
-      opacity: 0;
-      transform: translateY(-4px);
-      animation: siteShellLinkIn 220ms ease forwards;
-    }
-
-    body.site-shell-header-light .site-shell-nav a:nth-child(1) { animation-delay: 60ms; }
-    body.site-shell-header-light .site-shell-nav a:nth-child(2) { animation-delay: 95ms; }
-    body.site-shell-header-light .site-shell-nav a:nth-child(3) { animation-delay: 130ms; }
-    body.site-shell-header-light .site-shell-nav a:nth-child(4) { animation-delay: 165ms; }
-    body.site-shell-header-light .site-shell-nav a:nth-child(5) { animation-delay: 200ms; }
-    body.site-shell-header-light .site-shell-nav a:nth-child(6) { animation-delay: 235ms; }
-    body.site-shell-header-light .site-shell-nav a:nth-child(7) { animation-delay: 270ms; }
-
-    @media (prefers-reduced-motion: reduce) {
-      body.site-shell-header-light .site-shell-nav,
-      body.site-shell-header-light .site-shell-nav a {
-        animation: none;
-      }
-
-      body.site-shell-header-light .site-shell-nav a {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    body.site-shell-header-light .site-shell-nav a:hover,
-    body.site-shell-header-light .site-shell-nav a.is-active {
-      color: #0d1d3d;
-    }
-  }
-
-  @media (max-width: 1180px) {
-    .site-shell-header {
-      width: min(1300px, calc(100% - 32px));
-    }
-
-    .site-shell-brand {
-      font-size: 34px;
-    }
-
-    .site-shell-nav {
-      gap: 16px;
-    }
-
+  @media (max-width: 1100px) {
+    .site-shell-header,
     .site-footer-inner {
       width: min(1480px, calc(100% - 32px));
     }
 
-    .site-footer-grid {
-      gap: 34px;
+    .site-shell-logo-full {
+      height: 27px;
+    }
+
+    .site-shell-nav {
+      gap: 14px;
     }
   }
 
-  @media (max-width: 980px) {
+  @media (max-width: 940px) {
+    .site-shell-header {
+      height: 72px;
+    }
+
     .site-shell-nav {
       display: none;
     }
@@ -515,28 +497,10 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
       padding-top: 40px;
     }
 
-    .site-footer-top {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .site-footer-main {
-      margin-top: 42px;
-      grid-template-columns: 1fr;
-      gap: 28px;
-    }
-
     .site-footer-grid {
       width: 100%;
-      margin-left: 0;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 26px;
-    }
-
-    .site-footer-social {
-      grid-auto-flow: column;
-      justify-content: flex-start;
-      justify-items: start;
     }
 
     .site-footer-copy {
@@ -546,13 +510,12 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
 
   @media (max-width: 640px) {
     .site-shell-header {
-      width: calc(100% - 22px);
-      gap: 10px;
-      height: 78px;
+      width: calc(100% - 20px);
+      gap: 8px;
     }
 
-    .site-shell-brand {
-      font-size: 22px;
+    .site-shell-logo-full {
+      height: 21px;
     }
 
     .site-shell-cta-group {
@@ -560,8 +523,9 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     }
 
     .site-shell-cta {
-      font-size: 11px;
+      min-height: 34px;
       padding: 8px 10px;
+      font-size: 12px;
     }
 
     .site-footer {
@@ -574,13 +538,17 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
       padding-bottom: 34px;
     }
 
-    .site-footer-built {
-      font-size: 18px;
+    .site-footer-copy {
+      margin-top: 34px;
+      font-size: 14px;
     }
 
-    .site-footer-status {
-      flex-wrap: wrap;
-      gap: 12px;
+    .site-footer-link {
+      font-size: 14px;
+    }
+
+    .site-footer-note {
+      font-size: 14px;
     }
 
     .site-footer-grid {
@@ -588,9 +556,10 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
       gap: 22px;
     }
 
-    .site-footer-copy {
-      margin-top: 34px;
-      font-size: 14px;
+    .site-footer-copy-link {
+      display: block;
+      margin-top: 8px;
+      margin-left: 0;
     }
   }
 </style>

@@ -13,17 +13,22 @@ const { title } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <style is:global>
       body {
         background:
-          radial-gradient(circle at 18% -12%, rgba(95, 49, 255, 0.2), transparent 52%),
-          radial-gradient(circle at 80% 0%, rgba(28, 172, 255, 0.14), transparent 44%),
-          #050722;
-        color: #cfd8ff;
-        font-family: "Space Grotesk", sans-serif;
+          radial-gradient(circle at 50% -14%, rgba(116, 139, 214, 0.2), transparent 46%),
+          radial-gradient(circle at 84% 0%, rgba(62, 86, 151, 0.12), transparent 30%),
+          #0a1020;
+        color: #dce5f9;
+        font-family: 'Manrope', sans-serif;
+      }
+
+      [data-theme='light'] body {
+        background: #f4f6fa;
+        color: #132038;
       }
     </style>
   </Fragment>
