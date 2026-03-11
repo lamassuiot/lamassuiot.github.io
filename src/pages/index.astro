@@ -1,5 +1,15 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+
+const companyLogos = [
+  { src: '/company/caf.png', alt: 'CAF' },
+  { src: '/company/cegasa.svg', alt: 'Cegasa' },
+  { src: '/company/erreka.png', alt: 'Erreka' },
+  { src: '/company/fagor_professional.svg', alt: 'Fagor Professional' },
+  { src: '/company/gh.png', alt: 'GH' },
+  { src: '/company/ikerlan.png', alt: 'Ikerlan' },
+  { src: '/company/lks.png', alt: 'LKS' },
+];
 ---
 
 <SiteLayout title="Lamassu IoT | Industrial PKI Homepage" lang="en" activeNav="home">
@@ -323,6 +333,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         padding-top: 156px;
       }
 
+      .home-section#outcomes {
+        padding-top: 20px;
+      }
+
       .home-section h2 {
         margin: 0;
         color: var(--home-title);
@@ -336,6 +350,94 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         color: var(--home-text);
         font-size: 17px;
         line-height: 1.56;
+      }
+
+      .home-company-carousel {
+        margin: 0 0 26px;
+        position: relative;
+        left: 50%;
+        width: 100vw;
+        transform: translateX(-50%);
+        overflow: hidden;
+        border-top: 1px solid rgba(143, 172, 246, 0.16);
+        border-bottom: 1px solid rgba(143, 172, 246, 0.16);
+        background:
+          linear-gradient(180deg, rgba(10, 16, 31, 0.4), rgba(10, 16, 31, 0.18)),
+          rgba(8, 12, 24, 0.44);
+      }
+
+      [data-theme='light'] .home-company-carousel {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(246, 248, 253, 0.94)),
+          rgba(255, 255, 255, 0.9);
+      }
+
+      .home-company-carousel::before,
+      .home-company-carousel::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: clamp(48px, 9vw, 160px);
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .home-company-carousel::before {
+        left: 0;
+        background: linear-gradient(90deg, var(--home-bg) 0%, rgba(9, 17, 31, 0) 100%);
+      }
+
+      .home-company-carousel::after {
+        right: 0;
+        background: linear-gradient(270deg, var(--home-bg) 0%, rgba(9, 17, 31, 0) 100%);
+      }
+
+      .home-company-carousel-track {
+        display: flex;
+        align-items: center;
+        width: max-content;
+        animation: homeCompanyMarquee 32s linear infinite;
+      }
+
+      .home-company-carousel-group {
+        display: flex;
+        align-items: center;
+        gap: clamp(28px, 4vw, 52px);
+        padding: 18px clamp(18px, 4vw, 36px);
+        flex-shrink: 0;
+      }
+
+      .home-company-logo {
+        width: clamp(110px, 12vw, 170px);
+        height: 56px;
+        padding: 8px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        filter: grayscale(1) brightness(1.2);
+        opacity: 0.76;
+        transition: opacity 0.2s ease, filter 0.2s ease;
+      }
+
+      [data-theme='light'] .home-company-logo {
+        filter: grayscale(1) contrast(1.02);
+        opacity: 0.8;
+      }
+
+      .home-company-logo:hover {
+        opacity: 1;
+        filter: grayscale(0) brightness(1);
+      }
+
+      .home-company-logo img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
       }
 
       .home-overview-showcase {
@@ -607,6 +709,21 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         }
       }
 
+      @keyframes homeCompanyMarquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .home-company-carousel-track {
+          animation: none;
+        }
+      }
+
       @media (max-width: 1100px) {
         .home-page {
           width: min(1360px, calc(100% - 28px));
@@ -711,6 +828,21 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           max-width: none;
         }
 
+        .home-company-carousel {
+          margin-bottom: 22px;
+        }
+
+        .home-company-carousel-group {
+          gap: 26px;
+          padding-top: 14px;
+          padding-bottom: 14px;
+        }
+
+        .home-company-logo {
+          width: 118px;
+          height: 48px;
+        }
+
         .why-row:nth-child(even) .why-copy,
         .why-row:nth-child(even) .why-visual {
           order: initial;
@@ -739,6 +871,26 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
         .home-section + .home-section {
           padding-top: 92px;
+        }
+
+        .home-section#outcomes {
+          padding-top: 20px;
+        }
+
+        .home-company-carousel {
+          margin-bottom: 18px;
+        }
+
+        .home-company-carousel-group {
+          gap: 22px;
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+
+        .home-company-logo {
+          width: 102px;
+          height: 42px;
+          padding: 6px 8px;
         }
 
         .quick-links {
@@ -831,6 +983,24 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     </section>
 
     <section class="home-section" id="outcomes">
+      <div class="home-company-carousel" aria-label="Customers">
+        <div class="home-company-carousel-track">
+          <div class="home-company-carousel-group" aria-hidden="false">
+            {companyLogos.map((logo) => (
+              <div class="home-company-logo">
+                <img src={logo.src} alt={logo.alt} loading="lazy" />
+              </div>
+            ))}
+          </div>
+          <div class="home-company-carousel-group" aria-hidden="true">
+            {companyLogos.map((logo) => (
+              <div class="home-company-logo">
+                <img src={logo.src} alt="" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       <h2>Controla tu flota IoT a escala con garantías. Controla la ciberresiliencia de tus equipos</h2>
       <div class="why-list">
         <article class="why-row">
@@ -843,7 +1013,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </p>
           </div>
           <div class="why-visual">
-            <img src="/imgs/test2.svg" alt="Ilustración de identidad de dispositivos" loading="lazy" />
+            <img src="/imgs/touch_pannel.svg" alt="Ilustración de identidad de dispositivos" loading="lazy" />
           </div>
         </article>
 
@@ -857,7 +1027,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </p>
           </div>
           <div class="why-visual">
-            <img src="/imgs/test.svg" alt="Ilustración de PKI para IoT" loading="lazy" />
+            <img src="/imgs/dash_skeleton.svg" alt="Ilustración de PKI para IoT" loading="lazy" />
           </div>
         </article>
 
@@ -871,7 +1041,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </p>
           </div>
           <div class="why-visual">
-            <img src="/imgs/test3.svg" alt="Ilustración del ciclo de certificados" loading="lazy" />
+            <img src="/imgs/clm.svg" alt="Ilustración del ciclo de certificados" loading="lazy" />
           </div>
         </article>
 
@@ -885,7 +1055,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </p>
           </div>
           <div class="why-visual">
-            <img src="/imgs/test4.svg" alt="Ilustración de integración con ecosistemas y plataformas" loading="lazy" />
+            <img src="/imgs/integration.svg" alt="Ilustración de integración con ecosistemas y plataformas" loading="lazy" />
           </div>
         </article>
       </div>
