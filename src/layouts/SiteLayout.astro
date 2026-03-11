@@ -38,34 +38,41 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
       <div class="site-footer-inner">
         <div class="site-footer-main">
           <div class="site-footer-grid">
-            <section class="site-footer-col" aria-label="Enlaces rápidos y documentación">
-              <h4>Enlaces rápidos / Docs</h4>
-              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Guía de inicio rápido →</a>
-              <a class="site-footer-link" href="/arch/">Arquitectura del sistema →</a>
-              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Referencia de API →</a>
-              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Gestión de CAs →</a>
-              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Enrollment EST →</a>
-              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">SDK de Go →</a>
+            <section class="site-footer-col" aria-label="Documentation">
+              <h4>Documentation</h4>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">SDKs</a>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Docs</a>
             </section>
 
-            <section class="site-footer-col" aria-label="Comunidad y soporte">
-              <h4>Comunidad y soporte</h4>
-              <p class="site-footer-note">
-                Documentación, soporte técnico y colaboración abierta para desplegar Lamassu IoT en producción.
-              </p>
-              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Documentación: https://www.lamassu.io/docs/</a>
-              <a class="site-footer-link" href="https://github.com/lamassuiot/lamassuiot/issues" target="_blank" rel="noopener">GitHub Issues: https://github.com/lamassuiot/lamassuiot/issues</a>
-              <a class="site-footer-link" href="https://github.com/lamassuiot/lamassuiot/discussions" target="_blank" rel="noopener">GitHub Discussions: https://github.com/lamassuiot/lamassuiot/discussions</a>
+            <section class="site-footer-col" aria-label="API Definition">
+              <h4>Api Definition</h4>
+              <a class="site-footer-link" href="https://www.lamassu.io/lamassuiot" target="_blank" rel="noopener">OpenAPI</a>
+            </section>
+
+            <section class="site-footer-col" aria-label="Resources">
+              <h4>Resources</h4>
+              <a class="site-footer-link" href="https://www.lamassu.io/blog/" target="_blank" rel="noopener">Blog</a>
+              <a class="site-footer-link" href="https://www.lamassu.io/slack/" target="_blank" rel="noopener">Slack</a>
+            </section>
+
+            <section class="site-footer-col site-footer-social-col" aria-label="Social links">
+              <div class="site-footer-social">
+                <a href="https://github.com/lamassuiot" target="_blank" rel="noopener" aria-label="GitHub">
+                  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M8 0C3.58 0 0 3.67 0 8.2C0 11.82 2.29 14.89 5.47 15.97C5.87 16.05 6.02 15.79 6.02 15.56C6.02 15.35 6.01 14.63 6.01 13.86C4 14.24 3.48 13.36 3.32 12.9C3.23 12.67 2.84 11.95 2.5 11.76C2.22 11.6 1.83 11.2 2.49 11.19C3.11 11.18 3.55 11.78 3.7 12.02C4.41 13.24 5.55 12.9 6.03 12.7C6.1 12.17 6.31 11.81 6.54 11.61C4.76 11.4 2.9 10.7 2.9 7.58C2.9 6.69 3.21 5.97 3.73 5.41C3.65 5.21 3.37 4.39 3.81 3.29C3.81 3.29 4.48 3.07 6.01 4.13C6.65 3.95 7.33 3.86 8.01 3.86C8.69 3.86 9.37 3.95 10.01 4.13C11.54 3.06 12.21 3.29 12.21 3.29C12.65 4.39 12.37 5.21 12.29 5.41C12.81 5.97 13.12 6.68 13.12 7.58C13.12 10.71 11.25 11.4 9.47 11.61C9.76 11.87 10.01 12.37 10.01 13.15C10.01 14.27 10 15.18 10 15.56C10 15.79 10.15 16.06 10.55 15.97C13.72 14.89 16 11.81 16 8.2C16 3.67 12.42 0 8 0Z" />
+                  </svg>
+                </a>
+                <a href="https://www.linkedin.com/company/lamassu-iot/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M6.94 8.5A1.56 1.56 0 1 1 6.94 5.38A1.56 1.56 0 0 1 6.94 8.5ZM8.5 10.06H5.38V20H8.5V10.06ZM13.44 10.06H10.34V20H13.41V14.78C13.41 12.03 17 11.78 17 14.78V20H20.12V13.72C20.12 8.84 14.53 9.02 13.41 11.42L13.44 10.06Z" />
+                  </svg>
+                </a>
+              </div>
             </section>
           </div>
         </div>
 
-        <p class="site-footer-copy">
-          Licensed under Mozilla Public License 2.0
-          <a class="site-footer-copy-link" href="https://github.com/lamassuiot/lamassuiot" target="_blank" rel="noopener">
-            GitHub link: https://github.com/lamassuiot/lamassuiot
-          </a>
-        </p>
+        <p class="site-footer-copy">© 2026 Lamassu • Located in Arrasate, ES</p>
       </div>
     </footer>
     <script is:inline>
@@ -402,27 +409,27 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
   .site-footer-inner {
     width: min(1480px, calc(100% - 56px));
     margin: 0 auto;
-    padding: 54px 0 48px;
+    padding: 46px 0 40px;
   }
 
   .site-footer-main {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 34px;
-    align-items: start;
+    display: block;
   }
 
   .site-footer-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 54px;
-    width: min(920px, 100%);
+    grid-template-columns: repeat(3, minmax(140px, 180px)) auto;
+    justify-content: center;
+    gap: 24px 24px;
+    width: fit-content;
+    margin: 0 auto;
+    align-items: start;
   }
 
   .site-footer-col {
     display: grid;
     align-content: start;
-    gap: 10px;
+    gap: 8px;
   }
 
   .site-footer-col h4 {
@@ -430,14 +437,6 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     color: #e2e6ef;
     font-size: 16px;
     font-weight: 700;
-  }
-
-  .site-footer-note {
-    margin: 0;
-    color: #a4adbe;
-    font-size: 16px;
-    line-height: 1.6;
-    max-width: 56ch;
   }
 
   .site-footer-link {
@@ -452,21 +451,46 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     color: #ffffff;
   }
 
+  .site-footer-social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    padding-top: 2px;
+  }
+
+  .site-footer-social-col {
+    justify-self: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .site-footer-social a {
+    width: 22px;
+    height: 22px;
+    display: inline-grid;
+    place-items: center;
+    color: #a4adbe;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .site-footer-social a:hover {
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .site-footer-social svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    fill: currentColor;
+  }
+
   .site-footer-copy {
-    margin: 78px 0 0;
+    margin: 52px 0 0;
     color: #8d95a6;
     font-size: 16px;
-  }
-
-  .site-footer-copy-link {
-    color: inherit;
-    text-decoration: none;
-    margin-left: 14px;
-    transition: color 0.2s ease;
-  }
-
-  .site-footer-copy-link:hover {
-    color: #ffffff;
   }
 
   @media (max-width: 1100px) {
@@ -494,17 +518,22 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     }
 
     .site-footer-inner {
-      padding-top: 40px;
+      padding-top: 34px;
     }
 
     .site-footer-grid {
       width: 100%;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      justify-content: center;
       gap: 26px;
     }
 
+    .site-footer-social-col {
+      justify-self: start;
+    }
+
     .site-footer-copy {
-      margin-top: 42px;
+      margin-top: 32px;
     }
   }
 
@@ -534,12 +563,12 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
 
     .site-footer-inner {
       width: calc(100% - 22px);
-      padding-top: 30px;
-      padding-bottom: 34px;
+      padding-top: 26px;
+      padding-bottom: 28px;
     }
 
     .site-footer-copy {
-      margin-top: 34px;
+      margin-top: 24px;
       font-size: 14px;
     }
 
@@ -547,19 +576,11 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
       font-size: 14px;
     }
 
-    .site-footer-note {
-      font-size: 14px;
-    }
-
     .site-footer-grid {
       grid-template-columns: 1fr;
       gap: 22px;
+      width: 100%;
     }
 
-    .site-footer-copy-link {
-      display: block;
-      margin-top: 8px;
-      margin-left: 0;
-    }
   }
 </style>
