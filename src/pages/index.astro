@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import { homeTranslations } from '../lib/i18n';
 
 const companyLogos = [
   { src: '/company/caf.png', alt: 'CAF' },
@@ -10,9 +11,17 @@ const companyLogos = [
   { src: '/company/ikerlan.png', alt: 'Ikerlan' },
   { src: '/company/lks.png', alt: 'LKS' },
 ];
+
+const home = homeTranslations.es.home;
+const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/imgs/clm.svg', '/imgs/integration.svg'];
 ---
 
-<SiteLayout title="Lamassu IoT | Industrial PKI Homepage" lang="en" activeNav="home">
+<SiteLayout
+  title={homeTranslations.es.meta.title}
+  lang="es"
+  activeNav="home"
+  pageTranslations={homeTranslations}
+>
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -906,17 +915,14 @@ const companyLogos = [
 
   <main class="home-page">
     <section class="home-hero" id="home">
-      <p class="home-kicker">Industrial PKI for IoT fleets</p>
-      <h1>PKI industrial para gestionar identidades IoT de extremo a extremo</h1>
-      <p class="home-lead">
-        Centraliza claves, autoridades de certificación, emisión, validación y ciclo de vida de dispositivos en una sola
-        plataforma preparada para operación industrial.
-      </p>
+      <p class="home-kicker" data-i18n="home.hero.kicker">{home.hero.kicker}</p>
+      <h1 data-i18n="home.hero.title">{home.hero.title}</h1>
+      <p class="home-lead" data-i18n="home.hero.lead">{home.hero.lead}</p>
       <div class="home-actions">
-        <a class="home-btn home-btn-primary" href="#capabilities">Ver funcionalidades</a>
-        <a class="home-btn" href="#outcomes">Capacidades Core</a>
+        <a class="home-btn home-btn-primary" href="#capabilities" data-i18n="home.hero.ctaPrimary">{home.hero.ctaPrimary}</a>
+        <a class="home-btn" href="#outcomes" data-i18n="home.hero.ctaSecondary">{home.hero.ctaSecondary}</a>
       </div>
-      <div class="home-stack" aria-label="Capacidades de la plataforma">
+      <div class="home-stack" aria-label={home.hero.stackAria} data-i18n-attr-aria-label="home.hero.stackAria">
         <span>PKI</span>
         <span>Device Identity</span>
         <span>Secure Software Updates</span>
@@ -941,49 +947,32 @@ const companyLogos = [
     </section>
 
     <section class="home-section" id="overview">
-      <h2>Una plataforma única para el ciclo de vida criptográfico IoT</h2>
-      <p>
-        Lamassu IoT unifica los componentes críticos de una PKI industrial: gestión de claves, autoridades de
-        certificación, automatización de emisión, validación de certificados e identidad de dispositivos.
-      </p>
+      <h2 data-i18n="home.overview.title">{home.overview.title}</h2>
+      <p data-i18n="home.overview.body">{home.overview.body}</p>
 
       <div class="home-overview-showcase">
         <figure class="home-overview-figure">
-          <img src="/dashboard.png" alt="Vista del dashboard de Lamassu IoT" loading="lazy" />
+          <img
+            src="/dashboard.png"
+            alt={home.overview.imageAlt}
+            loading="lazy"
+            data-i18n-attr-alt="home.overview.imageAlt"
+          />
         </figure>
         <aside class="home-overview-meta">
-          <div class="home-overview-block">
-            <p class="home-overview-meta-title">El dashboard centraliza la operación diaria.</p>
-            <p>
-              Equipos de seguridad y operación ven en una sola vista certificados activos, expiraciones, revocaciones
-              y estado de identidades IoT por entorno o línea de negocio.
-            </p>
-            <p>
-              La lectura rápida permite detectar desvíos antes de que afecten la disponibilidad en planta y aplicar
-              acciones con trazabilidad.
-            </p>
-          </div>
-          <div class="home-overview-block">
-            <p class="home-overview-meta-title">Controla el estado de la flota.</p>
-            <p>
-              Cada dispositivo muestra su estado en tiempo real: activo, revocado, decomisionado o sin identidad
-              asignada. El equipo puede actuar directamente desde la vista, sin cambiar de herramienta.
-            </p>
-          </div>
-          <div class="home-overview-block">
-            <p class="home-overview-meta-title">Estructura y organización.</p>
-            <p>
-              Los grupos, tags y autoridades de registro permiten organizar flotas de cualquier tamaño, desde
-              prototipos en laboratorio hasta líneas de producción completas, manteniendo trazabilidad y control de
-              acceso por contexto.
-            </p>
-          </div>
+          {home.overview.blocks.map((block, index) => (
+            <div class="home-overview-block">
+              <p class="home-overview-meta-title" data-i18n={`home.overview.blocks.${index}.title`}>{block.title}</p>
+              <p data-i18n={`home.overview.blocks.${index}.body1`}>{block.body1}</p>
+              {block.body2 && <p data-i18n={`home.overview.blocks.${index}.body2`}>{block.body2}</p>}
+            </div>
+          ))}
         </aside>
       </div>
     </section>
 
     <section class="home-section" id="outcomes">
-      <div class="home-company-carousel" aria-label="Customers">
+      <div class="home-company-carousel" aria-label={home.customersAria} data-i18n-attr-aria-label="home.customersAria">
         <div class="home-company-carousel-track">
           <div class="home-company-carousel-group" aria-hidden="false">
             {companyLogos.map((logo) => (
@@ -1001,108 +990,50 @@ const companyLogos = [
           </div>
         </div>
       </div>
-      <h2>Controla tu flota IoT a escala con garantías. Controla la ciberresiliencia de tus equipos</h2>
+      <h2 data-i18n="home.outcomes.title">{home.outcomes.title}</h2>
       <div class="why-list">
-        <article class="why-row">
-          <div class="why-copy">
-            <h3>Device identity built for the real world</h3>
-            <p class="why-body">
-              Cada dispositivo obtiene una identidad criptográfica única desde el primer momento, lo que permite
-              autenticación fuerte, establecimiento de confianza desde fábrica y comunicaciones seguras durante toda su
-              vida operativa.
-            </p>
-          </div>
-          <div class="why-visual">
-            <img src="/imgs/touch_pannel.svg" alt="Ilustración de identidad de dispositivos" loading="lazy" />
-          </div>
-        </article>
-
-        <article class="why-row">
-          <div class="why-copy">
-            <h3>PKI diseñada para IoT</h3>
-            <p class="why-body">
-              La arquitectura está pensada para operar con millones de dispositivos, despliegues edge, líneas de
-              producción distribuidas y entornos industriales heterogéneos sin perder consistencia ni control
-              criptográfico.
-            </p>
-          </div>
-          <div class="why-visual">
-            <img src="/imgs/dash_skeleton.svg" alt="Ilustración de PKI para IoT" loading="lazy" />
-          </div>
-        </article>
-
-        <article class="why-row">
-          <div class="why-copy">
-            <h3>Automatización completa del ciclo de certificados</h3>
-            <p class="why-body">
-              Gestiona de forma continua la emisión, renovación, rotación y revocación de certificados, eliminando
-              tareas manuales y reduciendo el riesgo operativo en flotas grandes o en despliegues que no admiten
-              intervención frecuente.
-            </p>
-          </div>
-          <div class="why-visual">
-            <img src="/imgs/clm.svg" alt="Ilustración del ciclo de certificados" loading="lazy" />
-          </div>
-        </article>
-
-        <article class="why-row">
-          <div class="why-copy">
-            <h3>Integración con tu ecosistema</h3>
-            <p class="why-body">
-              APIs, SDKs y conectores permiten integrar Lamassu con plataformas cloud, infraestructuras existentes,
-              sistemas corporativos y procesos de fabricación sin obligarte a rehacer el stack que ya tienes en
-              producción.
-            </p>
-          </div>
-          <div class="why-visual">
-            <img src="/imgs/integration.svg" alt="Ilustración de integración con ecosistemas y plataformas" loading="lazy" />
-          </div>
-        </article>
+        {home.outcomes.items.map((item, index) => (
+          <article class="why-row">
+            <div class="why-copy">
+              <h3 data-i18n={`home.outcomes.items.${index}.title`}>{item.title}</h3>
+              <p class="why-body" data-i18n={`home.outcomes.items.${index}.body`}>{item.body}</p>
+            </div>
+            <div class="why-visual">
+              <img
+                src={outcomeImages[index]}
+                alt={item.alt}
+                loading="lazy"
+                data-i18n-attr-alt={`home.outcomes.items.${index}.alt`}
+              />
+            </div>
+          </article>
+        ))}
       </div>
     </section>
 
     <section class="home-section" id="capabilities">
-      <h2>Funcionalidades clave</h2>
-      <ul class="feature-plain-list" aria-label="Key Features">
-        <li><strong>Gestión de autoridades de certificación</strong> — Crea y administra CAs con perfiles y políticas de emisión flexibles.</li>
-        <li><strong>Gestión de identidades de dispositivos</strong> — Sigue ciclos de vida de dispositivos, identidades y asociaciones de certificados.</li>
-        <li><strong>Soporte de protocolo EST</strong> — Enrollment RFC 7030 para provisión automática de certificados en dispositivos.</li>
-        <li><strong>Servicio de gestión de claves</strong> — Motores criptográficos conectables: Software, AWS KMS, PKCS#11 y HashiCorp Vault.</li>
-        <li><strong>Filtrado avanzado</strong> — Filtrado y ordenación con JSONPath sobre todos los recursos.</li>
-        <li><strong>Conectores cloud</strong> — Integración nativa con AWS IoT y modelo extensible para plataformas personalizadas.</li>
+      <h2 data-i18n="home.capabilities.title">{home.capabilities.title}</h2>
+      <ul class="feature-plain-list" aria-label={home.capabilities.listAria} data-i18n-attr-aria-label="home.capabilities.listAria">
+        {home.capabilities.items.map((item, index) => (
+          <li data-i18n-html={`home.capabilities.items.${index}`} set:html={item}></li>
+        ))}
       </ul>
     </section>
 
     <section class="home-section" id="cases">
-      <h2>Encaja en tu stack, sin lock-in</h2>
-      <p class="stack-subheadline">
-        Lamassu está construido con componentes modulares y conectables para desplegarlo a tu manera e integrarlo con
-        las herramientas que ya utilizas.
-      </p>
+      <h2 data-i18n="home.cases.title">{home.cases.title}</h2>
+      <p class="stack-subheadline" data-i18n="home.cases.subtitle">{home.cases.subtitle}</p>
 
       <div class="stack-rows">
-        <article class="stack-row">
-          <p class="stack-title"><span class="stack-icon" aria-hidden="true"></span><strong>Backends criptográficos</strong></p>
-          <p>
-            Elige dónde custodiar claves: software, AWS KMS, tokens hardware PKCS#11 o HashiCorp Vault.
-          </p>
-        </article>
-
-        <article class="stack-row">
-          <p class="stack-title"><span class="stack-icon" aria-hidden="true"></span><strong>Almacenamiento y eventos</strong></p>
-          <p>
-            Ejecuta sobre PostgreSQL. Emite eventos por RabbitMQ o AWS EventBridge para conectarlo a tus pipelines de
-            datos existentes.
-          </p>
-        </article>
-
-        <article class="stack-row">
-          <p class="stack-title"><span class="stack-icon" aria-hidden="true"></span><strong>Conectores cloud y de plataforma</strong></p>
-          <p>
-            Integración nativa con AWS IoT Core desde el primer día, con un modelo de conectores extensible para añadir
-            tus propias plataformas.
-          </p>
-        </article>
+        {home.cases.rows.map((row, index) => (
+          <article class="stack-row">
+            <p class="stack-title">
+              <span class="stack-icon" aria-hidden="true"></span>
+              <strong data-i18n={`home.cases.rows.${index}.title`}>{row.title}</strong>
+            </p>
+            <p data-i18n={`home.cases.rows.${index}.body`}>{row.body}</p>
+          </article>
+        ))}
       </div>
     </section>
   </main>

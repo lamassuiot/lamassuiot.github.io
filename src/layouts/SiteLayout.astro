@@ -1,13 +1,16 @@
 ---
 import SiteHeader from '../components/SiteHeader.astro';
+import { localeOptions, sharedTranslations } from '../lib/i18n';
 
 interface Props {
   title: string;
   lang?: string;
   activeNav?: 'home' | 'arch' | 'docs' | '';
+  pageTranslations?: Record<string, unknown>;
 }
 
-const { title, lang = 'en', activeNav = '' } = Astro.props;
+const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.props;
+const footer = sharedTranslations.es.footer;
 ---
 
 <!doctype html>
@@ -38,24 +41,24 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
       <div class="site-footer-inner">
         <div class="site-footer-main">
           <div class="site-footer-grid">
-            <section class="site-footer-col" aria-label="Documentation">
-              <h4>Documentation</h4>
-              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">SDKs</a>
-              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener">Docs</a>
+            <section class="site-footer-col" aria-label={footer.documentation} data-i18n-attr-aria-label="footer.documentation">
+              <h4 data-i18n="footer.documentation">{footer.documentation}</h4>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener" data-i18n="footer.sdks">{footer.sdks}</a>
+              <a class="site-footer-link" href="https://www.lamassu.io/docs/" target="_blank" rel="noopener" data-i18n="footer.docs">{footer.docs}</a>
             </section>
 
-            <section class="site-footer-col" aria-label="API Definition">
-              <h4>Api Definition</h4>
-              <a class="site-footer-link" href="https://www.lamassu.io/lamassuiot" target="_blank" rel="noopener">OpenAPI</a>
+            <section class="site-footer-col" aria-label={footer.apiDefinition} data-i18n-attr-aria-label="footer.apiDefinition">
+              <h4 data-i18n="footer.apiDefinition">{footer.apiDefinition}</h4>
+              <a class="site-footer-link" href="https://www.lamassu.io/lamassuiot" target="_blank" rel="noopener" data-i18n="footer.openApi">{footer.openApi}</a>
             </section>
 
-            <section class="site-footer-col" aria-label="Resources">
-              <h4>Resources</h4>
-              <a class="site-footer-link" href="https://www.lamassu.io/blog/" target="_blank" rel="noopener">Blog</a>
-              <a class="site-footer-link" href="https://www.lamassu.io/slack/" target="_blank" rel="noopener">Slack</a>
+            <section class="site-footer-col" aria-label={footer.resources} data-i18n-attr-aria-label="footer.resources">
+              <h4 data-i18n="footer.resources">{footer.resources}</h4>
+              <a class="site-footer-link" href="https://www.lamassu.io/blog/" target="_blank" rel="noopener" data-i18n="footer.blog">{footer.blog}</a>
+              <a class="site-footer-link" href="https://www.lamassu.io/slack/" target="_blank" rel="noopener" data-i18n="footer.slack">{footer.slack}</a>
             </section>
 
-            <section class="site-footer-col site-footer-social-col" aria-label="Social links">
+            <section class="site-footer-col site-footer-social-col" aria-label={footer.socialAria} data-i18n-attr-aria-label="footer.socialAria">
               <div class="site-footer-social">
                 <a href="https://github.com/lamassuiot" target="_blank" rel="noopener" aria-label="GitHub">
                   <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -72,9 +75,14 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
           </div>
         </div>
 
-        <p class="site-footer-copy">© 2026 Lamassu • Located in Arrasate, ES</p>
+        <p class="site-footer-copy" data-i18n="footer.copyright">{footer.copyright}</p>
       </div>
     </footer>
+    <script
+      id="page-translations"
+      type="application/json"
+      set:html={JSON.stringify(pageTranslations)}
+    ></script>
     <script is:inline>
       (function () {
         var body = document.body;
@@ -101,6 +109,96 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
         syncStickyHeader();
         window.addEventListener('scroll', syncStickyHeader, { passive: true });
         window.addEventListener('resize', syncStickyHeader);
+      })();
+    </script>
+    <script is:inline define:vars={{ localeOptions, sharedTranslations, title }}>
+      (function () {
+        var STORAGE_KEY = 'lamassu-locale';
+        var pageTranslationsElement = document.getElementById('page-translations');
+        var pageTranslations = {};
+
+        if (pageTranslationsElement && pageTranslationsElement.textContent) {
+          try {
+            pageTranslations = JSON.parse(pageTranslationsElement.textContent);
+          } catch (error) {
+            pageTranslations = {};
+          }
+        }
+
+        function getLocaleConfig(locale) {
+          return localeOptions.find(function (option) { return option.code === locale; });
+        }
+
+        function getDictionary(locale) {
+          return Object.assign({}, sharedTranslations[locale] || {}, pageTranslations[locale] || {});
+        }
+
+        function resolveKey(source, key) {
+          return key.split('.').reduce(function (acc, part) {
+            if (acc == null) return undefined;
+            return acc[part];
+          }, source);
+        }
+
+        function applyAttributes(locale, dictionary) {
+          document.querySelectorAll('*').forEach(function (element) {
+            Array.prototype.forEach.call(element.attributes, function (attribute) {
+              if (!attribute.name.startsWith('data-i18n-attr-')) return;
+              var targetAttribute = attribute.name.replace('data-i18n-attr-', '');
+              var value = resolveKey(dictionary, attribute.value);
+              if (typeof value === 'string') {
+                element.setAttribute(targetAttribute, value);
+              }
+            });
+          });
+        }
+
+        function applyLocale(locale) {
+          var dictionary = getDictionary(locale);
+          var localeConfig = getLocaleConfig(locale) || getLocaleConfig('es');
+
+          document.documentElement.lang = localeConfig ? localeConfig.htmlLang : 'es';
+          localStorage.setItem(STORAGE_KEY, locale);
+
+          document.querySelectorAll('[data-i18n]').forEach(function (element) {
+            var key = element.getAttribute('data-i18n');
+            var value = key ? resolveKey(dictionary, key) : undefined;
+            if (typeof value === 'string') {
+              element.textContent = value;
+            }
+          });
+
+          document.querySelectorAll('[data-i18n-html]').forEach(function (element) {
+            var key = element.getAttribute('data-i18n-html');
+            var value = key ? resolveKey(dictionary, key) : undefined;
+            if (typeof value === 'string') {
+              element.innerHTML = value;
+            }
+          });
+
+          applyAttributes(locale, dictionary);
+
+          var translatedTitle = resolveKey(dictionary, 'meta.title');
+          document.title = typeof translatedTitle === 'string' ? translatedTitle : title;
+
+          document.querySelectorAll('[data-locale-option]').forEach(function (button) {
+            var isActive = button.getAttribute('data-locale-option') === locale;
+            button.classList.toggle('is-active', isActive);
+            button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          });
+        }
+
+        var selectedLocale = localStorage.getItem(STORAGE_KEY);
+        var supported = localeOptions.map(function (option) { return option.code; });
+        applyLocale(supported.indexOf(selectedLocale) >= 0 ? selectedLocale : 'es');
+
+        document.querySelectorAll('[data-locale-option]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            var locale = button.getAttribute('data-locale-option');
+            if (!locale) return;
+            applyLocale(locale);
+          });
+        });
       })();
     </script>
   </body>
@@ -229,6 +327,64 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
+  }
+
+  .locale-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 2px;
+    border-bottom: 1px solid rgba(143, 172, 246, 0.18);
+  }
+
+  [data-theme='light'] .locale-switcher {
+    border-bottom-color: rgba(85, 110, 127, 0.18);
+  }
+
+  .locale-switcher-btn {
+    border: 0;
+    background: transparent;
+    color: var(--shell-muted);
+    border-radius: 0;
+    min-width: auto;
+    padding: 8px 8px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition:
+      color 0.18s ease,
+      opacity 0.18s ease;
+    position: relative;
+    opacity: 0.72;
+  }
+
+  .locale-switcher-btn:hover {
+    color: var(--shell-text);
+    opacity: 1;
+  }
+
+  .locale-switcher-btn.is-active {
+    color: var(--shell-text);
+    opacity: 1;
+  }
+
+  .locale-switcher-btn::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: -1px;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #7e9cff 0%, #59d0ff 100%);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.18s ease;
+  }
+
+  .locale-switcher-btn.is-active::after {
+    transform: scaleX(1);
   }
 
   .theme-toggle {
@@ -506,6 +662,10 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
     .site-shell-nav {
       gap: 14px;
     }
+
+    .locale-switcher-btn {
+      padding: 8px 7px 9px;
+    }
   }
 
   @media (max-width: 940px) {
@@ -549,6 +709,16 @@ const { title, lang = 'en', activeNav = '' } = Astro.props;
 
     .site-shell-cta-group {
       gap: 6px;
+    }
+
+    .locale-switcher {
+      gap: 0;
+      padding: 0 1px;
+    }
+
+    .locale-switcher-btn {
+      font-size: 10px;
+      padding: 7px 6px 9px;
     }
 
     .site-shell-cta {
