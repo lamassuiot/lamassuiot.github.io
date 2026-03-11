@@ -14,6 +14,13 @@ const companyLogos = [
 
 const home = homeTranslations.es.home;
 const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/imgs/clm.svg', '/imgs/integration.svg'];
+const referenceLinks = [
+  '/ferroviario/',
+  '/hosteleria-conectada/',
+  '/energia-baterias/',
+  '/gruas/',
+  '/puertas-de-acceso-conectadas/',
+];
 ---
 
 <SiteLayout
@@ -645,6 +652,118 @@ const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/im
         line-height: 1.55;
       }
 
+      .home-references-head {
+        display: grid;
+        gap: 14px;
+        max-width: 980px;
+      }
+
+      .home-references-subtitle {
+        margin: 0;
+        color: var(--home-text);
+        font-size: clamp(18px, 2.2vw, 22px);
+        line-height: 1.6;
+      }
+
+      .home-references-panel {
+        margin-top: 28px;
+        padding-top: 0;
+      }
+
+      .home-references-tags {
+        margin-top: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--home-border);
+      }
+
+      .home-reference-tag {
+        padding: 0 0 10px;
+        color: var(--home-muted);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.3;
+        border-bottom: 2px solid transparent;
+        transition: color 0.16s ease, border-color 0.16s ease;
+      }
+
+      .home-reference-tag:hover {
+        color: var(--home-title);
+        border-bottom-color: var(--home-accent);
+      }
+
+      .home-references-grid {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .home-reference-card {
+        min-height: 0;
+        padding: 20px;
+        display: grid;
+        align-content: start;
+        gap: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--home-border);
+        background: var(--home-surface);
+        text-decoration: none;
+        transition: border-color 0.16s ease, background-color 0.16s ease;
+      }
+
+      .home-reference-card:hover {
+        border-color: rgba(143, 161, 195, 0.5);
+        background: var(--home-surface-soft);
+      }
+
+      .home-reference-sector {
+        margin: 0;
+        color: var(--home-muted);
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+
+      .home-reference-title {
+        margin: 2px 0 0;
+        color: var(--home-title);
+        font-size: clamp(24px, 2.7vw, 30px);
+        line-height: 1.18;
+        letter-spacing: -0.03em;
+      }
+
+      .home-reference-highlight {
+        margin: 0;
+        color: var(--home-title);
+        font-size: 16px;
+        line-height: 1.5;
+        font-weight: 700;
+      }
+
+      .home-reference-body {
+        margin: 0;
+        color: var(--home-text);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .home-reference-link {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        color: var(--home-title);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.2;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
       @keyframes homeMeshSweep {
         from {
           transform: rotate(0deg);
@@ -743,6 +862,10 @@ const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/im
           row-gap: 10px;
         }
 
+        .home-references-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .home-mesh-numbers {
           display: none;
         }
@@ -751,7 +874,8 @@ const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/im
       @media (max-width: 860px) {
         .home-overview-showcase,
         .why-row,
-        .stack-row {
+        .stack-row,
+        .home-references-grid {
           grid-template-columns: 1fr;
           gap: 22px;
         }
@@ -856,6 +980,10 @@ const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/im
         .why-row:nth-child(even) .why-visual {
           order: initial;
         }
+
+        .home-reference-card {
+          min-height: 0;
+        }
       }
 
       @media (max-width: 640px) {
@@ -900,6 +1028,23 @@ const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/im
           width: 102px;
           height: 42px;
           padding: 6px 8px;
+        }
+
+        .home-references-panel {
+          margin-top: 22px;
+        }
+
+        .home-reference-tag {
+          font-size: 13px;
+        }
+
+        .home-reference-title {
+          font-size: 24px;
+        }
+
+        .home-reference-highlight,
+        .home-reference-body {
+          font-size: 16px;
         }
 
         .quick-links {
@@ -1020,7 +1165,7 @@ const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/im
       </ul>
     </section>
 
-    <section class="home-section" id="cases">
+    <section class="home-section" id="stack">
       <h2 data-i18n="home.cases.title">{home.cases.title}</h2>
       <p class="stack-subheadline" data-i18n="home.cases.subtitle">{home.cases.subtitle}</p>
 
@@ -1034,6 +1179,35 @@ const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/im
             <p data-i18n={`home.cases.rows.${index}.body`}>{row.body}</p>
           </article>
         ))}
+      </div>
+    </section>
+
+    <section class="home-section" id="cases">
+      <div class="home-references-head">
+        <h2 data-i18n="home.references.title">{home.references.title}</h2>
+        <p class="home-references-subtitle" data-i18n="home.references.subtitle">{home.references.subtitle}</p>
+      </div>
+
+      <div class="home-references-panel">
+        <div class="home-references-tags">
+          {home.references.cards.map((card, index) => (
+            <a class="home-reference-tag" href={`#reference-card-${index}`} data-i18n={`home.references.cards.${index}.sector`}>
+              {card.sector}
+            </a>
+          ))}
+        </div>
+
+        <div class="home-references-grid">
+          {home.references.cards.map((card, index) => (
+            <a class="home-reference-card" id={`reference-card-${index}`} href={referenceLinks[index]}>
+              <p class="home-reference-sector" data-i18n={`home.references.cards.${index}.sector`}>{card.sector}</p>
+              <h3 class="home-reference-title" data-i18n={`home.references.cards.${index}.title`}>{card.title}</h3>
+              <p class="home-reference-highlight" data-i18n={`home.references.cards.${index}.highlight`}>{card.highlight}</p>
+              <p class="home-reference-body" data-i18n={`home.references.cards.${index}.body`}>{card.body}</p>
+              <span class="home-reference-link" data-i18n="home.references.cta">{home.references.cta}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   </main>

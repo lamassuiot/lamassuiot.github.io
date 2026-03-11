@@ -205,6 +205,45 @@ export const homeTranslations = {
           },
         ],
       },
+      references: {
+        title: 'Success stories in energy and connected industry',
+        subtitle:
+          'Real references where Lamassu reduced operational friction and improved cryptographic posture in OT and IoT environments.',
+        eyebrow: 'OUR CUSTOMERS, OUR BEST REFERENCE',
+        cta: 'View dedicated page',
+        cards: [
+          {
+            sector: 'Rail',
+            title: 'Rolling stock and signaling',
+            highlight: '24x7 cryptographic continuity in operation',
+            body: 'PKI for trains, stations and track systems with segmentation by line, operator or region.',
+          },
+          {
+            sector: 'Connected Hospitality',
+            title: 'Multi-site hospitality and restaurant chains',
+            highlight: 'Secure onboarding for in-store devices',
+            body: 'Identity control for smart locks, POS, kiosks and sensors with simplified operations.',
+          },
+          {
+            sector: 'Energy · Batteries',
+            title: 'BESS, inverters and energy management',
+            highlight: 'Lower operational risk in distributed assets',
+            body: 'Strong identity for controllers and gateways in storage plants and connected energy networks.',
+          },
+          {
+            sector: 'Cranes',
+            title: 'Industrial fleets and remote operation',
+            highlight: 'More control over assets with variable connectivity',
+            body: 'Security for telemetry, control and remote maintenance in logistics, port and construction environments.',
+          },
+          {
+            sector: 'Connected Access',
+            title: 'Intelligent physical access control at scale',
+            highlight: 'Fast revocation and centralized governance',
+            body: 'Certificate management for controllers, readers and locks across buildings and campus deployments.',
+          },
+        ],
+      },
     },
   },
   es: {
@@ -309,6 +348,45 @@ export const homeTranslations = {
           },
         ],
       },
+      references: {
+        title: 'Casos de éxito en energía e industria conectada',
+        subtitle:
+          'Referencias reales donde Lamassu redujo fricción operativa y elevó la postura criptográfica en entornos OT e IoT.',
+        eyebrow: 'NUESTROS CLIENTES, NUESTRA MEJOR REFERENCIA',
+        cta: 'Ver página dedicada',
+        cards: [
+          {
+            sector: 'Ferroviario',
+            title: 'Material rodante y señalización',
+            highlight: 'Continuidad criptográfica en operación 24x7',
+            body: 'PKI para trenes, estaciones y sistemas de vía con segmentación por línea, operador o región.',
+          },
+          {
+            sector: 'Hostelería conectada',
+            title: 'Cadenas multi-sede de hostelería y restauración',
+            highlight: 'Onboarding seguro para dispositivos de local',
+            body: 'Control de identidad para cerraduras inteligentes, TPV, kioscos y sensores con operación simplificada.',
+          },
+          {
+            sector: 'Energía · Baterías',
+            title: 'BESS, inversores y gestión energética',
+            highlight: 'Menor riesgo operativo en activos distribuidos',
+            body: 'Identidad fuerte para controladores y gateways en plantas de almacenamiento y redes energéticas conectadas.',
+          },
+          {
+            sector: 'Grúas',
+            title: 'Flotas industriales y operación remota',
+            highlight: 'Mayor control sobre activos con conectividad variable',
+            body: 'Seguridad para telemetría, control y mantenimiento remoto en entornos logísticos, portuarios y de obra.',
+          },
+          {
+            sector: 'Puertas de acceso conectadas',
+            title: 'Control físico inteligente a escala',
+            highlight: 'Revocación rápida y gobierno centralizado',
+            body: 'Gestión de certificados para controladores, lectores y cerraduras en despliegues de edificios y campus.',
+          },
+        ],
+      },
     },
   },
   eus: {
@@ -410,6 +488,45 @@ export const homeTranslations = {
             title: 'Cloud eta plataformaren konektoreak',
             body:
               'AWS IoT Corerekin integrazio natiboa lehen egunetik, zure plataforma propioak gehitzeko konektore-eredu hedagarri batekin.',
+          },
+        ],
+      },
+      references: {
+        title: 'Energiako eta industria konektatuko arrakasta kasuak',
+        subtitle:
+          'Lamassuk OT eta IoT inguruneetan frikzio operatiboa murriztu eta jarrera kriptografikoa hobetu duen erreferentzia errealak.',
+        eyebrow: 'GURE BEZEROAK, GURE ERREFERENTZIARIK ONENA',
+        cta: 'Ikusi dagokion orria',
+        cards: [
+          {
+            sector: 'Ferroviarioa',
+            title: 'Material mugikorra eta seinaleztapena',
+            highlight: '24x7 eragiketan jarraitutasun kriptografikoa',
+            body: 'PKI trenetarako, geltokietarako eta bide-sistemetarako, linea, operadore edo eskualdeka segmentatuta.',
+          },
+          {
+            sector: 'Ostalaritza konektatua',
+            title: 'Ostalaritza eta jatetxe kate multi-siteak',
+            highlight: 'Lokaleko gailuentzako onboarding segurua',
+            body: 'Identitate-kontrola sarraila adimendunentzat, TPVentzat, kioskoentzat eta sentsoreentzat, eragiketa sinplifikatuarekin.',
+          },
+          {
+            sector: 'Energia · Bateriak',
+            title: 'BESS, inbertsoreak eta kudeaketa energetikoa',
+            highlight: 'Arrisku operatibo txikiagoa aktibo banatuetan',
+            body: 'Identitate sendoa kontrolagailu eta gateway-entzat biltegiratze-plantetan eta energia-sare konektatuetan.',
+          },
+          {
+            sector: 'Garabiak',
+            title: 'Flota industrialak eta urruneko eragiketa',
+            highlight: 'Kontrol handiagoa konektibitate aldakorreko aktiboetan',
+            body: 'Segurtasuna telemetriarako, kontrolerako eta urruneko mantentzerako logistika, portu eta obra inguruneetan.',
+          },
+          {
+            sector: 'Sarbide ate konektatuak',
+            title: 'Kontrol fisiko adimenduna eskalan',
+            highlight: 'Ezeztapen azkarra eta gobernantza zentralizatua',
+            body: 'Ziurtagirien kudeaketa kontrolagailu, irakurgailu eta sarrailetarako eraikin eta campus hedapenetan.',
           },
         ],
       },
