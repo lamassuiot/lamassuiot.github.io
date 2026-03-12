@@ -1,8 +1,0 @@
-# Firebase App Hosting configuration
-# https://firebase.google.com/docs/app-hosting/configure
-
-runConfig:
-  runtime: nodejs22
-  # The @astrojs/node standalone adapter starts a server that reads
-  # the PORT environment variable (set to 8080 by Cloud Run).
-  startCommand: node ./dist/server/entry.mjs
