@@ -2,18 +2,13 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { homeTranslations } from '../lib/i18n';
 
-const companyLogos = [
-  { src: '/company/caf.png', alt: 'CAF' },
-  { src: '/company/cegasa.svg', alt: 'Cegasa' },
-  { src: '/company/erreka.png', alt: 'Erreka' },
-  { src: '/company/fagor_professional.svg', alt: 'Fagor Professional' },
-  { src: '/company/gh.png', alt: 'GH' },
-  { src: '/company/ikerlan.png', alt: 'Ikerlan' },
-  { src: '/company/lks.png', alt: 'LKS' },
-];
-
 const home = homeTranslations.es.home;
-const outcomeImages = ['/imgs/touch_pannel.svg', '/imgs/dash_skeleton.svg', '/imgs/clm.svg', '/imgs/integration.svg'];
+const outcomeImages = [
+  { dark: '/imgs/touch_pannel.svg', light: '/imgs/touch_pannel_light.svg' },
+  { dark: '/imgs/dash_skeleton.svg', light: '/imgs/dash_skeleton_light.svg' },
+  { dark: '/imgs/clm.svg', light: '/imgs/clm_light.svg' },
+  { dark: '/imgs/integration.svg', light: '/imgs/integration_light.svg' },
+];
 const referenceLinks = [
   '/ferroviario/',
   '/hosteleria-conectada/',
@@ -368,92 +363,12 @@ const referenceLinks = [
         line-height: 1.56;
       }
 
-      .home-company-carousel {
+      .home-blue-divider {
+        border: none;
+        height: 3px;
+        background: #555efc;
         margin: 0 0 26px;
-        position: relative;
-        left: 50%;
-        width: 100vw;
-        transform: translateX(-50%);
-        overflow: hidden;
-        border-top: 1px solid rgba(143, 172, 246, 0.16);
-        border-bottom: 1px solid rgba(143, 172, 246, 0.16);
-        background:
-          linear-gradient(180deg, rgba(10, 16, 31, 0.4), rgba(10, 16, 31, 0.18)),
-          rgba(8, 12, 24, 0.44);
-      }
-
-      [data-theme='light'] .home-company-carousel {
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(246, 248, 253, 0.94)),
-          rgba(255, 255, 255, 0.9);
-      }
-
-      .home-company-carousel::before,
-      .home-company-carousel::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: clamp(48px, 9vw, 160px);
-        pointer-events: none;
-        z-index: 2;
-      }
-
-      .home-company-carousel::before {
-        left: 0;
-        background: linear-gradient(90deg, var(--home-bg) 0%, rgba(9, 17, 31, 0) 100%);
-      }
-
-      .home-company-carousel::after {
-        right: 0;
-        background: linear-gradient(270deg, var(--home-bg) 0%, rgba(9, 17, 31, 0) 100%);
-      }
-
-      .home-company-carousel-track {
-        display: flex;
-        align-items: center;
-        width: max-content;
-        animation: homeCompanyMarquee 32s linear infinite;
-      }
-
-      .home-company-carousel-group {
-        display: flex;
-        align-items: center;
-        gap: clamp(28px, 4vw, 52px);
-        padding: 18px clamp(18px, 4vw, 36px);
-        flex-shrink: 0;
-      }
-
-      .home-company-logo {
-        width: clamp(110px, 12vw, 170px);
-        height: 56px;
-        padding: 8px 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        filter: grayscale(1) brightness(1.2);
-        opacity: 0.76;
-        transition: opacity 0.2s ease, filter 0.2s ease;
-      }
-
-      [data-theme='light'] .home-company-logo {
-        filter: grayscale(1) contrast(1.02);
-        opacity: 0.8;
-      }
-
-      .home-company-logo:hover {
-        opacity: 1;
-        filter: grayscale(0) brightness(1);
-      }
-
-      .home-company-logo img {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        display: block;
+        border-radius: 2px;
       }
 
       .home-overview-showcase {
@@ -542,6 +457,18 @@ const referenceLinks = [
         height: auto;
       }
 
+      .why-visual .why-visual-light {
+        display: none;
+      }
+
+      [data-theme='light'] .why-visual .why-visual-dark {
+        display: none;
+      }
+
+      [data-theme='light'] .why-visual .why-visual-light {
+        display: block;
+      }
+
       .why-row:nth-child(even) .why-copy {
         order: 2;
       }
@@ -574,24 +501,75 @@ const referenceLinks = [
         max-width: none;
       }
 
+      .home-capabilities-shell {
+        margin-top: 24px;
+        display: grid;
+        gap: 22px;
+        align-items: start;
+      }
+
+      .home-capabilities-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        padding-bottom: 10px;
+      }
+
+      .home-capabilities-heading h2 {
+        max-width: none;
+      }
+
+      .home-capabilities-heading::after {
+        content: '';
+        width: min(36vw, 320px);
+        height: 2px;
+        background: linear-gradient(90deg, var(--home-accent) 0%, rgba(126, 156, 255, 0.14) 100%);
+        flex: 0 0 auto;
+        transform: translateY(-6px);
+      }
+
       .feature-plain-list {
-        margin: 22px 0 0;
+        margin: 0;
         padding: 0;
         list-style: none;
+        counter-reset: capabilities;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: 28px;
-        row-gap: 14px;
+        column-gap: 36px;
+        row-gap: 16px;
       }
 
       .feature-plain-list li {
+        counter-increment: capabilities;
+        position: relative;
+        padding: 22px 24px 22px 68px;
+        background: var(--home-surface-soft);
+        border-radius: 10px;
         color: var(--home-text);
         font-size: 15px;
-        line-height: 1.55;
+        line-height: 1.62;
+      }
+
+      .feature-plain-list li::before {
+        content: counter(capabilities, decimal-leading-zero);
+        color: var(--home-accent);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0.08em;
+        position: absolute;
+        left: 24px;
+        top: 26px;
       }
 
       .feature-plain-list strong {
+        display: block;
+        margin-bottom: 8px;
         color: var(--home-title);
+        font-size: 17px;
+        line-height: 1.3;
       }
 
       .stack-subheadline {
@@ -837,29 +815,20 @@ const referenceLinks = [
         }
       }
 
-      @keyframes homeCompanyMarquee {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
-      }
 
-      @media (prefers-reduced-motion: reduce) {
-        .home-company-carousel-track {
-          animation: none;
-        }
-      }
 
       @media (max-width: 1100px) {
         .home-page {
           width: min(1360px, calc(100% - 28px));
         }
 
+        .home-capabilities-heading::after {
+          width: min(28vw, 220px);
+        }
+
         .feature-plain-list {
           grid-template-columns: 1fr;
-          row-gap: 10px;
+          column-gap: 0;
         }
 
         .home-references-grid {
@@ -961,21 +930,6 @@ const referenceLinks = [
           max-width: none;
         }
 
-        .home-company-carousel {
-          margin-bottom: 22px;
-        }
-
-        .home-company-carousel-group {
-          gap: 26px;
-          padding-top: 14px;
-          padding-bottom: 14px;
-        }
-
-        .home-company-logo {
-          width: 118px;
-          height: 48px;
-        }
-
         .why-row:nth-child(even) .why-copy,
         .why-row:nth-child(even) .why-visual {
           order: initial;
@@ -989,6 +943,30 @@ const referenceLinks = [
       @media (max-width: 640px) {
         .home-page {
           width: calc(100% - 20px);
+        }
+
+        .home-capabilities-heading {
+          display: grid;
+          align-items: start;
+          gap: 14px;
+        }
+
+        .home-capabilities-heading::after {
+          width: 120px;
+          transform: none;
+        }
+
+        .feature-plain-list li {
+          padding: 18px 18px 18px 54px;
+        }
+
+        .feature-plain-list li::before {
+          left: 18px;
+          top: 22px;
+        }
+
+        .feature-plain-list strong {
+          font-size: 16px;
         }
 
         .home-hero {
@@ -1012,22 +990,6 @@ const referenceLinks = [
 
         .home-section#outcomes {
           padding-top: 20px;
-        }
-
-        .home-company-carousel {
-          margin-bottom: 18px;
-        }
-
-        .home-company-carousel-group {
-          gap: 22px;
-          padding-left: 14px;
-          padding-right: 14px;
-        }
-
-        .home-company-logo {
-          width: 102px;
-          height: 42px;
-          padding: 6px 8px;
         }
 
         .home-references-panel {
@@ -1117,24 +1079,7 @@ const referenceLinks = [
     </section>
 
     <section class="home-section" id="outcomes">
-      <div class="home-company-carousel" aria-label={home.customersAria} data-i18n-attr-aria-label="home.customersAria">
-        <div class="home-company-carousel-track">
-          <div class="home-company-carousel-group" aria-hidden="false">
-            {companyLogos.map((logo) => (
-              <div class="home-company-logo">
-                <img src={logo.src} alt={logo.alt} loading="lazy" />
-              </div>
-            ))}
-          </div>
-          <div class="home-company-carousel-group" aria-hidden="true">
-            {companyLogos.map((logo) => (
-              <div class="home-company-logo">
-                <img src={logo.src} alt="" loading="lazy" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <hr class="home-blue-divider" aria-hidden="true" />
       <h2 data-i18n="home.outcomes.title">{home.outcomes.title}</h2>
       <div class="why-list">
         {home.outcomes.items.map((item, index) => (
@@ -1145,7 +1090,15 @@ const referenceLinks = [
             </div>
             <div class="why-visual">
               <img
-                src={outcomeImages[index]}
+                class="why-visual-dark"
+                src={outcomeImages[index].dark}
+                alt={item.alt}
+                loading="lazy"
+                data-i18n-attr-alt={`home.outcomes.items.${index}.alt`}
+              />
+              <img
+                class="why-visual-light"
+                src={outcomeImages[index].light}
                 alt={item.alt}
                 loading="lazy"
                 data-i18n-attr-alt={`home.outcomes.items.${index}.alt`}
@@ -1157,12 +1110,16 @@ const referenceLinks = [
     </section>
 
     <section class="home-section" id="capabilities">
-      <h2 data-i18n="home.capabilities.title">{home.capabilities.title}</h2>
-      <ul class="feature-plain-list" aria-label={home.capabilities.listAria} data-i18n-attr-aria-label="home.capabilities.listAria">
-        {home.capabilities.items.map((item, index) => (
-          <li data-i18n-html={`home.capabilities.items.${index}`} set:html={item}></li>
-        ))}
-      </ul>
+      <div class="home-capabilities-shell">
+        <div class="home-capabilities-heading">
+          <h2 data-i18n="home.capabilities.title">{home.capabilities.title}</h2>
+        </div>
+        <ul class="feature-plain-list" aria-label={home.capabilities.listAria} data-i18n-attr-aria-label="home.capabilities.listAria">
+          {home.capabilities.items.map((item, index) => (
+            <li data-i18n-html={`home.capabilities.items.${index}`} set:html={item}></li>
+          ))}
+        </ul>
+      </div>
     </section>
 
     <section class="home-section" id="stack">
