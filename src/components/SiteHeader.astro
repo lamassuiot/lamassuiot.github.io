@@ -70,15 +70,51 @@ const t = sharedTranslations.es;
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a href="/#contact" class="site-shell-cta" data-i18n="header.ctaTalk">{t.header.ctaTalk}</a>
+    <a href="/#contact" class="site-shell-cta site-shell-cta-talk" data-i18n="header.ctaTalk">{t.header.ctaTalk}</a>
     <a href="https://lab.lamassu.io" class="site-shell-cta site-shell-cta-login" data-i18n="header.ctaLogin">{t.header.ctaLogin}</a>
+
+    <button
+      class="site-shell-menu-btn"
+      id="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      aria-label="Open navigation"
+    >
+      <svg class="menu-icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg class="menu-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
   </div>
 </header>
 
+<!-- Mobile nav panel — rendered outside header so it can overlay full width -->
+<div class="site-shell-mobile-nav" id="mobile-nav" aria-hidden="true">
+  <nav class="mobile-nav-links" aria-label={t.header.navAria}>
+    <a href="/#overview" data-i18n="header.nav.platform">{t.header.nav.platform}</a>
+    <a href="/#capabilities" data-i18n="header.nav.features">{t.header.nav.features}</a>
+    <a href="/#outcomes" data-i18n="header.nav.value">{t.header.nav.value}</a>
+    <a href="/#cases" data-i18n="header.nav.cases">{t.header.nav.cases}</a>
+    <a href="/docs/" data-i18n="header.nav.docs">{t.header.nav.docs}</a>
+    <a href="/arch/" data-i18n="header.nav.arch">{t.header.nav.arch}</a>
+    <a href="https://github.com/lamassuiot" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+  <div class="mobile-nav-actions">
+    <a href="/#contact" class="site-shell-cta mobile-nav-cta-talk" data-i18n="header.ctaTalk">{t.header.ctaTalk}</a>
+    <a href="https://lab.lamassu.io" class="site-shell-cta site-shell-cta-login mobile-nav-cta-login" data-i18n="header.ctaLogin">{t.header.ctaLogin}</a>
+  </div>
+</div>
+
 <script>
-  const btn = document.getElementById('theme-toggle');
-  if (btn) {
-    btn.addEventListener('click', () => {
+  // Theme toggle
+  const themeBtn = document.getElementById('theme-toggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
       if (isLight) {
         document.documentElement.removeAttribute('data-theme');
@@ -89,4 +125,37 @@ const t = sharedTranslations.es;
       }
     });
   }
+
+  // Mobile nav toggle
+  const menuBtn = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  function openMenu() {
+    mobileNav?.classList.add('is-open');
+    menuBtn?.setAttribute('aria-expanded', 'true');
+    mobileNav?.removeAttribute('aria-hidden');
+    document.body.classList.add('mobile-nav-open');
+  }
+
+  function closeMenu() {
+    mobileNav?.classList.remove('is-open');
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    mobileNav?.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('mobile-nav-open');
+  }
+
+  menuBtn?.addEventListener('click', () => {
+    const isOpen = mobileNav?.classList.contains('is-open');
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  // Close on nav link click
+  mobileNav?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
 </script>

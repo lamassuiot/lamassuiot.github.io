@@ -339,7 +339,7 @@ const referenceLinks = [
       }
 
       .home-section#outcomes {
-        padding-top: 56px;
+        padding-top: 156px;
       }
 
       .home-section h2 {
@@ -780,18 +780,17 @@ const referenceLinks = [
 
       @media (max-width: 680px) {
         .home-features-grid {
-          grid-template-columns: repeat(5, 240px);
-          overflow-x: auto;
-          scroll-snap-type: x mandatory;
-          padding-bottom: 8px;
-          margin-left: calc(-1 * (100vw - 100%) / 2);
-          padding-left: calc((100vw - 100%) / 2);
-          width: 100vw;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .home-feature-card {
-          scroll-snap-align: start;
-          min-height: 300px;
+          min-height: 0;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .home-features-grid {
+          grid-template-columns: 1fr;
         }
       }
 
@@ -1135,6 +1134,23 @@ const referenceLinks = [
           font-size: 16px;
         }
 
+        /* Center section titles, justify body text */
+        .home-section h2,
+        .home-section .home-capabilities-heading h2 {
+          text-align: center;
+        }
+
+        .home-section > p,
+        .home-overview-meta p,
+        .why-body,
+        .home-feature-body,
+        .stack-row p,
+        .home-reference-body,
+        .home-reference-highlight,
+        .home-references-subtitle {
+          text-align: justify;
+        }
+
         .home-section {
           padding-top: 72px;
         }
@@ -1144,7 +1160,7 @@ const referenceLinks = [
         }
 
         .home-section#outcomes {
-          padding-top: 20px;
+          padding-top: 92px;
         }
 
         .home-references-panel {
@@ -1176,13 +1192,15 @@ const referenceLinks = [
   </Fragment>
 
   <main class="home-page">
+
+    <!-- 1. Hero -->
     <section class="home-hero" id="home">
       <p class="home-kicker" data-i18n="home.hero.kicker">{home.hero.kicker}</p>
       <h1 data-i18n="home.hero.title">{home.hero.title}</h1>
       <p class="home-lead" data-i18n="home.hero.lead">{home.hero.lead}</p>
       <div class="home-actions">
-        <a class="home-btn home-btn-primary" href="#capabilities" data-i18n="home.hero.ctaPrimary">{home.hero.ctaPrimary}</a>
-        <a class="home-btn" href="#outcomes" data-i18n="home.hero.ctaSecondary">{home.hero.ctaSecondary}</a>
+        <a class="home-btn home-btn-primary" href="#features" data-i18n="home.hero.ctaPrimary">{home.hero.ctaPrimary}</a>
+        <a class="home-btn" href="#cases" data-i18n="home.hero.ctaSecondary">{home.hero.ctaSecondary}</a>
       </div>
       <div class="home-stack" aria-label={home.hero.stackAria} data-i18n-attr-aria-label="home.hero.stackAria">
         <span>PKI</span>
@@ -1192,6 +1210,7 @@ const referenceLinks = [
       </div>
     </section>
 
+    <!-- 2. Animated mesh band -->
     <section class="home-mesh-band" aria-hidden="true">
       <div class="home-mesh-shot-line">
         <div class="home-mesh-projectile"></div>
@@ -1208,58 +1227,7 @@ const referenceLinks = [
       </div>
     </section>
 
-    <section class="home-section" id="overview">
-      <h2 data-i18n="home.overview.title">{home.overview.title}</h2>
-      <p data-i18n="home.overview.body">{home.overview.body}</p>
-
-      <div class="home-overview-showcase">
-        <figure class="home-overview-figure">
-          <img
-            src="/dashboard.png"
-            alt={home.overview.imageAlt}
-            loading="lazy"
-            data-i18n-attr-alt="home.overview.imageAlt"
-          />
-        </figure>
-        <aside class="home-overview-meta">
-          {home.overview.blocks.map((block, index) => (
-            <div class="home-overview-block">
-              <p class="home-overview-meta-title" data-i18n={`home.overview.blocks.${index}.title`}>{block.title}</p>
-              <p data-i18n={`home.overview.blocks.${index}.body1`}>{block.body1}</p>
-              {block.body2 && <p data-i18n={`home.overview.blocks.${index}.body2`}>{block.body2}</p>}
-            </div>
-          ))}
-        </aside>
-      </div>
-    </section>
-
-    <section class="home-section" id="outcomes">
-      <div class="home-cta-grid">
-        <div class="home-cta-card home-cta-card--blue">
-          <p class="home-cta-eyebrow" data-i18n="home.cta.left.eyebrow">{home.cta.left.eyebrow}</p>
-          <h2 class="home-cta-heading" data-i18n="home.cta.left.heading">{home.cta.left.heading}</h2>
-          <div class="home-cta-btn-wrap">
-            <a href="#capabilities" class="home-cta-btn" data-i18n="home.cta.left.btn">{home.cta.left.btn}</a>
-          </div>
-        </div>
-        <div class="home-cta-card home-cta-card--purple">
-          <p class="home-cta-eyebrow" data-i18n="home.cta.right.eyebrow">{home.cta.right.eyebrow}</p>
-          <h2 class="home-cta-heading" data-i18n="home.cta.right.heading">{home.cta.right.heading}</h2>
-          <form class="home-cta-form" onsubmit="return false;">
-            <input
-              class="home-cta-input"
-              type="email"
-              placeholder={home.cta.right.inputPlaceholder}
-              data-i18n-attr-placeholder="home.cta.right.inputPlaceholder"
-            />
-            <button class="home-cta-submit" type="submit" data-i18n="home.cta.right.submitLabel">
-              {home.cta.right.submitLabel}
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-
+    <!-- 3. Discipline cards — what Lamassu covers -->
     <section class="home-section" id="features">
       <h2 data-i18n="home.features.title">{home.features.title}</h2>
       <div class="home-features-grid">
@@ -1311,6 +1279,33 @@ const referenceLinks = [
       </div>
     </section>
 
+    <!-- 4. Product overview — the platform in action -->
+    <section class="home-section" id="overview">
+      <h2 data-i18n="home.overview.title">{home.overview.title}</h2>
+      <p data-i18n="home.overview.body">{home.overview.body}</p>
+
+      <div class="home-overview-showcase">
+        <figure class="home-overview-figure">
+          <img
+            src="/dashboard.png"
+            alt={home.overview.imageAlt}
+            loading="lazy"
+            data-i18n-attr-alt="home.overview.imageAlt"
+          />
+        </figure>
+        <aside class="home-overview-meta">
+          {home.overview.blocks.map((block, index) => (
+            <div class="home-overview-block">
+              <p class="home-overview-meta-title" data-i18n={`home.overview.blocks.${index}.title`}>{block.title}</p>
+              <p data-i18n={`home.overview.blocks.${index}.body1`}>{block.body1}</p>
+              {block.body2 && <p data-i18n={`home.overview.blocks.${index}.body2`}>{block.body2}</p>}
+            </div>
+          ))}
+        </aside>
+      </div>
+    </section>
+
+    <!-- 5. Key capabilities list -->
     <section class="home-section" id="capabilities">
       <div class="home-capabilities-shell">
         <div class="home-capabilities-heading">
@@ -1324,6 +1319,7 @@ const referenceLinks = [
       </div>
     </section>
 
+    <!-- 6. Stack fit — no lock-in -->
     <section class="home-section" id="stack">
       <h2 data-i18n="home.cases.title">{home.cases.title}</h2>
       <p class="stack-subheadline" data-i18n="home.cases.subtitle">{home.cases.subtitle}</p>
@@ -1341,6 +1337,7 @@ const referenceLinks = [
       </div>
     </section>
 
+    <!-- 7. Customer references -->
     <section class="home-section" id="cases">
       <div class="home-references-head">
         <h2 data-i18n="home.references.title">{home.references.title}</h2>
@@ -1369,5 +1366,34 @@ const referenceLinks = [
         </div>
       </div>
     </section>
+
+    <!-- 8. CTA — get started + newsletter -->
+    <section class="home-section" id="outcomes">
+      <div class="home-cta-grid">
+        <div class="home-cta-card home-cta-card--blue">
+          <p class="home-cta-eyebrow" data-i18n="home.cta.left.eyebrow">{home.cta.left.eyebrow}</p>
+          <h2 class="home-cta-heading" data-i18n="home.cta.left.heading">{home.cta.left.heading}</h2>
+          <div class="home-cta-btn-wrap">
+            <a href="#features" class="home-cta-btn" data-i18n="home.cta.left.btn">{home.cta.left.btn}</a>
+          </div>
+        </div>
+        <div class="home-cta-card home-cta-card--purple">
+          <p class="home-cta-eyebrow" data-i18n="home.cta.right.eyebrow">{home.cta.right.eyebrow}</p>
+          <h2 class="home-cta-heading" data-i18n="home.cta.right.heading">{home.cta.right.heading}</h2>
+          <form class="home-cta-form" onsubmit="return false;">
+            <input
+              class="home-cta-input"
+              type="email"
+              placeholder={home.cta.right.inputPlaceholder}
+              data-i18n-attr-placeholder="home.cta.right.inputPlaceholder"
+            />
+            <button class="home-cta-submit" type="submit" data-i18n="home.cta.right.submitLabel">
+              {home.cta.right.submitLabel}
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
   </main>
 </SiteLayout>
