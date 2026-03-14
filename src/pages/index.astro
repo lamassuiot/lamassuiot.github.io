@@ -3,12 +3,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import { homeTranslations } from '../lib/i18n';
 
 const home = homeTranslations.es.home;
-const outcomeImages = [
-  { dark: '/imgs/touch_pannel.svg', light: '/imgs/touch_pannel_light.svg' },
-  { dark: '/imgs/dash_skeleton.svg', light: '/imgs/dash_skeleton_light.svg' },
-  { dark: '/imgs/clm.svg', light: '/imgs/clm_light.svg' },
-  { dark: '/imgs/integration.svg', light: '/imgs/integration_light.svg' },
-];
 const referenceLinks = [
   '/ferroviario/',
   '/hosteleria-conectada/',
@@ -345,7 +339,7 @@ const referenceLinks = [
       }
 
       .home-section#outcomes {
-        padding-top: 20px;
+        padding-top: 56px;
       }
 
       .home-section h2 {
@@ -416,89 +410,6 @@ const referenceLinks = [
         color: var(--home-title) !important;
         font-size: 16px !important;
         font-weight: 700;
-      }
-
-      .why-list {
-        margin-top: 10px;
-      }
-
-      .why-row {
-        display: grid;
-        grid-template-columns: minmax(360px, 1.15fr) minmax(280px, 0.85fr);
-        gap: clamp(32px, 4vw, 56px);
-        align-items: center;
-        padding: 64px 0;
-        border-bottom: 1px solid var(--home-border);
-      }
-
-      .why-row:first-child {
-        padding: 20px 0 60px 0;
-      }
-
-      .why-row:nth-child(even) {
-        grid-template-columns: minmax(280px, 0.85fr) minmax(360px, 1.15fr);
-      }
-
-      .why-visual {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 320px;
-        padding: 20px 8px;
-        background-image: radial-gradient(circle, rgba(143, 161, 195, 0.24) 0.8px, transparent 0.8px);
-        background-size: 18px 18px;
-        background-position: center;
-      }
-
-      .why-visual img {
-        display: block;
-        width: 100%;
-        max-width: 520px;
-        height: auto;
-      }
-
-      .why-visual .why-visual-light {
-        display: none;
-      }
-
-      [data-theme='light'] .why-visual .why-visual-dark {
-        display: none;
-      }
-
-      [data-theme='light'] .why-visual .why-visual-light {
-        display: block;
-      }
-
-      .why-row:nth-child(even) .why-copy {
-        order: 2;
-      }
-
-      .why-row:nth-child(even) .why-visual {
-        order: 1;
-      }
-
-      .why-copy {
-        display: grid;
-        gap: 16px;
-        align-content: center;
-        width: 100%;
-        max-width: none;
-      }
-
-      .why-copy h3 {
-        margin: 0;
-        color: var(--home-title);
-        font-size: clamp(24px, 3.1vw, 34px);
-        line-height: 1.08;
-        letter-spacing: -0.03em;
-      }
-
-      .why-body {
-        margin: 0;
-        color: var(--home-text);
-        font-size: 18px;
-        line-height: 1.72;
-        max-width: none;
       }
 
       .home-capabilities-shell {
@@ -742,6 +653,264 @@ const referenceLinks = [
         text-underline-offset: 3px;
       }
 
+      /* Feature Cards */
+      .home-features-grid {
+        margin-top: 32px;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .home-feature-card {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 24px;
+        border-radius: 14px;
+        border: 1px solid var(--home-border);
+        background: var(--home-surface);
+        min-height: 320px;
+      }
+
+      .home-feature-card--featured {
+        background: var(--home-accent);
+        border-color: transparent;
+      }
+
+      .home-feature-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--home-border);
+        background: var(--home-surface-soft);
+        color: var(--home-accent);
+        flex-shrink: 0;
+      }
+
+      .home-feature-card--featured .home-feature-icon {
+        background: rgba(0, 0, 0, 0.18);
+        border-color: rgba(0, 0, 0, 0.12);
+        color: var(--home-accent-text);
+      }
+
+      .home-feature-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .home-feature-tag {
+        margin: 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        color: var(--home-muted);
+      }
+
+      .home-feature-card--featured .home-feature-tag {
+        color: var(--home-accent-text);
+        opacity: 0.65;
+      }
+
+      .home-feature-title {
+        margin: 0;
+        color: var(--home-title);
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        flex: 1;
+      }
+
+      .home-feature-card--featured .home-feature-title {
+        color: var(--home-accent-text);
+        font-size: 20px;
+      }
+
+      .home-feature-body {
+        margin: 0;
+        color: var(--home-text);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .home-feature-card--featured .home-feature-body {
+        color: var(--home-accent-text);
+        opacity: 0.8;
+      }
+
+      .home-feature-link {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: fit-content;
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.15s ease, opacity 0.15s ease;
+        background: var(--home-accent-text);
+        color: var(--home-accent);
+        border: none;
+      }
+
+      .home-feature-card--featured .home-feature-link {
+        background: var(--home-accent-text);
+        color: var(--home-accent);
+      }
+
+      .home-feature-card:not(.home-feature-card--featured) .home-feature-link {
+        background: var(--home-surface-soft);
+        color: var(--home-title);
+        border: 1px solid var(--home-border);
+      }
+
+      .home-feature-link:hover {
+        opacity: 0.85;
+      }
+
+      @media (max-width: 1100px) {
+        .home-features-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 680px) {
+        .home-features-grid {
+          grid-template-columns: repeat(5, 240px);
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          padding-bottom: 8px;
+          margin-left: calc(-1 * (100vw - 100%) / 2);
+          padding-left: calc((100vw - 100%) / 2);
+          width: 100vw;
+        }
+
+        .home-feature-card {
+          scroll-snap-align: start;
+          min-height: 300px;
+        }
+      }
+
+      /* CTA Section */
+      .home-cta-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+      }
+
+      .home-cta-card {
+        border-radius: 16px;
+        padding: clamp(28px, 4vw, 44px);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        min-height: 260px;
+      }
+
+      .home-cta-card--blue {
+        background: linear-gradient(135deg, #3a6abf 0%, #2550a8 52%, #1a3d8f 100%);
+        border: 1px solid rgba(80, 130, 220, 0.45);
+      }
+
+      .home-cta-card--purple {
+        background: radial-gradient(ellipse at 68% 24%, #7a3db8 0%, #5a22a0 48%, #3d1080 100%);
+        border: 1px solid rgba(130, 70, 200, 0.45);
+      }
+
+      .home-cta-card .home-cta-eyebrow {
+        margin: 0;
+        color: rgba(200, 220, 255, 0.65);
+        font-size: 12px;
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: 0.08em;
+      }
+
+      .home-cta-card .home-cta-heading {
+        margin: 0;
+        color: #edf3ff;
+        font-size: clamp(22px, 2.8vw, 32px);
+        line-height: 1.14;
+        letter-spacing: -0.025em;
+        font-weight: 800;
+        flex: 1;
+      }
+
+      .home-cta-btn-wrap {
+        margin-top: auto;
+      }
+
+      .home-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        color: #edf3ff;
+        border-radius: 8px;
+        padding: 11px 20px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        font-family: 'Manrope', sans-serif;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .home-cta-btn:hover {
+        background: rgba(255, 255, 255, 0.24);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .home-cta-form {
+        display: grid;
+        gap: 10px;
+        margin-top: auto;
+      }
+
+      .home-cta-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: #edf3ff;
+        font-size: 14px;
+        font-family: 'Manrope', sans-serif;
+        outline: none;
+        box-sizing: border-box;
+        transition: border-color 0.15s ease, background 0.15s ease;
+      }
+
+      .home-cta-input::placeholder {
+        color: rgba(200, 220, 255, 0.45);
+      }
+
+      .home-cta-input:focus {
+        border-color: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .home-cta-submit {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: #edf3ff;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: 'Manrope', sans-serif;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .home-cta-submit:hover {
+        background: rgba(255, 255, 255, 0.24);
+        border-color: rgba(255, 255, 255, 0.38);
+      }
+
       @keyframes homeMeshSweep {
         from {
           transform: rotate(0deg);
@@ -841,8 +1010,11 @@ const referenceLinks = [
       }
 
       @media (max-width: 860px) {
+        .home-cta-grid {
+          grid-template-columns: 1fr;
+        }
+
         .home-overview-showcase,
-        .why-row,
         .stack-row,
         .home-references-grid {
           grid-template-columns: 1fr;
@@ -916,23 +1088,6 @@ const referenceLinks = [
         .home-actions,
         .home-stack {
           justify-content: center;
-        }
-
-        .why-visual img {
-          max-width: 420px;
-        }
-
-        .why-copy {
-          gap: 12px;
-        }
-
-        .why-body {
-          max-width: none;
-        }
-
-        .why-row:nth-child(even) .why-copy,
-        .why-row:nth-child(even) .why-visual {
-          order: initial;
         }
 
         .home-reference-card {
@@ -1079,31 +1234,78 @@ const referenceLinks = [
     </section>
 
     <section class="home-section" id="outcomes">
-      <hr class="home-blue-divider" aria-hidden="true" />
-      <h2 data-i18n="home.outcomes.title">{home.outcomes.title}</h2>
-      <div class="why-list">
-        {home.outcomes.items.map((item, index) => (
-          <article class="why-row">
-            <div class="why-copy">
-              <h3 data-i18n={`home.outcomes.items.${index}.title`}>{item.title}</h3>
-              <p class="why-body" data-i18n={`home.outcomes.items.${index}.body`}>{item.body}</p>
+      <div class="home-cta-grid">
+        <div class="home-cta-card home-cta-card--blue">
+          <p class="home-cta-eyebrow" data-i18n="home.cta.left.eyebrow">{home.cta.left.eyebrow}</p>
+          <h2 class="home-cta-heading" data-i18n="home.cta.left.heading">{home.cta.left.heading}</h2>
+          <div class="home-cta-btn-wrap">
+            <a href="#capabilities" class="home-cta-btn" data-i18n="home.cta.left.btn">{home.cta.left.btn}</a>
+          </div>
+        </div>
+        <div class="home-cta-card home-cta-card--purple">
+          <p class="home-cta-eyebrow" data-i18n="home.cta.right.eyebrow">{home.cta.right.eyebrow}</p>
+          <h2 class="home-cta-heading" data-i18n="home.cta.right.heading">{home.cta.right.heading}</h2>
+          <form class="home-cta-form" onsubmit="return false;">
+            <input
+              class="home-cta-input"
+              type="email"
+              placeholder={home.cta.right.inputPlaceholder}
+              data-i18n-attr-placeholder="home.cta.right.inputPlaceholder"
+            />
+            <button class="home-cta-submit" type="submit" data-i18n="home.cta.right.submitLabel">
+              {home.cta.right.submitLabel}
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section" id="features">
+      <h2 data-i18n="home.features.title">{home.features.title}</h2>
+      <div class="home-features-grid">
+        {home.features.items.map((item, index) => (
+          <article class={`home-feature-card${index === 0 ? ' home-feature-card--featured' : ''}`}>
+            <div class="home-feature-icon" aria-hidden="true">
+              {index === 0 && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  <circle cx="12" cy="16" r="1" fill="currentColor"/>
+                </svg>
+              )}
+              {index === 1 && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="7" y="7" width="10" height="10" rx="1"/>
+                  <path d="M9 4v3M12 4v3M15 4v3M9 17v3M12 17v3M15 17v3M4 9h3M4 12h3M4 15h3M17 9h3M17 12h3M17 15h3"/>
+                </svg>
+              )}
+              {index === 2 && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l8 4v5c0 5.25-4 8.75-8 10-4-1.25-8-4.75-8-10V7l8-4z"/>
+                  <path d="M12 9v4M12 17h.01"/>
+                </svg>
+              )}
+              {index === 3 && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/>
+                  <path d="M14 4l-4 16"/>
+                </svg>
+              )}
+              {index === 4 && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="5" cy="12" r="2"/>
+                  <circle cx="19" cy="5" r="2"/>
+                  <circle cx="19" cy="19" r="2"/>
+                  <path d="M7 11.5l10-5M7 12.5l10 5"/>
+                </svg>
+              )}
             </div>
-            <div class="why-visual">
-              <img
-                class="why-visual-dark"
-                src={outcomeImages[index].dark}
-                alt={item.alt}
-                loading="lazy"
-                data-i18n-attr-alt={`home.outcomes.items.${index}.alt`}
-              />
-              <img
-                class="why-visual-light"
-                src={outcomeImages[index].light}
-                alt={item.alt}
-                loading="lazy"
-                data-i18n-attr-alt={`home.outcomes.items.${index}.alt`}
-              />
-            </div>
+            <p class="home-feature-tag" data-i18n={`home.features.items.${index}.tag`}>{item.tag}</p>
+            <h3 class="home-feature-title" data-i18n={`home.features.items.${index}.title`}>{item.title}</h3>
+            <p class="home-feature-body" data-i18n={`home.features.items.${index}.body`}>{item.body}</p>
+            <a href="#capabilities" class="home-feature-link" data-i18n={`home.features.items.${index}.link`}>
+              {item.link} →
+            </a>
           </article>
         ))}
       </div>

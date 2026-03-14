@@ -172,6 +172,54 @@ export const homeTranslations = {
           },
         ],
       },
+      cta: {
+        left: {
+          eyebrow: 'Why we\'re different',
+          heading: 'Get started today and take control of your IoT fleet security.',
+          btn: 'Explore features',
+        },
+        right: {
+          eyebrow: 'Newsletter',
+          heading: 'Sign up and receive product updates and news from Lamassu.',
+          inputPlaceholder: 'your@email.com',
+          submitLabel: 'Subscribe',
+        },
+      },
+      features: {
+        title: 'One platform, every security discipline',
+        items: [
+          {
+            tag: 'PKI',
+            title: 'Public Key Infrastructure',
+            body: 'Deploy a full CA hierarchy with flexible issuance policies, CRL and OCSP, automated renewal and cryptographic control at every layer.',
+            link: 'Learn more',
+          },
+          {
+            tag: 'Device Identity',
+            title: 'Device Identity',
+            body: 'Assign a unique cryptographic identity to every device at manufacturing time and track it through its entire operational life.',
+            link: 'Learn more',
+          },
+          {
+            tag: 'Secure Updates',
+            title: 'Secure Software Updates',
+            body: 'Sign firmware and software packages so your fleet only runs verified, untampered code — regardless of transport or deployment method.',
+            link: 'Learn more',
+          },
+          {
+            tag: 'Code Signing',
+            title: 'Code Signing',
+            body: 'Protect your release pipeline with certificate-based signing for binaries, containers, scripts and build artifacts.',
+            link: 'Learn more',
+          },
+          {
+            tag: 'Integrations',
+            title: 'Corporate Integrations',
+            body: 'Connect to AWS IoT, Azure, SCEP, EST, LDAP and your own platforms via an extensible connector model and open APIs.',
+            link: 'Learn more',
+          },
+        ],
+      },
       capabilities: {
         title: 'Key features',
         listAria: 'Key features',
@@ -315,6 +363,54 @@ export const homeTranslations = {
           },
         ],
       },
+      cta: {
+        left: {
+          eyebrow: 'Por qué somos diferentes',
+          heading: 'Empieza hoy y toma el control de la seguridad de tu flota IoT.',
+          btn: 'Explorar funcionalidades',
+        },
+        right: {
+          eyebrow: 'Newsletter',
+          heading: 'Suscríbete y recibe actualizaciones del producto y novedades de Lamassu.',
+          inputPlaceholder: 'tu@email.com',
+          submitLabel: 'Suscribirse',
+        },
+      },
+      features: {
+        title: 'Una plataforma, todas las disciplinas de seguridad',
+        items: [
+          {
+            tag: 'PKI',
+            title: 'Infraestructura de clave pública',
+            body: 'Despliega una jerarquía de CAs completa con políticas de emisión flexibles, CRL y OCSP, renovación automatizada y control criptográfico en cada capa.',
+            link: 'Saber más',
+          },
+          {
+            tag: 'Device Identity',
+            title: 'Identidad de dispositivos',
+            body: 'Asigna una identidad criptográfica única a cada dispositivo en fabricación y haz seguimiento durante toda su vida operativa.',
+            link: 'Saber más',
+          },
+          {
+            tag: 'Secure Updates',
+            title: 'Actualizaciones seguras de software',
+            body: 'Firma firmware y paquetes de software para que tu flota solo ejecute código verificado e íntegro, independientemente del método de despliegue.',
+            link: 'Saber más',
+          },
+          {
+            tag: 'Code Signing',
+            title: 'Firma de código',
+            body: 'Protege tu pipeline de releases con firma basada en certificados para binarios, contenedores, scripts y artefactos de build.',
+            link: 'Saber más',
+          },
+          {
+            tag: 'Integrations',
+            title: 'Integraciones corporativas',
+            body: 'Conéctate a AWS IoT, Azure, SCEP, EST, LDAP y tus propias plataformas a través de un modelo de conectores extensible y APIs abiertas.',
+            link: 'Saber más',
+          },
+        ],
+      },
       capabilities: {
         title: 'Funcionalidades clave',
         listAria: 'Funcionalidades clave',
@@ -455,6 +551,54 @@ export const homeTranslations = {
             body:
               'APIek, SDKek eta konektoreek Lamassu cloud plataformekin, dagoen azpiegiturarekin, sistema korporatiboekin eta fabrikazio-prozesuekin integratzea ahalbidetzen dute, ekoizpenean duzun stack-a berreraiki behar izan gabe.',
             alt: 'Ekosistemen eta plataformen integrazioaren ilustrazioa',
+          },
+        ],
+      },
+      cta: {
+        left: {
+          eyebrow: 'Zergatik gara desberdinak',
+          heading: 'Hasi gaur eta hartu kontrola zure IoT flotaren segurtasunean.',
+          btn: 'Esploratu funtzionalitateak',
+        },
+        right: {
+          eyebrow: 'Newsletter',
+          heading: 'Harpidetu eta jaso produktuaren eguneratzeak eta Lamassu-ren berriak.',
+          inputPlaceholder: 'zure@email.com',
+          submitLabel: 'Harpidetu',
+        },
+      },
+      features: {
+        title: 'Plataforma bakarra, segurtasun diziplina guztiak',
+        items: [
+          {
+            tag: 'PKI',
+            title: 'Gako publikoaren azpiegitura',
+            body: 'Zabaldu CA hierarkia osoa emisio-politika malguekin, CRL eta OCSP, berritze automatizatua eta kontrol kriptografikoa geruzetan.',
+            link: 'Gehiago jakin',
+          },
+          {
+            tag: 'Device Identity',
+            title: 'Gailuen identitatea',
+            body: 'Esleitu identitate kriptografiko bakarra gailu bakoitzari fabrikazioan eta jarraitu bizi-ziklo operatibo osoan zehar.',
+            link: 'Gehiago jakin',
+          },
+          {
+            tag: 'Secure Updates',
+            title: 'Software eguneraketa seguruak',
+            body: 'Sinatu firmware eta software paketeak zure flotan soilik egiaztatu eta osotasuna betetako kodea exekutatzeko.',
+            link: 'Gehiago jakin',
+          },
+          {
+            tag: 'Code Signing',
+            title: 'Kodearen sinadura',
+            body: 'Babestu zure release pipeline ziurtagiri-oinarritutako sinadurarekin binario, edukiontzi, script eta build artefaktuetarako.',
+            link: 'Gehiago jakin',
+          },
+          {
+            tag: 'Integrations',
+            title: 'Enpresako integrazioak',
+            body: 'Konektatu AWS IoT, Azure, SCEP, EST, LDAP eta zure plataformei konektore-eredu hedagarri eta API ireki baten bidez.',
+            link: 'Gehiago jakin',
           },
         ],
       },
