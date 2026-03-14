@@ -413,74 +413,74 @@ const referenceLinks = [
       }
 
       .home-capabilities-shell {
-        margin-top: 24px;
-        display: grid;
-        gap: 22px;
-        align-items: start;
+        margin-top: 32px;
       }
 
       .home-capabilities-heading {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 24px;
-        padding-bottom: 10px;
+        padding-bottom: 32px;
       }
 
       .home-capabilities-heading h2 {
         max-width: none;
       }
 
-      .home-capabilities-heading::after {
-        content: '';
-        width: min(36vw, 320px);
-        height: 2px;
-        background: linear-gradient(90deg, var(--home-accent) 0%, rgba(126, 156, 255, 0.14) 100%);
-        flex: 0 0 auto;
-        transform: translateY(-6px);
-      }
-
       .feature-plain-list {
         margin: 0;
         padding: 0;
         list-style: none;
-        counter-reset: capabilities;
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: 36px;
-        row-gap: 16px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
       }
 
       .feature-plain-list li {
-        counter-increment: capabilities;
-        position: relative;
-        padding: 22px 24px 22px 68px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 24px;
+        background: var(--home-surface);
+        border: 1px solid var(--home-border);
+        border-top: 2px solid var(--home-accent);
+        border-radius: 12px;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .feature-plain-list li:hover {
         background: var(--home-surface-soft);
-        border-radius: 10px;
-        color: var(--home-text);
-        font-size: 15px;
-        line-height: 1.62;
+        border-color: color-mix(in srgb, var(--home-accent) 60%, var(--home-border));
       }
 
-      .feature-plain-list li::before {
-        content: counter(capabilities, decimal-leading-zero);
+      .cap-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        display: grid;
+        place-items: center;
+        background: var(--home-accent-soft, rgba(126, 156, 255, 0.12));
         color: var(--home-accent);
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 1;
-        letter-spacing: 0.08em;
-        position: absolute;
-        left: 24px;
-        top: 26px;
+        flex-shrink: 0;
       }
 
-      .feature-plain-list strong {
+      .cap-icon svg {
+        width: 18px;
+        height: 18px;
         display: block;
-        margin-bottom: 8px;
+      }
+
+      .cap-title {
         color: var(--home-title);
-        font-size: 17px;
+        font-size: 15px;
+        font-weight: 700;
         line-height: 1.3;
+        letter-spacing: -0.01em;
+      }
+
+      .cap-body {
+        margin: 0;
+        color: var(--home-text);
+        font-size: 13.5px;
+        line-height: 1.65;
+        flex: 1;
       }
 
       .stack-subheadline {
@@ -488,57 +488,78 @@ const referenceLinks = [
         color: var(--home-muted) !important;
       }
 
-      .stack-rows {
-        margin-top: 20px;
-        border-top: 1px solid var(--home-border);
-      }
-
-      .stack-row {
+      .stack-grid {
+        margin-top: 28px;
         display: grid;
-        grid-template-columns: minmax(280px, 0.85fr) 1.4fr;
-        gap: 22px;
-        align-items: start;
-        padding: 16px 0;
-        border-bottom: 1px solid var(--home-border);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
       }
 
-      .stack-title {
-        margin: 0;
+      .stack-card {
         display: flex;
-        align-items: flex-start;
-        gap: 10px;
+        flex-direction: column;
+        gap: 14px;
+        padding: 28px;
+        background: var(--home-surface);
+        border: 1px solid var(--home-border);
+        border-radius: 14px;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .stack-card:hover {
+        background: var(--home-surface-soft);
+        border-color: color-mix(in srgb, var(--home-accent) 40%, var(--home-border));
+      }
+
+      .stack-card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        background: var(--home-accent-soft, rgba(126, 156, 255, 0.12));
+        color: var(--home-accent);
+        flex-shrink: 0;
+      }
+
+      .stack-card-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+
+      .stack-card-title {
+        margin: 0;
         color: var(--home-title);
-        font-size: 18px;
-        line-height: 1.35;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
       }
 
-      .stack-icon {
-        width: 16px;
-        height: 16px;
-        margin-top: 4px;
-        border: 1.5px solid var(--home-muted);
-        border-radius: 4px;
-        flex: 0 0 16px;
-        position: relative;
-      }
-
-      .stack-icon::after {
-        content: '';
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: var(--home-accent);
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      .stack-row p {
+      .stack-card-body {
         margin: 0;
         color: var(--home-text);
-        font-size: 15px;
-        line-height: 1.55;
+        font-size: 14px;
+        line-height: 1.65;
+        flex: 1;
+      }
+
+      .stack-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+      }
+
+      .stack-badge {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--home-muted);
+        background: var(--home-surface-soft);
+        border: 1px solid var(--home-border);
       }
 
       .home-references-head {
@@ -990,13 +1011,8 @@ const referenceLinks = [
           width: min(1360px, calc(100% - 28px));
         }
 
-        .home-capabilities-heading::after {
-          width: min(28vw, 220px);
-        }
-
         .feature-plain-list {
-          grid-template-columns: 1fr;
-          column-gap: 0;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .home-references-grid {
@@ -1014,10 +1030,14 @@ const referenceLinks = [
         }
 
         .home-overview-showcase,
-        .stack-row,
         .home-references-grid {
           grid-template-columns: 1fr;
           gap: 22px;
+        }
+
+        .stack-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
         }
 
         .home-overview-meta {
@@ -1099,28 +1119,12 @@ const referenceLinks = [
           width: calc(100% - 20px);
         }
 
-        .home-capabilities-heading {
-          display: grid;
-          align-items: start;
-          gap: 14px;
-        }
-
-        .home-capabilities-heading::after {
-          width: 120px;
-          transform: none;
+        .feature-plain-list {
+          grid-template-columns: 1fr;
         }
 
         .feature-plain-list li {
-          padding: 18px 18px 18px 54px;
-        }
-
-        .feature-plain-list li::before {
-          left: 18px;
-          top: 22px;
-        }
-
-        .feature-plain-list strong {
-          font-size: 16px;
+          padding: 20px;
         }
 
         .home-hero {
@@ -1142,9 +1146,8 @@ const referenceLinks = [
 
         .home-section > p,
         .home-overview-meta p,
-        .why-body,
         .home-feature-body,
-        .stack-row p,
+        .stack-card-body,
         .home-reference-body,
         .home-reference-highlight,
         .home-references-subtitle {
@@ -1313,7 +1316,18 @@ const referenceLinks = [
         </div>
         <ul class="feature-plain-list" aria-label={home.capabilities.listAria} data-i18n-attr-aria-label="home.capabilities.listAria">
           {home.capabilities.items.map((item, index) => (
-            <li data-i18n-html={`home.capabilities.items.${index}`} set:html={item}></li>
+            <li>
+              <div class="cap-icon" aria-hidden="true">
+                {index === 0 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v5c0 4.5-3.5 7.5-7 9-3.5-1.5-7-4.5-7-9V6l7-4z"/></svg>}
+                {index === 1 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 4v3M12 4v3M15 4v3M9 17v3M12 17v3M15 17v3M4 9h3M4 12h3M4 15h3M17 9h3M17 12h3M17 15h3"/></svg>}
+                {index === 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg>}
+                {index === 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="3"/><path d="M11 15h5a2 2 0 0 0 0-4h-1V9a4 4 0 0 0-8 0v2"/></svg>}
+                {index === 4 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v3M11 14h.01"/></svg>}
+                {index === 5 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 0 0 4 4h10a4 4 0 0 0 0-8h-.5A5.5 5.5 0 0 0 3 15z"/></svg>}
+              </div>
+              <strong class="cap-title" data-i18n={`home.capabilities.items.${index}.title`}>{item.title}</strong>
+              <p class="cap-body" data-i18n={`home.capabilities.items.${index}.body`}>{item.body}</p>
+            </li>
           ))}
         </ul>
       </div>
@@ -1324,16 +1338,55 @@ const referenceLinks = [
       <h2 data-i18n="home.cases.title">{home.cases.title}</h2>
       <p class="stack-subheadline" data-i18n="home.cases.subtitle">{home.cases.subtitle}</p>
 
-      <div class="stack-rows">
-        {home.cases.rows.map((row, index) => (
-          <article class="stack-row">
-            <p class="stack-title">
-              <span class="stack-icon" aria-hidden="true"></span>
-              <strong data-i18n={`home.cases.rows.${index}.title`}>{row.title}</strong>
-            </p>
-            <p data-i18n={`home.cases.rows.${index}.body`}>{row.body}</p>
-          </article>
-        ))}
+      <div class="stack-grid">
+        <article class="stack-card">
+          <div class="stack-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/>
+              <path d="M12 8v4M12 16h.01"/>
+            </svg>
+          </div>
+          <h3 class="stack-card-title" data-i18n="home.cases.rows.0.title">{home.cases.rows[0].title}</h3>
+          <p class="stack-card-body" data-i18n="home.cases.rows.0.body">{home.cases.rows[0].body}</p>
+          <div class="stack-badges">
+            <span class="stack-badge">AWS KMS</span>
+            <span class="stack-badge">PKCS#11</span>
+            <span class="stack-badge">HashiCorp Vault</span>
+            <span class="stack-badge">Software</span>
+          </div>
+        </article>
+
+        <article class="stack-card">
+          <div class="stack-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+              <path d="M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6"/>
+            </svg>
+          </div>
+          <h3 class="stack-card-title" data-i18n="home.cases.rows.1.title">{home.cases.rows[1].title}</h3>
+          <p class="stack-card-body" data-i18n="home.cases.rows.1.body">{home.cases.rows[1].body}</p>
+          <div class="stack-badges">
+            <span class="stack-badge">PostgreSQL</span>
+            <span class="stack-badge">RabbitMQ</span>
+            <span class="stack-badge">AWS EventBridge</span>
+          </div>
+        </article>
+
+        <article class="stack-card">
+          <div class="stack-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 15a4 4 0 0 0 4 4h10a4 4 0 0 0 0-8h-.5A5.5 5.5 0 0 0 3 15z"/>
+              <path d="M12 9V5M9 8l3-3 3 3"/>
+            </svg>
+          </div>
+          <h3 class="stack-card-title" data-i18n="home.cases.rows.2.title">{home.cases.rows[2].title}</h3>
+          <p class="stack-card-body" data-i18n="home.cases.rows.2.body">{home.cases.rows[2].body}</p>
+          <div class="stack-badges">
+            <span class="stack-badge">AWS IoT Core</span>
+            <span class="stack-badge">Extensible API</span>
+          </div>
+        </article>
       </div>
     </section>
 
