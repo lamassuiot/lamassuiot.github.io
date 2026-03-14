@@ -189,13 +189,6 @@ export const homeTranslations = {
         title: 'One platform, every security discipline',
         items: [
           {
-            tag: 'PKI',
-            title: 'Public Key Infrastructure',
-            body: 'Deploy a full CA hierarchy with flexible issuance policies, automated CRL and OCSP, and cryptographic control at every layer — from root to device certificates.',
-            points: ['Full CA hierarchy deployed in minutes, not weeks', 'CRL and OCSP endpoints automated and always current', 'Issuance policies enforced at the API, not in documentation'],
-            link: 'Learn more',
-          },
-          {
             tag: 'Device Identity',
             title: 'Device Identity',
             body: 'Assign a unique cryptographic identity to every device at manufacturing time and track it through its entire operational life — from provisioning to decommission.',
@@ -203,17 +196,17 @@ export const homeTranslations = {
             link: 'Learn more',
           },
           {
-            tag: 'Secure Updates',
-            title: 'Secure Software Updates',
-            body: 'Sign firmware and software packages so your fleet only runs verified, untampered code — regardless of transport or deployment method.',
-            points: ['Sign firmware and packages with CA-issued certificates', 'Devices verify code integrity before executing any update', 'Delivery-method agnostic — OTA, USB, cloud or on-prem'],
+            tag: 'PKI',
+            title: 'Public Key Infrastructure',
+            body: 'Deploy a full CA hierarchy with flexible issuance policies, automated CRL and OCSP, and cryptographic control at every layer — from root to device certificates.',
+            points: ['Full CA hierarchy deployed in minutes, not weeks', 'CRL and OCSP endpoints automated and always current', 'Issuance policies enforced at the API, not in documentation'],
             link: 'Learn more',
           },
           {
-            tag: 'Code Signing',
-            title: 'Code Signing',
-            body: 'Protect your release pipeline with certificate-based signing for binaries, containers, scripts and build artifacts — trust anchored to your own CA.',
-            points: ['Sign binaries, containers, scripts and build artifacts', 'Trust chain anchored to your own CA, not a third party', 'Plugs into your CI/CD pipeline without custom tooling'],
+            tag: 'PQC',
+            title: 'PQC Ready PKI',
+            body: 'Issue PURE post-quantum certificates and keys, and support hybrid certificates via the chameleon standard (draft-bonnell-lamps-chameleon-certs) — ready for the cryptographic transition without breaking existing compatibility.',
+            points: ['PURE key and certificate generation with post-quantum algorithms', 'Chameleon hybrid certificates for backward compatibility with classical infrastructure', 'Gradual migration: run classical and post-quantum cryptography in parallel'],
             link: 'Learn more',
           },
           {
@@ -409,13 +402,6 @@ export const homeTranslations = {
         title: 'Una plataforma, todas las disciplinas de seguridad',
         items: [
           {
-            tag: 'PKI',
-            title: 'Infraestructura de clave pública',
-            body: 'Despliega una jerarquía de CAs completa con políticas de emisión flexibles, CRL y OCSP automatizados y control criptográfico en cada capa — desde la raíz hasta los certificados de dispositivo.',
-            points: ['Jerarquía de CAs completa desplegada en minutos, no semanas', 'Endpoints de CRL y OCSP automatizados y siempre actualizados', 'Políticas de emisión aplicadas en la API, no en la documentación'],
-            link: 'Saber más',
-          },
-          {
             tag: 'Device Identity',
             title: 'Identidad de dispositivos',
             body: 'Asigna una identidad criptográfica única a cada dispositivo en fabricación y haz seguimiento durante todo su ciclo de vida operativo — desde el aprovisionamiento hasta la baja.',
@@ -423,17 +409,17 @@ export const homeTranslations = {
             link: 'Saber más',
           },
           {
-            tag: 'Secure Updates',
-            title: 'Actualizaciones seguras de software',
-            body: 'Firma firmware y paquetes de software para que tu flota solo ejecute código verificado e íntegro, independientemente del método de despliegue.',
-            points: ['Firma firmware y paquetes con certificados emitidos por tu CA', 'Los dispositivos verifican la integridad del código antes de ejecutar', 'Compatible con OTA, USB, cloud u on-prem sin cambios de arquitectura'],
+            tag: 'PKI',
+            title: 'Infraestructura de clave pública',
+            body: 'Despliega una jerarquía de CAs completa con políticas de emisión flexibles, CRL y OCSP automatizados y control criptográfico en cada capa — desde la raíz hasta los certificados de dispositivo.',
+            points: ['Jerarquía de CAs completa desplegada en minutos, no semanas', 'Endpoints de CRL y OCSP automatizados y siempre actualizados', 'Políticas de emisión aplicadas en la API, no en la documentación'],
             link: 'Saber más',
           },
           {
-            tag: 'Code Signing',
-            title: 'Firma de código',
-            body: 'Protege tu pipeline de releases con firma basada en certificados para binarios, contenedores, scripts y artefactos de build — confianza anclada a tu propia CA.',
-            points: ['Firma binarios, contenedores, scripts y artefactos de build', 'Cadena de confianza anclada a tu propia CA, no a un tercero', 'Se integra en tu pipeline CI/CD sin herramientas adicionales'],
+            tag: 'PQC',
+            title: 'PQC Ready PKI',
+            body: 'Emite certificados y claves PURE post-cuánticos, y soporta certificados híbridos mediante el estándar chameleon (draft-bonnell-lamps-chameleon-certs) — preparado para la transición criptográfica sin romper la compatibilidad existente.',
+            points: ['Generación de claves y certificados PURE con algoritmos post-cuánticos', 'Certificados híbridos chameleon para compatibilidad con infraestructura clásica', 'Migración gradual: combina criptografía clásica y post-cuántica en paralelo'],
             link: 'Saber más',
           },
           {
@@ -629,13 +615,6 @@ export const homeTranslations = {
         title: 'Plataforma bakarra, segurtasun diziplina guztiak',
         items: [
           {
-            tag: 'PKI',
-            title: 'Gako publikoaren azpiegitura',
-            body: 'Zabaldu CA hierarkia osoa emisio-politika malguekin, CRL eta OCSP automatizatuekin eta kontrol kriptografikoarekin geruzetan — erroa eta gailuen ziurtagiriak barne.',
-            points: ['CA hierarkia osoa minutuetan zabalduta, ez asteetan', 'CRL eta OCSP endpoint-ak automatizatuta eta beti eguneratuta', 'Jaulkipen-politikak APIan aplikatuta, ez dokumentazioan'],
-            link: 'Gehiago jakin',
-          },
-          {
             tag: 'Device Identity',
             title: 'Gailuen identitatea',
             body: 'Esleitu identitate kriptografiko bakarra gailu bakoitzari fabrikazioan eta jarraitu bizi-ziklo operatibo osoan zehar — horniduratatik bajara arte.',
@@ -643,17 +622,17 @@ export const homeTranslations = {
             link: 'Gehiago jakin',
           },
           {
-            tag: 'Secure Updates',
-            title: 'Software eguneraketa seguruak',
-            body: 'Sinatu firmware eta software paketeak zure flotan soilik egiaztatu eta osotasuna betetako kodea exekutatzeko, hedapen-metodoaren arabera.',
-            points: ['Firmatu firmware eta paketeak zure CAk emandako ziurtagiriekin', 'Gailuek kode-osotasuna egiaztatzen dute eguneraketa exekutatu aurretik', 'OTA, USB, cloud edo on-prem bateragarria arkitektura aldatu gabe'],
+            tag: 'PKI',
+            title: 'Gako publikoaren azpiegitura',
+            body: 'Zabaldu CA hierarkia osoa emisio-politika malguekin, CRL eta OCSP automatizatuekin eta kontrol kriptografikoarekin geruzetan — erroa eta gailuen ziurtagiriak barne.',
+            points: ['CA hierarkia osoa minutuetan zabalduta, ez asteetan', 'CRL eta OCSP endpoint-ak automatizatuta eta beti eguneratuta', 'Jaulkipen-politikak APIan aplikatuta, ez dokumentazioan'],
             link: 'Gehiago jakin',
           },
           {
-            tag: 'Code Signing',
-            title: 'Kodearen sinadura',
-            body: 'Babestu zure release pipeline ziurtagiri-oinarritutako sinadurarekin binario, edukiontzi, script eta build artefaktuetarako — konfiantza zure CA propioan ainguratuta.',
-            points: ['Firmatu bitarrak, edukiontziak, scriptak eta build artefaktuak', 'Konfiantza-katea zure CA propioan ainguratuta, ez hirugarren batean', 'CI/CD pipeline-an txertatzen da tresna gehigarririk gabe'],
+            tag: 'PQC',
+            title: 'PQC Ready PKI',
+            body: 'Eman PURE ziurtagiri eta gako post-kuantikoak, eta onartu ziurtagiri hibridoak chameleon estandarraren bidez (draft-bonnell-lamps-chameleon-certs) — trantsizioa prestatu bateragarritasuna hautsi gabe.',
+            points: ['PURE gako eta ziurtagirien sorkuntza algoritmo post-kuantikoekin', 'Chameleon ziurtagiri hibridoak azpiegitura klasikorako atzerako bateragarritasunerako', 'Migrazio gradualera: kriptografia klasikoa eta post-kuantikoa paraleloan'],
             link: 'Gehiago jakin',
           },
           {
