@@ -424,36 +424,45 @@ const referenceLinks = [
         max-width: none;
       }
 
-      .feature-plain-list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
+      /* Capabilities — alternating feature rows */
+      .cap-feat-list {
+        margin-top: 40px;
       }
 
-      .feature-plain-list li {
+      .cap-feat-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 72px;
+        padding: 64px 0;
+        border-top: 1px solid var(--home-border);
+        align-items: center;
+      }
+
+      .cap-feat-row:last-child {
+        border-bottom: 1px solid var(--home-border);
+      }
+
+      /* Flip image to left on even rows */
+      .cap-feat-row:nth-child(even) .cap-feat-img {
+        order: -1;
+      }
+
+      .cap-feat-text {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        padding: 24px;
-        background: var(--home-surface);
-        border: 1px solid var(--home-border);
-        border-top: 2px solid var(--home-accent);
-        border-radius: 12px;
-        transition: background 0.15s ease, border-color 0.15s ease;
+        gap: 18px;
       }
 
-      .feature-plain-list li:hover {
-        background: var(--home-surface-soft);
-        border-color: color-mix(in srgb, var(--home-accent) 60%, var(--home-border));
+      .cap-feat-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
       }
 
       .cap-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 9px;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
         display: grid;
         place-items: center;
         background: var(--home-accent-soft, rgba(126, 156, 255, 0.12));
@@ -462,25 +471,92 @@ const referenceLinks = [
       }
 
       .cap-icon svg {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         display: block;
       }
 
-      .cap-title {
+      .cap-feat-title {
+        margin: 0;
         color: var(--home-title);
-        font-size: 15px;
-        font-weight: 700;
-        line-height: 1.3;
-        letter-spacing: -0.01em;
+        font-size: clamp(20px, 2.4vw, 26px);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.025em;
       }
 
-      .cap-body {
+      .cap-feat-desc {
         margin: 0;
         color: var(--home-text);
-        font-size: 13.5px;
-        line-height: 1.65;
-        flex: 1;
+        font-size: 15px;
+        line-height: 1.68;
+      }
+
+      .cap-points {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+
+      .cap-point {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: var(--home-text);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .cap-point::before {
+        content: '✓';
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 800;
+        background: var(--home-accent-soft, rgba(126, 156, 255, 0.14));
+        color: var(--home-accent);
+      }
+
+      .cap-feat-img {
+        aspect-ratio: 4 / 3;
+        background: var(--home-surface-soft);
+        border: 1px solid var(--home-border);
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      [data-theme='light'] .cap-feat-img {
+        background: #eef1f8;
+      }
+
+      .cap-img-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        color: var(--home-muted);
+        opacity: 0.4;
+        user-select: none;
+        pointer-events: none;
+      }
+
+      .cap-img-placeholder svg {
+        width: 36px;
+        height: 36px;
+      }
+
+      .cap-img-placeholder span {
+        font-size: 11px;
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: 0.06em;
       }
 
       .stack-subheadline {
@@ -674,7 +750,38 @@ const referenceLinks = [
         text-underline-offset: 3px;
       }
 
-      /* Feature Cards */
+      /* Feature discipline tag + CTA link (used in alternating rows) */
+      .feat-tag {
+        margin: 0 0 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        color: var(--home-accent);
+      }
+
+      .feat-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        width: fit-content;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid var(--home-border);
+        background: var(--home-surface-soft);
+        color: var(--home-title);
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .feat-link:hover {
+        background: var(--home-surface);
+        border-color: var(--home-muted);
+      }
+
+      /* Discipline overview cards */
       .home-features-grid {
         margin-top: 32px;
         display: grid;
@@ -685,12 +792,11 @@ const referenceLinks = [
       .home-feature-card {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 14px;
         padding: 24px;
         border-radius: 14px;
         border: 1px solid var(--home-border);
         background: var(--home-surface);
-        min-height: 320px;
       }
 
       .home-feature-card--featured {
@@ -716,10 +822,7 @@ const referenceLinks = [
         color: var(--home-accent-text);
       }
 
-      .home-feature-icon svg {
-        width: 20px;
-        height: 20px;
-      }
+      .home-feature-icon svg { width: 20px; height: 20px; }
 
       .home-feature-tag {
         margin: 0;
@@ -737,7 +840,7 @@ const referenceLinks = [
       .home-feature-title {
         margin: 0;
         color: var(--home-title);
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 800;
         line-height: 1.2;
         letter-spacing: -0.02em;
@@ -746,7 +849,6 @@ const referenceLinks = [
 
       .home-feature-card--featured .home-feature-title {
         color: var(--home-accent-text);
-        font-size: 20px;
       }
 
       .home-feature-body {
@@ -773,46 +875,29 @@ const referenceLinks = [
         font-weight: 700;
         text-decoration: none;
         transition: background 0.15s ease, opacity 0.15s ease;
-        background: var(--home-accent-text);
-        color: var(--home-accent);
-        border: none;
-      }
-
-      .home-feature-card--featured .home-feature-link {
-        background: var(--home-accent-text);
-        color: var(--home-accent);
-      }
-
-      .home-feature-card:not(.home-feature-card--featured) .home-feature-link {
         background: var(--home-surface-soft);
         color: var(--home-title);
         border: 1px solid var(--home-border);
       }
 
-      .home-feature-link:hover {
-        opacity: 0.85;
+      .home-feature-card--featured .home-feature-link {
+        background: var(--home-accent-text);
+        color: var(--home-accent);
+        border-color: transparent;
       }
 
+      .home-feature-link:hover { opacity: 0.8; }
+
       @media (max-width: 1100px) {
-        .home-features-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
+        .home-features-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       }
 
       @media (max-width: 680px) {
-        .home-features-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .home-feature-card {
-          min-height: 0;
-        }
+        .home-features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
 
-      @media (max-width: 450px) {
-        .home-features-grid {
-          grid-template-columns: 1fr;
-        }
+      @media (max-width: 420px) {
+        .home-features-grid { grid-template-columns: 1fr; }
       }
 
       /* CTA Section */
@@ -1011,10 +1096,6 @@ const referenceLinks = [
           width: min(1360px, calc(100% - 28px));
         }
 
-        .feature-plain-list {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
         .home-references-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -1051,6 +1132,18 @@ const referenceLinks = [
 
         .home-overview-block {
           padding-left: 14px;
+        }
+
+        .cap-feat-row {
+          grid-template-columns: 1fr;
+          gap: 24px;
+          padding: 40px 0;
+        }
+
+        /* Image always appears first on mobile */
+        .cap-feat-row .cap-feat-img,
+        .cap-feat-row:nth-child(even) .cap-feat-img {
+          order: -1;
         }
 
         .home-mesh-band {
@@ -1119,14 +1212,6 @@ const referenceLinks = [
           width: calc(100% - 20px);
         }
 
-        .feature-plain-list {
-          grid-template-columns: 1fr;
-        }
-
-        .feature-plain-list li {
-          padding: 20px;
-        }
-
         .home-hero {
           padding-top: 42px;
           padding-bottom: 40px;
@@ -1146,8 +1231,8 @@ const referenceLinks = [
 
         .home-section > p,
         .home-overview-meta p,
-        .home-feature-body,
         .stack-card-body,
+        .cap-feat-desc,
         .home-reference-body,
         .home-reference-highlight,
         .home-references-subtitle {
@@ -1237,39 +1322,11 @@ const referenceLinks = [
         {home.features.items.map((item, index) => (
           <article class={`home-feature-card${index === 0 ? ' home-feature-card--featured' : ''}`}>
             <div class="home-feature-icon" aria-hidden="true">
-              {index === 0 && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2"/>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  <circle cx="12" cy="16" r="1" fill="currentColor"/>
-                </svg>
-              )}
-              {index === 1 && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="7" y="7" width="10" height="10" rx="1"/>
-                  <path d="M9 4v3M12 4v3M15 4v3M9 17v3M12 17v3M15 17v3M4 9h3M4 12h3M4 15h3M17 9h3M17 12h3M17 15h3"/>
-                </svg>
-              )}
-              {index === 2 && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 3l8 4v5c0 5.25-4 8.75-8 10-4-1.25-8-4.75-8-10V7l8-4z"/>
-                  <path d="M12 9v4M12 17h.01"/>
-                </svg>
-              )}
-              {index === 3 && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/>
-                  <path d="M14 4l-4 16"/>
-                </svg>
-              )}
-              {index === 4 && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="5" cy="12" r="2"/>
-                  <circle cx="19" cy="5" r="2"/>
-                  <circle cx="19" cy="19" r="2"/>
-                  <path d="M7 11.5l10-5M7 12.5l10 5"/>
-                </svg>
-              )}
+              {index === 0 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>}
+              {index === 1 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 4v3M12 4v3M15 4v3M9 17v3M12 17v3M15 17v3M4 9h3M4 12h3M4 15h3M17 9h3M17 12h3M17 15h3"/></svg>}
+              {index === 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5.25-4 8.75-8 10-4-1.25-8-4.75-8-10V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>}
+              {index === 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/><path d="M14 4l-4 16"/></svg>}
+              {index === 4 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 11.5l10-5M7 12.5l10 5"/></svg>}
             </div>
             <p class="home-feature-tag" data-i18n={`home.features.items.${index}.tag`}>{item.tag}</p>
             <h3 class="home-feature-title" data-i18n={`home.features.items.${index}.title`}>{item.title}</h3>
@@ -1308,28 +1365,47 @@ const referenceLinks = [
       </div>
     </section>
 
-    <!-- 5. Key capabilities list -->
+    <!-- 5. Discipline deep-dives — detailed alternating rows -->
     <section class="home-section" id="capabilities">
-      <div class="home-capabilities-shell">
-        <div class="home-capabilities-heading">
-          <h2 data-i18n="home.capabilities.title">{home.capabilities.title}</h2>
-        </div>
-        <ul class="feature-plain-list" aria-label={home.capabilities.listAria} data-i18n-attr-aria-label="home.capabilities.listAria">
-          {home.capabilities.items.map((item, index) => (
-            <li>
-              <div class="cap-icon" aria-hidden="true">
-                {index === 0 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v5c0 4.5-3.5 7.5-7 9-3.5-1.5-7-4.5-7-9V6l7-4z"/></svg>}
-                {index === 1 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 4v3M12 4v3M15 4v3M9 17v3M12 17v3M15 17v3M4 9h3M4 12h3M4 15h3M17 9h3M17 12h3M17 15h3"/></svg>}
-                {index === 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg>}
-                {index === 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="3"/><path d="M11 15h5a2 2 0 0 0 0-4h-1V9a4 4 0 0 0-8 0v2"/></svg>}
-                {index === 4 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v3M11 14h.01"/></svg>}
-                {index === 5 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 0 0 4 4h10a4 4 0 0 0 0-8h-.5A5.5 5.5 0 0 0 3 15z"/></svg>}
+      <h2 data-i18n="home.capabilities.title">{home.capabilities.title}</h2>
+      <div class="cap-feat-list">
+        {home.features.items.map((item, index) => (
+          <article class="cap-feat-row">
+            <div class="cap-feat-text">
+              <p class="feat-tag" data-i18n={`home.features.items.${index}.tag`}>{item.tag}</p>
+              <div class="cap-feat-header">
+                <div class="cap-icon" aria-hidden="true">
+                  {index === 0 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>}
+                  {index === 1 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 4v3M12 4v3M15 4v3M9 17v3M12 17v3M15 17v3M4 9h3M4 12h3M4 15h3M17 9h3M17 12h3M17 15h3"/></svg>}
+                  {index === 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5.25-4 8.75-8 10-4-1.25-8-4.75-8-10V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>}
+                  {index === 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/><path d="M14 4l-4 16"/></svg>}
+                  {index === 4 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 11.5l10-5M7 12.5l10 5"/></svg>}
+                </div>
+                <h3 class="cap-feat-title" data-i18n={`home.features.items.${index}.title`}>{item.title}</h3>
               </div>
-              <strong class="cap-title" data-i18n={`home.capabilities.items.${index}.title`}>{item.title}</strong>
-              <p class="cap-body" data-i18n={`home.capabilities.items.${index}.body`}>{item.body}</p>
-            </li>
-          ))}
-        </ul>
+              <p class="cap-feat-desc" data-i18n={`home.features.items.${index}.body`}>{item.body}</p>
+              <ul class="cap-points">
+                {item.points.map((point, pi) => (
+                  <li class="cap-point" data-i18n={`home.features.items.${index}.points.${pi}`}>{point}</li>
+                ))}
+              </ul>
+              <a href="/docs/" class="feat-link" data-i18n={`home.features.items.${index}.link`}>
+                {item.link} →
+              </a>
+            </div>
+
+            <div class="cap-feat-img" aria-hidden="true">
+              <div class="cap-img-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="5" width="18" height="14" rx="2"/>
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M8 5V3M16 5V3"/>
+                </svg>
+                <span>Screenshot coming soon</span>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
 
