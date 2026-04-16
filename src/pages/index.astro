@@ -908,39 +908,41 @@ const referenceLinks = [
       }
 
       .home-cta-card {
-        border-radius: 16px;
-        padding: clamp(28px, 4vw, 44px);
+        border-radius: 10px;
+        padding: clamp(28px, 3.5vw, 40px);
         display: flex;
         flex-direction: column;
-        gap: 18px;
-        min-height: 260px;
+        gap: 20px;
+        min-height: 240px;
+        background: var(--shell-surface);
+        border: 1px solid var(--shell-border);
+        border-top: 2px solid var(--shell-border);
       }
 
       .home-cta-card--blue {
-        background: linear-gradient(135deg, #3a6abf 0%, #2550a8 52%, #1a3d8f 100%);
-        border: 1px solid rgba(80, 130, 220, 0.45);
+        border-top-color: var(--shell-accent);
       }
 
       .home-cta-card--purple {
-        background: radial-gradient(ellipse at 68% 24%, #7a3db8 0%, #5a22a0 48%, #3d1080 100%);
-        border: 1px solid rgba(130, 70, 200, 0.45);
+        border-top-color: #9d6fe8;
       }
 
       .home-cta-card .home-cta-eyebrow {
         margin: 0;
-        color: rgba(200, 220, 255, 0.65);
-        font-size: 12px;
-        font-family: 'JetBrains Mono', monospace;
-        letter-spacing: 0.08em;
+        color: var(--shell-muted);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
       }
 
       .home-cta-card .home-cta-heading {
         margin: 0;
-        color: #edf3ff;
-        font-size: clamp(22px, 2.8vw, 32px);
-        line-height: 1.14;
-        letter-spacing: -0.025em;
-        font-weight: 800;
+        color: var(--shell-text);
+        font-size: clamp(17px, 2.2vw, 25px);
+        line-height: 1.3;
+        letter-spacing: -0.018em;
+        font-weight: 700;
         flex: 1;
       }
 
@@ -951,69 +953,67 @@ const referenceLinks = [
       .home-cta-btn {
         display: inline-flex;
         align-items: center;
-        background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.24);
-        color: #edf3ff;
+        background: var(--shell-accent);
+        border: 1px solid transparent;
+        color: #fff;
         border-radius: 8px;
-        padding: 11px 20px;
-        font-size: 14px;
-        font-weight: 700;
+        padding: 9px 18px;
+        font-size: 13px;
+        font-weight: 600;
         text-decoration: none;
-        font-family: 'Manrope', sans-serif;
-        transition: background 0.15s ease, border-color 0.15s ease;
+        font-family: inherit;
+        transition: opacity 0.15s ease;
       }
 
       .home-cta-btn:hover {
-        background: rgba(255, 255, 255, 0.24);
-        border-color: rgba(255, 255, 255, 0.4);
+        opacity: 0.84;
       }
 
       .home-cta-form {
         display: grid;
-        gap: 10px;
+        gap: 8px;
         margin-top: auto;
       }
 
       .home-cta-input {
         width: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: var(--shell-surface-alt);
+        border: 1px solid var(--shell-border);
         border-radius: 8px;
-        padding: 12px 16px;
-        color: #edf3ff;
+        padding: 10px 14px;
+        color: var(--shell-text);
         font-size: 14px;
-        font-family: 'Manrope', sans-serif;
+        font-family: inherit;
         outline: none;
         box-sizing: border-box;
-        transition: border-color 0.15s ease, background 0.15s ease;
+        transition: border-color 0.15s ease;
       }
 
       .home-cta-input::placeholder {
-        color: rgba(200, 220, 255, 0.45);
+        color: var(--shell-muted);
+        opacity: 0.55;
       }
 
       .home-cta-input:focus {
-        border-color: rgba(255, 255, 255, 0.4);
-        background: rgba(255, 255, 255, 0.16);
+        border-color: #9d6fe8;
       }
 
       .home-cta-submit {
         width: 100%;
-        background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: #9d6fe8;
+        border: 1px solid transparent;
         border-radius: 8px;
-        padding: 12px 16px;
-        color: #edf3ff;
-        font-size: 14px;
-        font-weight: 700;
-        font-family: 'Manrope', sans-serif;
+        padding: 10px 16px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
         cursor: pointer;
-        transition: background 0.15s ease, border-color 0.15s ease;
+        transition: opacity 0.15s ease;
       }
 
       .home-cta-submit:hover {
-        background: rgba(255, 255, 255, 0.24);
-        border-color: rgba(255, 255, 255, 0.38);
+        opacity: 0.84;
       }
 
       @keyframes homeMeshSweep {

@@ -190,7 +190,7 @@ export const homeTranslations = {
         items: [
           {
             tag: 'Device Identity',
-            title: 'Device Identity',
+            title: 'Automated Device Identity Lifecycle',
             body: 'Assign a unique cryptographic identity to every device at manufacturing time and track it through its entire operational life — from provisioning to decommission.',
             points: ['Unique cryptographic identity assigned at manufacturing', 'Continuous lifecycle tracking from factory to end-of-life', 'Fleet-wide certificate status and expiry in one view'],
             link: 'Learn more',
