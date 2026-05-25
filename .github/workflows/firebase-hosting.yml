@@ -11,14 +11,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+        with:
+          repository: lamassuiot/docs
+          path: _docs
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install docs dependencies
+        working-directory: _docs
+        run: pnpm install --frozen-lockfile
+
+      - name: Build docs
+        working-directory: _docs
+        run: pnpm build
+
       - run: npm ci
 
-      - run: npm run build
+      - name: Build landing (+ merge docs)
+        run: npm run build
+        env:
+          DOCS_CLIENT_DIR: _docs/build/client
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -26,3 +47,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LAMALAND_1965E }}
           channelId: live
           projectId: lamaland-1965e
+

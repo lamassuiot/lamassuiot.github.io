@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "node scripts/merge-docs.mjs",
+    "build:docs": "cd ${DOCS_DIR:-../docs/docs} && pnpm build",
+    "build:all": "npm run build:docs && npm run build",
     "preview": "astro preview",
     "astro": "astro"
   },
