@@ -26,6 +26,16 @@ jobs:
         with:
           version: latest
 
+      - name: Allow esbuild build scripts
+        working-directory: _docs
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.pnpm = { ...(pkg.pnpm ?? {}), onlyBuiltDependencies: ['esbuild'] };
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+          "
+
       - name: Install docs dependencies
         working-directory: _docs
         run: pnpm install --frozen-lockfile
