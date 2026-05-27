@@ -105,17 +105,17 @@ export const sharedTranslations = {
 export const homeTranslations = {
   en: {
     meta: {
-      title: 'Lamassu IoT | Industrial PKI for IoT fleets',
+      title: 'Lamassu IoT | Industrial device security without operational friction',
     },
     home: {
       hero: {
-        kicker: 'Industrial PKI for IoT fleets',
-        title: 'Industrial PKI to manage IoT identities end to end',
+        kicker: 'Industrial device security',
+        title: 'Every connected asset, identified and protected — without operational friction',
         lead:
-          'Centralize keys, certification authorities, issuance, validation and device lifecycle management in a single platform built for industrial operations.',
-        ctaPrimary: 'View features',
-        ctaSecondary: 'Core capabilities',
-        stackAria: 'Platform capabilities',
+          'Lamassu gives CISOs and OT directors complete control over industrial device identity: automatic onboarding, managed lifecycle and instant incident response — without stopping operations.',
+        ctaPrimary: 'Request a demo',
+        ctaSecondary: 'Success stories',
+        stackAria: 'Industries served',
       },
       overview: {
         title: 'A single platform for the IoT cryptographic lifecycle',
@@ -174,9 +174,9 @@ export const homeTranslations = {
       },
       cta: {
         left: {
-          eyebrow: 'Why we\'re different',
-          heading: 'Get started today and take control of your IoT fleet security.',
-          btn: 'Explore features',
+          eyebrow: 'Take the first step',
+          heading: 'Ready to see how Lamassu protects your industrial fleet?',
+          btn: 'Request a demo',
         },
         right: {
           eyebrow: 'Newsletter',
@@ -186,41 +186,57 @@ export const homeTranslations = {
         },
       },
       features: {
-        title: 'One platform, every security discipline',
+        title: 'Four problems Lamassu solves',
         items: [
           {
-            tag: 'Device Identity',
-            title: 'Automated Device Identity Lifecycle',
-            body: 'Assign a unique cryptographic identity to every device at manufacturing time and track it through its entire operational life — from provisioning to decommission.',
-            points: ['Unique cryptographic identity assigned at manufacturing', 'Continuous lifecycle tracking from factory to end-of-life', 'Fleet-wide certificate status and expiry in one view'],
-            link: 'Learn more',
+            tag: 'Device onboarding',
+            title: 'Thousands of devices ready for production, without manual work',
+            body: 'Every device receives its cryptographic identity at the moment it leaves the factory or arrives in the field — no scripts, no SSH access, no support queues.',
+            points: [
+              'Automatic onboarding from factory to field',
+              'No per-device manual tasks',
+              'Scales from 10 to 10,000 devices without changing the process',
+            ],
+            link: 'How it works',
           },
           {
-            tag: 'PKI',
-            title: 'Public Key Infrastructure',
-            body: 'Deploy a full CA hierarchy with flexible issuance policies, automated CRL and OCSP, and cryptographic control at every layer — from root to device certificates.',
-            points: ['Full CA hierarchy deployed in minutes, not weeks', 'CRL and OCSP endpoints automated and always current', 'Issuance policies enforced at the API, not in documentation'],
-            link: 'Learn more',
+            tag: 'Continuous operations',
+            title: 'Zero downtime from expired certificates',
+            body: 'Certificate renewal, rotation and revocation happen automatically. Your operations team never gets paged about expired certificates in production.',
+            points: [
+              'Automatic renewal before expiry',
+              'Real-time visibility across the entire fleet',
+              'Bulk operations without interrupting production',
+            ],
+            link: 'See details',
           },
           {
-            tag: 'PQC',
-            title: 'PQC Ready PKI',
-            body: 'Issue PURE post-quantum certificates and keys, and support hybrid certificates via the chameleon standard (draft-bonnell-lamps-chameleon-certs) — ready for the cryptographic transition without breaking existing compatibility.',
-            points: ['PURE key and certificate generation with post-quantum algorithms', 'Chameleon hybrid certificates for backward compatibility with classical infrastructure', 'Gradual migration: run classical and post-quantum cryptography in parallel'],
-            link: 'Learn more',
+            tag: 'Regulatory compliance',
+            title: 'NIS2, IEC 62443 and data sovereignty',
+            body: 'Lamassu deploys on-prem, in a private cloud or in air-gapped environments. Your private keys never leave your infrastructure and audit evidence is built in.',
+            points: [
+              'On-prem, private cloud or air-gapped to match your policy',
+              'Exportable audit evidence at any time',
+              'No cloud vendor dependency for your keys',
+            ],
+            link: 'Deployment models',
           },
           {
-            tag: 'Integrations',
-            title: 'Corporate Integrations',
-            body: 'Connect to AWS IoT, Azure, SCEP, EST, LDAP and your own platforms via an extensible connector model and open APIs — no rip-and-replace required.',
-            points: ['Native AWS IoT Core and Azure connectivity out of the box', 'LDAP and Active Directory for enterprise identity federation', 'Open connector API to integrate any existing or custom platform'],
-            link: 'Learn more',
+            tag: 'Incident response',
+            title: 'Revoke a compromised device in seconds',
+            body: 'When an asset is stolen, compromised or decommissioned, its identity is immediately invalidated across the entire fleet — no open risk windows.',
+            points: [
+              'Immediate revocation, propagated fleet-wide',
+              'No risk window between incident and decommission',
+              'Traceable audit trail of every security decision',
+            ],
+            link: 'Identity management',
           },
         ],
       },
       capabilities: {
-        title: 'Each discipline, in detail',
-        listAria: 'Security discipline details',
+        title: 'How it works',
+        listAria: 'How Lamassu works step by step',
         items: [
           {
             title: 'CA management',
@@ -234,18 +250,18 @@ export const homeTranslations = {
           },
           {
             title: 'EST protocol',
-            body: 'RFC 7030 enrollment for automatic certificate provisioning on any device — no manual steps, no scripts, no human error.',
-            points: ['Zero-touch provisioning at scale', 'Compatible with any RFC 7030 EST client', 'Re-enrollment and renewal automation'],
+            body: 'Enrollment for automatic certificate provisioning on any device — no manual steps, no scripts, no human error.',
+            points: ['Zero-touch provisioning at scale', 'Compatible with any standard EST client', 'Re-enrollment and renewal automation'],
           },
           {
             title: 'Key management',
             body: 'Pluggable cryptographic engines let you store private keys exactly where your security policy requires — hardware or cloud.',
-            points: ['AWS KMS, PKCS#11 HSMs and HashiCorp Vault', 'Software engine for development and testing', 'No key export — keys never leave the HSM'],
+            points: ['Hardware security modules and cloud KMS support', 'Software engine for development and testing', 'No key export — keys never leave the HSM'],
           },
           {
             title: 'Advanced filtering',
-            body: 'Filter and sort with JSONPath expressions across all resources and certificate fields for precise operational queries.',
-            points: ['JSONPath queries across all resource types', 'Combine multiple conditions for precise results', 'Audit-ready export of filtered datasets'],
+            body: 'Filter and sort across all resources and certificate fields for precise operational queries and audit-ready exports.',
+            points: ['Rich query support across all resource types', 'Combine multiple conditions for precise results', 'Audit-ready export of filtered datasets'],
           },
           {
             title: 'Cloud connectors',
@@ -255,30 +271,30 @@ export const homeTranslations = {
         ],
       },
       cases: {
-        title: 'Fits into your stack, without lock-in',
+        title: 'Deploy as you need, comply as required',
         subtitle:
-          'Lamassu is built with modular, pluggable components so you can deploy it your way and integrate it with the tools you already use.',
+          'Lamassu adapts to your operational environment and the regulatory frameworks of your industry — no platform lock-in, no compromise on sovereignty.',
         rows: [
           {
-            title: 'Cryptographic backends',
-            body: 'Choose where to store keys: software, AWS KMS, PKCS#11 hardware tokens or HashiCorp Vault.',
+            title: 'Managed SaaS, on-prem or air-gapped',
+            body: 'Choose the deployment model that fits your security policy. Your private keys never leave your infrastructure if that is what you require.',
           },
           {
-            title: 'Storage and events',
+            title: 'Built-in regulatory compliance',
             body:
-              'Run on PostgreSQL. Emit events through RabbitMQ or AWS EventBridge to connect it to your existing data pipelines.',
+              'Audit controls, traceable logs and lifecycle management are designed to satisfy NIS2, IEC 62443 and ISO 27001 requirements without extra effort from your team.',
           },
           {
-            title: 'Cloud and platform connectors',
+            title: 'Integrate what you already use',
             body:
-              'Native integration with AWS IoT Core from day one, with an extensible connector model to add your own platforms.',
+              'Connect to your CMDB, SIEM, cloud platforms and manufacturing tools without replacing what already works in production.',
           },
         ],
       },
       references: {
         title: 'Success stories in energy and connected industry',
         subtitle:
-          'Real references where Lamassu reduced operational friction and improved cryptographic posture in OT and IoT environments.',
+          'Real references where Lamassu reduced operational friction and improved security posture in OT and IoT environments.',
         eyebrow: 'OUR CUSTOMERS, OUR BEST REFERENCE',
         cta: 'View dedicated page',
         cards: [
@@ -286,7 +302,7 @@ export const homeTranslations = {
             sector: 'Rail',
             title: 'Rolling stock and signaling',
             highlight: '24x7 cryptographic continuity in operation',
-            body: 'PKI for trains, stations and track systems with segmentation by line, operator or region.',
+            body: 'Device security for trains, stations and track systems with segmentation by line, operator or region.',
           },
           {
             sector: 'Connected Hospitality',
@@ -318,17 +334,17 @@ export const homeTranslations = {
   },
   es: {
     meta: {
-      title: 'Lamassu IoT | PKI industrial para flotas IoT',
+      title: 'Lamassu IoT | Seguridad industrial para activos conectados',
     },
     home: {
       hero: {
-        kicker: 'PKI industrial para flotas IoT',
-        title: 'PKI industrial para gestionar identidades IoT de extremo a extremo',
+        kicker: 'Seguridad industrial para activos conectados',
+        title: 'Cada activo conectado, identificado y protegido — sin fricción operativa',
         lead:
-          'Centraliza claves, autoridades de certificación, emisión, validación y ciclo de vida de dispositivos en una sola plataforma preparada para operación industrial.',
-        ctaPrimary: 'Ver funcionalidades',
-        ctaSecondary: 'Capacidades core',
-        stackAria: 'Capacidades de la plataforma',
+          'Lamassu da a CISOs y directores de OT control completo sobre la identidad de sus dispositivos industriales: alta automática, ciclo de vida gestionado y respuesta inmediata ante incidentes, sin detener la operación.',
+        ctaPrimary: 'Solicitar demo',
+        ctaSecondary: 'Ver casos de éxito',
+        stackAria: 'Sectores donde operamos',
       },
       overview: {
         title: 'Una plataforma única para el ciclo de vida criptográfico IoT',
@@ -351,7 +367,7 @@ export const homeTranslations = {
           {
             title: 'Estructura y organización.',
             body1:
-              'Los grupos, tags y autoridades de registro permiten organizar flotas de cualquier tamaño, desde prototipos en laboratorio hasta líneas de producción completas, manteniendo trazabilidad y control de acceso por contexto.',
+              'Los grupos, etiquetas y autoridades de registro permiten organizar flotas de cualquier tamaño, desde prototipos en laboratorio hasta líneas de producción completas, manteniendo trazabilidad y control de acceso por contexto.',
           },
         ],
       },
@@ -387,9 +403,9 @@ export const homeTranslations = {
       },
       cta: {
         left: {
-          eyebrow: 'Por qué somos diferentes',
-          heading: 'Empieza hoy y toma el control de la seguridad de tu flota IoT.',
-          btn: 'Explorar funcionalidades',
+          eyebrow: 'Da el primer paso',
+          heading: '¿Listo para ver cómo Lamassu protege tu flota industrial?',
+          btn: 'Solicitar demo',
         },
         right: {
           eyebrow: 'Newsletter',
@@ -399,41 +415,57 @@ export const homeTranslations = {
         },
       },
       features: {
-        title: 'Una plataforma, todas las disciplinas de seguridad',
+        title: 'Cuatro problemas que Lamassu resuelve',
         items: [
           {
-            tag: 'Device Identity',
-            title: 'Identidad de dispositivos',
-            body: 'Asigna una identidad criptográfica única a cada dispositivo en fabricación y haz seguimiento durante todo su ciclo de vida operativo — desde el aprovisionamiento hasta la baja.',
-            points: ['Identidad criptográfica única asignada en fabricación', 'Seguimiento continuo del ciclo de vida de fábrica a fin de vida', 'Estado de certificados y caducidades de toda la flota en un solo lugar'],
-            link: 'Saber más',
+            tag: 'Alta de dispositivos',
+            title: 'Miles de dispositivos listos para producción, sin trabajo manual',
+            body: 'Cada dispositivo recibe su identidad en el momento en que sale de fábrica o llega a campo. Sin scripts, sin acceso SSH, sin colas de soporte.',
+            points: [
+              'Alta automática desde fábrica hasta campo',
+              'Sin tareas manuales por dispositivo',
+              'Escala de 10 a 10.000 dispositivos sin cambiar el proceso',
+            ],
+            link: 'Cómo funciona',
           },
           {
-            tag: 'PKI',
-            title: 'Infraestructura de clave pública',
-            body: 'Despliega una jerarquía de CAs completa con políticas de emisión flexibles, CRL y OCSP automatizados y control criptográfico en cada capa — desde la raíz hasta los certificados de dispositivo.',
-            points: ['Jerarquía de CAs completa desplegada en minutos, no semanas', 'Endpoints de CRL y OCSP automatizados y siempre actualizados', 'Políticas de emisión aplicadas en la API, no en la documentación'],
-            link: 'Saber más',
+            tag: 'Operación continua',
+            title: 'Cero interrupciones por certificados caducados',
+            body: 'La renovación, rotación y revocación de certificados ocurren de forma automática. Tu equipo operativo no gestiona caducidades ni recibe alertas por certificados expirados en producción.',
+            points: [
+              'Renovación automática antes de la caducidad',
+              'Visibilidad en tiempo real de toda la flota',
+              'Operaciones masivas sin interrumpir la producción',
+            ],
+            link: 'Ver detalles',
           },
           {
-            tag: 'PQC',
-            title: 'PQC Ready PKI',
-            body: 'Emite certificados y claves PURE post-cuánticos, y soporta certificados híbridos mediante el estándar chameleon (draft-bonnell-lamps-chameleon-certs) — preparado para la transición criptográfica sin romper la compatibilidad existente.',
-            points: ['Generación de claves y certificados PURE con algoritmos post-cuánticos', 'Certificados híbridos chameleon para compatibilidad con infraestructura clásica', 'Migración gradual: combina criptografía clásica y post-cuántica en paralelo'],
-            link: 'Saber más',
+            tag: 'Cumplimiento normativo',
+            title: 'NIS2, IEC 62443 y soberanía de datos',
+            body: 'Lamassu se despliega on-prem, en nube privada o en entornos air-gapped. Tus claves privadas nunca salen de tu infraestructura y las evidencias de auditoría vienen incorporadas.',
+            points: [
+              'On-prem, nube privada o air-gapped según tu política',
+              'Evidencias de auditoría exportables en cualquier momento',
+              'Sin dependencia de proveedores cloud para tus claves',
+            ],
+            link: 'Modelos de despliegue',
           },
           {
-            tag: 'Integrations',
-            title: 'Integraciones corporativas',
-            body: 'Conéctate a AWS IoT, Azure, SCEP, EST, LDAP y tus propias plataformas a través de un modelo de conectores extensible y APIs abiertas — sin tener que rehacer tu stack.',
-            points: ['Conectividad nativa con AWS IoT Core y Azure desde el primer día', 'LDAP y Active Directory para federación de identidad empresarial', 'API de conectores abierta para integrar cualquier plataforma propia'],
-            link: 'Saber más',
+            tag: 'Respuesta a incidentes',
+            title: 'Revoca un dispositivo comprometido en segundos',
+            body: 'Cuando un activo es robado, comprometido o dado de baja, su identidad queda invalidada de forma inmediata en toda la flota. Sin ventanas de riesgo abiertas.',
+            points: [
+              'Revocación inmediata, propagada a toda la flota',
+              'Sin ventana de riesgo entre el incidente y la baja',
+              'Historial trazable de cada decisión de seguridad',
+            ],
+            link: 'Gestión de identidades',
           },
         ],
       },
       capabilities: {
-        title: 'Cada disciplina, en detalle',
-        listAria: 'Detalle por disciplina de seguridad',
+        title: 'Cómo funciona',
+        listAria: 'Cómo funciona Lamassu paso a paso',
         items: [
           {
             title: 'Gestión de CAs',
@@ -446,19 +478,19 @@ export const homeTranslations = {
             points: ['Ciclo de vida completo desde el aprovisionamiento hasta la baja', 'Estado del certificado en tiempo real por dispositivo', 'Operaciones masivas y revocación a nivel de flota'],
           },
           {
-            title: 'Protocolo EST',
-            body: 'Enrollment RFC 7030 para aprovisionamiento automático de certificados en cualquier dispositivo — sin pasos manuales, sin scripts, sin error humano.',
-            points: ['Aprovisionamiento sin intervención humana a escala', 'Compatible con cualquier cliente EST según RFC 7030', 'Automatización de re-enrolamiento y renovación'],
+            title: 'Aprovisionamiento automático',
+            body: 'Alta automática de certificados en cualquier dispositivo — sin pasos manuales, sin scripts, sin error humano.',
+            points: ['Aprovisionamiento sin intervención humana a escala', 'Compatible con cualquier cliente estándar', 'Automatización de re-enrolamiento y renovación'],
           },
           {
             title: 'Gestión de claves',
             body: 'Motores criptográficos conectables para custodiar claves privadas exactamente donde tu política de seguridad lo exige — hardware o nube.',
-            points: ['Soporte para AWS KMS, HSMs PKCS#11 y HashiCorp Vault', 'Motor software para desarrollo y pruebas', 'Sin exportación de claves — nunca salen del HSM'],
+            points: ['Soporte para HSMs hardware y KMS en nube', 'Motor software para desarrollo y pruebas', 'Sin exportación de claves — nunca salen del HSM'],
           },
           {
             title: 'Filtrado avanzado',
-            body: 'Filtra y ordena con expresiones JSONPath sobre todos los recursos y campos de certificados para consultas operativas de alta precisión.',
-            points: ['Consultas JSONPath sobre todos los tipos de recursos', 'Combina múltiples condiciones para resultados precisos', 'Exportación de datos filtrados lista para auditoría'],
+            body: 'Filtra y ordena sobre todos los recursos y campos de certificados para consultas operativas de alta precisión y exportaciones listas para auditoría.',
+            points: ['Consultas ricas sobre todos los tipos de recursos', 'Combina múltiples condiciones para resultados precisos', 'Exportación de datos filtrados lista para auditoría'],
           },
           {
             title: 'Conectores cloud',
@@ -468,38 +500,38 @@ export const homeTranslations = {
         ],
       },
       cases: {
-        title: 'Encaja en tu stack, sin lock-in',
+        title: 'Despliega como necesitas, cumple lo que exigen',
         subtitle:
-          'Lamassu está construido con componentes modulares y conectables para desplegarlo a tu manera e integrarlo con las herramientas que ya utilizas.',
+          'Lamassu se adapta a tu entorno operativo y a los marcos normativos de tu industria — sin lock-in de plataforma, sin comprometer la soberanía de tus datos.',
         rows: [
           {
-            title: 'Backends criptográficos',
-            body: 'Elige dónde custodiar claves: software, AWS KMS, tokens hardware PKCS#11 o HashiCorp Vault.',
+            title: 'SaaS gestionado, on-prem o air-gapped',
+            body: 'Elige el modelo de despliegue que se ajusta a tu política de seguridad. Las claves privadas nunca salen de tu infraestructura si así lo requieres.',
           },
           {
-            title: 'Almacenamiento y eventos',
+            title: 'Cumplimiento normativo integrado',
             body:
-              'Ejecuta sobre PostgreSQL. Emite eventos por RabbitMQ o AWS EventBridge para conectarlo a tus pipelines de datos existentes.',
+              'Los controles de auditoría, los registros trazables y la gestión de ciclo de vida están diseñados para satisfacer las exigencias de NIS2, IEC 62443 e ISO 27001 sin trabajo extra.',
           },
           {
-            title: 'Conectores cloud y de plataforma',
+            title: 'Integra lo que ya usas',
             body:
-              'Integración nativa con AWS IoT Core desde el primer día, con un modelo de conectores extensible para añadir tus propias plataformas.',
+              'Conéctate a tu CMDB, SIEM, plataformas cloud y herramientas de fabricación sin remplazar lo que ya funciona en producción.',
           },
         ],
       },
       references: {
         title: 'Casos de éxito en energía e industria conectada',
         subtitle:
-          'Referencias reales donde Lamassu redujo fricción operativa y elevó la postura criptográfica en entornos OT e IoT.',
+          'Referencias reales donde Lamassu redujo la fricción operativa y elevó la postura de seguridad en entornos OT e IoT.',
         eyebrow: 'NUESTROS CLIENTES, NUESTRA MEJOR REFERENCIA',
         cta: 'Ver página dedicada',
         cards: [
           {
             sector: 'Ferroviario',
             title: 'Material rodante y señalización',
-            highlight: 'Continuidad criptográfica en operación 24x7',
-            body: 'PKI para trenes, estaciones y sistemas de vía con segmentación por línea, operador o región.',
+            highlight: 'Continuidad operativa en servicio 24x7',
+            body: 'Seguridad de dispositivos para trenes, estaciones y sistemas de vía con segmentación por línea, operador o región.',
           },
           {
             sector: 'Hostelería conectada',
@@ -531,17 +563,17 @@ export const homeTranslations = {
   },
   eus: {
     meta: {
-      title: 'Lamassu IoT | IoT floten PKI industriala',
+      title: 'Lamassu IoT | Aktibo konektatuen segurtasun industriala',
     },
     home: {
       hero: {
-        kicker: 'IoT flotetarako PKI industriala',
-        title: 'IoT identitateak mutur batetik bestera kudeatzeko PKI industriala',
+        kicker: 'Aktibo konektatuen segurtasun industriala',
+        title: 'Aktibo konektatu bakoitza, identifikatuta eta babestuta — eragiketa-frikaziorik gabe',
         lead:
-          'Gakoak, ziurtapen agintariak, jaulkipena, balidazioa eta gailuen bizi-zikloa zentralizatu industria-eragiketetarako prestatutako plataforma bakarrean.',
-        ctaPrimary: 'Ikusi funtzionalitateak',
-        ctaSecondary: 'Gaitasun nagusiak',
-        stackAria: 'Plataformaren gaitasunak',
+          'Lamassuk CISOei eta OT zuzendariei kontrol osoa ematen die industria-gailuen identitatearen gainean: alta automatikoa, kudeatutako bizi-zikloa eta berehalako erantzuna gertakariei, eragiketak gelditu gabe.',
+        ctaPrimary: 'Demo eskatu',
+        ctaSecondary: 'Arrakasta kasuak ikusi',
+        stackAria: 'Aritzen garen sektoreak',
       },
       overview: {
         title: 'IoT kriptografia-bizitza-ziklorako plataforma bakarra',
@@ -564,7 +596,7 @@ export const homeTranslations = {
           {
             title: 'Egitura eta antolaketa.',
             body1:
-              'Taldeek, tag-ek eta erregistro agintariek edozein tamainatako flotak antolatzeko aukera ematen dute, laborategiko prototipoetatik ekoizpen-lerro osoetara arte, trazabilitatea eta testuinguruaren araberako sarbide-kontrola mantenduz.',
+              'Taldeek, etiketek eta erregistro agintariek edozein tamainatako flotak antolatzeko aukera ematen dute, laborategi-prototipoetatik ekoizpen-lerro osoetara arte, trazabilitatea eta testuinguruaren araberako sarbide-kontrola mantenduz.',
           },
         ],
       },
@@ -600,9 +632,9 @@ export const homeTranslations = {
       },
       cta: {
         left: {
-          eyebrow: 'Zergatik gara desberdinak',
-          heading: 'Hasi gaur eta hartu kontrola zure IoT flotaren segurtasunean.',
-          btn: 'Esploratu funtzionalitateak',
+          eyebrow: 'Eman lehen urratsa',
+          heading: 'Prest al zaude Lamassuk zure flota industriala nola babesten duen ikusteko?',
+          btn: 'Demo eskatu',
         },
         right: {
           eyebrow: 'Newsletter',
@@ -612,41 +644,57 @@ export const homeTranslations = {
         },
       },
       features: {
-        title: 'Plataforma bakarra, segurtasun diziplina guztiak',
+        title: 'Lamassuk konpontzen dituen lau arazo',
         items: [
           {
-            tag: 'Device Identity',
-            title: 'Gailuen identitatea',
-            body: 'Esleitu identitate kriptografiko bakarra gailu bakoitzari fabrikazioan eta jarraitu bizi-ziklo operatibo osoan zehar — horniduratatik bajara arte.',
-            points: ['Identitate kriptografiko bakarra fabrikazioan esleituta', 'Bizi-zikloaren jarraipen jarraitua fabrikatik bajara arte', 'Flota osoko ziurtagiri-egoera eta iraungitzeak leku bakarrean'],
-            link: 'Gehiago jakin',
+            tag: 'Gailuen alta',
+            title: 'Milaka gailu ekoizpenerako prest, eskuzko lanik gabe',
+            body: 'Gailu bakoitzak bere identitatea jasotzen du fabrikatik irten edo eremuara iritsi bezain laster. Scriptik gabe, SSH sarbiderik gabe, laguntza-ilarik gabe.',
+            points: [
+              'Alta automatikoa fabrikatik eremuara',
+              'Eskuzko lanik ez gailu bakoitzeko',
+              '10etik 10.000 gailura eskala daiteke prozesua aldatu gabe',
+            ],
+            link: 'Nola funtzionatzen duen',
           },
           {
-            tag: 'PKI',
-            title: 'Gako publikoaren azpiegitura',
-            body: 'Zabaldu CA hierarkia osoa emisio-politika malguekin, CRL eta OCSP automatizatuekin eta kontrol kriptografikoarekin geruzetan — erroa eta gailuen ziurtagiriak barne.',
-            points: ['CA hierarkia osoa minutuetan zabalduta, ez asteetan', 'CRL eta OCSP endpoint-ak automatizatuta eta beti eguneratuta', 'Jaulkipen-politikak APIan aplikatuta, ez dokumentazioan'],
-            link: 'Gehiago jakin',
+            tag: 'Eragiketa jarraitua',
+            title: 'Zero etekin iraungitako ziurtagirien ondorioz',
+            body: 'Ziurtagirien berritzea, errotazioa eta ezeztapena automatikoki gertatzen dira. Zure eragiketa-taldeak ez du iraungitako ziurtagiriengatik alertarik jasotzen ekoizpenean.',
+            points: [
+              'Berritzea automatikoa iraungitze aurretik',
+              'Denbora errealeko ikusgarritasuna flota osoan',
+              'Eragiketa masiboa ekoizpena eten gabe',
+            ],
+            link: 'Xehetasunak ikusi',
           },
           {
-            tag: 'PQC',
-            title: 'PQC Ready PKI',
-            body: 'Eman PURE ziurtagiri eta gako post-kuantikoak, eta onartu ziurtagiri hibridoak chameleon estandarraren bidez (draft-bonnell-lamps-chameleon-certs) — trantsizioa prestatu bateragarritasuna hautsi gabe.',
-            points: ['PURE gako eta ziurtagirien sorkuntza algoritmo post-kuantikoekin', 'Chameleon ziurtagiri hibridoak azpiegitura klasikorako atzerako bateragarritasunerako', 'Migrazio gradualera: kriptografia klasikoa eta post-kuantikoa paraleloan'],
-            link: 'Gehiago jakin',
+            tag: 'Arau betetzea',
+            title: 'NIS2, IEC 62443 eta datuen subiranotasuna',
+            body: 'Lamassu on-prem, hodei pribatuan edo air-gapped inguruneetan hedatzen da. Zure gako pribatuak ez dira zure azpiegituratik ateratzen eta auditoria-ebidentziak barnean daude.',
+            points: [
+              'On-prem, hodei pribatua edo air-gapped zure politikaren arabera',
+              'Auditoria-ebidentziak esportatzeko edozein unetan',
+              'Ez cloud hornitzaileekiko menpekotasunik zure gakoentzat',
+            ],
+            link: 'Hedapen-ereduak',
           },
           {
-            tag: 'Integrations',
-            title: 'Enpresako integrazioak',
-            body: 'Konektatu AWS IoT, Azure, SCEP, EST, LDAP eta zure plataformei konektore-eredu hedagarri eta API ireki baten bidez — stack-a berreraiki behar izan gabe.',
-            points: ['AWS IoT Core eta Azure natibo lehen egunetik', 'LDAP eta Active Directory enpresako identitate-federaziorako', 'API irekia edozein plataforma existente edo propio integratzeko'],
-            link: 'Gehiago jakin',
+            tag: 'Gertakariei erantzuna',
+            title: 'Konpromisatutako gailu bat segundotan ezezta ezazu',
+            body: 'Aktibo bat lapurtzen, konpromisatzen edo bajatzen denean, bere identitatea berehalakoan baliogabetzen da flota osoan. Arrisku-leiho irekiak gabe.',
+            points: [
+              'Berehalako ezeztapena, flota osoan zabaldu',
+              'Arrisku-leiho gabe gertakaria eta baja artean',
+              'Segurtasun-erabaki bakoitzaren historia trazagarria',
+            ],
+            link: 'Identitateen kudeaketa',
           },
         ],
       },
       capabilities: {
-        title: 'Diziplina bakoitza, xehetasunez',
-        listAria: 'Segurtasun diziplinen xehetasunak',
+        title: 'Nola funtzionatzen duen',
+        listAria: 'Lamassuk nola funtzionatzen duen urrats bakoitzean',
         items: [
           {
             title: 'CA kudeaketa',
@@ -659,19 +707,19 @@ export const homeTranslations = {
             points: ['Bizi-ziklo osoa horniduratatik bajara arte', 'Ziurtagiriaren egoera denbora errealean gailu bakoitzeko', 'Operazio masiboa eta flota-mailako baliogabetzea'],
           },
           {
-            title: 'EST protokoloa',
-            body: 'RFC 7030 enrollment gailuen ziurtagiri hornidura automatikorako — eskuzko pausurik gabe, scriptsik gabe, giza errorik gabe.',
-            points: ['Eskuhartzarik gabeko hornidura eskalan', 'RFC 7030 EST bezero edozinekin bateragarria', 'Re-enrollamendu eta berritzeen automatizazioa'],
+            title: 'Hornidura automatikoa',
+            body: 'Gailuen ziurtagiri hornidura automatikoa — eskuzko pausurik gabe, scriptsik gabe, giza errorik gabe.',
+            points: ['Eskuhartzarik gabeko hornidura eskalan', 'Edozein bezero estandarrekin bateragarria', 'Re-enrollamendu eta berritzeen automatizazioa'],
           },
           {
             title: 'Gakoen kudeaketa',
             body: 'Motor kriptografiko konektagarriak gako pribatuak zure segurtasun-politikak eskatzen duen lekuan gordetzeko — hardware edo hodeian.',
-            points: ['AWS KMS, PKCS#11 HSM eta HashiCorp Vault euskarria', 'Software-motorra garapen eta probetarako', 'Gako-esportaziorik ez — gakoak ez dira HSMetik ateratzen'],
+            points: ['Hardware HSM eta cloud KMS euskarria', 'Software-motorra garapen eta probetarako', 'Gako-esportaziorik ez — gakoak ez dira HSMetik ateratzen'],
           },
           {
             title: 'Iragazketa aurreratua',
-            body: 'Iragazki eta ordenatu JSONPath adierazpenekin baliabide eta ziurtagiri eremu guztietan zehaztasun handiko kontsulta operatiboetarako.',
-            points: ['JSONPath kontsultak baliabide mota guztien gainean', 'Konbinatu baldintza anitzak emaitza zehatzetarako', 'Iragazitako datuen esportazioa auditoria prest'],
+            body: 'Iragazki eta ordenatu baliabide eta ziurtagiri eremu guztietan zehaztasun handiko kontsulta operatiboetarako eta auditoria prest esportazioetarako.',
+            points: ['Kontsulta aberatsak baliabide mota guztien gainean', 'Konbinatu baldintza anitzak emaitza zehatzetarako', 'Iragazitako datuen esportazioa auditoria prest'],
           },
           {
             title: 'Cloud konektoreak',
@@ -681,38 +729,38 @@ export const homeTranslations = {
         ],
       },
       cases: {
-        title: 'Zure stack-ean sartzen da, lock-in gabe',
+        title: 'Behar duzun bezala hedatu, eskakizunak bete',
         subtitle:
-          'Lamassu osagai modular eta konektagarriekin eraikita dago, zure erara hedatzeko eta jada erabiltzen dituzun tresnekin integratzeko.',
+          'Lamassu zure ingurune operatiboaren eta industriako arau-markoaren arabera egokitzen da — plataforma lock-in gabe, datuen subiranotasuna arriskuan jarri gabe.',
         rows: [
           {
-            title: 'Backend kriptografikoak',
-            body: 'Aukeratu non gorde gakoak: softwarea, AWS KMS, PKCS#11 hardware tokenak edo HashiCorp Vault.',
+            title: 'SaaS kudeatua, on-prem edo air-gapped',
+            body: 'Aukeratu zure segurtasun-politikara egokitzen den hedapen-eredua. Gako pribatuak ez dira zure azpiegituratik ateratzen hala eskatuz gero.',
           },
           {
-            title: 'Biltegiratzea eta gertaerak',
+            title: 'Araudi-betetzea barnean',
             body:
-              'PostgreSQL gainean exekutatzen da. RabbitMQ edo AWS EventBridge bidez gertaerak igortzen ditu zure datu-pipelineekin konektatzeko.',
+              'Auditoria-kontrolak, erregistro trazagarriak eta bizi-zikloaren kudeaketa NIS2, IEC 62443 eta ISO 27001-en eskakizunak betetzeko diseinatuta daude, zure taldearen lan gehigarririk gabe.',
           },
           {
-            title: 'Cloud eta plataformaren konektoreak',
+            title: 'Jada erabiltzen duzuna integratu',
             body:
-              'AWS IoT Corerekin integrazio natiboa lehen egunetik, zure plataforma propioak gehitzeko konektore-eredu hedagarri batekin.',
+              'Konektatu zure CMDB, SIEM, cloud plataformak eta fabrikazio-tresnak ekoizpenean dagoeneko funtzionatzen duena ordezkatu gabe.',
           },
         ],
       },
       references: {
         title: 'Energiako eta industria konektatuko arrakasta kasuak',
         subtitle:
-          'Lamassuk OT eta IoT inguruneetan frikzio operatiboa murriztu eta jarrera kriptografikoa hobetu duen erreferentzia errealak.',
+          'Lamassuk OT eta IoT inguruneetan frikzio operatiboa murriztu eta segurtasun-jarrera hobetu duen erreferentzia errealak.',
         eyebrow: 'GURE BEZEROAK, GURE ERREFERENTZIARIK ONENA',
         cta: 'Ikusi dagokion orria',
         cards: [
           {
             sector: 'Ferroviarioa',
             title: 'Material mugikorra eta seinaleztapena',
-            highlight: '24x7 eragiketan jarraitutasun kriptografikoa',
-            body: 'PKI trenetarako, geltokietarako eta bide-sistemetarako, linea, operadore edo eskualdeka segmentatuta.',
+            highlight: '24x7 eragiketan jarraitutasun operatiboa',
+            body: 'Gailuen segurtasuna trenetarako, geltokietarako eta bide-sistemetarako, linea, operadore edo eskualdeka segmentatuta.',
           },
           {
             sector: 'Ostalaritza konektatua',
