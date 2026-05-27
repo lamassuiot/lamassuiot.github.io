@@ -110,7 +110,7 @@ export const homeTranslations = {
     home: {
       hero: {
         kicker: 'Industrial device security',
-        title: 'Every connected asset, identified and protected — without operational friction',
+        title: 'Industrial PKI to manage IoT identities end to end',
         lead:
           'Lamassu gives CISOs and OT directors complete control over industrial device identity: automatic onboarding, managed lifecycle and instant incident response — without stopping operations.',
         ctaPrimary: 'Request a demo',
@@ -186,7 +186,7 @@ export const homeTranslations = {
         },
       },
       features: {
-        title: 'Four problems Lamassu solves',
+        title: 'Five problems Lamassu solves',
         items: [
           {
             tag: 'Device onboarding',
@@ -200,15 +200,15 @@ export const homeTranslations = {
             link: 'How it works',
           },
           {
-            tag: 'Continuous operations',
-            title: 'Zero downtime from expired certificates',
-            body: 'Certificate renewal, rotation and revocation happen automatically. Your operations team never gets paged about expired certificates in production.',
+            tag: 'Post-Quantum Cryptography',
+            title: 'Ready for the post-quantum world',
+            body: 'Issue pure and hybrid post-quantum certificates today — protecting your industrial assets before quantum computers threaten classical cryptography.',
             points: [
-              'Automatic renewal before expiry',
-              'Real-time visibility across the entire fleet',
-              'Bulk operations without interrupting production',
+              'NIST post-quantum algorithms (ML-DSA, SLH-DSA)',
+              'Hybrid certificates for gradual, compatibility-safe migration',
+              'Transition without disrupting current operations',
             ],
-            link: 'See details',
+            link: 'Explore PQC',
           },
           {
             tag: 'Regulatory compliance',
@@ -231,6 +231,17 @@ export const homeTranslations = {
               'Traceable audit trail of every security decision',
             ],
             link: 'Identity management',
+          },
+          {
+            tag: 'Continuous operations',
+            title: 'Zero downtime from expired certificates',
+            body: 'Certificate renewal, rotation and revocation happen automatically. Your operations team never gets paged about expired certificates in production.',
+            points: [
+              'Automatic renewal before expiry',
+              'Real-time visibility across the entire fleet',
+              'Bulk operations without interrupting production',
+            ],
+            link: 'See details',
           },
         ],
       },
@@ -339,7 +350,7 @@ export const homeTranslations = {
     home: {
       hero: {
         kicker: 'Seguridad industrial para activos conectados',
-        title: 'Cada activo conectado, identificado y protegido — sin fricción operativa',
+        title: 'PKI industrial para gestionar identidades IoT de extremo a extremo',
         lead:
           'Lamassu da a CISOs y directores de OT control completo sobre la identidad de sus dispositivos industriales: alta automática, ciclo de vida gestionado y respuesta inmediata ante incidentes, sin detener la operación.',
         ctaPrimary: 'Solicitar demo',
@@ -415,7 +426,7 @@ export const homeTranslations = {
         },
       },
       features: {
-        title: 'Cuatro problemas que Lamassu resuelve',
+        title: 'Cinco problemas que Lamassu resuelve',
         items: [
           {
             tag: 'Alta de dispositivos',
@@ -429,15 +440,15 @@ export const homeTranslations = {
             link: 'Cómo funciona',
           },
           {
-            tag: 'Operación continua',
-            title: 'Cero interrupciones por certificados caducados',
-            body: 'La renovación, rotación y revocación de certificados ocurren de forma automática. Tu equipo operativo no gestiona caducidades ni recibe alertas por certificados expirados en producción.',
+            tag: 'Criptografía post-cuántica',
+            title: 'Preparado para el mundo post-cuántico',
+            body: 'Emite certificados post-cuánticos puros e híbridos hoy — para proteger tus activos industriales antes de que los ordenadores cuánticos amenacen la criptografía clásica.',
             points: [
-              'Renovación automática antes de la caducidad',
-              'Visibilidad en tiempo real de toda la flota',
-              'Operaciones masivas sin interrumpir la producción',
+              'Algoritmos post-cuánticos NIST (ML-DSA, SLH-DSA)',
+              'Certificados híbridos para migración gradual sin romper compatibilidad',
+              'Transición sin interrumpir la operación actual',
             ],
-            link: 'Ver detalles',
+            link: 'Explorar PQC',
           },
           {
             tag: 'Cumplimiento normativo',
@@ -460,6 +471,17 @@ export const homeTranslations = {
               'Historial trazable de cada decisión de seguridad',
             ],
             link: 'Gestión de identidades',
+          },
+          {
+            tag: 'Operación continua',
+            title: 'Cero interrupciones por certificados caducados',
+            body: 'La renovación, rotación y revocación de certificados ocurren de forma automática. Tu equipo operativo no gestiona caducidades ni recibe alertas por certificados expirados en producción.',
+            points: [
+              'Renovación automática antes de la caducidad',
+              'Visibilidad en tiempo real de toda la flota',
+              'Operaciones masivas sin interrumpir la producción',
+            ],
+            link: 'Ver detalles',
           },
         ],
       },
@@ -568,7 +590,7 @@ export const homeTranslations = {
     home: {
       hero: {
         kicker: 'Aktibo konektatuen segurtasun industriala',
-        title: 'Aktibo konektatu bakoitza, identifikatuta eta babestuta — eragiketa-frikaziorik gabe',
+        title: 'IoT identitateak mutur batetik bestera kudeatzeko PKI industriala',
         lead:
           'Lamassuk CISOei eta OT zuzendariei kontrol osoa ematen die industria-gailuen identitatearen gainean: alta automatikoa, kudeatutako bizi-zikloa eta berehalako erantzuna gertakariei, eragiketak gelditu gabe.',
         ctaPrimary: 'Demo eskatu',
@@ -644,7 +666,7 @@ export const homeTranslations = {
         },
       },
       features: {
-        title: 'Lamassuk konpontzen dituen lau arazo',
+        title: 'Lamassuk konpontzen dituen bost arazo',
         items: [
           {
             tag: 'Gailuen alta',
@@ -658,15 +680,15 @@ export const homeTranslations = {
             link: 'Nola funtzionatzen duen',
           },
           {
-            tag: 'Eragiketa jarraitua',
-            title: 'Zero etekin iraungitako ziurtagirien ondorioz',
-            body: 'Ziurtagirien berritzea, errotazioa eta ezeztapena automatikoki gertatzen dira. Zure eragiketa-taldeak ez du iraungitako ziurtagiriengatik alertarik jasotzen ekoizpenean.',
+            tag: 'Kriptografia post-kuantikoa',
+            title: 'Mundu post-kuantikoan prest',
+            body: 'Emititu ziurtagiri post-kuantiko puruak eta hibridoak gaur — zure aktibo industrialak babesteko ordenagailu kuantikoek kriptografia klasikoa mehatxatzen aurretik.',
             points: [
-              'Berritzea automatikoa iraungitze aurretik',
-              'Denbora errealeko ikusgarritasuna flota osoan',
-              'Eragiketa masiboa ekoizpena eten gabe',
+              'NIST algoritmo post-kuantikoak (ML-DSA, SLH-DSA)',
+              'Ziurtagiri hibridoak bateragarritasuna mantenduz migrazio gradualerako',
+              'Trantsizio eragiketak eten gabe',
             ],
-            link: 'Xehetasunak ikusi',
+            link: 'PQC esploratu',
           },
           {
             tag: 'Arau betetzea',
@@ -689,6 +711,17 @@ export const homeTranslations = {
               'Segurtasun-erabaki bakoitzaren historia trazagarria',
             ],
             link: 'Identitateen kudeaketa',
+          },
+          {
+            tag: 'Eragiketa jarraitua',
+            title: 'Zero etekin iraungitako ziurtagirien ondorioz',
+            body: 'Ziurtagirien berritzea, errotazioa eta ezeztapena automatikoki gertatzen dira. Zure eragiketa-taldeak ez du iraungitako ziurtagiriengatik alertarik jasotzen ekoizpenean.',
+            points: [
+              'Berritzea automatikoa iraungitze aurretik',
+              'Denbora errealeko ikusgarritasuna flota osoan',
+              'Eragiketa masiboa ekoizpena eten gabe',
+            ],
+            link: 'Xehetasunak ikusi',
           },
         ],
       },

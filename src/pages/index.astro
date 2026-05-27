@@ -785,7 +785,7 @@ const referenceLinks = [
       .home-features-grid {
         margin-top: 32px;
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 14px;
       }
 
@@ -900,6 +900,278 @@ const referenceLinks = [
         .home-features-grid { grid-template-columns: 1fr; }
       }
 
+
+
+      /* ── Card grid (Section 3) ── */
+
+      .feat-grid {
+        margin-top: 32px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 14px;
+      }
+
+      /* Layout: [1][2 tall][3] / [4][2 cont][5] */
+      .feat-grid > :nth-child(1) { grid-column: 1; grid-row: 1; }
+      .feat-grid > :nth-child(2) { grid-column: 2; grid-row: 1 / 3; }
+      .feat-grid > :nth-child(3) { grid-column: 3; grid-row: 1; }
+      .feat-grid > :nth-child(4) { grid-column: 1; grid-row: 2; }
+      .feat-grid > :nth-child(5) { grid-column: 3; grid-row: 2; }
+
+      .feat-card {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        min-height: 210px;
+      }
+
+      /* Card backgrounds */
+      .feat-grid > :nth-child(1) { background: linear-gradient(140deg, #0c1e3d 0%, #162d56 100%); border: 1px solid rgba(74,194,245,0.15); }
+      .feat-grid > :nth-child(2) { background: linear-gradient(160deg, #130c2f 0%, #231570 50%, #1a1060 100%); border: 1px solid rgba(126,156,255,0.22); }
+      .feat-grid > :nth-child(3) { background: linear-gradient(140deg, #081928 0%, #0e2a44 100%); border: 1px solid rgba(61,120,246,0.15); }
+      .feat-grid > :nth-child(4) { background: linear-gradient(140deg, #0e1a2e 0%, #172848 100%); border: 1px solid rgba(77,65,246,0.15); }
+      .feat-grid > :nth-child(5) { background: linear-gradient(140deg, #061a2e 0%, #0b2d48 100%); border: 1px solid rgba(74,194,245,0.2); }
+
+      /* Decorative blobs */
+      .feat-card::before,
+      .feat-card::after {
+        content: '';
+        position: absolute;
+        pointer-events: none;
+        border-radius: 50%;
+      }
+
+      .feat-grid > :nth-child(1)::before { width:180px;height:180px; background:radial-gradient(circle,rgba(74,194,245,0.24) 0%,transparent 68%); top:-50px;right:-45px; }
+      .feat-grid > :nth-child(1)::after  { width:120px;height:150px; background:radial-gradient(circle,rgba(77,65,246,0.28) 0%,transparent 68%); bottom:-25px;right:24px; transform:rotate(-20deg); }
+
+      .feat-grid > :nth-child(2)::before { width:340px;height:340px; background:radial-gradient(circle,rgba(90,31,240,0.32) 0%,transparent 60%); top:-80px;right:-90px; }
+      .feat-grid > :nth-child(2)::after  { width:280px;height:280px; background:radial-gradient(circle,rgba(74,194,245,0.18) 0%,transparent 62%); bottom:20px;left:-80px; }
+
+      .feat-grid > :nth-child(3)::before { width:190px;height:190px; background:radial-gradient(circle,rgba(61,120,246,0.26) 0%,transparent 68%); top:-55px;right:-55px; }
+      .feat-grid > :nth-child(3)::after  { width:110px;height:140px; background:radial-gradient(circle,rgba(126,156,255,0.2) 0%,transparent 68%); bottom:-15px;left:-15px; transform:rotate(12deg); }
+
+      .feat-grid > :nth-child(4)::before { width:200px;height:160px; background:radial-gradient(circle,rgba(77,65,246,0.24) 0%,transparent 68%); top:-50px;right:10%; transform:rotate(-12deg); }
+      .feat-grid > :nth-child(4)::after  { width:120px;height:120px; background:radial-gradient(circle,rgba(126,156,255,0.18) 0%,transparent 68%); bottom:-20px;right:-15px; }
+
+      .feat-grid > :nth-child(5)::before { width:180px;height:180px; background:radial-gradient(circle,rgba(74,194,245,0.28) 0%,transparent 68%); top:-45px;right:-40px; }
+      .feat-grid > :nth-child(5)::after  { width:120px;height:150px; background:radial-gradient(circle,rgba(45,140,220,0.24) 0%,transparent 68%); bottom:-20px;left:-10px; transform:rotate(18deg); }
+
+      /* Inner content */
+      .feat-card-inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+        height: 100%;
+        padding: 26px 24px;
+        box-sizing: border-box;
+      }
+
+      /* Tag pill */
+      .feat-card-tag {
+        display: inline-flex;
+        align-self: flex-start;
+        margin: 0;
+        padding: 4px 11px;
+        border-radius: 100px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.11);
+        color: rgba(190,210,255,0.82);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.06em;
+      }
+
+      .feat-grid > :nth-child(5) .feat-card-tag {
+        background: rgba(74,194,245,0.1);
+        border-color: rgba(74,194,245,0.25);
+        color: rgba(130,220,255,0.9);
+      }
+
+      .feat-card-title {
+        margin: 0;
+        color: #edf3ff;
+        font-size: clamp(16px, 1.6vw, 20px);
+        font-weight: 800;
+        line-height: 1.22;
+        letter-spacing: -0.02em;
+      }
+
+      /* Tall center card gets a larger title */
+      .feat-grid > :nth-child(2) .feat-card-title {
+        font-size: clamp(20px, 2.2vw, 28px);
+      }
+
+      .feat-card-body {
+        margin: 0;
+        color: rgba(188,201,223,0.8);
+        font-size: 13px;
+        line-height: 1.65;
+        flex: 1;
+      }
+
+      .feat-grid > :nth-child(2) .feat-card-body {
+        font-size: 15px;
+      }
+
+      /* Bullet points — only shown in tall center card */
+      .feat-card-points {
+        display: none;
+        margin: 6px 0 0;
+        padding: 0;
+        list-style: none;
+        flex-direction: column;
+        gap: 9px;
+      }
+
+      .feat-grid > :nth-child(2) .feat-card-points {
+        display: flex;
+      }
+
+      .feat-card-point {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        color: rgba(188,201,223,0.75);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .feat-card-point::before {
+        content: '✓';
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        font-size: 9px;
+        font-weight: 800;
+        background: rgba(126,156,255,0.18);
+        color: #7e9cff;
+        margin-top: 1px;
+      }
+
+      /* CTA pill */
+      .feat-card-btn {
+        display: inline-flex;
+        align-self: flex-start;
+        margin-top: auto;
+        padding: 8px 18px;
+        border-radius: 100px;
+        background: rgba(60,50,210,0.7);
+        border: 1px solid rgba(126,156,255,0.26);
+        color: #edf3ff;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .feat-card-btn:hover {
+        background: rgba(85,75,235,0.9);
+        border-color: rgba(155,175,255,0.42);
+      }
+
+      .feat-grid > :nth-child(2) .feat-card-btn {
+        padding: 10px 22px;
+        font-size: 14px;
+        background: rgba(90,31,240,0.65);
+        border-color: rgba(160,130,255,0.3);
+      }
+
+      .feat-grid > :nth-child(5) .feat-card-btn {
+        background: rgba(15,80,150,0.72);
+        border-color: rgba(74,194,245,0.3);
+      }
+
+      /* Light mode — flat white cards, no blobs, PQC center card keeps blue */
+      [data-theme='light'] .feat-grid > :nth-child(1),
+      [data-theme='light'] .feat-grid > :nth-child(3),
+      [data-theme='light'] .feat-grid > :nth-child(4),
+      [data-theme='light'] .feat-grid > :nth-child(5) {
+        background: var(--home-surface);
+        border-color: var(--home-border);
+      }
+
+      [data-theme='light'] .feat-card::before,
+      [data-theme='light'] .feat-card::after { display: none; }
+
+      [data-theme='light'] .feat-card-tag {
+        background: rgba(64,95,255,0.07);
+        border-color: rgba(64,95,255,0.18);
+        color: #405fff;
+      }
+
+      [data-theme='light'] .feat-card-title { color: #0f1728; }
+      [data-theme='light'] .feat-card-body { color: #36455f; }
+      [data-theme='light'] .feat-card-point { color: #36455f; }
+      [data-theme='light'] .feat-card-point::before { background: rgba(64,95,255,0.11); color: #405fff; }
+
+      [data-theme='light'] .feat-card-btn {
+        background: rgba(64,95,255,0.08);
+        border-color: rgba(64,95,255,0.22);
+        color: #405fff;
+      }
+      [data-theme='light'] .feat-card-btn:hover {
+        background: rgba(64,95,255,0.14);
+        border-color: rgba(64,95,255,0.36);
+      }
+
+      /* PQC center card — blue in both themes */
+      [data-theme='light'] .feat-grid > :nth-child(2) .feat-card-tag {
+        background: rgba(255,255,255,0.18);
+        border-color: rgba(255,255,255,0.3);
+        color: #edf3ff;
+      }
+      [data-theme='light'] .feat-grid > :nth-child(2) .feat-card-title { color: #edf3ff; }
+      [data-theme='light'] .feat-grid > :nth-child(2) .feat-card-body { color: rgba(237,243,255,0.82); }
+      [data-theme='light'] .feat-grid > :nth-child(2) .feat-card-point { color: rgba(237,243,255,0.78); }
+      [data-theme='light'] .feat-grid > :nth-child(2) .feat-card-point::before { background: rgba(255,255,255,0.18); color: #edf3ff; }
+      [data-theme='light'] .feat-grid > :nth-child(2) .feat-card-btn {
+        background: rgba(255,255,255,0.18);
+        border-color: rgba(255,255,255,0.3);
+        color: #edf3ff;
+      }
+      [data-theme='light'] .feat-grid > :nth-child(2) .feat-card-btn:hover {
+        background: rgba(255,255,255,0.26);
+      }
+
+      /* Fix nth-child(5) dark-mode specific rules overriding general light-mode rules */
+      [data-theme='light'] .feat-grid > :nth-child(5) .feat-card-tag {
+        background: rgba(64,95,255,0.07);
+        border-color: rgba(64,95,255,0.18);
+        color: #405fff;
+      }
+      [data-theme='light'] .feat-grid > :nth-child(5) .feat-card-btn {
+        background: rgba(64,95,255,0.08);
+        border-color: rgba(64,95,255,0.22);
+        color: #405fff;
+      }
+
+      @media (max-width: 860px) {
+        .feat-grid {
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: auto;
+        }
+        .feat-grid > :nth-child(1) { grid-column: 1; grid-row: 1; }
+        .feat-grid > :nth-child(2) { grid-column: 1 / 3; grid-row: 2; }
+        .feat-grid > :nth-child(3) { grid-column: 2; grid-row: 1; }
+        .feat-grid > :nth-child(4) { grid-column: 1; grid-row: 3; }
+        .feat-grid > :nth-child(5) { grid-column: 2; grid-row: 3; }
+      }
+
+      @media (max-width: 540px) {
+        .feat-grid { grid-template-columns: 1fr; }
+        .feat-grid > :nth-child(1),
+        .feat-grid > :nth-child(2),
+        .feat-grid > :nth-child(3),
+        .feat-grid > :nth-child(4),
+        .feat-grid > :nth-child(5) { grid-column: 1; grid-row: auto; min-height: 190px; }
+      }
+
       /* CTA Section */
       .home-cta-grid {
         display: grid;
@@ -908,39 +1180,74 @@ const referenceLinks = [
       }
 
       .home-cta-card {
-        border-radius: 10px;
-        padding: clamp(28px, 3.5vw, 40px);
+        border-radius: 14px;
+        padding: clamp(28px, 3.5vw, 44px);
         display: flex;
         flex-direction: column;
         gap: 20px;
-        min-height: 240px;
-        background: var(--shell-surface);
-        border: 1px solid var(--shell-border);
-        border-top: 2px solid var(--shell-border);
+        min-height: 260px;
       }
 
       .home-cta-card--blue {
-        border-top-color: var(--shell-accent);
+        background: linear-gradient(135deg, #4d41f6 0%, #3d78f6 60%, #4ac2f5 100%);
+        border: 1px solid rgba(98,132,235,0.48);
+        position: relative;
+        overflow: hidden;
       }
+
+      .home-cta-card--blue::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(0deg, rgba(255,255,255,0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+        background-size: 100% 34px, 88px 100%;
+        pointer-events: none;
+      }
+
+      .home-cta-card--blue > * { position: relative; z-index: 1; }
 
       .home-cta-card--purple {
-        border-top-color: #9d6fe8;
+        background: var(--home-surface);
+        border: 1px solid var(--home-border);
       }
 
-      .home-cta-card .home-cta-eyebrow {
+      .home-cta-card--blue .home-cta-eyebrow {
         margin: 0;
-        color: var(--shell-muted);
+        color: rgba(237,243,255,0.65);
+        font-family: 'JetBrains Mono', monospace;
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.08em;
       }
 
-      .home-cta-card .home-cta-heading {
+      .home-cta-card--purple .home-cta-eyebrow {
         margin: 0;
-        color: var(--shell-text);
-        font-size: clamp(17px, 2.2vw, 25px);
-        line-height: 1.3;
+        color: var(--home-muted);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .home-cta-card--blue .home-cta-heading {
+        margin: 0;
+        color: #edf3ff;
+        font-size: clamp(18px, 2.4vw, 28px);
+        line-height: 1.22;
+        letter-spacing: -0.024em;
+        font-weight: 800;
+        flex: 1;
+      }
+
+      .home-cta-card--purple .home-cta-heading {
+        margin: 0;
+        color: var(--home-title);
+        font-size: clamp(17px, 2.1vw, 24px);
+        line-height: 1.28;
         letter-spacing: -0.018em;
         font-weight: 700;
         flex: 1;
@@ -953,20 +1260,31 @@ const referenceLinks = [
       .home-cta-btn {
         display: inline-flex;
         align-items: center;
-        background: var(--shell-accent);
-        border: 1px solid transparent;
-        color: #fff;
+        background: rgba(255,255,255,0.18);
+        border: 1px solid rgba(255,255,255,0.32);
+        color: #edf3ff;
         border-radius: 8px;
-        padding: 9px 18px;
-        font-size: 13px;
-        font-weight: 600;
+        padding: 10px 22px;
+        font-size: 14px;
+        font-weight: 700;
         text-decoration: none;
         font-family: inherit;
-        transition: opacity 0.15s ease;
+        transition: background 0.15s ease, border-color 0.15s ease;
       }
 
       .home-cta-btn:hover {
-        opacity: 0.84;
+        background: rgba(255,255,255,0.26);
+        border-color: rgba(255,255,255,0.46);
+      }
+
+      [data-theme='light'] .home-cta-btn {
+        background: rgba(0,0,0,0.18);
+        border-color: rgba(0,0,0,0.24);
+        color: #fff;
+      }
+
+      [data-theme='light'] .home-cta-btn:hover {
+        background: rgba(0,0,0,0.28);
       }
 
       .home-cta-form {
@@ -977,11 +1295,11 @@ const referenceLinks = [
 
       .home-cta-input {
         width: 100%;
-        background: var(--shell-surface-alt);
-        border: 1px solid var(--shell-border);
+        background: var(--home-surface-soft);
+        border: 1px solid var(--home-border);
         border-radius: 8px;
         padding: 10px 14px;
-        color: var(--shell-text);
+        color: var(--home-title);
         font-size: 14px;
         font-family: inherit;
         outline: none;
@@ -990,23 +1308,23 @@ const referenceLinks = [
       }
 
       .home-cta-input::placeholder {
-        color: var(--shell-muted);
-        opacity: 0.55;
+        color: var(--home-muted);
+        opacity: 0.7;
       }
 
       .home-cta-input:focus {
-        border-color: #9d6fe8;
+        border-color: var(--home-accent);
       }
 
       .home-cta-submit {
         width: 100%;
-        background: #9d6fe8;
+        background: var(--home-accent);
         border: 1px solid transparent;
         border-radius: 8px;
         padding: 10px 16px;
-        color: #fff;
+        color: var(--home-accent-text);
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 700;
         font-family: inherit;
         cursor: pointer;
         transition: opacity 0.15s ease;
@@ -1290,12 +1608,6 @@ const referenceLinks = [
         <a class="home-btn home-btn-primary" href="mailto:info@lamassu.io" data-i18n="home.hero.ctaPrimary">{home.hero.ctaPrimary}</a>
         <a class="home-btn" href="#cases" data-i18n="home.hero.ctaSecondary">{home.hero.ctaSecondary}</a>
       </div>
-      <div class="home-stack" aria-label={home.hero.stackAria} data-i18n-attr-aria-label="home.hero.stackAria">
-        <span>Ferroviario</span>
-        <span>Energía</span>
-        <span>Hostelería</span>
-        <span>Industria 4.0</span>
-      </div>
     </section>
 
     <!-- 2. Animated mesh band -->
@@ -1315,24 +1627,25 @@ const referenceLinks = [
       </div>
     </section>
 
-    <!-- 3. Discipline cards — what Lamassu covers -->
+    <!-- 3. Feature cards -->
     <section class="home-section" id="features">
       <h2 data-i18n="home.features.title">{home.features.title}</h2>
-      <div class="home-features-grid">
+      <div class="feat-grid">
         {home.features.items.map((item, index) => (
-          <article class={`home-feature-card${index === 1 ? ' home-feature-card--featured' : ''}`}>
-            <div class="home-feature-icon" aria-hidden="true">
-              {index === 0 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 4v3M12 4v3M15 4v3M9 17v3M12 17v3M15 17v3M4 9h3M4 12h3M4 15h3M17 9h3M17 12h3M17 15h3"/></svg>}
-              {index === 1 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>}
-              {index === 2 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 1 0 20A10 10 0 0 1 12 2z"/><ellipse cx="12" cy="12" rx="10" ry="4"/><path d="M2 12h20"/></svg>}
-              {index === 3 && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 11.5l10-5M7 12.5l10 5"/></svg>}
+          <article class="feat-card">
+            <div class="feat-card-inner">
+              <p class="feat-card-tag" data-i18n={`home.features.items.${index}.tag`}>{item.tag}</p>
+              <h3 class="feat-card-title" data-i18n={`home.features.items.${index}.title`}>{item.title}</h3>
+              <p class="feat-card-body" data-i18n={`home.features.items.${index}.body`}>{item.body}</p>
+              <ul class="feat-card-points" aria-label="Key points">
+                {item.points.map((point, pi) => (
+                  <li class="feat-card-point" data-i18n={`home.features.items.${index}.points.${pi}`}>{point}</li>
+                ))}
+              </ul>
+              <a href="#capabilities" class="feat-card-btn" data-i18n={`home.features.items.${index}.link`}>
+                {item.link}
+              </a>
             </div>
-            <p class="home-feature-tag" data-i18n={`home.features.items.${index}.tag`}>{item.tag}</p>
-            <h3 class="home-feature-title" data-i18n={`home.features.items.${index}.title`}>{item.title}</h3>
-            <p class="home-feature-body" data-i18n={`home.features.items.${index}.body`}>{item.body}</p>
-            <a href="#capabilities" class="home-feature-link" data-i18n={`home.features.items.${index}.link`}>
-              {item.link} →
-            </a>
           </article>
         ))}
       </div>
