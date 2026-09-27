@@ -15,41 +15,41 @@
 
 :root {
   /* ── 1. Palette (dark) ─────────────────────────────────────────── */
-  --lp-bg: #09111f;
-  --lp-surface: #0f1829;
-  --lp-surface-2: #142036;
-  --lp-border: #223250;
-  --lp-border-strong: #31476d;
-  --lp-title: #edf3ff;
-  --lp-text: #bcc9df;
-  --lp-muted: #8fa1c3;
+  --lp-bg: #17130f;
+  --lp-surface: #211a15;
+  --lp-surface-2: #2b211a;
+  --lp-border: #49372b;
+  --lp-border-strong: #6a4933;
+  --lp-title: #fff5ec;
+  --lp-text: #dfc9b8;
+  --lp-muted: #b39884;
 
-  --lp-accent: #7e9cff; /* links, icons, primary buttons */
-  --lp-accent-hover: #98b0ff;
-  --lp-accent-soft: rgba(126, 156, 255, 0.12);
-  --lp-accent-text: #08101e; /* text on a solid accent fill */
-  --lp-mark: rgba(126, 156, 255, 0.24); /* highlighter behind key words */
-  --lp-cyan: #4ac2f5;
+  --lp-accent: #ff9b4a; /* links, icons, primary buttons */
+  --lp-accent-hover: #ffb36e;
+  --lp-accent-soft: rgba(255, 155, 74, 0.12);
+  --lp-accent-text: #281406; /* text on a solid accent fill */
+  --lp-mark: rgba(255, 155, 74, 0.24); /* highlighter behind key words */
+  --lp-cyan: #f2be67;
   --lp-green: #5fd49a;
   --lp-gold: #e7b500;
   --lp-red: #ff7a7a;
   --lp-hero-mark: linear-gradient(95deg, #00e5ff 0%, #7dfbd8 40%, #fffbd1 75%, #ffffff 100%); /* hero key words (gradient text) */
 
   /* Brand gradients */
-  --lp-grad: linear-gradient(120deg, #5a1ff0 0%, #4d41f6 30%, #3d78f6 64%, #4ac2f5 100%); /* hero + closing panels */
-  --lp-grad-text: linear-gradient(90deg, #9d8bff 0%, #7e9cff 45%, #4ac2f5 100%); /* big numbers */
-  --lp-tile-grad: linear-gradient(135deg, #4d41f6 0%, #3d78f6 62%, #4ac2f5 100%); /* solid bento tile */
-  --lp-frame-grad: linear-gradient(125deg, #4d41f6 0%, #3d78f6 50%, #4ac2f5 100%); /* product visuals */
+  --lp-grad: linear-gradient(120deg, #9d3d08 0%, #cc5411 30%, #ed7d2d 64%, #f2be67 100%); /* hero + closing panels */
+  --lp-grad-text: linear-gradient(90deg, #ffba6b 0%, #ff9b4a 45%, #f2be67 100%); /* big numbers */
+  --lp-tile-grad: linear-gradient(135deg, #cc5411 0%, #ed7d2d 62%, #f2be67 100%); /* solid bento tile */
+  --lp-frame-grad: linear-gradient(125deg, #cc5411 0%, #ed7d2d 50%, #f2be67 100%); /* product visuals */
 
   /* Deep-navy band (post-quantum). Always dark, in both themes. */
-  --lp-band-bg: #09111f;
-  --lp-band-surface: #0f1829;
-  --lp-band-border: #223250;
-  --lp-band-title: #edf3ff;
-  --lp-band-text: #bcc9df;
-  --lp-band-muted: #8fa1c3;
-  --lp-band-accent: #7e9cff;
-  --lp-band-cyan: #4ac2f5;
+  --lp-band-bg: #17130f;
+  --lp-band-surface: #211a15;
+  --lp-band-border: #49372b;
+  --lp-band-title: #fff5ec;
+  --lp-band-text: #dfc9b8;
+  --lp-band-muted: #b39884;
+  --lp-band-accent: #ff9b4a;
+  --lp-band-cyan: #f2be67;
 
   /* ── 2. Type ───────────────────────────────────────────────────── */
   --lp-font-body: 'Manrope', sans-serif;
@@ -91,24 +91,24 @@
 [data-theme='light'] {
   --lp-bg: #ffffff;
   --lp-surface: #ffffff;
-  --lp-surface-2: #f5f7fc;
-  --lp-border: #e2e7f1;
-  --lp-border-strong: #c9d2e4;
-  --lp-title: #0d1424;
-  --lp-text: #3d4a63;
-  --lp-muted: #66738f;
+  --lp-surface-2: #fffaf5;
+  --lp-border: #e8d8c8;
+  --lp-border-strong: #dfc7b0;
+  --lp-title: #2b1b12;
+  --lp-text: #554034;
+  --lp-muted: #796554;
 
-  --lp-accent: #405fff;
-  --lp-accent-hover: #2f4cf0;
-  --lp-accent-soft: rgba(64, 95, 255, 0.08);
+  --lp-accent: #b94d08;
+  --lp-accent-hover: #9e3900;
+  --lp-accent-soft: rgba(185, 77, 8, 0.08);
   --lp-accent-text: #ffffff;
-  --lp-mark: #dfe6ff;
-  --lp-cyan: #1b8fd0;
+  --lp-mark: #f7dfca;
+  --lp-cyan: #ca6216;
   --lp-green: #13804d;
   --lp-gold: #a86b00;
   --lp-red: #c53030;
 
-  --lp-grad-text: linear-gradient(90deg, #5a1ff0 0%, #405fff 50%, #1b8fd0 100%);
+  --lp-grad-text: linear-gradient(90deg, #9d3d08 0%, #b94d08 50%, #ca6216 100%);
   --lp-shadow-window: 0 24px 60px -30px rgba(13, 20, 36, 0.35);
   --lp-dots-ink: radial-gradient(circle, rgba(64, 80, 120, 0.22) 1px, transparent 1.4px);
 }

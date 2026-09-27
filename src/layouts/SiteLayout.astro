@@ -18,8 +18,8 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#09111f" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f4f6fa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#17130f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#faf5ef" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -175,32 +175,32 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
   }
 
   :root {
-    --shell-bg: #09111f;
-    --shell-surface: #10192c;
-    --shell-surface-alt: #15233a;
-    --shell-border: #243550;
-    --shell-text: #edf3ff;
-    --shell-muted: #8fa1c3;
-    --shell-accent: #7e9cff;
-    --shell-accent-soft: rgba(137, 162, 255, 0.16);
+    --shell-bg: #17130f;
+    --shell-surface: #211a15;
+    --shell-surface-alt: #2b211a;
+    --shell-border: #49372b;
+    --shell-text: #fff5ec;
+    --shell-muted: #b39884;
+    --shell-accent: #ff9b4a;
+    --shell-accent-soft: rgba(255, 155, 74, 0.16);
     --shell-header-h: 82px;
   }
 
   [data-theme='light'] {
-    --shell-bg: #f4f6fa;
+    --shell-bg: #faf5ef;
     --shell-surface: #ffffff;
-    --shell-surface-alt: #f8f9fc;
-    --shell-border: #d9dfeb;
-    --shell-text: #0f1728;
-    --shell-muted: #55627f;
-    --shell-accent: #3f63ff;
-    --shell-accent-soft: rgba(63, 99, 255, 0.1);
+    --shell-surface-alt: #fffaf5;
+    --shell-border: #e8d8c8;
+    --shell-text: #2b1b12;
+    --shell-muted: #796554;
+    --shell-accent: #b94d08;
+    --shell-accent-soft: rgba(185, 77, 8, 0.1);
   }
 
   body {
     background:
-      radial-gradient(circle at 50% -15%, rgba(98, 124, 205, 0.18), transparent 45%),
-      radial-gradient(circle at 85% 0%, rgba(47, 74, 136, 0.14), transparent 28%),
+      radial-gradient(circle at 50% -15%, rgba(198, 106, 40, 0.14), transparent 45%),
+      radial-gradient(circle at 85% 0%, rgba(126, 65, 31, 0.1), transparent 28%),
       var(--shell-bg);
     color: var(--shell-text);
     font-family: 'Space Grotesk', sans-serif;
@@ -212,7 +212,7 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
   .site-shell-top-stripe {
     height: 5px;
     width: 100%;
-    background: linear-gradient(90deg, #2a49f8 0%, #4c7fff 52%, #35b9ff 100%);
+    background: linear-gradient(90deg, #a94206 0%, #e76b16 52%, #ffad5b 100%);
   }
 
   .site-shell-header {
@@ -299,11 +299,11 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
     align-items: center;
     gap: 2px;
     padding: 0 2px;
-    border-bottom: 1px solid rgba(143, 172, 246, 0.18);
+    border-bottom: 1px solid rgba(192, 132, 86, 0.18);
   }
 
   [data-theme='light'] .locale-switcher {
-    border-bottom-color: rgba(85, 110, 127, 0.18);
+    border-bottom-color: rgba(107, 76, 57, 0.18);
   }
 
   .locale-switcher-btn {
@@ -342,7 +342,7 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
     bottom: -1px;
     height: 2px;
     border-radius: 999px;
-    background: linear-gradient(90deg, #7e9cff 0%, #59d0ff 100%);
+    background: linear-gradient(90deg, #e76b16 0%, #ffad5b 100%);
     transform: scaleX(0);
     transform-origin: center;
     transition: transform 0.18s ease;
@@ -424,7 +424,7 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
 
   .site-shell-cta-login {
     background: var(--shell-accent);
-    color: #0b1122;
+    color: #281406;
     border-color: transparent;
   }
 
@@ -433,8 +433,12 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
   }
 
   .site-shell-cta-login:hover {
-    background: #96b0ff;
+    background: #ffb36e;
     border-color: transparent;
+  }
+
+  [data-theme='light'] .site-shell-cta-login:hover {
+    background: #9e3900;
   }
 
   @keyframes siteShellStickyIn {
@@ -474,10 +478,10 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
       justify-content: center;
       gap: 17px;
       z-index: 70;
-      border: 1px solid rgba(63, 80, 119, 0.72);
+      border: 1px solid rgba(106, 73, 51, 0.72);
       border-radius: 12px;
-      background: rgba(9, 15, 28, 0.88);
-      box-shadow: 0 12px 30px rgba(2, 6, 16, 0.34);
+      background: rgba(32, 23, 18, 0.88);
+      box-shadow: 0 12px 30px rgba(17, 11, 8, 0.34);
       backdrop-filter: blur(8px);
     }
 
@@ -536,9 +540,9 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
     }
 
     [data-theme='light'] body.site-shell-header-sticky .site-shell-header {
-      border-color: rgba(197, 207, 227, 0.92);
+      border-color: rgba(224, 207, 190, 0.92);
       background: rgba(255, 255, 255, 0.94);
-      box-shadow: 0 10px 26px rgba(13, 26, 51, 0.14);
+      box-shadow: 0 10px 26px rgba(61, 39, 26, 0.14);
     }
 
     body.site-shell-header-sticky .site-shell-nav a {
@@ -650,7 +654,7 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
     z-index: 60;
     background: var(--shell-surface);
     border-bottom: 1px solid var(--shell-border);
-    box-shadow: 0 16px 40px rgba(2, 6, 18, 0.38);
+    box-shadow: 0 16px 40px rgba(17, 11, 8, 0.38);
     padding: 20px calc((100% - min(1360px, calc(100% - 48px))) / 2 + 24px);
     animation: mobileNavIn 180ms ease both;
   }
