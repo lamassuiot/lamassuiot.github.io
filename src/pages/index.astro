@@ -108,6 +108,8 @@ const faqJsonLd = {
         --lp-cyan: #4ac2f5;
         --lp-cyan-text: #7fd8ff;
         --lp-green: #5fd49a;
+        --lp-gold: #e7b500;
+        --lp-gold-soft: rgba(231, 181, 0, 0.14);
         --lp-grad: linear-gradient(90deg, #5a1ff0 0%, #4d41f6 38%, #3d78f6 68%, #4ac2f5 100%);
         --lp-grad-text: linear-gradient(90deg, #9d8bff 0%, #7e9cff 45%, #4ac2f5 100%);
         --lp-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 50px -30px rgba(0, 0, 0, 0.8);
@@ -137,6 +139,8 @@ const faqJsonLd = {
         --lp-accent-text: #ffffff;
         --lp-cyan-text: #0b6c9a;
         --lp-green: #13804d;
+        --lp-gold: #a86b00;
+        --lp-gold-soft: rgba(168, 107, 0, 0.1);
         --lp-grad-text: linear-gradient(90deg, #5a1ff0 0%, #405fff 50%, #1b8fd0 100%);
         --lp-shadow: 0 1px 2px rgba(15, 23, 40, 0.04), 0 18px 40px -28px rgba(15, 23, 40, 0.28);
       }
@@ -149,6 +153,12 @@ const faqJsonLd = {
         width: var(--lp-width);
         margin: 0 auto;
         position: relative;
+      }
+
+      .lp *,
+      .lp *::before,
+      .lp *::after {
+        box-sizing: border-box;
       }
 
       .lp h1,
@@ -720,14 +730,31 @@ const faqJsonLd = {
       .lp-toast--1 { right: 2.5%; top: 18%; animation-delay: -2s; }
       .lp-toast--2 { right: 5%; bottom: 14%; animation-delay: -4s; }
 
-      .lp-toast--1 .lp-toast-icon {
-        color: #9fb4ff;
-        background: rgba(126, 156, 255, 0.16);
+      /* Gold accent: icon tile + inset bar. The toasts are dark glass in both themes,
+         so they keep the bright gold instead of the light-mode ochre. */
+      .lp-toast {
+        padding-left: 14px;
       }
 
-      .lp-toast--2 .lp-toast-icon {
-        color: var(--lp-cyan);
-        background: rgba(74, 194, 245, 0.16);
+      .lp-toast::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 9px;
+        bottom: 9px;
+        width: 3px;
+        border-radius: 0 3px 3px 0;
+        background: #e7b500;
+        box-shadow: 0 0 10px rgba(231, 181, 0, 0.55);
+      }
+
+      .lp-toast .lp-toast-icon {
+        color: #ffffff;
+        background: #e7b500;
+      }
+
+      .lp-toast .lp-toast-icon svg {
+        stroke-width: 2.2;
       }
 
       /* ═══ Console explainer ══════════════════════════════════ */
@@ -2384,6 +2411,306 @@ const faqJsonLd = {
           height: 20px;
         }
       }
+
+      /* ═══ Phones ═════════════════════════════════════════════ */
+      .lp-dots {
+        display: none;
+      }
+
+      @media (max-width: 680px) {
+        /* Rhythm */
+        .lp-section {
+          padding-top: 64px;
+        }
+
+        .lp-section--tight {
+          padding-top: 44px;
+        }
+
+        .home-divider {
+          margin-top: 48px;
+        }
+
+        .home-divider + .lp-section {
+          padding-top: 48px;
+        }
+
+        .lp-grid,
+        .lp-mosaic,
+        .lp-compare {
+          margin-top: 32px;
+        }
+
+        .lp-head {
+          gap: 12px;
+        }
+
+        .lp-head--center {
+          margin: 0;
+          text-align: left;
+          justify-items: start;
+        }
+
+        .lp-lead {
+          font-size: 16.5px;
+        }
+
+        .lp-statement {
+          margin-top: 28px !important;
+          padding-left: 16px;
+          font-size: 17px;
+        }
+
+        /* Hero */
+        .lp-hero {
+          padding: 32px 0 36px;
+          gap: 20px;
+        }
+
+        .lp-announce {
+          font-size: 12px;
+          text-align: left;
+        }
+
+        .lp-hero h1 {
+          font-size: clamp(38px, 11vw, 46px);
+        }
+
+        .lp-hero-lead {
+          font-size: 16.5px;
+        }
+
+        .lp-hero .lp-actions {
+          width: 100%;
+          flex-direction: column;
+        }
+
+        .lp-hero .lp-btn {
+          width: 100%;
+          min-height: 50px;
+        }
+
+        .lp-proof {
+          gap: 8px;
+        }
+
+        /* Stage: crop into the console so it stays legible */
+        .lp-stage {
+          padding: 48px 0 0 14px;
+        }
+
+        .lp-stage-label {
+          top: 20px;
+          left: 14px;
+        }
+
+        .lp-stage-shot-line {
+          top: 10px;
+        }
+
+        .lp-stage-shot {
+          width: 185%;
+          max-width: none;
+          height: 330px;
+          margin: 0;
+          mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+        }
+
+        .lp-toast.lp-toast--0 {
+          display: flex;
+          left: 12px;
+          right: 12px;
+          top: auto;
+          bottom: 14px;
+          font-size: 12.5px;
+          animation: none;
+        }
+
+        /* The cards already carry the dates; the axis is too cramped at this width */
+        .lp-timeline {
+          display: none;
+        }
+
+        /* Swipe rows */
+        .lp-scroll {
+          display: flex;
+          gap: 12px;
+          margin-left: -16px;
+          margin-right: -16px;
+          padding: 4px 16px 6px;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scroll-padding-inline: 16px;
+          overscroll-behavior-x: contain;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .lp-scroll::-webkit-scrollbar {
+          display: none;
+        }
+
+        .lp-scroll > * {
+          flex: 0 0 min(84%, 340px);
+          scroll-snap-align: start;
+        }
+
+        .lp-mosaic.lp-scroll {
+          border: none;
+          border-radius: 0;
+          background: none;
+        }
+
+        .lp-mosaic.lp-scroll > .lp-mosaic-cell {
+          border: 1px solid var(--lp-border);
+          border-radius: var(--lp-radius);
+        }
+
+        .lp-dots {
+          display: flex;
+          justify-content: center;
+          gap: 6px;
+          margin-top: 14px;
+        }
+
+        .lp-dots span {
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          background: var(--lp-border);
+          transition: width 0.2s ease, background-color 0.2s ease;
+        }
+
+        .lp-dots span.is-active {
+          width: 18px;
+          background: var(--lp-accent);
+        }
+
+        /* Post-quantum: panel padding + certificates as a swipe row */
+        .lp-pqc {
+          padding: 26px 18px;
+          gap: 32px;
+          border-radius: 18px;
+        }
+
+        .lp-pqc .lp-scroll {
+          margin-left: -18px;
+          margin-right: -18px;
+          padding-left: 18px;
+          padding-right: 18px;
+          scroll-padding-inline: 18px;
+        }
+
+        .lp-pqc-path::before {
+          display: none;
+        }
+
+        .lp-pqc-cert {
+          grid-template-columns: none;
+          grid-template-rows: auto 1fr;
+        }
+
+        .lp-pqc-step {
+          flex-direction: row;
+          align-items: center;
+        }
+
+        .lp-pqc-step-dot {
+          width: 14px;
+          height: 14px;
+        }
+
+        .lp-pqc-points {
+          gap: 22px;
+        }
+
+        .lp-pqc-foot .lp-actions,
+        .lp-pqc-foot .lp-btn {
+          width: 100%;
+        }
+
+        /* Automation: compact vertical list with a connecting rail */
+        .lp-lifecycle {
+          margin-top: 36px;
+          gap: 26px;
+        }
+
+        .lp-lifecycle::before {
+          display: block;
+          top: 24px;
+          bottom: 24px;
+          left: 23px;
+          right: auto;
+          width: 2px;
+          height: auto;
+        }
+
+        .lp-lifecycle li {
+          grid-template-columns: 48px minmax(0, 1fr);
+          grid-template-areas:
+            'node num'
+            'node title'
+            'node body';
+          column-gap: 16px;
+          row-gap: 2px;
+        }
+
+        .lp-lifecycle-node {
+          grid-area: node;
+          width: 48px;
+          height: 48px;
+          margin: 0;
+          border-radius: 14px;
+        }
+
+        .lp-lifecycle-num { grid-area: num; }
+        .lp-lifecycle-title { grid-area: title; font-size: 18px; }
+        .lp-lifecycle-body { grid-area: body; }
+
+        .lp-protocol h3 {
+          font-size: 22px;
+        }
+
+        /* References: one scrolling row of filters */
+        .lp-tabs {
+          flex-wrap: nowrap;
+          margin: 28px -16px 0;
+          padding: 0 16px 4px;
+          overflow-x: auto;
+          scrollbar-width: none;
+        }
+
+        .lp-tabs::-webkit-scrollbar {
+          display: none;
+        }
+
+        .lp-tabs a {
+          flex-shrink: 0;
+        }
+
+        .lp-refs {
+          margin-top: 16px;
+        }
+
+        /* FAQ + CTA */
+        .lp-faq-head .lp-actions {
+          display: none;
+        }
+
+        .lp-cta {
+          border-radius: 18px;
+        }
+
+        .lp-cta-main .lp-btn {
+          width: 100%;
+        }
+
+        .lp-btn,
+        .lp-faq-item summary,
+        .lp-tabs a {
+          -webkit-tap-highlight-color: transparent;
+        }
+      }
     </style>
   </Fragment>
 
@@ -2494,7 +2821,7 @@ const faqJsonLd = {
         </div>
       </div>
 
-      <div class="lp-grid lp-grid--3" data-reveal>
+      <div class="lp-grid lp-grid--3 lp-scroll" data-reveal>
         {home.whyNow.items.map((item, index) => (
           <article class="lp-card lp-clock">
             <span class="lp-clock-num" aria-hidden="true">{`0${index + 1}`}</span>
@@ -2515,7 +2842,7 @@ const faqJsonLd = {
         <h2 data-i18n="home.pillars.title">{home.pillars.title}</h2>
         <p class="lp-lead" data-i18n="home.pillars.lead">{home.pillars.lead}</p>
       </header>
-      <div class="lp-grid lp-grid--3" data-reveal>
+      <div class="lp-grid lp-grid--3 lp-scroll" data-reveal>
         {home.pillars.items.map((item, index) => (
           <article class="lp-card lp-pillar">
             <div class="lp-pillar-visual" aria-hidden="true">
@@ -2593,7 +2920,7 @@ const faqJsonLd = {
           <p class="lp-lead" data-i18n="home.pqc.lead">{home.pqc.lead}</p>
         </header>
 
-        <ol class="lp-pqc-path" data-reveal>
+        <ol class="lp-pqc-path lp-scroll" data-reveal>
           {home.pqc.certs.map((cert, index) => (
             <li class:list={['lp-pqc-cert', `lp-pqc-cert--${index}`]}>
               <p class="lp-pqc-step">
@@ -2696,7 +3023,7 @@ const faqJsonLd = {
         <h2 data-i18n="home.capabilities.title">{home.capabilities.title}</h2>
         <p class="lp-lead" data-i18n="home.capabilities.lead">{home.capabilities.lead}</p>
       </header>
-      <div class="lp-mosaic lp-mosaic--3" data-reveal>
+      <div class="lp-mosaic lp-mosaic--3 lp-scroll" data-reveal>
         {home.capabilities.items.map((item, index) => (
           <article class="lp-mosaic-cell">
             <span class="lp-icon"><svg viewBox="0 0 24 24" set:html={icons[capabilityIcons[index]]} /></span>
@@ -2726,7 +3053,7 @@ const faqJsonLd = {
         <h2 data-i18n="home.deployment.title">{home.deployment.title}</h2>
         <p class="lp-lead" data-i18n="home.deployment.lead">{home.deployment.lead}</p>
       </header>
-      <div class="lp-grid lp-grid--3" data-reveal>
+      <div class="lp-grid lp-grid--3 lp-scroll" data-reveal>
         {home.deployment.options.map((option, index) => (
           <article class="lp-card lp-deploy">
             <div class="lp-deploy-top">
@@ -2804,7 +3131,7 @@ const faqJsonLd = {
         <p class="lp-eyebrow" data-i18n="home.trust.eyebrow">{home.trust.eyebrow}</p>
         <h2 data-i18n="home.trust.title">{home.trust.title}</h2>
       </header>
-      <div class="lp-mosaic lp-mosaic--4" data-reveal>
+      <div class="lp-mosaic lp-mosaic--4 lp-scroll" data-reveal>
         {home.trust.items.map((item, index) => (
           <article class="lp-mosaic-cell">
             <span class="lp-icon"><svg viewBox="0 0 24 24" set:html={icons[trustIcons[index]]} /></span>
@@ -2830,7 +3157,7 @@ const faqJsonLd = {
           <a href={`#reference-card-${index}`} data-i18n={`home.references.cards.${index}.sector`}>{card.sector}</a>
         ))}
       </nav>
-      <div class="lp-grid lp-grid--3 lp-refs" data-reveal>
+      <div class="lp-grid lp-grid--3 lp-refs lp-scroll" data-reveal>
         {home.references.cards.map((card, index) => (
           <a class="lp-card lp-ref" id={`reference-card-${index}`} href={referenceLinks[index]}>
             <p class="lp-chip" data-i18n={`home.references.cards.${index}.sector`}>{card.sector}</p>
@@ -2918,6 +3245,32 @@ const faqJsonLd = {
       }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
       targets.forEach(function (element) {
         observer.observe(element);
+      });
+    })();
+  </script>
+  <script is:inline>
+    (function () {
+      document.querySelectorAll('.lp-scroll').forEach(function (scroller) {
+        var items = scroller.children;
+        if (items.length < 2) return;
+        var dots = document.createElement('div');
+        dots.className = 'lp-dots';
+        dots.setAttribute('aria-hidden', 'true');
+        for (var i = 0; i < items.length; i++) dots.appendChild(document.createElement('span'));
+        scroller.insertAdjacentElement('afterend', dots);
+
+        function update() {
+          var step = items[1].offsetLeft - items[0].offsetLeft || 1;
+          var atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 4;
+          var index = atEnd ? items.length - 1 : Math.round(scroller.scrollLeft / step);
+          Array.prototype.forEach.call(dots.children, function (dot, dotIndex) {
+            dot.classList.toggle('is-active', dotIndex === index);
+          });
+        }
+
+        scroller.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        update();
       });
     })();
   </script>

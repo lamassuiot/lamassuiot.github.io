@@ -133,6 +133,11 @@ const t = sharedTranslations.es;
   const mobileNav = document.getElementById('mobile-nav');
 
   function openMenu() {
+    // The header is sticky on small screens, so anchor the panel to wherever it currently sits.
+    const header = document.querySelector('.site-shell-header');
+    if (mobileNav && header) {
+      mobileNav.style.top = `${Math.round(header.getBoundingClientRect().bottom)}px`;
+    }
     mobileNav?.classList.add('is-open');
     menuBtn?.setAttribute('aria-expanded', 'true');
     mobileNav?.removeAttribute('aria-hidden');

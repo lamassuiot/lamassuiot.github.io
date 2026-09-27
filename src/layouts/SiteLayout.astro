@@ -17,7 +17,9 @@ const footer = sharedTranslations.es.footer;
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#09111f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f6fa" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
@@ -92,7 +94,7 @@ const footer = sharedTranslations.es.footer;
         var overview = document.getElementById('overview');
 
         function shouldStick() {
-          if (window.innerWidth <= 940) return false;
+          if (window.innerWidth <= 1240) return false;
 
           if (overview) {
             var headerHeight = header.getBoundingClientRect().height;
@@ -783,9 +785,25 @@ const footer = sharedTranslations.es.footer;
     overflow: hidden;
   }
 
-  @media (max-width: 940px) {
+  /* Below 1240px the full nav no longer fits next to the controls: collapse it into the menu
+     and keep a frosted header bar pinned to the top instead of the floating desktop pill. */
+  @media (max-width: 1240px) {
     .site-shell-header {
-      height: 72px;
+      position: sticky;
+      top: 0;
+      z-index: 65;
+      isolation: isolate;
+    }
+
+    .site-shell-header::before {
+      content: '';
+      position: absolute;
+      inset: 0 calc(50% - 50vw);
+      z-index: -1;
+      background: color-mix(in srgb, var(--shell-bg) 86%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--shell-border) 70%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .site-shell-nav {
@@ -794,6 +812,12 @@ const footer = sharedTranslations.es.footer;
 
     .site-shell-menu-btn {
       display: inline-flex;
+    }
+  }
+
+  @media (max-width: 940px) {
+    .site-shell-header {
+      height: 72px;
     }
 
     .site-shell-mobile-nav {
