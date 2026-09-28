@@ -30,6 +30,92 @@ const SANS = 'Inter, "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Ne
 const MONO = 'ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace';
 const CAT = { native: C.P, auth: C.v6, infra: C.g5, crypto: C.a5, ext: C.g4, event: C.c6, client: C.b5 };
 const NATIVE = new Set(['ui', 'dms', 'ca', 'kms', 'swe', 'job', 'devmgr', 'va', 'awsiot', 'alerts']);
+// everything else that runs inside the Kubernetes cluster (folded into the platform box at High level)
+const CLUSTER = new Set(['lb', 'envoy', 'authz', 'certmgr', 'keycloak', 'storage', 'rabbit', 'pg']);
+// current level blend, published by frameState for helpers that have no frame state at hand
+const LVS = { lv: 0, hv: 0 };
+// ---- crypto profile: PKI signatures (CA / KMS / X.509) and the perimeter TLS channel (KEX + Auth)
+const CX = { pki: 'T', kex: 'H', auth: 'T' };
+const FAM = { T: { c: '#475569', n: 'traditional', s: 'T' }, PQ: { c: '#0f766e', n: 'post-quantum', s: 'PQ' }, H: { c: '#a21caf', n: 'hybrid', s: 'PQ/T' } };
+const CXL = {
+  sig: { T: 'ECDSA P-256', PQ: 'ML-DSA-65', H: 'MLDSA65-ECDSA-P256-SHA512' },
+  keys: { T: 'EC P-256', PQ: 'ML-DSA-65', H: 'ML-DSA-65 + EC P-256' },
+  kex: { T: 'x25519', PQ: 'MLKEM768', H: 'X25519MLKEM768' },
+  auth: { T: 'ecdsa_secp256r1_sha256', PQ: 'mldsa65', H: 'mldsa65_ecdsa_secp256r1_sha256' }
+};
+const PERIM = new Set(['in_admin', 'in_device', 'in_api', 'in_nac', 'in_vpn', 'hi_admin', 'hi_device', 'hi_api', 'hi_nac', 'hi_vpn']);
+// HNDL (harvest now, decrypt later) is closed by a PQ / hybrid key exchange;
+// TNFL (trust now, forge later) by PQ / hybrid authentication.
+const qStatus = () => ({ hndl: CX.kex !== 'T', tnfl: CX.auth !== 'T' });
+// PQC layer: when off, every PQC element (selectors, labels, channel, status card) is hidden
+const PQV = { on: true, a: 1 };
+// where the channel emblem sits this frame (scene coords), published by the view
+const CHA = { p: null };
+// text tokens used by use-case steps: {sig} {keys} {kex} {auth} {sigfam} {kexfam} {authfam} {kexnote} {signote}
+function fillTok(str) {
+  return str.replace(/\{(\w+)\}/g, (m, k) => {
+    if (k === 'sig' || k === 'keys') return CXL[k][CX.pki];
+    if (k === 'kex' || k === 'auth') return CXL[k][CX[k]];
+    if (k === 'sigfam') return CX.pki === 'H' ? 'composite' : FAM[CX.pki].n;
+    if (k === 'kexfam') return FAM[CX.kex].n;
+    if (k === 'authfam') return FAM[CX.auth].n;
+    if (k === 'kexnote') return CX.kex === 'T' ? '' : ' carrying the ML-KEM ciphertext';
+    if (k === 'signote') return CX.pki === 'H' ? '; both component signatures form one composite signature' : '';
+    return m;
+  });
+}
+// one stroke for all visible perimeter links, so the shared trunk does not darken: outer = Auth, inner = KEX
+function drawTube(edges) {
+  if (!edges.length || PQV.a <= 0.01) return;
+  const a = Math.max(...edges.map(x => x[1])) * PQV.a, path = () => { g.beginPath(); for (const [pts] of edges) { g.moveTo(pts[0][0], pts[0][1]); for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]); } };
+  g.save(); g.globalAlpha = a; g.lineCap = 'round'; g.lineJoin = 'round';
+  path(); g.strokeStyle = rgba(FAM[CX.auth].c, 0.16); g.lineWidth = 13; g.stroke();
+  path(); g.strokeStyle = rgba(FAM[CX.kex].c, 0.3); g.lineWidth = 7; g.stroke();
+  g.restore();
+}
+// crypto chip: coloured tag + concrete algorithm
+function cryptoChip(x, y, tag, value, fam, align = 'left') {
+  font(7.2, 800, MONO); ls(0.6); const tw = g.measureText(tag).width + 9; ls(0);
+  font(8.4, 600, MONO); const vw = g.measureText(value).width + 10;
+  const w = tw + vw, h = 15, x0 = align === 'center' ? x - w / 2 : align === 'right' ? x - w : x, c = FAM[fam].c;
+  rr(x0 + 0.8, y - h / 2 + 1.2, w, h, 4); g.fillStyle = 'rgba(15,31,61,0.08)'; g.fill();
+  rr(x0, y - h / 2, w, h, 4); g.fillStyle = '#ffffff'; g.fill(); g.strokeStyle = rgba(c, 0.55); g.lineWidth = 1; g.stroke();
+  g.save(); rr(x0, y - h / 2, w, h, 4); g.clip(); g.fillStyle = c; g.fillRect(x0, y - h / 2, tw, h); g.restore();
+  text(tag, x0 + tw / 2, y + 0.5, { size: 7.2, w: 800, fam: MONO, col: '#ffffff', align: 'center', ls: 0.6 });
+  text(value, x0 + tw + 5, y + 0.5, { size: 8.4, w: 600, fam: MONO, col: C.navy });
+  return w;
+}
+// vendor logos (embedded SVG, white single-colour versions on the brand colour)
+const BRAND_SRC = {"aws": "data:image/svg+xml;charset=utf-8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20304%20182%22%20width%3D%221216%22%20height%3D%22728%22%3E%20%3Cstyle%20type%3D%22text/css%22%3E%20.st0%7Bfill%3A%23FFFFFF%3B%7D%20.st1%7Bfill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bfill%3A%23FFFFFF%3B%7D%20%3C/style%3E%20%3Cg%3E%20%3Cpath%20class%3D%22st0%22%20d%3D%22M86.4%2C66.4c0%2C3.7%2C0.4%2C6.7%2C1.1%2C8.9c0.8%2C2.2%2C1.8%2C4.6%2C3.2%2C7.2c0.5%2C0.8%2C0.7%2C1.6%2C0.7%2C2.3c0%2C1-0.6%2C2-1.9%2C3l-6.3%2C4.2%20c-0.9%2C0.6-1.8%2C0.9-2.6%2C0.9c-1%2C0-2-0.5-3-1.4C76.2%2C90%2C75%2C88.4%2C74%2C86.8c-1-1.7-2-3.6-3.1-5.9c-7.8%2C9.2-17.6%2C13.8-29.4%2C13.8%20c-8.4%2C0-15.1-2.4-20-7.2c-4.9-4.8-7.4-11.2-7.4-19.2c0-8.5%2C3-15.4%2C9.1-20.6c6.1-5.2%2C14.2-7.8%2C24.5-7.8c3.4%2C0%2C6.9%2C0.3%2C10.6%2C0.8%20c3.7%2C0.5%2C7.5%2C1.3%2C11.5%2C2.2v-7.3c0-7.6-1.6-12.9-4.7-16c-3.2-3.1-8.6-4.6-16.3-4.6c-3.5%2C0-7.1%2C0.4-10.8%2C1.3c-3.7%2C0.9-7.3%2C2-10.8%2C3.4%20c-1.6%2C0.7-2.8%2C1.1-3.5%2C1.3c-0.7%2C0.2-1.2%2C0.3-1.6%2C0.3c-1.4%2C0-2.1-1-2.1-3.1v-4.9c0-1.6%2C0.2-2.8%2C0.7-3.5c0.5-0.7%2C1.4-1.4%2C2.8-2.1%20c3.5-1.8%2C7.7-3.3%2C12.6-4.5c4.9-1.3%2C10.1-1.9%2C15.6-1.9c11.9%2C0%2C20.6%2C2.7%2C26.2%2C8.1c5.5%2C5.4%2C8.3%2C13.6%2C8.3%2C24.6V66.4z%20M45.8%2C81.6%20c3.3%2C0%2C6.7-0.6%2C10.3-1.8c3.6-1.2%2C6.8-3.4%2C9.5-6.4c1.6-1.9%2C2.8-4%2C3.4-6.4c0.6-2.4%2C1-5.3%2C1-8.7v-4.2c-2.9-0.7-6-1.3-9.2-1.7%20c-3.2-0.4-6.3-0.6-9.4-0.6c-6.7%2C0-11.6%2C1.3-14.9%2C4c-3.3%2C2.7-4.9%2C6.5-4.9%2C11.5c0%2C4.7%2C1.2%2C8.2%2C3.7%2C10.6%20C37.7%2C80.4%2C41.2%2C81.6%2C45.8%2C81.6z%20M126.1%2C92.4c-1.8%2C0-3-0.3-3.8-1c-0.8-0.6-1.5-2-2.1-3.9L96.7%2C10.2c-0.6-2-0.9-3.3-0.9-4%20c0-1.6%2C0.8-2.5%2C2.4-2.5h9.8c1.9%2C0%2C3.2%2C0.3%2C3.9%2C1c0.8%2C0.6%2C1.4%2C2%2C2%2C3.9l16.8%2C66.2l15.6-66.2c0.5-2%2C1.1-3.3%2C1.9-3.9c0.8-0.6%2C2.2-1%2C4-1%20h8c1.9%2C0%2C3.2%2C0.3%2C4%2C1c0.8%2C0.6%2C1.5%2C2%2C1.9%2C3.9l15.8%2C67l17.3-67c0.6-2%2C1.3-3.3%2C2-3.9c0.8-0.6%2C2.1-1%2C3.9-1h9.3c1.6%2C0%2C2.5%2C0.8%2C2.5%2C2.5%20c0%2C0.5-0.1%2C1-0.2%2C1.6c-0.1%2C0.6-0.3%2C1.4-0.7%2C2.5l-24.1%2C77.3c-0.6%2C2-1.3%2C3.3-2.1%2C3.9c-0.8%2C0.6-2.1%2C1-3.8%2C1h-8.6c-1.9%2C0-3.2-0.3-4-1%20c-0.8-0.7-1.5-2-1.9-4L156%2C23l-15.4%2C64.4c-0.5%2C2-1.1%2C3.3-1.9%2C4c-0.8%2C0.7-2.2%2C1-4%2C1H126.1z%20M254.6%2C95.1c-5.2%2C0-10.4-0.6-15.4-1.8%20c-5-1.2-8.9-2.5-11.5-4c-1.6-0.9-2.7-1.9-3.1-2.8c-0.4-0.9-0.6-1.9-0.6-2.8v-5.1c0-2.1%2C0.8-3.1%2C2.3-3.1c0.6%2C0%2C1.2%2C0.1%2C1.8%2C0.3%20c0.6%2C0.2%2C1.5%2C0.6%2C2.5%2C1c3.4%2C1.5%2C7.1%2C2.7%2C11%2C3.5c4%2C0.8%2C7.9%2C1.2%2C11.9%2C1.2c6.3%2C0%2C11.2-1.1%2C14.6-3.3c3.4-2.2%2C5.2-5.4%2C5.2-9.5%20c0-2.8-0.9-5.1-2.7-7c-1.8-1.9-5.2-3.6-10.1-5.2L246%2C52c-7.3-2.3-12.7-5.7-16-10.2c-3.3-4.4-5-9.3-5-14.5c0-4.2%2C0.9-7.9%2C2.7-11.1%20c1.8-3.2%2C4.2-6%2C7.2-8.2c3-2.3%2C6.4-4%2C10.4-5.2c4-1.2%2C8.2-1.7%2C12.6-1.7c2.2%2C0%2C4.5%2C0.1%2C6.7%2C0.4c2.3%2C0.3%2C4.4%2C0.7%2C6.5%2C1.1%20c2%2C0.5%2C3.9%2C1%2C5.7%2C1.6c1.8%2C0.6%2C3.2%2C1.2%2C4.2%2C1.8c1.4%2C0.8%2C2.4%2C1.6%2C3%2C2.5c0.6%2C0.8%2C0.9%2C1.9%2C0.9%2C3.3v4.7c0%2C2.1-0.8%2C3.2-2.3%2C3.2%20c-0.8%2C0-2.1-0.4-3.8-1.2c-5.7-2.6-12.1-3.9-19.2-3.9c-5.7%2C0-10.2%2C0.9-13.3%2C2.8c-3.1%2C1.9-4.7%2C4.8-4.7%2C8.9c0%2C2.8%2C1%2C5.2%2C3%2C7.1%20c2%2C1.9%2C5.7%2C3.8%2C11%2C5.5l14.2%2C4.5c7.2%2C2.3%2C12.4%2C5.5%2C15.5%2C9.6c3.1%2C4.1%2C4.6%2C8.8%2C4.6%2C14c0%2C4.3-0.9%2C8.2-2.6%2C11.6%20c-1.8%2C3.4-4.2%2C6.4-7.3%2C8.8c-3.1%2C2.5-6.8%2C4.3-11.1%2C5.6C264.4%2C94.4%2C259.7%2C95.1%2C254.6%2C95.1z%22/%3E%20%3Cg%3E%20%3Cpath%20class%3D%22st1%22%20d%3D%22M273.5%2C143.7c-32.9%2C24.3-80.7%2C37.2-121.8%2C37.2c-57.6%2C0-109.5-21.3-148.7-56.7c-3.1-2.8-0.3-6.6%2C3.4-4.4%20c42.4%2C24.6%2C94.7%2C39.5%2C148.8%2C39.5c36.5%2C0%2C76.6-7.6%2C113.5-23.2C274.2%2C133.6%2C278.9%2C139.7%2C273.5%2C143.7z%22/%3E%20%3Cpath%20class%3D%22st1%22%20d%3D%22M287.2%2C128.1c-4.2-5.4-27.8-2.6-38.5-1.3c-3.2%2C0.4-3.7-2.4-0.8-4.5c18.8-13.2%2C49.7-9.4%2C53.3-5%20c3.6%2C4.5-1%2C35.4-18.6%2C50.2c-2.7%2C2.3-5.3%2C1.1-4.1-1.9C282.5%2C155.7%2C291.4%2C133.4%2C287.2%2C128.1z%22/%3E%20%3C/g%3E%20%3C/g%3E%20%3C/svg%3E", "azure": "data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%22600%22%20height%3D%22600%22%20viewBox%3D%220%200%2096%2096%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cdefs%3E%3Cmask%20id%3D%22ma%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2296%22%20height%3D%2296%22%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20fill%3D%22%23fff%22/%3E%3Cpath%20d%3D%22M66.595%209.364a4.145%204.145%200%200%200-3.928-2.82H33.648a4.146%204.146%200%200%201%203.928%202.82l25.184%2074.62a4.146%204.146%200%200%201-3.928%205.472h29.02a4.146%204.146%200%200%200%203.927-5.472z%22%20fill%3D%22%23000%22%20stroke%3D%22%23000%22%20stroke-width%3D%223.2%22%20stroke-linejoin%3D%22round%22/%3E%3C/mask%3E%3C/defs%3E%3Cg%20mask%3D%22url%28%23ma%29%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M33.338%206.544h26.038l-27.03%2080.087a4.152%204.152%200%200%201-3.933%202.824H8.149a4.145%204.145%200%200%201-3.928-5.47L29.404%209.368a4.152%204.152%200%200%201%203.934-2.825z%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M71.175%2060.261h-41.29a1.911%201.911%200%200%200-1.305%203.309l26.532%2024.764a4.171%204.171%200%200%200%202.846%201.121h23.38z%22/%3E%3C/g%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M66.595%209.364a4.145%204.145%200%200%200-3.928-2.82H33.648a4.146%204.146%200%200%201%203.928%202.82l25.184%2074.62a4.146%204.146%200%200%201-3.928%205.472h29.02a4.146%204.146%200%200%200%203.927-5.472z%22/%3E%3C/svg%3E", "teams": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%224%204%2036%2038%22%20width%3D%22360%22%20height%3D%22380%22%3E%3Cdefs%3E%20%3Cmask%20id%3D%22mp%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2244%22%20height%3D%2246%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2244%22%20height%3D%2246%22%20fill%3D%22%23fff%22/%3E%3Crect%20x%3D%224%22%20y%3D%2223%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%223.25%22%20fill%3D%22%23000%22%20stroke%3D%22%23000%22%20stroke-width%3D%222.6%22/%3E%3C/mask%3E%20%3Cmask%20id%3D%22mt%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2244%22%20height%3D%2246%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%2244%22%20height%3D%2246%22%20fill%3D%22%23fff%22/%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M15.4792%2028.1054h-2.4471v7.466h-2.0648v-7.466H8.52014v-1.6768h6.95906z%22/%3E%3C/mask%3E%3C/defs%3E%20%3Cg%20mask%3D%22url%28%23mp%29%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M21.9999%2020h12c3.3137%200%206%202.6863%206%206v10c0%203.3137-2.6863%206-6%206s-6-2.6863-6-6V26c0-3.3137-2.6863-6-6-6%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M7.99988%2024c0-3.3137%202.68632-6%206.00002-6h8c3.3137%200%206%202.6863%206%206v12c0%203.3137%202.6863%206%206%206l-16.0001-.0001c-5.5228%200-9.99992-4.4771-9.99992-10z%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M7.99988%2024c0-3.3137%202.68632-6%206.00002-6h8c3.3137%200%206%202.6863%206%206v12c0%203.3137%202.6863%206%206%206l-16.0001-.0001c-5.5228%200-9.99992-4.4771-9.99992-10z%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M7.99988%2024c0-3.3137%202.68632-6%206.00002-6h8c3.3137%200%206%202.6863%206%206v12c0%203.3137%202.6863%206%206%206l-16.0001-.0001c-5.5228%200-9.99992-4.4771-9.99992-10z%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M32.9999%2018c2.7614%200%205-2.2386%205-5s-2.2386-5-5-5-5%202.2386-5%205%202.2386%205%205%205%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M32.9999%2018c2.7614%200%205-2.2386%205-5s-2.2386-5-5-5-5%202.2386-5%205%202.2386%205%205%205%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M32.9999%2018c2.7614%200%205-2.2386%205-5s-2.2386-5-5-5-5%202.2386-5%205%202.2386%205%205%205%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M17.9999%2016c3.3137%200%206-2.6863%206-6%200-3.31371-2.6863-6-6-6s-6%202.68629-6%206c0%203.3137%202.6863%206%206%206%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M17.9999%2016c3.3137%200%206-2.6863%206-6%200-3.31371-2.6863-6-6-6s-6%202.68629-6%206c0%203.3137%202.6863%206%206%206%22/%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M17.9999%2016c3.3137%200%206-2.6863%206-6%200-3.31371-2.6863-6-6-6s-6%202.68629-6%206c0%203.3137%202.6863%206%206%206%22/%3E%3C/g%3E%3Crect%20x%3D%224%22%20y%3D%2223%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%223.25%22%20fill%3D%22%23ffffff%22%20mask%3D%22url%28%23mt%29%22/%3E%3C/svg%3E"};
+const BRAND_ASP = {"aws": 1.6703296703296704, "azure": 1.0, "teams": 0.9473684210526315};
+const BRAND = {}; for (const k in BRAND_SRC) { const im = new Image(); im.src = BRAND_SRC[k]; BRAND[k] = im; }
+const LOGO_OF = { awskms: 'aws', iotcore: 'aws', azkv: 'azure', teams: 'teams' };
+const BRAND_COL = { aws: '#232f3e', azure: '#0078d4', teams: '#5059c9' };
+// extruded-box shades per brand: top, left, right, edge
+const BRAND_PAL = {
+  aws: { t: '#2e3b4e', l: '#232f3e', r: '#161e29', e: '#4b5b71' },
+  azure: { t: '#1685dc', l: '#0078d4', r: '#005ba1', e: '#63b0ec' },
+  teams: { t: '#6168d6', l: '#5059c9', r: '#3b41a0', e: '#a3a7f0' }
+};
+const brandReady = k => { const im = BRAND[k]; return im && im.complete && im.naturalWidth > 0; };
+// fit a logo inside a maxW x maxH box centred on (cx, cy)
+function drawBrand(k, cx, cy, maxW, maxH) {
+  if (!brandReady(k)) return false;
+  const a = BRAND_ASP[k], w = Math.min(maxW, maxH * a), h = w / a;
+  g.drawImage(BRAND[k], cx - w / 2, cy - h / 2, w, h);
+  return true;
+}
+const STATUS = { pending: { c: '#d97706', t: 'PENDING' }, granted: { c: '#059669', t: 'GRANTED' }, denied: { c: '#dc2626', t: 'DENIED' } };
+function statusPill(kind, x, y, t, anchor = 'left') {
+  const S = STATUS[kind]; if (!S) return;
+  font(7.6, 700, MONO); ls(0.8); const w = g.measureText(S.t).width + 22; ls(0);
+  const x0 = anchor === 'right' ? x - w : x, h = 15;
+  rr(x0, y - h / 2, w, h, h / 2); g.fillStyle = mix(S.c, '#ffffff', 0.86); g.fill(); g.strokeStyle = S.c; g.lineWidth = 1; g.stroke();
+  const k = kind === 'pending' ? 0.5 + 0.5 * Math.sin(t * 6) : 1;
+  if (kind === 'pending') circ(x0 + 8, y, 4.4, rgba(S.c, 0.25 * k));
+  circ(x0 + 8, y, 2.6, S.c);
+  text(S.t, x0 + 15, y + 0.5, { size: 7.6, w: 700, fam: MONO, col: mix(S.c, '#000000', 0.35), ls: 0.8 });
+}
 
 /* =====================================================================
    SHARED UTILS / PRIMITIVES  (all draw into the current context g)
@@ -126,6 +212,8 @@ const DESC = {
   device: ['IoT / OT device.', 'Enrolls and renews certificates over EST', 'through the Envoy Gateway.'],
   admin: ['Operator console in the browser.', 'REST access to Lamassu APIs via Envoy.'],
   api: ['Third-party systems integrating over', 'REST, EST and OCSP.'],
+  nac: ['Network access control (RADIUS / 802.1X).', 'Authenticates devices with EAP-TLS and asks', 'Lamassu for certificate status over OCSP.'],
+  vpn: ['VPN concentrator / firewall.', 'Downloads CRLs from the VA and rejects', 'revoked peers during IKE / TLS.'],
   lb: ['Platform L4 load balancer.', 'Exposes the Envoy Gateway Service.', 'No HTTP routing decisions.'],
   envoy: ['Single external HTTP entry point.', 'TLS termination, HTTPRoute, JWT validation;', 'ext_authz check before protected routes.'],
   authz: ['Authorization service for Envoy ext_authz.', 'Evaluates grants and policies stored', 'in its own PostgreSQL schema.'],
@@ -150,28 +238,24 @@ const DESC = {
   iotcore: ['External AWS IoT Core.', 'Receives CA, Thing and certificate state', 'from the AWS IoT Connector.'],
   smtp: ['E-mail notification channel.'], teams: ['Chat notification channel.'], webhook: ['Generic HTTP webhook channel.'],
   lamassu: ['Lamassu native services as one platform:', 'CA, KMS, DMS Manager, Device Manager, VA,', 'Alerts, AWS IoT Connector, Job Manager, UI.', 'Switch to Low level to see the internals.'],
-  db_authz: ['PostgreSQL database owned by authz.', 'Stores grants / policies.'],
-  db_dms: ['PostgreSQL database owned by DMS Manager.', 'Schema per service, no shared tables.'],
-  db_devmgr: ['PostgreSQL database owned by Device Manager.', 'Schema per service, no shared tables.'],
-  db_ca: ['PostgreSQL database owned by CA.', 'Schema per service, no shared tables.'],
-  db_va: ['PostgreSQL database owned by the VA.', 'VA configuration only, never certificates.'],
-  db_kms: ['PostgreSQL database owned by KMS.', 'Schema per service, no shared tables.'],
-  db_alerts: ['PostgreSQL database owned by Alerts.', 'Schema per service, no shared tables.']
+  pg: ['Single PostgreSQL instance for the platform.', 'One schema per service: authz, dms, devices,', 'ca, va, kms, alerts. No shared tables.', 'Backed by persistent volumes (PVC).']
 };
+const DESC_HI = ['Lamassu PKI on Kubernetes as one system:', 'Envoy ingress, authz, native services,', 'RabbitMQ, PostgreSQL, Keycloak and storage.', 'Switch to Medium or Low to open it up.'];
 const CATS = {
-  device: 'client', admin: 'client', api: 'client', lb: 'infra', envoy: 'native', authz: 'auth', certmgr: 'infra',
+  device: 'client', admin: 'client', api: 'client', nac: 'client', vpn: 'client', lb: 'infra', envoy: 'native', authz: 'auth', certmgr: 'infra',
   ui: 'native', dms: 'native', ca: 'native', kms: 'crypto', swe: 'crypto', job: 'native', devmgr: 'native', va: 'native', awsiot: 'native', alerts: 'native',
   keycloak: 'infra', storage: 'infra', rabbit: 'event', hsm: 'crypto', awskms: 'crypto', azkv: 'crypto', gcpkms: 'crypto',
   iotcore: 'ext', smtp: 'ext', teams: 'ext', webhook: 'ext', lamassu: 'native'
 };
-const OWNER = { db_authz: 'authz', db_dms: 'dms', db_devmgr: 'devmgr', db_ca: 'ca', db_va: 'va', db_kms: 'kms', db_alerts: 'alerts' };
-for (const k in OWNER) CATS[k] = 'infra';
+const OWNER = {};
+CATS.pg = 'infra';
 const SHORT = { ui: 'UI / Console', dms: 'DMS Manager', ca: 'CA', kms: 'KMS', swe: 'SW engine', job: 'Job Manager', devmgr: 'Device Manager', va: 'VA', awsiot: 'AWS IoT', alerts: 'Alerts' };
 const SHORT3 = { ui: 'UI', dms: 'DMS', ca: 'CA', kms: 'KMS', swe: 'SW engine', job: 'Jobs', devmgr: 'Devices', va: 'VA', awsiot: 'AWS IoT', alerts: 'Alerts' };
 
 // [id, from, to, type, opts]
 const META_LIST = [
   ['in_admin', 'admin', 'envoy', 'http'], ['in_device', 'device', 'envoy', 'http'], ['in_api', 'api', 'envoy', 'http'],
+  ['in_nac', 'nac', 'envoy', 'http'], ['in_vpn', 'vpn', 'envoy', 'http'], ['eap_tls', 'device', 'nac', 'auth'],
   ['ext_authz', 'envoy', 'authz', 'auth'], ['cm_tls', 'certmgr', 'envoy', 'infra'],
   ['jwks_gw', 'keycloak', 'envoy', 'auth'], ['jwks_authz', 'keycloak', 'authz', 'auth'],
   ['gw_ca', 'envoy', 'ca', 'http', { hidden: true }],
@@ -182,24 +266,25 @@ const META_LIST = [
   ['aws_core', 'awsiot', 'iotcore', 'http'], ['al_smtp', 'alerts', 'smtp', 'http'], ['al_teams', 'alerts', 'teams', 'http'], ['al_hook', 'alerts', 'webhook', 'http'],
   ['ev_dms', 'dms', 'rabbit', 'event'], ['ev_devmgr', 'devmgr', 'rabbit', 'event'], ['ev_va', 'va', 'rabbit', 'event'], ['ev_ca', 'ca', 'rabbit', 'event'],
   ['ev_aws', 'awsiot', 'rabbit', 'event'], ['ev_kms', 'kms', 'rabbit', 'event'], ['ev_alerts', 'alerts', 'rabbit', 'event'],
-  ['st_rabbit', 'storage', 'rabbit', 'infra'], ['st_pg', 'storage', 'persist', 'infra'],
-  ['db_authz_l', 'authz', 'db_authz', 'db', { hidden: true }], ['db_dms_l', 'dms', 'db_dms', 'db', { hidden: true }],
-  ['db_devmgr_l', 'devmgr', 'db_devmgr', 'db', { hidden: true }], ['db_ca_l', 'ca', 'db_ca', 'db', { hidden: true }],
-  ['db_va_l', 'va', 'db_va', 'db', { hidden: true }], ['db_kms_l', 'kms', 'db_kms', 'db', { hidden: true }], ['db_alerts_l', 'alerts', 'db_alerts', 'db', { hidden: true }],
+  ['st_rabbit', 'storage', 'rabbit', 'infra'], ['st_pg', 'storage', 'pg', 'infra'],
+  ['db_authz_l', 'authz', 'pg', 'db', { hidden: true }], ['db_dms_l', 'dms', 'pg', 'db', { hidden: true }],
+  ['db_devmgr_l', 'devmgr', 'pg', 'db', { hidden: true }], ['db_ca_l', 'ca', 'pg', 'db', { hidden: true }],
+  ['db_va_l', 'va', 'pg', 'db', { hidden: true }], ['db_kms_l', 'kms', 'pg', 'db', { hidden: true }], ['db_alerts_l', 'alerts', 'pg', 'db', { hidden: true }],
   // medium level
   ['gw_lp', 'envoy', 'lamassu', 'http', { med: true }], ['lp_ev', 'lamassu', 'rabbit', 'event', { med: true }],
   ['lp_hsm', 'lamassu', 'hsm', 'key', { med: true }], ['lp_aws', 'lamassu', 'awskms', 'key', { med: true }],
   ['lp_az', 'lamassu', 'azkv', 'key', { med: true }], ['lp_gcp', 'lamassu', 'gcpkms', 'key', { med: true }],
   ['lp_core', 'lamassu', 'iotcore', 'http', { med: true }],
   ['lp_smtp', 'lamassu', 'smtp', 'http', { med: true }], ['lp_teams', 'lamassu', 'teams', 'http', { med: true }], ['lp_hook', 'lamassu', 'webhook', 'http', { med: true }],
-  ['db_dms_m', 'lamassu', 'db_dms', 'db', { med: true, hidden: true }], ['db_devmgr_m', 'lamassu', 'db_devmgr', 'db', { med: true, hidden: true }],
-  ['db_ca_m', 'lamassu', 'db_ca', 'db', { med: true, hidden: true }], ['db_va_m', 'lamassu', 'db_va', 'db', { med: true, hidden: true }],
-  ['db_kms_m', 'lamassu', 'db_kms', 'db', { med: true, hidden: true }], ['db_alerts_m', 'lamassu', 'db_alerts', 'db', { med: true, hidden: true }]
+  ['db_lp_m', 'lamassu', 'pg', 'db', { med: true, hidden: true }],
+  // high level: clients reach the whole platform
+  ['hi_device', 'device', 'lamassu', 'http', { hi: true }], ['hi_admin', 'admin', 'lamassu', 'http', { hi: true }], ['hi_api', 'api', 'lamassu', 'http', { hi: true }],
+  ['hi_nac', 'nac', 'lamassu', 'http', { hi: true }], ['hi_vpn', 'vpn', 'lamassu', 'http', { hi: true }]
 ];
 const META = {};
 for (const [id, from, to, type, o = {}] of META_LIST) {
-  const cls = o.med ? 'med' : (NATIVE.has(from) || NATIVE.has(to)) ? 'low' : 'common';
-  META[id] = { id, from, to, type, hidden: !!o.hidden, cls };
+  const cls = o.hi ? 'hi' : o.med ? 'med' : (NATIVE.has(from) || NATIVE.has(to)) ? 'low' : 'common';
+  META[id] = { id, from, to, type, hidden: !!o.hidden, cls, k8s: CLUSTER.has(from) || CLUSTER.has(to) };
 }
 // low-level edge -> medium-level edge (null: internal to the platform, hidden at medium)
 const MAP = {
@@ -207,9 +292,18 @@ const MAP = {
   ev_dms: 'lp_ev', ev_devmgr: 'lp_ev', ev_va: 'lp_ev', ev_ca: 'lp_ev', ev_aws: 'lp_ev', ev_kms: 'lp_ev', ev_alerts: 'lp_ev',
   kms_hsm: 'lp_hsm', kms_aws: 'lp_aws', kms_az: 'lp_az', kms_gcp: 'lp_gcp',
   aws_core: 'lp_core', al_smtp: 'lp_smtp', al_teams: 'lp_teams', al_hook: 'lp_hook',
-  db_dms_l: 'db_dms_m', db_devmgr_l: 'db_devmgr_m', db_ca_l: 'db_ca_m', db_va_l: 'db_va_m', db_kms_l: 'db_kms_m', db_alerts_l: 'db_alerts_m',
+  db_dms_l: 'db_lp_m', db_devmgr_l: 'db_lp_m', db_ca_l: 'db_lp_m', db_va_l: 'db_lp_m', db_kms_l: 'db_lp_m', db_alerts_l: 'db_lp_m',
   dms_ca: null, ca_kms: null, va_ca: null, aws_dms: null, aws_dev: null, kms_swe: null
 };
+// medium-level edge -> high-level edge (null: inside the cluster, hidden at high)
+const MAPH = { in_device: 'hi_device', in_admin: 'hi_admin', in_api: 'hi_api', in_nac: 'hi_nac', in_vpn: 'hi_vpn' };
+for (const [id] of META_LIST) if (META[id].k8s && !(id in MAPH)) MAPH[id] = null;
+function mapEdge(id, lv, hv) {
+  let e = id;
+  if (lv >= 0.5 && e in MAP) e = MAP[e];
+  if (e && hv >= 0.5 && e in MAPH) e = MAPH[e];
+  return e;
+}
 const STY = {
   http:  { c: C.b6, w: 1.6, glow: C.b4 },
   event: { c: C.c6, w: 1.5, glow: C.c4 },
@@ -226,6 +320,11 @@ const medF = lv => smooth((lv - 0.4) / 0.6);      // medium-only elements fade i
 const boxF = lv => smooth((lv - 0.15) / 0.7);     // platform box grows
 const miniF = lv => smooth((lv - 0.1) / 0.75);    // services shrink to chips
 const levelAlpha = (cls, lv) => cls === 'low' ? lowF(lv) : cls === 'med' ? medF(lv) : 1;
+// high level (hv: 0 = medium, 1 = high)
+const hOutF = hv => smooth(hv / 0.6);            // cluster internals fade out first
+const hInF = hv => smooth((hv - 0.45) / 0.55);   // high-only links appear last
+const hBoxF = hv => smooth((hv - 0.08) / 0.8);   // the platform box spreads over the cluster
+const edgeLA = (id, fs) => { const m = META[id]; return levelAlpha(m.cls, fs.lv) * (m.cls === 'hi' ? hInF(fs.hv) : m.k8s ? 1 - hOutF(fs.hv) : 1); };
 
 /* =====================================================================
    USE CASES  (each is a sequence of steps; auto mode plays them in a loop,
@@ -254,7 +353,7 @@ const USE_CASES = [
     { title: 'Route to DMS Manager', desc: 'HTTPRoute forwards the EST call to DMS Manager, which applies the enrollment policy of the device’s DMS.', badge: { e: 'gw_dms', f: 0.86, side: 1 }, flows: [['gw_dms', 0, 1.0]] },
     { title: 'Issuance request', desc: 'DMS Manager asks CA to issue a certificate for the CSR.', badge: { e: 'dms_ca', f: 0.5, side2: 0.4 }, flows: [['dms_ca', 0, 0.7]] },
     { title: 'Signature through KMS', desc: 'CA sends the to-be-signed certificate to KMS. The key engine (here PKCS#11 / HSM) signs; the private key never reaches CA.', crypto: true, badge: { e: 'ca_kms', f: 0.5, side2: 0.4 }, flows: [['ca_kms', 0, 0.6], ['kms_hsm', 0.7, 0.8], ['kms_hsm', 1.6, 0.8, 0, 1], ['ca_kms', 2.5, 0.6, 'key', 1]] },
-    { title: 'Certificate recorded', desc: 'CA stores the new certificate in its own database. CA remains the source of truth for certificate state.', badge: { n: 'db_ca' }, flows: [['db_ca_l', 0, 0.9]] },
+    { title: 'Certificate recorded', desc: 'CA stores the new certificate in its own schema of the shared PostgreSQL. CA remains the source of truth for certificate state.', badge: { n: 'pg' }, flows: [['db_ca_l', 0, 0.9]] },
     { title: 'Certificate returned', desc: 'The signed certificate flows back through DMS Manager and Envoy to the device in the EST response.', badge: { e: 'gw_dms', f: 0.45 }, nodes: ['device'], flows: [['dms_ca', 0, 0.6, 0, 1], ['gw_dms', 0.7, 0.95, 0, 1], ['in_device', 1.75, 1.1, 0, 1]] },
     { title: 'Domain event', desc: 'CA publishes a certificate CloudEvent to RabbitMQ, asynchronously, without waiting for consumers.', badge: { e: 'ev_ca', f: 0.3, side: 1, f2: 0.66 }, edges: ['bus'], flows: [['ev_ca', 0, 1.35]] },
     { title: 'Subscribers react', desc: 'Device Manager updates the device identity; AWS IoT Connector and Alerts consume the same event independently.', badge: { n: 'rabbit' }, edges: ['bus'], flows: [['ev_devmgr', 0, 1.05, 0, 1], ['ev_aws', 0.15, 1.05, 0, 1], ['ev_alerts', 0.3, 1.1, 0, 1]] }
@@ -262,7 +361,7 @@ const USE_CASES = [
   { id: 'ocsp', name: 'OCSP check', icon: 'ocsp', summary: 'A relying party asks if a certificate is still valid', steps: [
     { title: 'OCSP request', desc: 'A relying party (gateway, PLC, browser) sends an OCSP request for a certificate serial number.', badge: { e: 'in_api', f: 0.72 }, nodes: ['lb'], flows: [['in_api', 0, 1.1]] },
     { title: 'Route to the VA', desc: 'Envoy terminates TLS and HTTPRoute forwards the OCSP call to the Validation Authority.', badge: { e: 'gw_va', f: 0.88 }, flows: [['gw_va', 0, 1.0]] },
-    { title: 'Responder configuration', desc: 'VA reads its own configuration from its database. It keeps no copy of certificate state.', badge: { n: 'db_va' }, flows: [['db_va_l', 0, 0.9]] },
+    { title: 'Responder configuration', desc: 'VA reads its own configuration from its schema. It keeps no copy of certificate state.', badge: { n: 'pg' }, flows: [['db_va_l', 0, 0.9]] },
     { title: 'Status from CA', desc: 'VA calls CA GetCertificateBySerialNumber and gets the current status: good, revoked or unknown.', badge: { e: 'va_ca', f: 0.5, side: 1, side2: -1 }, flows: [['va_ca', 0, 0.55], ['va_ca', 0.7, 0.55, 0, 1]] },
     { title: 'OCSP response', desc: 'VA answers through Envoy; the relying party accepts or rejects the certificate.', badge: { e: 'in_api', f: 0.3 }, nodes: ['api'], flows: [['gw_va', 0, 0.8, 0, 1], ['in_api', 0.9, 0.95, 0, 1]] }
   ] },
@@ -271,13 +370,43 @@ const USE_CASES = [
     { title: 'JWT validation', desc: 'Envoy validates the token signature with the JWKS published by Keycloak.', badge: { e: 'jwks_gw', f: 0.5, side: 1 }, flows: [['jwks_gw', 0, 0.9]] },
     { title: 'Grant check', desc: 'Through ext_authz, authz evaluates the operator’s grants for the revoke action.', badge: { e: 'ext_authz', f: 0.5, side: 1, side2: -1 }, flows: [['ext_authz', 0, 0.5], ['ext_authz', 0.65, 0.5, 0, 1]] },
     { title: 'Route to CA', desc: 'HTTPRoute forwards the revocation request to CA.', badge: { e: 'gw_ca', f: 0.93, side: 1 }, flows: [['gw_ca', 0, 1.1]] },
-    { title: 'Status updated', desc: 'CA marks the certificate as revoked, with its reason, in its own database.', badge: { n: 'db_ca' }, flows: [['db_ca_l', 0, 0.9]] },
+    { title: 'Status updated', desc: 'CA marks the certificate as revoked, with its reason, in its own schema.', badge: { n: 'pg' }, flows: [['db_ca_l', 0, 0.9]] },
     { title: 'Revocation event', desc: 'CA publishes a certificate status CloudEvent to RabbitMQ.', badge: { e: 'ev_ca', f: 0.3, side: 1, f2: 0.66 }, edges: ['bus'], flows: [['ev_ca', 0, 1.35]] },
     { title: 'Subscribers react', desc: 'VA, Device Manager, AWS IoT Connector and Alerts receive the event in parallel.', badge: { n: 'rabbit' }, edges: ['bus'], flows: [['ev_va', 0, 0.95, 0, 1], ['ev_devmgr', 0.12, 1.05, 0, 1], ['ev_aws', 0.24, 1.05, 0, 1], ['ev_alerts', 0.36, 1.1, 0, 1]] },
     { title: 'Propagation', desc: 'AWS IoT Connector syncs the revoked state to AWS IoT Core; Alerts notifies Teams and e-mail subscribers.', badge: { e: 'aws_core', f: 0.82 }, flows: [['aws_core', 0, 1.0], ['al_teams', 0.3, 0.85], ['al_smtp', 0.5, 0.8]] },
     { title: 'Validation reflects it', desc: 'The next OCSP query is answered from CA state, so the certificate is now reported as revoked.', badge: { e: 'va_ca', f: 0.5, side: 1, side2: -1 }, nodes: ['api', 'lb'], flows: [['in_api', 0, 0.9], ['gw_va', 0.95, 0.8], ['va_ca', 1.8, 0.5], ['va_ca', 2.4, 0.5, 0, 1]] }
   ] }
 ];
+USE_CASES.push(
+  { id: 'nac', name: 'NAC admission', icon: 'nac', summary: 'An 802.1X switch checks a device before letting it in', steps: [
+    { title: 'EAP-TLS handshake', status: { device: 'pending' }, desc: 'The device joins the switch or Wi-Fi. The NAC (RADIUS server) runs EAP-TLS and receives the device certificate.', badge: { e: 'eap_tls', f: 0.5, side: 1, f2: 0.5, side2: 1 }, flows: [['eap_tls', 0, 1.2]] },
+    { title: 'Chain check', status: { device: 'pending' }, desc: 'The NAC validates the chain against the Lamassu CA it trusts, then asks whether the certificate is still valid.', badge: { n: 'nac' }, nodes: ['nac', 'device'], flows: [['eap_tls', 0, 0.8, 0, 1], ['eap_tls', 0.95, 0.8]] },
+    { title: 'OCSP request', status: { device: 'pending' }, desc: 'The NAC sends an OCSP request for the device serial number through the Envoy Gateway.', badge: { e: 'in_nac', f: 0.3, f2: 0.05, side2: 1 }, nodes: ['lb'], flows: [['in_nac', 0, 1.2]] },
+    { title: 'Route to the VA', status: { device: 'pending' }, desc: 'HTTPRoute forwards the OCSP call to the Validation Authority.', badge: { e: 'gw_va', f: 0.88 }, flows: [['gw_va', 0, 1.0]] },
+    { title: 'Status from CA', status: { device: 'pending' }, desc: 'VA calls CA GetCertificateBySerialNumber: good, revoked or unknown. VA keeps no copy of certificate state.', badge: { e: 'va_ca', f: 0.5, side: 1, side2: -1 }, flows: [['va_ca', 0, 0.55], ['va_ca', 0.7, 0.55, 0, 1]] },
+    { title: 'OCSP response', status: { device: 'pending' }, desc: 'The signed OCSP response returns through Envoy to the NAC.', badge: { e: 'gw_va', f: 0.45 }, nodes: ['nac'], flows: [['gw_va', 0, 0.8, 0, 1], ['in_nac', 0.9, 1.1, 0, 1]] },
+    { title: 'Access decision', status: { device: 'pending' }, onArrive: { device: 'granted' }, desc: 'Good: the NAC sends RADIUS Access-Accept and the port opens on the right VLAN. Revoked: Access-Reject.', badge: { n: 'device' }, nodes: ['device'], flows: [['eap_tls', 0, 1.1, 0, 1]] }
+  ] },
+  { id: 'crl', name: 'CRL distribution', icon: 'crl', summary: 'A VPN gateway keeps its revocation list current', steps: [
+    { title: 'CRL download', desc: 'The VPN / firewall gateway fetches the CRL of the issuing CA over HTTP, as published in the CRL distribution point.', badge: { e: 'in_vpn', f: 0.3 }, nodes: ['lb'], flows: [['in_vpn', 0, 1.3]] },
+    { title: 'Route to the VA', desc: 'Envoy terminates TLS and HTTPRoute forwards the request to the Validation Authority.', badge: { e: 'gw_va', f: 0.88 }, flows: [['gw_va', 0, 1.0]] },
+    { title: 'CRL settings', desc: 'VA reads the CRL settings of that CA (validity, next update) from its own schema.', badge: { n: 'pg' }, flows: [['db_va_l', 0, 0.9]] },
+    { title: 'Revoked set from CA', desc: 'Certificate state comes from CA, the source of truth. VA never stores certificates.', badge: { e: 'va_ca', f: 0.5, side: 1, side2: -1 }, flows: [['va_ca', 0, 0.55], ['va_ca', 0.7, 0.55, 0, 1]] },
+    { title: 'CRL delivered', desc: 'The CRL returns to the gateway, which caches it until nextUpdate and rejects revoked peers during IKE / TLS.', badge: { e: 'gw_va', f: 0.45 }, nodes: ['vpn'], flows: [['gw_va', 0, 0.8, 0, 1], ['in_vpn', 0.9, 1.2, 0, 1]] },
+    { title: 'Kept current', desc: 'When CA publishes a revocation CloudEvent, VA consumes it, so the next CRL fetch already lists the certificate.', badge: { e: 'ev_ca', f: 0.3, side: 1, f2: 0.66 }, edges: ['bus'], flows: [['ev_ca', 0, 1.35], ['ev_va', 1.55, 0.95, 0, 1]] }
+  ] }
+);
+USE_CASES.push(
+  { id: 'pqc', name: 'PQC channel + enroll', icon: 'pqc', summary: 'PQ-secure TLS handshake, then a PQ certificate', steps: [
+    { title: 'ClientHello', desc: 'The device opens TLS 1.3 to Envoy. key_share offers {kex}; signature_algorithms lists {auth}.', badge: { e: 'in_device', f: 0.72 }, nodes: ['lb'], flows: [['in_device', 0, 1.2]] },
+    { title: 'Key exchange ({kexfam})', desc: 'Envoy selects {kex} and answers with its key share{kexnote}. Both sides derive the handshake secrets.', badge: { e: 'in_device', f: 0.45 }, flows: [['in_device', 0, 1.1, 0, 1]] },
+    { title: 'Server authentication', desc: 'Envoy sends the chain kept by cert-manager and a CertificateVerify with {auth}; the device checks it against its trust anchor.', badge: { e: 'cm_tls', f: 0.5, side: 1 }, flows: [['cm_tls', 0, 0.7], ['in_device', 0.85, 1.1, 'auth', 1]] },
+    { title: 'Client authentication', desc: 'mTLS: the device proves its Lamassu-issued {sig} certificate with CertificateVerify. Then ext_authz decides.', badge: { e: 'ext_authz', f: 0.5, side: 1, side2: -1 }, flows: [['in_device', 0, 1.0, 'auth'], ['ext_authz', 1.1, 0.5], ['ext_authz', 1.75, 0.5, 0, 1]] },
+    { title: 'Re-enrollment', desc: 'Inside the protected channel the device sends an EST simplereenroll CSR for a {sig} key. DMS Manager asks CA to issue.', badge: { e: 'gw_dms', f: 0.86, side: 1 }, flows: [['gw_dms', 0, 1.0], ['dms_ca', 1.1, 0.6]] },
+    { title: 'Signature in KMS', desc: 'CA sends the TBSCertificate to KMS, which signs with {keys}{signote}. Private keys never leave KMS.', crypto: true, badge: { e: 'ca_kms', f: 0.5, side2: 0.4 }, flows: [['ca_kms', 0, 0.6], ['kms_hsm', 0.7, 0.8], ['kms_hsm', 1.6, 0.8, 0, 1], ['ca_kms', 2.5, 0.6, 'key', 1]] },
+    { title: 'Certificate delivered', desc: 'CA records the new {sigfam} certificate and it returns to the device. The next handshake authenticates with it.', badge: { n: 'device' }, nodes: ['device'], flows: [['db_ca_l', 0, 0.8], ['dms_ca', 0.2, 0.6, 0, 1], ['gw_dms', 0.9, 0.95, 0, 1], ['in_device', 1.95, 1.1, 0, 1]] }
+  ] }
+);
 const KIND = { http: 'http', event: 'event', auth: 'auth', key: 'key', db: 'db', infra: 'http' };
 const STEP_PAUSE = 1.4;  // guided mode: pause before a step replays
 function compileUseCase(uc) {
@@ -297,6 +426,57 @@ function compileUseCase(uc) {
   uc.total = t; uc.prog = { states, flows };
 }
 USE_CASES.forEach(compileUseCase);
+// At Medium / High some steps happen entirely inside the platform box. Each level gets its own step list:
+// consecutive steps with nothing visible collapse into one "inside" step, and consecutive steps whose
+// visible links are identical after the level mapping collapse into one.
+const lcFirst = s => /^[A-Z][a-z]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s;
+const listSentence = a => a.length === 1 ? a[0] : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+function buildVariant(uc, li) {
+  const lv = li >= 1 ? 1 : 0, hv = li >= 2 ? 1 : 0;
+  const info = uc.steps.map(s => {
+    const vis = new Set(); let remapped = false;
+    for (const f of s.flows) { const m = mapEdge(f[0], lv, hv); if (m !== f[0]) remapped = true; if (m) vis.add(m); }
+    return { s, vis, key: [...vis].sort().join('|'), remapped };
+  });
+  const groups = [];
+  for (const it of info) {
+    const g0 = groups[groups.length - 1];
+    if (li > 0 && g0) {
+      if (!it.vis.size && g0.internal) { g0.items.push(it); continue; }
+      if (it.vis.size && !g0.internal && it.key === g0.key && (it.remapped || g0.items.some(x => x.remapped))) { g0.items.push(it); continue; }
+    }
+    groups.push({ items: [it], internal: li > 0 && !it.vis.size, key: it.key });
+  }
+  const box = li === 2 ? 'Lamassu' : 'the platform';
+  const steps = groups.map(gr => {
+    const ss = gr.items.map(x => x.s);
+    if (ss.length === 1) {
+      const s = ss[0], o = Object.assign({}, s, { src: [uc.steps.indexOf(s)] });
+      if (gr.internal) { o.badge = { n: 'lamassu' }; if (!s.noSpot) o.desc = s.desc + ' (inside ' + box + ')'; }
+      else if (s.badge) {
+        const b = s.badge, lost = b.e ? !mapEdge(b.e, lv, hv) : ((lv && NATIVE.has(b.n)) || (hv && CLUSTER.has(b.n)));
+        if (lost) { const vis = [...gr.items[0].vis], pick = vis.find(id => !META[id].hidden) || vis[0]; o.badge = { e: pick, f: 0.5 }; }
+      }
+      return o;
+    }
+    let t = 0; const flows = [];
+    for (const s of ss) { for (const f of s.flows) { const c = f.slice(); c[1] += t; flows.push(c); } t += s.dur; }
+    const titles = ss.map(s => s.title), both = ss.map(s => s.desc).join(' ');
+    return {
+      title: gr.internal ? 'Inside ' + box : titles.join(' → '),
+      desc: gr.internal ? 'Handled inside ' + box + ': ' + listSentence(titles.map(lcFirst)) + '.' : (both.length <= 175 ? both : ss[0].desc),
+      dur: t, flows, src: ss.map(s => uc.steps.indexOf(s)),
+      badge: gr.internal ? { n: 'lamassu' } : ss[0].badge,
+      crypto: ss.some(s => s.crypto), noSpot: ss.every(s => s.noSpot),
+      nodes: [...new Set(ss.flatMap(s => s.nodes || []))], edges: [...new Set(ss.flatMap(s => s.edges || []))],
+      status: ss[ss.length - 1].status, onArrive: ss[ss.length - 1].onArrive
+    };
+  });
+  const v = { id: uc.id, name: uc.name, icon: uc.icon, summary: uc.summary, steps };
+  compileUseCase(v);
+  return v;
+}
+for (const uc of USE_CASES) { uc.steps.forEach((s, i) => { s.src = [i]; }); uc.v = [uc, buildVariant(uc, 1), buildVariant(uc, 2)]; }
 const flowEase = p => 0.35 * p + 0.65 * (0.5 - 0.5 * Math.cos(Math.PI * p));
 
 /* =====================================================================
@@ -340,7 +520,7 @@ function drawPacket(kind, x, y, a, ang) {
 function drawFlowOverlays(V, fs, alphaMul = 1) {
   for (const A of fs.active) {
     const e = V.E[A.eid]; if (!e) continue;
-    const la = levelAlpha(META[A.eid].cls, fs.lv) * alphaMul; if (la <= 0.02) continue;
+    const la = edgeLA(A.eid, fs) * alphaMul; if (la <= 0.02) continue;
     const s2 = STY[e.type];
     g.globalAlpha = (A.f.kind === 'db' ? 0.45 : 0.85) * la; g.strokeStyle = A.f.kind === 'key' ? C.a5 : s2.glow;
     g.lineWidth = s2.w + (A.f.kind === 'db' ? 0.6 : 1.6); g.lineCap = 'round'; g.setLineDash([]);
@@ -349,7 +529,7 @@ function drawFlowOverlays(V, fs, alphaMul = 1) {
   }
   for (const id in fs.glow) {
     const e = V.E[id]; if (!e || fs.glow[id] >= 1) continue;
-    const la = levelAlpha(META[id].cls, fs.lv) * alphaMul; if (la <= 0.02) continue;
+    const la = edgeLA(id, fs) * alphaMul; if (la <= 0.02) continue;
     g.globalAlpha = fs.glow[id] * (e.type === 'db' ? 0.22 : 0.45) * la; g.strokeStyle = STY[e.type].glow; g.lineWidth = STY[e.type].w + 2.4; g.lineCap = 'round';
     strokeRange(e, 0, e.total); g.globalAlpha = 1;
   }
@@ -359,14 +539,14 @@ function drawPackets(V, fs, alphaMul = 1, filter = null) {
   for (const A of fs.active) {
     if (filter && !filter(A)) continue;
     const e = V.E[A.eid]; if (!e) continue;
-    const la = levelAlpha(META[A.eid].cls, fs.lv) * alphaMul;
+    const la = edgeLA(A.eid, fs) * alphaMul;
     const q = pointAt(e, A.f.rev ? e.total * (1 - A.p) : e.total * A.p), i = Math.min(q[2], e.sp.length - 2);
     const ang = Math.atan2(e.sp[i + 1][1] - e.sp[i][1], e.sp[i + 1][0] - e.sp[i][0]);
     drawPacket(A.f.kind, q[0], q[1], la * Math.min(1, A.p / 0.08, (1 - A.p) / 0.08 + 0.35), ang);
   }
 }
 function annAlpha(a, fs) {
-  const lf = a.lvl === 'low' ? lowF(fs.lv) : a.lvl === 'med' ? medF(fs.lv) : 1;
+  const lf = (a.lvl === 'low' ? lowF(fs.lv) : a.lvl === 'med' ? medF(fs.lv) : 1) * (a.k8s ? 1 - hOutF(fs.hv) : 1);
   const fa = a.e.some(id => (!fs.FE || fs.FE.has(id))) ? 1 : Math.max(fs.dimE, 0.25);
   return lf * fa;
 }
@@ -433,22 +613,26 @@ function makeView3D() {
   };
   const ZONES = [
     { id: 'cluster', label: 'KUBERNETES CLUSTER', x0: 0, x1: 30.4, y0: -2.8, y1: 24.6, fill: '#edf2ff', stroke: C.P, dash: [7, 5], lw: 1.4, plate: 6, lc: C.P, lab: { ax: 'x', x: 15.6, y: -2.55, base: 'top', align: 'left' } },
-    { id: 'clients', label: 'EXTERNAL CLIENTS', x0: -11.0, x1: -6.1, y0: -1.1, y1: 9.9, fill: 'rgba(255,255,255,0.55)', stroke: C.g4, dash: [5, 4], lw: 1.1, lc: C.g6, lab: { ax: 'x', x: -10.5, y: 9.6, base: 'bottom', align: 'left' } },
+    { id: 'clients', label: 'EXTERNAL CLIENTS', x0: -11.0, x1: -6.1, y0: -1.1, y1: 17.1, fill: 'rgba(255,255,255,0.55)', stroke: C.g4, dash: [5, 4], lw: 1.1, lc: C.g6, lab: { ax: 'x', x: -10.5, y: 16.8, base: 'bottom', align: 'left' } },
     { id: 'entry', label: 'ENTRY · SECURITY', x0: 1.0, x1: 8.0, y0: -1.9, y1: 12.8, fill: '#e7edff', stroke: C.b4, dash: [5, 4], lw: 1.1, lc: C.b9, small: true, lab: { ax: 'y', x: 1.26, y: 10.9, base: 'top' } },
     { id: 'native', label: 'LAMASSU NATIVE SERVICES', x0: 8.5, x1: 29.6, y0: -1.3, y1: 12.2, fill: '#e3ebff', stroke: C.P, dash: [5, 4], lw: 1.2, lc: C.P, tag: true },
     { id: 'crypto', label: 'KMS BOUNDARY', x0: 23.7, x1: 29.2, y0: -0.9, y1: 3.45, fill: 'rgba(245,158,11,0.045)', stroke: C.a5, dash: [3, 3], lw: 1.1, lc: '#b45309', small: true, dynamic: true, lab: { ax: 'x', x: 26.0, y: 3.15, base: 'bottom', align: 'left' } },
     { id: 'platform', label: 'PLATFORM INFRASTRUCTURE', x0: 1.0, x1: 29.6, y0: 13.1, y1: 24.0, fill: '#eef1f7', stroke: C.g4, dash: [5, 4], lw: 1.1, lc: C.g6, lab: { ax: 'x', x: 15.0, y: 23.74, base: 'bottom' } },
-    { id: 'persist', label: 'PERSISTENCE · DATABASE / SCHEMA PER SERVICE', x0: 1.6, x1: 29.0, y0: 20.0, y1: 23.2, fill: '#e9edf4', stroke: C.g3, dash: [3, 3], lw: 1, lc: C.g5, small: true, lab: { ax: 'x', x: 4.6, y: 22.92, base: 'bottom', align: 'left' } },
+    { id: 'persist', label: 'PERSISTENCE · POSTGRESQL', x0: 12.0, x1: 25.0, y0: 20.0, y1: 23.2, fill: '#e9edf4', stroke: C.g3, dash: [3, 3], lw: 1, lc: C.g5, small: true, lab: { ax: 'x', x: 12.4, y: 22.92, base: 'bottom', align: 'left' } },
     { id: 'external', label: 'EXTERNAL INTEGRATIONS', x0: 31.9, x1: 37.6, y0: -4.4, y1: 16.0, fill: 'rgba(255,255,255,0.55)', stroke: C.g4, dash: [5, 4], lw: 1.1, lc: C.g6, lab: { ax: 'x', x: 32.4, y: 15.72, base: 'bottom', align: 'left' } }
   ];
   const ZI = {}; for (const z of ZONES) ZI[z.id] = z;
   const SLAB = { x0: 8.9, x1: 29.2, y0: -0.9, y1: 11.8, h: 26 };
+  const HB = { x0: 0.45, x1: 29.95, y0: -2.0, y1: 24.15, h: 34 };     // high level: the whole cluster
+  const slabR = () => { const k = hBoxF(LVS.hv); return { x0: lerp(SLAB.x0, HB.x0, k), x1: lerp(SLAB.x1, HB.x1, k), y0: lerp(SLAB.y0, HB.y0, k), y1: lerp(SLAB.y1, HB.y1, k), h: lerp(SLAB.h, HB.h, k), logo: lerp(170, 250, k) }; };
 
   const N = {}, LIST = [];
   const node = (id, o) => { const n = Object.assign({ id, lab: 'top', cat: CATS[id] }, o); N[id] = n; LIST.push(n); };
   node('device', { name: 'Device', kind: 'device', x: -8.6, y: 0.8, pad: 0.6 });
   node('admin', { name: 'Admin Console', kind: 'console', x: -8.6, y: 4.4, pad: 0.6 });
   node('api', { name: 'External API', kind: 'api', x: -8.6, y: 8.0, pad: 0.6 });
+  node('nac', { name: 'NAC / RADIUS', sub: 'EAP-TLS · OCSP', kind: 'nac', x: -8.6, y: 11.6, pad: 0.8 });
+  node('vpn', { name: 'VPN / Firewall', sub: 'CRL consumer', kind: 'vpn', x: -8.6, y: 15.2, pad: 0.7 });
   node('lb', { name: 'Load Balancer', kind: 'lb', x: 0.0, y: 4.4, pad: 0.5, lab: 'left', small: true });
   node('envoy', { name: 'Envoy Gateway', sub: 'TLS termination', kind: 'gateway', x: 4.4, y: 4.4, pad: 1.35 });
   node('authz', { name: 'authz', sub: '/v1/ext_authz/check', kind: 'authz', x: 4.4, y: -0.4, pad: 0.95 });
@@ -466,9 +650,7 @@ function makeView3D() {
   node('keycloak', { name: 'OIDC / Keycloak', kind: 'keycloak', x: 4.4, y: 15.8, pad: 0.85 });
   node('storage', { name: 'Persistent Storage', kind: 'storage', x: 9.4, y: 17.4, pad: 0.75 });
   node('rabbit', { name: 'RabbitMQ', sub: 'AMQP / CloudEvents', kind: 'rabbit', x: 17.0, y: 17.4, padW: 2.3, padD: 1.2 });
-  for (const [id, name, sub, x] of [['db_authz', 'authz', 'grants / policies', 3.4], ['db_dms', 'dms', null, 11.8], ['db_devmgr', 'devices', null, 14.2],
-    ['db_ca', 'ca', null, 20.7], ['db_va', 'va', 'VA configuration', 23.3], ['db_kms', 'kms', null, 26.1], ['db_alerts', 'alerts', null, 28.0]])
-    node(id, { name, sub, kind: 'db', x, y: 21.5, pad: 0.55, small: true, mono: true, owner: OWNER[id] });
+  node('pg', { name: 'PostgreSQL', sub: 'one schema per service', kind: 'pg', x: 21.5, y: 21.5, pad: 1.0 });
   node('hsm', { name: 'PKCS#11 / HSM', kind: 'hsm', x: 33.4, y: -3.0, pad: 0.65, lab: 'right', small: true });
   node('awskms', { name: 'AWS KMS', kind: 'cloudkms', x: 33.4, y: -1.0, pad: 0.65, lab: 'right', small: true });
   node('azkv', { name: 'Azure Key Vault', kind: 'cloudkms', x: 33.4, y: 1.0, pad: 0.65, lab: 'right', small: true });
@@ -487,6 +669,14 @@ function makeView3D() {
     in_admin: [[[-8.0, TR], [3.05, TR]], { seg: 0, at: 0.8 }],
     in_device: [[[-8.0, 0.8], [MX, 0.8], [MX, TR], [3.05, TR]], false],
     in_api: [[[-8.0, 8.0], [MX, 8.0], [MX, TR], [3.05, TR]], false],
+    in_nac: [[[-7.8, 11.6], [MX, 11.6], [MX, TR], [3.05, TR]], false],
+    in_vpn: [[[-7.9, 15.2], [MX, 15.2], [MX, TR], [3.05, TR]], false],
+    eap_tls: [[[-9.2, 0.8], [-10.25, 0.8], [-10.25, 11.6], [-9.4, 11.6]], { seg: 1, at: 0.62 }],
+    hi_admin: [[[-8.0, TR], [HB.x0, TR]], { seg: 0, at: 0.82 }],
+    hi_device: [[[-8.0, 0.8], [MX, 0.8], [MX, TR], [HB.x0, TR]], false],
+    hi_api: [[[-8.0, 8.0], [MX, 8.0], [MX, TR], [HB.x0, TR]], false],
+    hi_nac: [[[-7.8, 11.6], [MX, 11.6], [MX, TR], [HB.x0, TR]], false],
+    hi_vpn: [[[-7.9, 15.2], [MX, 15.2], [MX, TR], [HB.x0, TR]], false],
     ext_authz: [[[4.4, 3.05], [4.4, 0.55]], { seg: 0, at: 0.62 }],
     cm_tls: [[[3.4, 8.15], [3.4, 5.75]], { seg: 0, at: 0.55 }],
     jwks_gw: [[[5.2, 14.95], [5.2, 5.75]], { seg: 0, at: 0.3 }],
@@ -518,14 +708,14 @@ function makeView3D() {
     ev_kms: [[[25.6, 2.95], ...toRab(25.6)], { seg: 0, at: 0.96 }, 1],
     ev_alerts: [[[27.4, B1], ...toRab(27.4)], { seg: 0, at: 0.4, rev: true }, 1],
     st_rabbit: [[[10.15, 17.4], [14.7, 17.4]], false],
-    st_pg: [[[9.4, 18.15], [9.4, 20.0]], false],
-    db_authz_l: [[[3.45, -0.4], [1.6, -0.4], [1.6, 21.5], [2.85, 21.5]], false],
-    db_dms_l: [[[12.45, 1.5], [11.8, 1.5], [11.8, 20.95]], false],
-    db_devmgr_l: [[[14.2, B1], [14.2, 20.95]], false],
-    db_ca_l: [[[20.35, 1.4], [20.7, 1.4], [20.7, 20.95]], false],
-    db_va_l: [[[19.6, B1], [19.6, 20.3], [23.3, 20.3], [23.3, 20.95]], false],
-    db_kms_l: [[[25.95, 2.7], [26.1, 2.7], [26.1, 20.95]], false],
-    db_alerts_l: [[[28.0, B1], [28.0, 20.95]], false],
+    st_pg: [[[9.4, 18.15], [9.4, 20.9], [20.76, 20.9]], false],
+    db_authz_l: [[[3.45, -0.4], [1.6, -0.4], [1.6, 21.5], [20.55, 21.5]], false],
+    db_dms_l: [[[12.45, 1.5], [11.8, 1.5], [11.8, 21.5], [20.55, 21.5]], false],
+    db_devmgr_l: [[[14.2, B1], [14.2, 21.5], [20.55, 21.5]], false],
+    db_ca_l: [[[20.35, 1.4], [20.7, 1.4], [20.7, 20.99]], false],
+    db_va_l: [[[19.6, B1], [19.6, 21.5], [20.55, 21.5]], false],
+    db_kms_l: [[[25.95, 2.7], [26.1, 2.7], [26.1, 21.5], [22.45, 21.5]], false],
+    db_alerts_l: [[[28.0, B1], [28.0, 21.5], [22.45, 21.5]], false],
     // medium
     gw_lp: [[[5.75, TR], [SLAB.x0, TR]], { seg: 0, at: 0.62 }],
     lp_ev: [[[STEM, SLAB.y1], [STEM, RAB_Y0]], { seg: 0, at: 0.45, both: true }],
@@ -537,12 +727,7 @@ function makeView3D() {
     lp_smtp: [[[SLAB.x1, 10.6], [PB, 10.6], [PB, 10.0], [32.75, 10.0]], { seg: 0, at: 0.5 }],
     lp_teams: [[[SLAB.x1, 10.6], [PB, 10.6], [PB, 12.2], [32.75, 12.2]], false],
     lp_hook: [[[SLAB.x1, 10.6], [PB, 10.6], [PB, 14.4], [32.75, 14.4]], false],
-    db_dms_m: [[[11.8, SLAB.y1], [11.8, 20.95]], false],
-    db_devmgr_m: [[[14.2, SLAB.y1], [14.2, 20.95]], false],
-    db_ca_m: [[[20.7, SLAB.y1], [20.7, 20.95]], false],
-    db_va_m: [[[23.3, SLAB.y1], [23.3, 20.95]], false],
-    db_kms_m: [[[26.1, SLAB.y1], [26.1, 20.95]], false],
-    db_alerts_m: [[[28.0, SLAB.y1], [28.0, 20.95]], false]
+    db_lp_m: [[[23.4, SLAB.y1], [23.4, 21.5], [22.45, 21.5]], false]
   };
   const E = {}, ELIST = [];
   for (const id in GEO) {
@@ -553,11 +738,12 @@ function makeView3D() {
   ELIST.sort((a, b) => TYPE_ORDER[a.type] - TYPE_ORDER[b.type]);
 
   const ANN = [
-    { t: 'HTTPS / EST / REST', x: -2.95, y: TR - 0.22, ax: 'x', base: 'bottom', e: ['in_admin', 'in_device', 'in_api'], fam: MONO, size: 8.6, lvl: 'both' },
-    { t: 'ext_authz', x: 4.62, y: 1.8, ax: 'y', base: 'top', e: ['ext_authz'], col: C.v6, fam: MONO, size: 8.6, lvl: 'both' },
-    { t: 'TLS cert', x: 3.18, y: 6.95, ax: 'y', base: 'bottom', e: ['cm_tls'], col: C.g5, lvl: 'both' },
-    { t: 'JWKS / JWT validation', x: 7.42, y: 13.5, ax: 'y', base: 'top', e: ['jwks_gw', 'jwks_authz'], col: C.v6, lvl: 'both' },
-    { t: 'HTTPRoute', x: 7.45, y: TR - 0.22, ax: 'x', base: 'bottom', e: ['gw_ui', 'gw_job', 'gw_dms', 'gw_va', 'gw_lp'], fam: MONO, size: 8.6, lvl: 'both' },
+    { t: 'HTTPS / EST / REST / OCSP', x: -4.4, y: TR + 0.98, ax: 'x', base: 'top', e: ['in_admin', 'in_device', 'in_api', 'in_nac', 'in_vpn', 'hi_admin', 'hi_device', 'hi_api', 'hi_nac', 'hi_vpn'], fam: MONO, size: 8.6, lvl: 'both' },
+    { t: 'EAP-TLS · 802.1X', x: -10.47, y: 6.2, ax: 'y', base: 'bottom', e: ['eap_tls'], col: C.v6, fam: MONO, size: 8, lvl: 'both' },
+    { t: 'ext_authz', x: 4.62, y: 1.8, ax: 'y', base: 'top', e: ['ext_authz'], col: C.v6, fam: MONO, size: 8.6, lvl: 'both' , k8s: true },
+    { t: 'TLS cert', x: 3.18, y: 6.95, ax: 'y', base: 'bottom', e: ['cm_tls'], col: C.g5, lvl: 'both' , k8s: true },
+    { t: 'JWKS / JWT validation', x: 7.42, y: 13.5, ax: 'y', base: 'top', e: ['jwks_gw', 'jwks_authz'], col: C.v6, lvl: 'both' , k8s: true },
+    { t: 'HTTPRoute', x: 7.45, y: TR - 0.22, ax: 'x', base: 'bottom', e: ['gw_ui', 'gw_job', 'gw_dms', 'gw_va', 'gw_lp'], fam: MONO, size: 8.6, lvl: 'both' , k8s: true },
     { t: 'certificate issuance', x: 16.4, y: 3.2, ax: 'x', base: 'top', e: ['dms_ca'], lvl: 'low' },
     { t: 'sign / key operations', x: 22.2, y: 3.2, ax: 'x', base: 'top', e: ['ca_kms'], lvl: 'low' },
     { t: 'certificate status', x: 19.62, y: 7.5, ax: 'y', base: 'top', e: ['va_ca'], lvl: 'low' },
@@ -569,10 +755,10 @@ function makeView3D() {
     { t: 'event-driven', x: 30.1, y: 10.38, ax: 'x', base: 'bottom', e: ['al_smtp', 'al_teams', 'al_hook', 'lp_smtp', 'lp_teams', 'lp_hook'], lvl: 'both' },
     { t: 'NOTIFICATION CHANNELS', x: 30.98, y: 12.9, ax: 'y', base: 'bottom', e: ['al_smtp', 'al_teams', 'al_hook', 'lp_smtp', 'lp_teams', 'lp_hook'], col: C.g5, fam: MONO, size: 7.6, w: 700, ls: 0.6, lvl: 'both' },
     { t: 'AMQP / CloudEvents', x: 22.3, y: BUS + 0.34, ax: 'x', base: 'top', e: ['bus'], col: C.c6, fam: MONO, size: 8.8, w: 600, lvl: 'low' },
-    { t: 'AMQP / CloudEvents · pub / sub', x: 17.25, y: 14.0, ax: 'y', base: 'top', e: ['lp_ev'], col: C.c6, fam: MONO, size: 8.4, w: 600, lvl: 'med' },
-    { t: 'ca.#  ·  certificate.#', x: 17.0, y: 19.15, ax: 'x', base: 'middle', e: ['bus', 'lp_ev'], col: C.c6, fam: MONO, size: 8.4, lvl: 'both' },
-    { t: 'device / metadata events', x: 17.0, y: 19.6, ax: 'x', base: 'middle', e: ['bus', 'lp_ev'], col: C.c6, fam: MONO, size: 8.4, lvl: 'both' },
-    { t: 'PVC', x: 12.4, y: 17.18, ax: 'x', base: 'bottom', e: ['st_rabbit'], col: C.g5, fam: MONO, size: 8.4, lvl: 'both' }
+    { t: 'AMQP / CloudEvents · pub / sub', x: 17.25, y: 14.0, ax: 'y', base: 'top', e: ['lp_ev'], col: C.c6, fam: MONO, size: 8.4, w: 600, lvl: 'med' , k8s: true },
+    { t: 'ca.#  ·  certificate.#', x: 17.0, y: 19.15, ax: 'x', base: 'middle', e: ['bus', 'lp_ev'], col: C.c6, fam: MONO, size: 8.4, lvl: 'both' , k8s: true },
+    { t: 'device / metadata events', x: 17.0, y: 19.6, ax: 'x', base: 'middle', e: ['bus', 'lp_ev'], col: C.c6, fam: MONO, size: 8.4, lvl: 'both' , k8s: true },
+    { t: 'PVC', x: 12.4, y: 17.18, ax: 'x', base: 'bottom', e: ['st_rabbit'], col: C.g5, fam: MONO, size: 8.4, lvl: 'both' , k8s: true }
   ];
 
   // ---- primitives bound to this projection
@@ -606,6 +792,73 @@ function makeView3D() {
     g.transform(u[0], u[1], v[0], v[1], 0, 0);
     font(o.size || 9.5, o.w || 500, o.fam || SANS); ls(o.ls || 0);
     g.textAlign = align; g.textBaseline = base; g.fillStyle = o.col || C.b9; g.fillText(t, 0, 0); ls(0);
+    g.restore();
+  }
+
+  // ---- perimeter TLS channel: a translucent tube around the client -> Envoy trunk
+  // every client link rides in its own low glass pipe, from the client's edge to Envoy; shared stretches merge into one pipe
+  const CHN = { r: 0.36, flat: 0.62, emb: [-2.6, 4.4] };
+  let chanCv = null;
+  function drawChannel(fs, mul) {
+    CHA.p = null;
+    let a = 0; const segs = [], joints = [], seen = new Set(), ends = [];
+    const key = (p, q) => p.map(n => n.toFixed(2)).join(',') + '|' + q.map(n => n.toFixed(2)).join(',');
+    for (const e of ELIST) {
+      if (!PERIM.has(e.id)) continue;
+      const ea = fs.edgeAlpha(e.id); if (ea <= 0.01) continue;
+      a = Math.max(a, ea);
+      const pts = e.pts; ends.push([pts[0], pts[1]], [pts[pts.length - 1], pts[pts.length - 2]]);
+      for (let i = 1; i < pts.length; i++) {
+        const k = key(pts[i - 1], pts[i]); if (!seen.has(k)) { seen.add(k); segs.push([pts[i - 1], pts[i]]); }
+        if (i < pts.length - 1) { const kj = 'j' + pts[i].join(','); if (!seen.has(kj)) { seen.add(kj); joints.push([pts[i], pts[i - 1], pts[i + 1]]); } }
+      }
+    }
+    if (!segs.length) return;
+    a = (0.6 + 0.4 * a) * mul * PQV.a; if (a <= 0.01) return;
+    const r = CHN.r, rz = r * 1.2247 * K * CHN.flat, zc = rz, t = fs.t, q = qStatus();
+    const kc = FAM[CX.kex].c, nq = (q.hndl ? 1 : 0) + (q.tnfl ? 1 : 0), ac = nq === 0 ? mix('#b91c1c', '#ef4444', 0.5 + 0.5 * Math.sin(t * 4)) : FAM[CX.auth].c;
+    const perp = (p, q2) => { const dx = q2[0] - p[0], dy = q2[1] - p[1], L = Math.hypot(dx, dy) || 1; return [-dy / L, dx / L]; };
+    const at = (p, u, th) => P(p[0] + u[0] * r * Math.cos(th), p[1] + u[1] * r * Math.cos(th), zc + rz * Math.sin(th));
+    const ring = (p, u) => { const o = []; for (let i = 0; i < 36; i++) o.push(at(p, u, i / 36 * Math.PI * 2)); return o; };
+    const shapes = segs.map(([p, q2]) => { const u = perp(p, q2); return hull([...ring(p, u), ...ring(q2, u)]); });
+    for (const [p, a0, b0] of joints) shapes.push(hull([...ring(p, perp(a0, p)), ...ring(p, perp(p, b0))]));
+    // union on an offscreen layer: all outlines first, then all fills, so inner seams disappear
+    const W = g.canvas.width, H = g.canvas.height;
+    if (!chanCv || chanCv.width !== W || chanCv.height !== H) { chanCv = document.createElement('canvas'); chanCv.width = W; chanCv.height = H; }
+    const og = chanCv.getContext('2d'), g0 = g, T = g.getTransform();
+    og.setTransform(1, 0, 0, 1, 0, 0); og.clearRect(0, 0, W, H); og.setTransform(T);
+    g = og; g.lineJoin = 'round';
+    for (const sh of shapes) { path(sh); g.closePath(); g.strokeStyle = ac; g.lineWidth = 2.6; g.stroke(); }
+    for (const sh of shapes) { path(sh); g.closePath(); g.fillStyle = '#dce9ff'; g.fill(); }
+    for (const [p, q2] of segs) { const u = perp(p, q2); let bt = Math.PI / 2, bv = -1e9; for (const th of [Math.PI * 0.35, Math.PI / 2, Math.PI * 0.65]) { const v = -at(p, u, th)[1]; if (v > bv) { bv = v; bt = th; } } const p0 = at(p, u, bt), p1 = at(q2, u, bt); line(p0[0], p0[1], p1[0], p1[1], '#ffffff', 1.8); }
+    g = g0;
+    g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = a * 0.6; g.drawImage(chanCv, 0, 0); g.restore();
+    g.save(); g.globalAlpha = a;
+    // data flow along the pipes, in the KEX colour
+    for (const [p, q2] of segs) {
+      const u = perp(p, q2);
+      for (const th of [Math.PI * 0.3, Math.PI * 0.7]) {
+        const p0 = at(p, u, th), p1 = at(q2, u, th);
+        g.beginPath(); g.moveTo(p0[0], p0[1]); g.lineTo(p1[0], p1[1]); g.setLineDash([2, 6]); g.lineDashOffset = -t * 24;
+        g.strokeStyle = rgba(kc, 0.85); g.lineWidth = 1.5; g.lineCap = 'round'; g.stroke(); g.setLineDash([]); g.lineCap = 'butt';
+      }
+    }
+    // pipe mouths at each client and at Envoy
+    for (const [p, nb] of ends) { const u = perp(p, nb), rg = ring(p, u); path(rg); g.closePath(); g.fillStyle = 'rgba(239,246,255,0.5)'; g.fill(); g.strokeStyle = ac; g.lineWidth = 1.5; g.stroke(); }
+    // emblem + threat status above the shared trunk
+    const eu = [0, 1], top = at(CHN.emb, eu, Math.PI / 2); let ty = top[1]; for (const p of ring(CHN.emb, eu)) ty = Math.min(ty, p[1]);
+    const ex = top[0], sc = STATUS_Q().c, sy = ty - 26, R0 = 15;
+    // exposed channel: a warning halo pulses around the emblem
+    if (nq < 2) { const k = 0.5 + 0.5 * Math.sin(t * 4); circ(ex, sy, R0 + 6 + 4 * k, rgba(sc, 0.12 + 0.1 * k)); }
+    g.beginPath(); g.moveTo(ex, sy - R0); g.lineTo(ex + R0 * 0.85, sy - R0 * 0.62); g.lineTo(ex + R0 * 0.77, sy + R0 * 0.15); g.quadraticCurveTo(ex + R0 * 0.55, sy + R0 * 0.78, ex, sy + R0 * 1.04); g.quadraticCurveTo(ex - R0 * 0.55, sy + R0 * 0.78, ex - R0 * 0.77, sy + R0 * 0.15); g.lineTo(ex - R0 * 0.85, sy - R0 * 0.62); g.closePath();
+    g.fillStyle = 'rgba(15,31,61,0.14)'; g.save(); g.translate(1.5, 2.5); g.fill(); g.restore();
+    g.fillStyle = sc; g.fill(); g.strokeStyle = '#ffffff'; g.lineWidth = 2; g.stroke();
+    g.strokeStyle = '#ffffff'; g.lineWidth = 2.6; g.lineCap = 'round'; g.lineJoin = 'round'; g.beginPath();
+    if (nq === 0) { g.moveTo(ex, sy - 6); g.lineTo(ex, sy + 2); g.stroke(); dot([ex, sy + 7], 1.8, '#ffffff'); }
+    else if (nq === 1) { g.moveTo(ex - 6, sy + 1); g.lineTo(ex + 6, sy + 1); g.stroke(); }
+    else { g.moveTo(ex - 6, sy + 0.5); g.lineTo(ex - 1.5, sy + 5); g.lineTo(ex + 6.5, sy - 4); g.stroke(); }
+    g.lineCap = 'butt'; g.lineJoin = 'miter';
+    CHA.p = [ex, sy];
     g.restore();
   }
 
@@ -733,25 +986,28 @@ function makeView3D() {
     },
     cloudkms(n, s) {
       const { x, y } = n; shadow(x, y, 1.4, 1.4);
-      const b = box(x, y, 1.25, 1.25, 0, 7 + s.lift, PAL.ext, s.hl);
-      seg(FY(b, 0.15, 0.5), FY(b, 0.65, 0.5), 'rgba(37,99,235,0.45)', 1);
-      plane(x, y, 7 + s.lift, () => { g.fillStyle = C.a5; g.beginPath(); g.arc(0, -0.08, 0.13, 0, Math.PI * 2); g.fill(); g.beginPath(); g.moveTo(-0.07, -0.02); g.lineTo(0.07, -0.02); g.lineTo(0.12, 0.26); g.lineTo(-0.12, 0.26); g.closePath(); g.fill(); });
+      const bp = LOGO_OF[n.id] ? BRAND_PAL[LOGO_OF[n.id]] : PAL.ext, b = box(x, y, 1.25, 1.25, 0, 7 + s.lift, bp, s.hl);
+      seg(FY(b, 0.15, 0.5), FY(b, 0.65, 0.5), LOGO_OF[n.id] ? 'rgba(255,255,255,0.3)' : 'rgba(37,99,235,0.45)', 1);
+      plane(x, y, 7 + s.lift, () => { if (LOGO_OF[n.id] && drawBrand(LOGO_OF[n.id], 0, 0, 0.9, 0.9)) return; g.fillStyle = C.a5; g.beginPath(); g.arc(0, -0.08, 0.13, 0, Math.PI * 2); g.fill(); g.beginPath(); g.moveTo(-0.07, -0.02); g.lineTo(0.07, -0.02); g.lineTo(0.12, 0.26); g.lineTo(-0.12, 0.26); g.closePath(); g.fill(); });
       return 7 + s.lift;
     },
     iotcore(n, s) {
-      const { x, y } = n; shadow(x, y, 2.5, 2.5); box(x, y, 2.4, 2.4, 0, 5, PAL.ext, s.hl);
+      const { x, y } = n; shadow(x, y, 2.5, 2.5); box(x, y, 2.4, 2.4, 0, 5, BRAND_PAL.aws, s.hl);
       const c = P(x, y, 18 + s.lift);
       g.beginPath(); g.arc(c[0] - 10, c[1] + 2, 7, Math.PI * 0.5, Math.PI * 1.5); g.arc(c[0] - 2, c[1] - 5, 9, Math.PI * 1.05, Math.PI * 1.85); g.arc(c[0] + 9, c[1], 7, Math.PI * 1.35, Math.PI * 0.5); g.closePath();
-      g.fillStyle = mix('#ffffff', C.b1, s.hl * 0.6); g.fill(); g.strokeStyle = C.b6; g.lineWidth = 1.3; g.stroke();
-      const hub = [[c[0] - 7, c[1] + 4], [c[0], c[1] - 3], [c[0] + 7, c[1] + 4]];
-      g.beginPath(); g.moveTo(hub[0][0], hub[0][1]); g.lineTo(hub[1][0], hub[1][1]); g.lineTo(hub[2][0], hub[2][1]); g.strokeStyle = C.b5; g.lineWidth = 1; g.stroke();
-      for (const h of hub) dot(h, 2, C.P);
-      seg(P(x, y, 5), P(x, y, 11 + s.lift), C.b3, 1);
+      g.fillStyle = mix(BRAND_COL.aws, '#3a4a60', s.hl * 0.6); g.fill(); g.strokeStyle = BRAND_PAL.aws.e; g.lineWidth = 1.3; g.stroke();
+      if (!drawBrand('aws', c[0] - 0.5, c[1] + 0.5, 19, 12)) {
+        const hub = [[c[0] - 7, c[1] + 4], [c[0], c[1] - 3], [c[0] + 7, c[1] + 4]];
+        g.beginPath(); g.moveTo(hub[0][0], hub[0][1]); g.lineTo(hub[1][0], hub[1][1]); g.lineTo(hub[2][0], hub[2][1]); g.strokeStyle = C.b5; g.lineWidth = 1; g.stroke();
+        for (const h of hub) dot(h, 2, C.P);
+      }
+      seg(P(x, y, 5), P(x, y, 11 + s.lift), BRAND_PAL.aws.e, 1);
       return 30 + s.lift;
     },
     chan(n, s) {
-      const { x, y } = n; shadow(x, y, 1.4, 1.4); box(x, y, 1.25, 1.25, 0, 7 + s.lift, PAL.ext, s.hl);
+      const { x, y } = n; shadow(x, y, 1.4, 1.4); box(x, y, 1.25, 1.25, 0, 7 + s.lift, LOGO_OF[n.id] ? BRAND_PAL[LOGO_OF[n.id]] : PAL.ext, s.hl);
       plane(x, y, 7 + s.lift, () => {
+        if (LOGO_OF[n.id] && drawBrand(LOGO_OF[n.id], 0, 0, 0.82, 0.82)) return;
         g.strokeStyle = C.b6; g.lineWidth = 0.06;
         if (n.glyph === 'mail') { g.beginPath(); g.rect(-0.34, -0.22, 0.68, 0.44); g.stroke(); g.beginPath(); g.moveTo(-0.34, -0.22); g.lineTo(0, 0.05); g.lineTo(0.34, -0.22); g.stroke(); }
         else if (n.glyph === 'chat') { g.beginPath(); g.rect(-0.32, -0.25, 0.64, 0.36); g.stroke(); g.beginPath(); g.moveTo(-0.14, 0.11); g.lineTo(-0.24, 0.3); g.lineTo(0.02, 0.11); g.stroke(); }
@@ -762,7 +1018,8 @@ function makeView3D() {
     device(n, s) {
       const { x, y } = n; shadow(x, y, 1.1, 1.1);
       const b = box(x, y, 1.0, 1.0, 0, 9 + s.lift, PAL.cli, s.hl);
-      dot(FY(b, 0.75, 0.5), 1.3, C.ok); seg(FY(b, 0.15, 0.5), FY(b, 0.5, 0.5), 'rgba(37,99,235,0.5)', 1);
+      const led = s.status ? STATUS[s.status].c : C.ok;
+      dot(FY(b, 0.75, 0.5), s.status ? 2 : 1.3, led); seg(FY(b, 0.15, 0.5), FY(b, 0.5, 0.5), 'rgba(37,99,235,0.5)', 1);
       const a1 = P(x + 0.25, y - 0.25, 9 + s.lift), a2 = P(x + 0.25, y - 0.25, 21 + s.lift); seg(a1, a2, C.b9, 1.2); dot(a2, 2, C.b5);
       return 21 + s.lift;
     },
@@ -781,6 +1038,41 @@ function makeView3D() {
       plane(x, y, top, () => { g.strokeStyle = '#ffffff'; g.lineWidth = 0.08; g.lineCap = 'round'; g.beginPath(); g.moveTo(-0.12, -0.3); g.lineTo(-0.34, 0); g.lineTo(-0.12, 0.3); g.moveTo(0.12, -0.3); g.lineTo(0.34, 0); g.lineTo(0.12, 0.3); g.moveTo(0.06, -0.3); g.lineTo(-0.06, 0.3); g.stroke(); });
       return top;
     },
+    nac(n, s) {
+      const { x, y } = n; shadow(x, y, 1.75, 1.2);
+      const b = box(x, y, 1.6, 1.05, 0, 5, PAL.cli, s.hl);
+      for (let i = 0; i < 6; i++) dot(FY(b, 0.12 + i * 0.14, 0.5), 1.1, i % 3 === 0 ? C.ok : C.b5);
+      const b2 = box(x, y, 1.0, 0.8, 5 + s.lift, 9, PAL.gw, s.hl);
+      seg(FY(b2, 0.15, 0.6), FY(b2, 0.68, 0.6), 'rgba(147,197,253,0.6)', 1); dot(FY(b2, 0.84, 0.6), 1.2, C.ok);
+      const top = 14 + s.lift;
+      plane(x, y, top, () => {
+        g.strokeStyle = '#ffffff'; g.lineWidth = 0.07; g.lineCap = 'round';
+        for (const r of [0.16, 0.3]) { g.beginPath(); g.arc(0, 0.14, r, Math.PI * 1.2, Math.PI * 1.8); g.stroke(); }
+        g.beginPath(); g.arc(0, 0.14, 0.05, 0, Math.PI * 2); g.fillStyle = '#ffffff'; g.fill();
+      });
+      return top;
+    },
+    vpn(n, s) {
+      const { x, y } = n; shadow(x, y, 1.5, 1.2);
+      const h = 12 + s.lift, b = box(x, y, 1.35, 1.0, 0, h, PAL.cli, s.hl);
+      for (const v of [0.25, 0.5, 0.75]) seg(FY(b, 0.03, v), FY(b, 0.97, v), 'rgba(37,99,235,0.38)', 1);
+      for (let r = 0; r < 4; r++) for (const u of (r % 2 ? [0.34, 0.67] : [0.18, 0.5, 0.82])) seg(FY(b, u, r * 0.25), FY(b, u, (r + 1) * 0.25), 'rgba(37,99,235,0.3)', 1);
+      seg(FX(b, 0.08, 0.5), FX(b, 0.92, 0.5), 'rgba(37,99,235,0.3)', 1);
+      plane(x, y, h, () => {
+        g.strokeStyle = C.b6; g.lineWidth = 0.07; g.beginPath(); g.arc(0, -0.08, 0.14, Math.PI, 0); g.stroke();
+        g.fillStyle = C.b6; g.fillRect(-0.21, -0.08, 0.42, 0.3); g.fillStyle = '#ffffff'; g.beginPath(); g.arc(0, 0.06, 0.045, 0, Math.PI * 2); g.fill();
+      });
+      return h;
+    },
+    pg(n, s) {
+      const { x, y } = n, h = 17 + s.lift;
+      g.beginPath(); const c = P(x + 0.15, y + 0.28); g.ellipse(c[0], c[1], 1.05 * K * 1.414, 1.05 * K * 1.414 * SP, RL, 0, Math.PI * 2); g.fillStyle = 'rgba(15,31,61,0.08)'; g.fill();
+      cyl(x, y, 0.95, 0, h, PAL.db, s.hl);
+      // one dot per schema around the top face
+      for (let i = 0; i < 7; i++) { const a = -Math.PI / 2 + i * Math.PI * 2 / 7, q = P(x + Math.cos(a) * 0.55, y + Math.sin(a) * 0.55, h); dot(q, 1.9, s.act > 0 ? C.b5 : rgba(C.b6, 0.65)); }
+      dot(P(x, y, h), 1.6, C.g5);
+      return h;
+    },
     slab() { return 0; }
   };
 
@@ -789,7 +1081,8 @@ function makeView3D() {
     const tSize = mini ? 8.8 : n.small ? 10 : 11, fam = mini || n.mono ? MONO : SANS;
     font(tSize, 600, fam); const tw = g.measureText(title).width;
     let sw = 0; if (sub) { font(8.6, 500, MONO); sw = g.measureText(sub).width; }
-    const w = Math.ceil(Math.max(tw + 10, sw) + (mini ? 10 : 13)), h = sub ? (n.small ? 27 : 29) : (mini ? 15 : n.small ? 17 : 18);
+    const bk = !mini && LOGO_OF[n.id], bw = bk ? Math.min(17, 8.5 * BRAND_ASP[bk]) : 0;
+    const w = Math.ceil(Math.max(tw + 10 + (bk ? bw + 2 : 0), sw) + (mini ? 10 : 13)), h = sub ? (n.small ? 27 : 29) : (mini ? 15 : n.small ? 17 : 18);
     let x, y;
     if (anchor === 'right') { x = sx; y = sy - h / 2; } else if (anchor === 'left') { x = sx - w; y = sy - h / 2; } else { x = sx - w / 2; y = sy - h; }
     x = Math.round(x) + 0.5; y = Math.round(y) + 0.5;
@@ -798,8 +1091,10 @@ function makeView3D() {
     rr(x, y, w, h, 3); g.fillStyle = mini ? 'rgba(255,255,255,0.92)' : '#ffffff'; g.fill();
     g.strokeStyle = focus ? C.P : 'rgba(30,58,138,0.22)'; g.lineWidth = focus ? 1.3 : 1; g.stroke();
     const cy = y + (mini ? 7.8 : n.small ? 9 : 9.5);
-    g.beginPath(); g.arc(x + (mini ? 6.5 : 8), cy, mini ? 1.9 : 2.3, 0, Math.PI * 2); g.fillStyle = CAT[n.cat] || C.P; g.fill();
-    font(tSize, 600, fam); g.fillStyle = C.navy; g.textBaseline = 'middle'; g.textAlign = 'left'; g.fillText(title, x + (mini ? 12 : 15), cy + 0.5);
+    let tx0 = x + (mini ? 12 : 15);
+    if (bk && brandReady(bk)) { const cw = bw + 7, ch = 13; rr(x + 4, cy - ch / 2, cw, ch, 3); g.fillStyle = BRAND_COL[bk]; g.fill(); drawBrand(bk, x + 4 + cw / 2, cy, bw, 8.5); tx0 = x + 9 + cw; }
+    else { g.beginPath(); g.arc(x + (mini ? 6.5 : 8), cy, mini ? 1.9 : 2.3, 0, Math.PI * 2); g.fillStyle = CAT[n.cat] || C.P; g.fill(); }
+    font(tSize, 600, fam); g.fillStyle = C.navy; g.textBaseline = 'middle'; g.textAlign = 'left'; g.fillText(title, tx0, cy + 0.5);
     if (sub) { font(8.6, 500, MONO); g.fillStyle = C.g6; g.fillText(sub, x + 7, y + h - 8); }
     return { x, y, w, h };
   }
@@ -809,7 +1104,7 @@ function makeView3D() {
     K = 1; OX = 0; OY = 0;
     let a0 = 1e9, a1 = -1e9, b0 = 1e9, b1 = -1e9;
     for (const z of ZONES) for (const [x0, y0] of [[z.x0, z.y0], [z.x1, z.y0], [z.x1, z.y1], [z.x0, z.y1]]) { const [x, y] = P(x0, y0); a0 = Math.min(a0, x); a1 = Math.max(a1, x); b0 = Math.min(b0, y); b1 = Math.max(b1, y); }
-    const left = 26, right = LW - 26, top = 104, bottom = LH - 22;
+    const left = 26, right = LW - 26, top = 104, bottom = LH - 64;
     K = Math.min(80, (right - left) / Math.max(1e-6, a1 - a0), (bottom - top) / Math.max(1e-6, b1 - b0));
     OX = (left + right) / 2 - ((a0 + a1) / 2) * K;
     OY = (top + bottom) / 2 - ((b0 + b1) / 2) * K;
@@ -875,7 +1170,7 @@ function makeView3D() {
     g.globalAlpha = 1;
   }
   function slabPolys(hgt) {
-    const { x0, x1, y0, y1 } = SLAB, fl = faces(x0, x1, y0, y1);
+    const { x0, x1, y0, y1 } = slabR(), fl = faces(x0, x1, y0, y1);
     return {
       top: rect4(x0, y0, x1, y1, hgt), fl,
       sides: fl.map(f => ({ pts: [faceAt(f, 0, 0), faceAt(f, 1, 0), faceAt(f, 1, hgt), faceAt(f, 0, hgt)], t: f.t, f })),
@@ -885,16 +1180,17 @@ function makeView3D() {
   // unit screen basis of the ground plane (logo / card orientation)
   const basis = () => { const A = axes(), u = nrm(A.ex), v = nrm(A.ey); return [u[0], u[1], v[0], v[1]]; };
   function drawSlab(b, fs, hl) {
-    const hgt = SLAB.h * b, p = slabPolys(hgt), pz = fs.pulse.lamassu || 0;
-    g.globalAlpha = b * fs.nA('lamassu');
+    const R = slabR(), hgt = R.h * b, p = slabPolys(hgt), pz = fs.pulse.lamassu || 0;
+    const dk = (1 - fs.nA('lamassu')) * 0.72, DIM = '#cfd9f3';
+    g.globalAlpha = b;
     poly(p.sil.map(q => [q[0] + 4, q[1] + 6]), 'rgba(15,31,61,0.1)');
     for (const sd of p.sides) {
-      poly(sd.pts, mix(mix(PAL.slab.l, PAL.slab.r, sd.t), C.b6, hl * 0.2 + pz * 0.2));
+      poly(sd.pts, mix(mix(mix(PAL.slab.l, PAL.slab.r, sd.t), C.b6, hl * 0.2 + pz * 0.2), DIM, dk));
       seg(faceAt(sd.f, 0, hgt * 0.45), faceAt(sd.f, 1, hgt * 0.45), rgba(C.b4, 0.62), 1.2);
     }
-    poly(p.top, mix(PAL.slab.t, C.b5, hl * 0.35 + pz * 0.45), mix(PAL.slab.e, '#ffffff', pz), 1.4);
-    const cx = (SLAB.x0 + SLAB.x1) / 2, cy = (SLAB.y0 + SLAB.y1) / 2;
-    { const o = P(cx, cy, hgt), B = basis(); g.save(); g.translate(o[0], o[1]); g.transform(B[0], B[1], B[2], B[3], 0, 0); drawLogo(0, 0, 170, '#ffffff'); g.restore(); }
+    poly(p.top, mix(mix(PAL.slab.t, C.b5, hl * 0.35 + pz * 0.45), DIM, dk), mix(PAL.slab.e, '#ffffff', pz), 1.4);
+    const cx = (R.x0 + R.x1) / 2, cy = (R.y0 + R.y1) / 2;
+    { const o = P(cx, cy, hgt), B = basis(); g.save(); g.translate(o[0], o[1]); g.transform(B[0], B[1], B[2], B[3], 0, 0); drawLogo(0, 0, R.logo, '#ffffff'); g.restore(); }
     g.globalAlpha = 1;
   }
   function drawCrypto(fs) {
@@ -907,19 +1203,21 @@ function makeView3D() {
     }
   }
   function drawTag() {
-    const z = ZI.native, p = P(z.x0, z.y0);
+    const z = ZI.native, p = P(z.x0, z.y0), ta = 1 - hOutF(LVS.hv); if (ta <= 0.01) return;
+    const ga0 = g.globalAlpha; g.globalAlpha = ga0 * ta;
     font(9, 700, MONO); ls(1.2);
     const w = g.measureText(z.label).width + 18, x = Math.round(p[0] + 10) + 0.5, y = Math.round(p[1] - 26) + 0.5;
     rr(x, y, w, 18, 3); g.fillStyle = z.stroke; g.fill();
     g.fillStyle = '#ffffff'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(z.label, x + 9, y + 9.5); ls(0);
     seg([p[0], p[1]], [x, y + 18], z.stroke, 1);
+    g.globalAlpha = ga0;
   }
 
   // per-node state for drawing
   function nodeState(n, fs) {
     const isF = fs.focusId === n.id, pz = fs.pulse[n.id] || 0;
     const nat = NATIVE.has(n.id), a = nat ? miniF(fs.lv) : 0, base = nat ? SLAB.h * boxF(fs.lv) : 0;
-    return { t: fs.t, hl: Math.max(isF ? 1 : (fs.FN && fs.focusId && fs.FN.has(n.id) ? 0.35 : 0), pz), lift: (isF ? 2 : 0) + pz * 2, pulse: pz, act: pz, a, base, isF };
+    return { t: fs.t, hl: Math.max(isF ? 1 : (fs.FN && fs.focusId && fs.FN.has(n.id) ? 0.35 : 0), pz), lift: (isF ? 2 : 0) + pz * 2, pulse: pz, act: pz, a, base, isF, status: fs.status && fs.status[n.id] };
   }
   function drawObject(n, s, alpha) {
     if (NATIVE.has(n.id)) alpha *= 1 - smooth((s.a || 0) / 0.85);
@@ -929,6 +1227,10 @@ function makeView3D() {
       const r = (n.pad || 1) * (1 - 0.35 * (s.a || 0)) + 0.25 + (1 - s.pulse) * 0.6, rw = n.padW ? n.padW + (1 - s.pulse) * 0.6 : r, rd = n.padD ? n.padD + (1 - s.pulse) * 0.6 : r;
       const col = n.id === 'rabbit' ? C.c4 : n.cat === 'crypto' ? C.a5 : n.cat === 'auth' ? C.v5 : C.b5;
       poly(rect4(n.x - rw, n.y - rd, n.x + rw, n.y + rd, s.base || 0), null, rgba(col, s.pulse * 0.8), 1.4);
+    }
+    if (s.status) {
+      const S = STATUS[s.status], k = s.status === 'pending' ? 0.5 + 0.5 * Math.sin(s.t * 5) : 1, r = (n.pad || 1) + 0.2;
+      poly(rect4(n.x - r, n.y - r, n.x + r, n.y + r), rgba(S.c, 0.1 + 0.08 * k), rgba(S.c, 0.55 + 0.35 * k), 1.6);
     }
     const top = R[n.kind](n, s);
     g.globalAlpha = 1;
@@ -969,6 +1271,7 @@ function makeView3D() {
       const q = plateAt(n, top);
       if (dy < -3) { g.save(); g.globalAlpha *= 0.5; seg([q[0], q[1] + (q[2] === 'top' ? 0 : 0)], [q[0], q[1] + dy + (q[2] === 'top' ? 0 : 0)], C.b3, 1); g.restore(); }
       bb = plate(n, q[0], q[1] + dy, q[2], s.isF);
+      if (s.status) statusPill(s.status, bb.x + bb.w + 5, bb.y + bb.h / 2, s.t);
     }
     g.globalAlpha = 1;
     if (bb) {
@@ -977,7 +1280,7 @@ function makeView3D() {
       n.bb = [bb, { x: x0, y: y0, w: x1 - x0, h: y1 - y0 }];
     }
   }
-  const present = (n, lv) => n.box ? lv >= 0.5 : NATIVE.has(n.id) ? lv < 0.5 : true;
+  const present = (n, lv) => n.box ? lv >= 0.5 : NATIVE.has(n.id) ? lv < 0.5 : CLUSTER.has(n.id) ? lv < 1.5 : true;
 
   // ---- full frame
   function frame(fs) {
@@ -987,17 +1290,28 @@ function makeView3D() {
     for (const e of ELIST) { const a = fs.edgeAlpha(e.id); if (a > 0.01) drawEdge(e, a); }
     drawFlowOverlays(api, fs);
     for (const an of ANN) { const a = annAlpha(an, fs); if (a <= 0.01) continue; g.globalAlpha = a; gtext(an.t, an.x, an.y, an.ax, { base: an.base, col: an.col || C.b9, fam: an.fam, size: an.size, w: an.w, ls: an.ls }); g.globalAlpha = 1; }
+    drawChannel(fs, 1);
     // the platform slab sits above the links that run into it
     drawPackets(api, fs, 1, A => touchesBox(A.eid));
-    if (b > 0.01) drawSlab(b, fs, fs.focusId === 'lamassu' ? 1 : 0);
     const order = LIST.filter(n => !n.box).sort((p, q) => depthOf(p.x, p.y) - depthOf(q.x, q.y));
-    const plates = [];
-    for (const n of order) { const s = nodeState(n, fs), al = fs.nA(n.id); const top = drawObject(n, s, al); plates.push([n, s, top, al]); }
+    // objects outside the box: in front of it when they lie on the camera side; inside: swallowed while it grows
+    const R = b > 0.01 ? slabR() : null, cam = [CS + SN, CS - SN];
+    const behind = n => {
+      if (!R) return false;
+      const qx = clamp(n.x, R.x0, R.x1), qy = clamp(n.y, R.y0, R.y1), vx = n.x - qx, vy = n.y - qy;
+      if (vx === 0 && vy === 0) return fs.hv > 0.001;
+      return vx * cam[0] + vy * cam[1] < 0;
+    };
+    const plates = [], first = order.filter(behind), rest = order.filter(n => !first.includes(n));
+    const put = n => { const s = nodeState(n, fs), al = fs.nA(n.id); const top = drawObject(n, s, al); plates.push([n, s, top, al]); };
+    for (const n of first) put(n);
+    if (b > 0.01) drawSlab(b, fs, fs.focusId === 'lamassu' ? 1 : 0);
+    for (const n of rest) put(n);
     drawPackets(api, fs, 1, A => !touchesBox(A.eid));
     resolvePlates(plates);
     for (const it of plates) drawPlates(it[0], it[1], it[2], it[3], it.dy || 0);
     const box = N.lamassu;
-    if (b > 0.01) { const p = slabPolys(SLAB.h * b); box.sil = p.sil; }
+    if (b > 0.01) { const p = slabPolys(slabR().h * b); box.sil = p.sil; }
     drawTag();
   }
   // node drawn at an arbitrary screen offset (for the 2D <-> 3D morph)
@@ -1035,22 +1349,26 @@ function makeView3D() {
   }
   const api = {
     id: '3d', N, E, ZONES, ZI, fit, renderGrid, renderZones, frame, drawNodeAt, hit, drawEdge, drawBus, drawCrypto, drawTag, drawSlab,
-    ELIST, ANN, gtext, drawAnns, zoneLabels, foot,
+    ELIST, ANN, gtext, drawAnns, zoneLabels, foot, drawChannel,
     unit: () => Math.hypot(axes().ex[0], axes().ex[1]),
     axes, basis, upV, setCamera, cam: () => [TH, PH, RL],
     busLines: () => [[P(12.2, BUS), P(27.8, BUS)], [P(STEM, BUS), P(STEM, RAB_Y0)]],
-    slabGround: () => rect4(SLAB.x0, SLAB.y0, SLAB.x1, SLAB.y1, 0),
-    slabH: SLAB.h, slabPal: PAL.slab,
-    slabTop: hz => P((SLAB.x0 + SLAB.x1) / 2, (SLAB.y0 + SLAB.y1) / 2, hz),
+    slabGround: () => { const R = slabR(); return rect4(R.x0, R.y0, R.x1, R.y1, 0); },
+    slabH: () => slabR().h, slabLogo: () => slabR().logo, slabPal: PAL.slab,
+    slabTop: hz => { const R = slabR(); return P((R.x0 + R.x1) / 2, (R.y0 + R.y1) / 2, hz); },
     plateOf: id => ZI[id].plate || 0,
-    nodeBadge: id => { const n = N[id]; if (n.box) return P(SLAB.x0 + 1.8, SLAB.y0 + 1.8, SLAB.h); const pd = n.padW || n.pad || 1; return P(n.x + pd * 0.85, n.y - pd * 0.85, n.kind === 'db' ? 22 : n.kind === 'rabbit' ? 26 : 32); },
-    sub: 'Isometric view · synchronous HTTP, CloudEvents over AMQP, KMS-mediated key operations',
+    nodeBadge: id => { const n = N[id]; if (n.box) { const R = slabR(); return P(R.x0 + 1.8, R.y0 + 1.8, R.h); } const pd = n.padW || n.pad || 1; return P(n.x + pd * 0.85, n.y - pd * 0.85, n.kind === 'db' ? 22 : n.kind === 'rabbit' ? 26 : 32); },
+    sub: 'Isometric view · HTTP, CloudEvents over AMQP, KMS-mediated keys',
     anchor: id => { const n = N[id]; return P(n.x, n.y); },
     zoneCorners: id => { const z = ZI[id]; return rect4(z.x0, z.y0, z.x1, z.y1); },
-    boxCorners: b => rect4(SLAB.x0, SLAB.y0, SLAB.x1, SLAB.y1, SLAB.h * b),
+    boxCorners: b => { const R = slabR(); return rect4(R.x0, R.y0, R.x1, R.y1, R.h * b); },
     zoneDraw: (id, pts, alpha) => zoneStyleDraw(ZI[id], pts, alpha, false),
     present, depth: id => depthOf(N[id].x, N[id].y),
-    tipAnchor: id => { const n = N[id]; return n.bb ? n.bb[0] : null; }
+    tipAnchor: id => { const n = N[id]; return n.bb ? n.bb[0] : null; },
+    chipAnchor: id => { const n = N[id]; if (!n || !n.bb) return null; const b = n.bb[0], o = n.bb[1];
+      if (id === 'envoy') return { x: o.x + o.w / 2, y: o.y + o.h + 10, step: 17, align: 'center' };   // below the gateway, clear of the zone tag
+      return { x: b.x + b.w + 5, y: b.y + 8, step: 17, align: 'left' }; },
+    boxChipAnchor: () => { const R = slabR(), p = P((R.x0 + R.x1) / 2, R.y1 - 1.1, R.h); return { x: p[0], y: p[1], step: -18, align: 'center' }; }
   };
   return api;
 }
@@ -1061,22 +1379,25 @@ function makeView3D() {
 function makeView2D() {
   const ZONES = [
     { id: 'cluster', label: 'KUBERNETES CLUSTER', x0: 232, y0: 122, x1: 1360, y1: 866, fill: '#edf2ff', stroke: C.P, dash: [7, 5], lw: 1.4, solid: true },
-    { id: 'clients', label: 'EXTERNAL CLIENTS', x0: 22, y0: 168, x1: 178, y1: 498, fill: 'rgba(255,255,255,0.7)', stroke: C.g4, dash: [5, 4], lw: 1.1, lc: C.g6 },
+    { id: 'clients', label: 'EXTERNAL CLIENTS', x0: 22, y0: 196, x1: 186, y1: 652, fill: 'rgba(255,255,255,0.7)', stroke: C.g4, dash: [5, 4], lw: 1.1, lc: C.g6 },
     { id: 'entry', label: 'ENTRY · SECURITY', x0: 254, y0: 150, x1: 468, y1: 590, fill: '#e7edff', stroke: C.b4, dash: [5, 4], lw: 1.1, lc: C.b9 },
     { id: 'native', label: 'LAMASSU NATIVE SERVICES', x0: 482, y0: 150, x1: 1344, y1: 590, fill: '#e2eaff', stroke: C.P, dash: [5, 4], lw: 1.2, solid: true },
     { id: 'crypto', label: 'KMS BOUNDARY', x0: 1150, y0: 166, x1: 1336, y1: 300, fill: 'rgba(245,158,11,0.05)', stroke: C.a5, dash: [3, 3], lw: 1.1, lc: '#b45309', small: true, labelRight: true, dynamic: true },
     { id: 'platform', label: 'PLATFORM INFRASTRUCTURE', x0: 254, y0: 610, x1: 1344, y1: 850, fill: '#eef1f7', stroke: C.g4, dash: [5, 4], lw: 1.1, lc: C.g6 },
-    { id: 'persist', label: 'PERSISTENCE · DATABASE / SCHEMA PER SERVICE', x0: 270, y0: 768, x1: 1326, y1: 838, fill: '#e7ebf2', stroke: C.g3, dash: [3, 3], lw: 1, lc: C.g5, small: true },
+    { id: 'persist', label: 'PERSISTENCE · POSTGRESQL', x0: 720, y0: 768, x1: 1080, y1: 838, fill: '#e7ebf2', stroke: C.g3, dash: [3, 3], lw: 1, lc: C.g5, small: true },
     { id: 'external', label: 'EXTERNAL INTEGRATIONS', x0: 1386, y0: 150, x1: 1584, y1: 640, fill: 'rgba(255,255,255,0.7)', stroke: C.g4, dash: [5, 4], lw: 1.1, lc: C.g6 }
   ];
   const ZI = {}; for (const z of ZONES) ZI[z.id] = z;
   const BX = { x0: 496, y0: 170, x1: 1330, y1: 578 };
+  const HBX = { x0: 244, y0: 134, x1: 1348, y1: 854 };   // high level: the whole cluster
 
   const N = {}, LIST = [];
   const node = (id, o) => { const n = Object.assign({ id, w: 124, h: 46, cat: CATS[id] }, o); N[id] = n; LIST.push(n); };
-  node('device', { name: 'Device', icon: 'device', x: 99, y: 220, w: 130, h: 44 });
+  node('device', { name: 'Device', icon: 'device', x: 99, y: 240, w: 130, h: 44 });
   node('admin', { name: 'Admin Console', icon: 'console', x: 99, y: 330, w: 130, h: 44 });
-  node('api', { name: 'External API', icon: 'api', x: 99, y: 440, w: 130, h: 44 });
+  node('api', { name: 'External API', icon: 'api', x: 99, y: 420, w: 130, h: 44 });
+  node('nac', { name: 'NAC / RADIUS', sub: 'EAP-TLS · OCSP', icon: 'nac', x: 99, y: 510, w: 130, h: 44 });
+  node('vpn', { name: 'VPN / Firewall', sub: 'CRL consumer', icon: 'fw', x: 99, y: 600, w: 130, h: 44 });
   node('lb', { name: 'Load Balancer', icon: 'lb', x: 232, y: 330, w: 26, h: 64, kind: 'lb' });
   node('authz', { name: 'authz', sub: '/v1/ext_authz/check', icon: 'shield', x: 356, y: 190, w: 158 });
   node('envoy', { name: 'Envoy Gateway', sub: 'TLS · HTTPRoute · JWT', icon: 'gateway', x: 356, y: 330, w: 180, h: 56, big: true });
@@ -1094,9 +1415,7 @@ function makeView2D() {
   node('keycloak', { name: 'OIDC / Keycloak', sub: 'JWKS', icon: 'id', x: 382, y: 690, w: 162 });
   node('storage', { name: 'Persistent Storage', icon: 'disks', x: 580, y: 704, w: 180 });
   node('rabbit', { name: 'RabbitMQ', sub: 'AMQP / CloudEvents', icon: 'queue', x: 900, y: 704, w: 270, h: 56, kind: 'rabbit' });
-  for (const [id, name, sub, x, w] of [['db_authz', 'authz', 'grants / policies', 345, 134], ['db_dms', 'dms', null, 705, 80], ['db_devmgr', 'devices', null, 805, 96],
-    ['db_ca', 'ca', null, 905, 80], ['db_va', 'va', 'VA configuration', 1022, 128], ['db_kms', 'kms', null, 1140, 80], ['db_alerts', 'alerts', null, 1242, 96]])
-    node(id, { name, sub, icon: 'db', x, y: 803, w, h: 34, owner: OWNER[id], mono: true, small: true });
+  node('pg', { name: 'PostgreSQL', sub: 'one schema per service', icon: 'db', x: 900, y: 805, w: 240, h: 38, small: true });
   const XC = 1484, XW = 178, XL = XC - XW / 2, PB = 1374;
   node('hsm', { name: 'PKCS#11 / HSM', icon: 'hsm', x: XC, y: 190, w: XW, h: 38, small: true, dark: true });
   node('awskms', { name: 'AWS KMS', icon: 'vault', x: XC, y: 238, w: XW, h: 38, small: true, dark: true });
@@ -1113,7 +1432,11 @@ function makeView2D() {
   const TR = 330, AT = 252, BUS = 636, STEM = 900, RAB0 = 676;
   const toRab = x => [[x, BUS], [STEM, BUS], [STEM, RAB0]];
   const GEO = {
-    in_admin: [[[164, TR], [266, TR]], 'end'], in_device: [[[164, 220], [196, 220], [196, TR], [266, TR]], false], in_api: [[[164, 440], [196, 440], [196, TR], [266, TR]], false],
+    in_admin: [[[164, TR], [266, TR]], 'end'], in_device: [[[164, 240], [196, 240], [196, TR], [266, TR]], false], in_api: [[[164, 420], [196, 420], [196, TR], [266, TR]], false],
+    in_nac: [[[164, 510], [196, 510], [196, TR], [266, TR]], false], in_vpn: [[[164, 600], [196, 600], [196, TR], [266, TR]], false],
+    eap_tls: [[[164, 250], [178, 250], [178, 500], [164, 500]], 'end'],
+    hi_admin: [[[164, TR], [HBX.x0, TR]], 'end'], hi_device: [[[164, 240], [196, 240], [196, TR], [HBX.x0, TR]], false], hi_api: [[[164, 420], [196, 420], [196, TR], [HBX.x0, TR]], false],
+    hi_nac: [[[164, 510], [196, 510], [196, TR], [HBX.x0, TR]], false], hi_vpn: [[[164, 600], [196, 600], [196, TR], [HBX.x0, TR]], false],
     ext_authz: [[[356, 302], [356, 213]], 'end'], cm_tls: [[[382, 450], [382, 358]], 'end'],
     jwks_gw: [[[310, 667], [310, 358]], 'end'], jwks_authz: [[[456, 667], [456, 190], [435, 190]], 'end'],
     gw_ui: [[[446, TR], [560, TR], [560, 228]], 'end'], gw_job: [[[446, TR], [612, TR], [612, 372]], 'end'],
@@ -1128,31 +1451,30 @@ function makeView2D() {
     ev_dms: [[[840, 218], [880, 218], ...toRab(880)], 'end', 2], ev_devmgr: [[[782, 418], ...toRab(782)], 'both', 1], ev_va: [[[985, 418], ...toRab(985)], 'both', 1],
     ev_ca: [[[1042, 218], [1106, 218], ...toRab(1106)], 'end', 2], ev_kms: [[[1160, 222], [1122, 222], ...toRab(1122)], 'end', 2],
     ev_aws: [[[1160, 418], ...toRab(1160)], 'start', 1], ev_alerts: [[[1267, 553], ...toRab(1267)], 'start', 1],
-    st_rabbit: [[[670, 704], [765, 704]], false], st_pg: [[[580, 727], [580, 768]], false],
-    db_authz_l: [[[277, 190], [266, 190], [266, 756], [345, 756], [345, 786]], false],
-    db_dms_l: [[[710, 228], [710, 756], [705, 756], [705, 786]], false], db_devmgr_l: [[[830, 418], [830, 756], [805, 756], [805, 786]], false],
-    db_ca_l: [[[975, 228], [975, 756], [905, 756], [905, 786]], false], db_va_l: [[[1060, 418], [1060, 756], [1022, 756], [1022, 786]], false],
-    db_kms_l: [[[1280, 228], [1280, 756], [1140, 756], [1140, 786]], false], db_alerts_l: [[[1300, 553], [1300, 756], [1242, 756], [1242, 786]], false],
+    st_rabbit: [[[670, 704], [765, 704]], false], st_pg: [[[580, 727], [580, 805], [780, 805]], false],
+    db_authz_l: [[[277, 190], [266, 190], [266, 756], [792, 756], [792, 786]], false],
+    db_dms_l: [[[710, 228], [710, 756], [818, 756], [818, 786]], false], db_devmgr_l: [[[830, 418], [830, 756], [846, 756], [846, 786]], false],
+    db_ca_l: [[[975, 228], [975, 786]], false], db_va_l: [[[1060, 418], [1060, 756], [995, 756], [995, 786]], false],
+    db_kms_l: [[[1280, 228], [1280, 756], [1006, 756], [1006, 786]], false], db_alerts_l: [[[1300, 553], [1300, 762], [1014, 762], [1014, 786]], false],
     // medium
     gw_lp: [[[446, TR], [BX.x0, TR]], 'end'], lp_ev: [[[STEM, BX.y1], [STEM, RAB0]], 'both'],
     lp_hsm: [[[BX.x1, 198], [PB, 198], [PB, 190], [XL, 190]], 'end'], lp_aws: [[[BX.x1, 198], [PB, 198], [PB, 238], [XL, 238]], 'end'],
     lp_az: [[[BX.x1, 198], [PB, 198], [PB, 286], [XL, 286]], 'end'], lp_gcp: [[[BX.x1, 198], [PB, 198], [PB, 334], [XL, 334]], 'end'],
     lp_core: [[[BX.x1, 395], [PB, 395], [PB, 410], [XL, 410]], 'end'],
     lp_smtp: [[[BX.x1, 530], [PB, 530], [PB, 510], [XL, 510]], 'end'], lp_teams: [[[BX.x1, 530], [PB, 530], [PB, 556], [XL, 556]], 'end'], lp_hook: [[[BX.x1, 530], [PB, 530], [PB, 602], [XL, 602]], 'end'],
-    db_dms_m: [[[705, BX.y1], [705, 786]], false], db_devmgr_m: [[[750, BX.y1], [750, 756], [805, 756], [805, 786]], false],
-    db_ca_m: [[[1050, BX.y1], [1050, 750], [905, 750], [905, 786]], false], db_va_m: [[[1070, BX.y1], [1070, 760], [1022, 760], [1022, 786]], false],
-    db_kms_m: [[[1140, BX.y1], [1140, 786]], false], db_alerts_m: [[[1242, BX.y1], [1242, 786]], false]
+    db_lp_m: [[[1100, BX.y1], [1100, 756], [1000, 756], [1000, 786]], false]
   };
   const E = {}, ELIST = [];
   for (const id in GEO) { const [pts, arrow, draw] = GEO[id], m = META[id]; E[id] = { id, type: m.type, hidden: m.hidden, cls: m.cls, pts, sp: pts, arrow, draw }; prepEdge(E[id]); ELIST.push(E[id]); }
   ELIST.sort((a, b) => TYPE_ORDER[a.type] - TYPE_ORDER[b.type]);
 
   const ANN = [
-    { t: 'HTTPS / EST / REST', x: 206, y: 388, rot: -Math.PI / 2, align: 'center', fam: MONO, size: 8.6, e: ['in_admin', 'in_device', 'in_api'], lvl: 'both' },
-    { t: 'ext_authz', x: 364, y: 258, fam: MONO, size: 8.6, col: C.v6, e: ['ext_authz'], lvl: 'both' },
-    { t: 'TLS cert', x: 390, y: 404, col: C.g5, e: ['cm_tls'], lvl: 'both' },
-    { t: 'JWKS / JWT validation', x: 447, y: 542, rot: -Math.PI / 2, align: 'center', col: C.v6, size: 9, e: ['jwks_gw', 'jwks_authz'], lvl: 'both' },
-    { t: 'HTTPRoute', x: 462, y: 320, fam: MONO, size: 8.6, e: ['gw_ui', 'gw_job', 'gw_dms', 'gw_va', 'gw_lp'], lvl: 'both' },
+    { t: 'HTTPS / EST / REST / OCSP', x: 206, y: 452, rot: -Math.PI / 2, align: 'center', fam: MONO, size: 8.6, e: ['in_admin', 'in_device', 'in_api', 'in_nac', 'in_vpn', 'hi_admin', 'hi_device', 'hi_api', 'hi_nac', 'hi_vpn'], lvl: 'both' },
+    { t: 'EAP-TLS', x: 172, y: 465, rot: -Math.PI / 2, align: 'center', fam: MONO, size: 7.8, w: 600, col: C.v6, e: ['eap_tls'], lvl: 'both' },
+    { t: 'ext_authz', x: 364, y: 258, fam: MONO, size: 8.6, col: C.v6, e: ['ext_authz'], lvl: 'both' , k8s: true },
+    { t: 'TLS cert', x: 390, y: 404, col: C.g5, e: ['cm_tls'], lvl: 'both' , k8s: true },
+    { t: 'JWKS / JWT validation', x: 447, y: 542, rot: -Math.PI / 2, align: 'center', col: C.v6, size: 9, e: ['jwks_gw', 'jwks_authz'], lvl: 'both' , k8s: true },
+    { t: 'HTTPRoute', x: 462, y: 320, fam: MONO, size: 8.6, e: ['gw_ui', 'gw_job', 'gw_dms', 'gw_va', 'gw_lp'], lvl: 'both' , k8s: true },
     { t: 'certificate issuance', x: 896, y: 186, align: 'center', size: 9, e: ['dms_ca'], lvl: 'low' },
     { t: 'sign / key operations', x: 1097, y: 186, align: 'center', size: 9, e: ['ca_kms'], lvl: 'low' },
     { t: 'certificate status', x: 1020, y: 292, size: 9, e: ['va_ca'], lvl: 'low' },
@@ -1161,10 +1483,10 @@ function makeView2D() {
     { t: 'NOTIFICATION CHANNELS', x: 1398, y: 474, fam: MONO, size: 7.8, w: 700, ls: 0.8, col: C.g5, e: ['al_smtp', 'al_teams', 'al_hook', 'lp_smtp', 'lp_teams', 'lp_hook'], lvl: 'both' },
     { t: 'event-driven notifications', x: 1398, y: 486, size: 8.6, col: C.b9, e: ['al_smtp', 'al_teams', 'al_hook', 'lp_smtp', 'lp_teams', 'lp_hook'], lvl: 'both' },
     { t: 'AMQP / CloudEvents', x: 1050, y: 651, fam: MONO, size: 8.6, w: 600, col: C.c6, e: ['bus'], lvl: 'low' },
-    { t: 'AMQP / CloudEvents · pub / sub', x: 910, y: 627, fam: MONO, size: 8.6, w: 600, col: C.c6, e: ['lp_ev'], lvl: 'med' },
-    { t: 'ca.#  ·  certificate.#', x: 1050, y: 698, fam: MONO, size: 8.4, col: C.c6, e: ['bus', 'lp_ev'], lvl: 'both' },
-    { t: 'device / metadata events', x: 1050, y: 711, fam: MONO, size: 8.4, col: C.c6, e: ['bus', 'lp_ev'], lvl: 'both' },
-    { t: 'PVC', x: 717, y: 695, align: 'center', fam: MONO, size: 8.4, col: C.g5, e: ['st_rabbit'], lvl: 'both' }
+    { t: 'AMQP / CloudEvents · pub / sub', x: 910, y: 627, fam: MONO, size: 8.6, w: 600, col: C.c6, e: ['lp_ev'], lvl: 'med' , k8s: true },
+    { t: 'ca.#  ·  certificate.#', x: 1050, y: 698, fam: MONO, size: 8.4, col: C.c6, e: ['bus', 'lp_ev'], lvl: 'both' , k8s: true },
+    { t: 'device / metadata events', x: 1050, y: 711, fam: MONO, size: 8.4, col: C.c6, e: ['bus', 'lp_ev'], lvl: 'both' , k8s: true },
+    { t: 'PVC', x: 717, y: 695, align: 'center', fam: MONO, size: 8.4, col: C.g5, e: ['st_rabbit'], lvl: 'both' , k8s: true }
   ];
 
   function glyph(kind, cx, cy, s, col = '#ffffff', t = 0) {
@@ -1198,6 +1520,12 @@ function makeView2D() {
       case 'hook': g.beginPath(); g.moveTo(-6, 5); g.lineTo(0, -5); g.lineTo(6, 5); g.stroke(); for (const [x, y] of [[-6, 5], [0, -5], [6, 5]]) circ(x, y, 2.3, col); break;
       case 'device': rr(-8, -1, 16, 8, 1.5); g.stroke(); line(4, -1, 4, -8, col, 1.4); circ(4, -8.5, 1.4, col); circ(-4.5, 3, 1, C.ok); line(-1.5, 3, 2, 3, col, 1.2); break;
       case 'console': rr(-8.5, -7, 17, 11.5, 1.5); g.stroke(); line(0, 4.5, 0, 8, col, 1.4); line(-4, 8, 4, 8, col, 1.4); line(-5.5, -3.5, 1, -3.5, col, 1.2); line(-5.5, -0.5, 4.5, -0.5, col, 1.2); break;
+      case 'nac':
+        rr(-8.5, 0, 17, 7, 1.5); g.stroke(); for (let i = 0; i < 4; i++) g.fillRect(-6.3 + i * 3.4, 2.6, 2, 2);
+        for (const r of [3.2, 6.2]) { g.beginPath(); g.arc(0, -1.5, r, Math.PI * 1.22, Math.PI * 1.78); g.stroke(); } break;
+      case 'fw':
+        rr(-8, -7, 16, 14, 1.5); g.stroke(); line(-8, -2.3, 8, -2.3, col, 1.1); line(-8, 2.3, 8, 2.3, col, 1.1);
+        for (const [x, y0, y1] of [[-3, -7, -2.3], [3, -7, -2.3], [0, -2.3, 2.3], [-4.5, 2.3, 7], [4.5, 2.3, 7]]) line(x, y0, x, y1, col, 1.1); break;
       case 'api': g.beginPath(); g.moveTo(-3, -7); g.lineTo(-8, 0); g.lineTo(-3, 7); g.moveTo(3, -7); g.lineTo(8, 0); g.lineTo(3, 7); g.moveTo(1.5, -7); g.lineTo(-1.5, 7); g.stroke(); break;
       case 'lb': line(0, -9, 0, 9, col, 1.3); for (const y of [-5, 5]) { g.beginPath(); g.moveTo(-3, y - 3); g.lineTo(0, y); g.lineTo(3, y - 3); g.stroke(); } break;
       case 'cert': rr(-8, -6, 16, 12, 1.5); g.stroke(); line(-5, -2.5, 2, -2.5, col, 1.1); line(-5, 0.5, 0, 0.5, col, 1.1); circ(4.5, 2.5, 2.3, col); break;
@@ -1235,15 +1563,20 @@ function makeView2D() {
     g.lineWidth = s.isF ? 1.5 : 1; g.stroke();
     const ib = lerp(n.tiny ? h - 8 : h - 10, 16, a), ix = x + lerp(n.tiny ? 4 : 5, 4, a), iy = y + (h - ib) / 2;
     rr(ix, iy, ib, ib, lerp(n.tiny ? 3 : 5, 3, a));
-    g.fillStyle = n.kind === 'rabbit' ? mix(C.b9, C.c6, 0.3 + 0.5 * s.pulse) : mix(accent, '#ffffff', s.hl * 0.12); g.fill();
-    glyph(n.icon, ix + ib / 2, iy + ib / 2, ib * (n.tiny ? 0.8 : 0.62), '#ffffff', s.t);
+    const bk = LOGO_OF[n.id] && brandReady(LOGO_OF[n.id]) ? LOGO_OF[n.id] : null;
+    if (bk) { g.fillStyle = mix(BRAND_COL[bk], '#ffffff', s.hl * 0.12); g.fill(); drawBrand(bk, ix + ib / 2, iy + ib / 2, ib * 0.72, ib * 0.58); }
+    else {
+      g.fillStyle = n.kind === 'rabbit' ? mix(C.b9, C.c6, 0.3 + 0.5 * s.pulse) : mix(accent, '#ffffff', s.hl * 0.12); g.fill();
+      glyph(n.icon, ix + ib / 2, iy + ib / 2, ib * (n.tiny ? 0.8 : 0.62), '#ffffff', s.t);
+    }
     const tx = ix + ib + lerp(8, 6, a), ga = g.globalAlpha;
     if (a < 0.99) {
       g.globalAlpha = ga * (1 - smooth(a / 0.5));
       const tSize = n.big ? 12.5 : n.small || n.tiny ? 10 : 11;
       if (n.sub) { text(n.name, tx, y + h / 2 - 6.5, { size: tSize, w: 650, col: C.navy, fam: n.mono ? MONO : SANS }); text(n.sub, tx, y + h / 2 + 7.5, { size: 8.2, w: 500, col: C.g6, fam: MONO }); }
       else text(n.name, tx, y + h / 2 + 0.5, { size: tSize, w: 650, col: C.navy, fam: n.mono ? MONO : SANS });
-      if (!n.tiny && n.icon !== 'db') circ(x + w - 8, y + 8, 2.1, rgba(n.cat === 'crypto' ? C.a5 : C.ok, 0.5 + 0.5 * (0.55 + 0.45 * Math.sin(s.t * 2.2 + n.x * 0.05))));
+      if (s.status) { const S = STATUS[s.status], k = s.status === 'pending' ? 0.5 + 0.5 * Math.sin(s.t * 5) : 1; rr(x - 2.5, y - 2.5, w + 5, h + 5, 8); g.strokeStyle = rgba(S.c, 0.5 + 0.4 * k); g.lineWidth = 1.8; g.stroke(); statusPill(s.status, x + w, y + h + 11, s.t, 'right'); }
+      else if (!n.tiny && n.icon !== 'db') circ(x + w - 8, y + 8, 2.1, rgba(n.cat === 'crypto' ? C.a5 : C.ok, 0.5 + 0.5 * (0.55 + 0.45 * Math.sin(s.t * 2.2 + n.x * 0.05))));
       else if (n.icon === 'db' && s.act > 0.02) circ(x + w - 7, y + 7, 2, rgba(C.b5, s.act));
       g.globalAlpha = ga;
     }
@@ -1341,24 +1674,26 @@ function makeView2D() {
     }
   }
   function boxRect(b) {
-    const z = ZI.native;
-    return { x0: lerp(z.x0 + 4, BX.x0, b), y0: lerp(z.y0 + 4, BX.y0, b), x1: lerp(z.x1 - 4, BX.x1, b), y1: lerp(z.y1 - 4, BX.y1, b) };
+    const z = ZI.native, k = hBoxF(LVS.hv);
+    const r = { x0: lerp(z.x0 + 4, BX.x0, b), y0: lerp(z.y0 + 4, BX.y0, b), x1: lerp(z.x1 - 4, BX.x1, b), y1: lerp(z.y1 - 4, BX.y1, b) };
+    return { x0: lerp(r.x0, HBX.x0, k), y0: lerp(r.y0, HBX.y0, k), x1: lerp(r.x1, HBX.x1, k), y1: lerp(r.y1, HBX.y1, k) };
   }
   function drawBox(b, fs, hl) {
     const r = boxRect(b), pz = fs.pulse.lamassu || 0, w = r.x1 - r.x0, h = r.y1 - r.y0, cx = (r.x0 + r.x1) / 2, cy = (r.y0 + r.y1) / 2;
-    g.globalAlpha = b * fs.nA('lamassu');
+    const dk = (1 - fs.nA('lamassu')) * 0.72;
+    g.globalAlpha = b;
     rr(r.x0 + 2, r.y0 + 4, w, h, 12); g.fillStyle = 'rgba(15,31,61,0.12)'; g.fill();
-    rr(r.x0, r.y0, w, h, 12); g.fillStyle = mix(C.P, C.b5, hl * 0.3 + pz * 0.45); g.fill();
+    rr(r.x0, r.y0, w, h, 12); g.fillStyle = mix(mix(C.P, C.b5, hl * 0.3 + pz * 0.45), '#cfd9f3', dk); g.fill();
     g.strokeStyle = mix(C.b9, '#ffffff', pz * 0.8); g.lineWidth = 1.4; g.stroke();
     rr(r.x0 + 8, r.y0 + 8, w - 16, h - 16, 8); g.strokeStyle = 'rgba(191,219,254,0.35)'; g.lineWidth = 1; g.setLineDash([4, 4]); g.stroke(); g.setLineDash([]);
-    drawLogo(cx, cy, 170, '#ffffff');
+    drawLogo(cx, cy, lerp(170, 250, hBoxF(LVS.hv)), '#ffffff');
     g.globalAlpha = 1;
   }
   function drawTag() {}
 
   function nodeState(n, fs) {
     const isF = fs.focusId === n.id, pz = fs.pulse[n.id] || 0, nat = NATIVE.has(n.id);
-    return { t: fs.t, isF, pulse: pz, act: pz, hl: Math.max(isF ? 1 : (fs.FN && fs.focusId && fs.FN.has(n.id) ? 0.35 : 0), pz), lift: (isF ? 1.5 : 0) + pz * 1.5, a: nat ? miniF(fs.lv) : 0 };
+    return { t: fs.t, isF, pulse: pz, act: pz, hl: Math.max(isF ? 1 : (fs.FN && fs.focusId && fs.FN.has(n.id) ? 0.35 : 0), pz), lift: (isF ? 1.5 : 0) + pz * 1.5, a: nat ? miniF(fs.lv) : 0, status: fs.status && fs.status[n.id] };
   }
   function drawObject(n, s, alpha) {
     if (NATIVE.has(n.id)) alpha *= 1 - smooth((s.a || 0) / 0.85);
@@ -1372,7 +1707,7 @@ function makeView2D() {
     drawNode(n, s);
     g.globalAlpha = 1;
   }
-  const present = (n, lv) => n.box ? lv >= 0.5 : NATIVE.has(n.id) ? lv < 0.5 : true;
+  const present = (n, lv) => n.box ? lv >= 0.5 : NATIVE.has(n.id) ? lv < 0.5 : CLUSTER.has(n.id) ? lv < 1.5 : true;
 
   function frame(fs) {
     const lv = fs.lv, b = boxF(lv);
@@ -1382,13 +1717,17 @@ function makeView2D() {
     collectVerticals(visible);
     VSEGS.push({ x: STEM, y0: BUS, y1: RAB0, id: 'bus' });
     drawBus(lowF(lv) * (fs.FE && !fs.FE.has('bus') ? fs.dimE : 1), fs.t, fs.busAct);
+    drawTube(visible.filter(e => PERIM.has(e.id)).map(e => [e.vis, alphas[e.id]]));
     for (const e of visible) drawEdge(e, alphas[e.id]);
     drawFlowOverlays(api, fs);
     // the platform box sits above the links that attach to it
     drawPackets(api, fs, 1, A => touchesBox(A.eid));
+    // while the box spreads over the cluster it covers what runs inside
+    const under = n => fs.hv > 0.001 && CLUSTER.has(n.id);
+    for (const n of LIST) if (!n.box && under(n)) drawObject(n, nodeState(n, fs), fs.nA(n.id));
     if (b > 0.01) drawBox(b, fs, fs.focusId === 'lamassu' ? 1 : 0);
     for (const an of ANN) { const a = annAlpha(an, fs); if (a <= 0.01) continue; g.globalAlpha = a; text(an.t, an.x, an.y, { rot: an.rot, align: an.align, fam: an.fam, size: an.size || 9.5, w: an.w || 500, col: an.col || C.b9, ls: an.ls }); g.globalAlpha = 1; }
-    for (const n of LIST) { if (n.box) continue; drawObject(n, nodeState(n, fs), fs.nA(n.id)); }
+    for (const n of LIST) { if (n.box || under(n)) continue; drawObject(n, nodeState(n, fs), fs.nA(n.id)); }
     drawPackets(api, fs, 1, A => !touchesBox(A.eid));
   }
   function drawNodeMat(id, pos, M, alpha, fs) {
@@ -1408,7 +1747,8 @@ function makeView2D() {
       const n = LIST[i]; if (!present(n, lv) || n.box) continue;
       if (mx >= n.x0 - 3 && mx <= n.x1 + 3 && my >= n.y0 - (n.kind === 'lb' ? 18 : 3) && my <= n.y1 + 3) return n;
     }
-    if (lv >= 0.5 && mx >= BX.x0 && mx <= BX.x1 && my >= BX.y0 && my <= BX.y1) return N.lamassu;
+    const r = boxRect(1);
+    if (lv >= 0.5 && mx >= r.x0 && mx <= r.x1 && my >= r.y0 && my <= r.y1) return N.lamassu;
     return null;
   }
   const api = {
@@ -1416,14 +1756,16 @@ function makeView2D() {
     busLines: () => [[[766, BUS], [1284, BUS]], [[STEM, BUS], [STEM, RAB0]]],
     boxInset: b => { const r = boxRect(b); return [[r.x0 + 8, r.y0 + 8], [r.x1 - 8, r.y0 + 8], [r.x1 - 8, r.y1 - 8], [r.x0 + 8, r.y1 - 8]]; },
     zoneRadius: id => ZI[id].small ? 6 : 10,
-    nodeBadge: id => { const n = N[id]; if (n.box) return [BX.x0 + 28, BX.y0 + 28]; return [n.x1 - 3, n.y0 - 3]; },
-    sub: 'Orthogonal view · synchronous HTTP, CloudEvents over AMQP, KMS-mediated key operations',
+    nodeBadge: id => { const n = N[id]; if (n.box) { const r = boxRect(1); return [r.x0 + 28, r.y0 + 28]; } return [n.x1 - 3, n.y0 - 3]; },
+    sub: 'Orthogonal view · HTTP, CloudEvents over AMQP, KMS-mediated keys',
     anchor: id => [N[id].x, N[id].y],
     zoneCorners: id => { const z = ZI[id]; return [[z.x0, z.y0], [z.x1, z.y0], [z.x1, z.y1], [z.x0, z.y1]]; },
     boxCorners: b => { const r = boxRect(b); return [[r.x0, r.y0], [r.x1, r.y0], [r.x1, r.y1], [r.x0, r.y1]]; },
     zoneDraw: (id, pts, alpha) => zoneStyleDraw(ZI[id], pts, alpha),
     present, depth: () => 0,
-    tipAnchor: id => { const n = N[id]; return { x: n.x0, y: n.y0, w: n.w, h: n.h }; }
+    tipAnchor: id => { const n = N[id]; return { x: n.x0, y: n.y0, w: n.w, h: n.h }; },
+    chipAnchor: id => { const n = N[id]; return n ? { x: n.x, y: n.y1 + 12, step: 17, align: 'center' } : null; },
+    boxChipAnchor: () => { const r = boxRect(1); return { x: (r.x0 + r.x1) / 2, y: r.y1 - 18, step: -18, align: 'center' }; }
   };
   return api;
 }
@@ -1452,30 +1794,43 @@ const PRESETS = [
   { id: 'side', name: 'SIDE', c: [45, 20, 0] },
   { id: 'bird', name: 'BIRD', c: [24, 54, 0] }
 ];
+const LEVELS = ['low', 'medium', 'high'];
 const ST = { mode: '3d', level: 'low', m: 1, lv: 0, uc: 0, guided: false, gk: 0, step: 0, stepStart: performance.now(), autoStart: performance.now(), ddOpen: false, ddHover: -1, btnHover: null, th: 0, ph: Math.PI / 6, rl: 0, vel: [0, 0, 0], tw: null, drag: null, camKey: '', camHover: -1 };
 {
   const h = location.hash.toLowerCase();
   let mode = null, level = null;
   try { mode = localStorage.getItem('lamassu.view'); level = localStorage.getItem('lamassu.level'); } catch (e) {}
   if (/(^|[#&])2d\b/.test(h)) mode = '2d'; else if (/(^|[#&])3d\b/.test(h)) mode = '3d';
-  if (/(^|[#&])medium\b/.test(h)) level = 'medium'; else if (/(^|[#&])low\b/.test(h)) level = 'low';
-  ST.mode = mode === '2d' ? '2d' : '3d'; ST.level = level === 'medium' ? 'medium' : 'low';
-  ST.m = ST.mode === '3d' ? 1 : 0; ST.lv = ST.level === 'medium' ? 1 : 0;
+  if (/(^|[#&])high\b/.test(h)) level = 'high'; else if (/(^|[#&])medium\b/.test(h)) level = 'medium'; else if (/(^|[#&])low\b/.test(h)) level = 'low';
+  ST.mode = mode === '2d' ? '2d' : '3d'; ST.level = LEVELS.includes(level) ? level : 'low';
+  ST.m = ST.mode === '3d' ? 1 : 0; ST.lv = LEVELS.indexOf(ST.level);
   const u = /uc=([a-z]+)/.exec(h); if (u) { const i = USE_CASES.findIndex(c => c.id === u[1]); if (i >= 0) ST.uc = i; }
   if (/(^|[#&])guided\b/.test(h)) { ST.guided = true; ST.gk = 1; }
+  try { const c = JSON.parse(localStorage.getItem('lamassu.crypto') || '{}'); for (const k of ['pki', 'kex', 'auth']) if (FAM[c[k]]) CX[k] = c[k]; } catch (e) {}
+  for (const k of ['pki', 'kex', 'auth']) { const m = new RegExp(k + '=(t|pq|h)').exec(h); if (m) CX[k] = m[1].toUpperCase(); }
+  try { const v = localStorage.getItem('lamassu.pqc'); if (v === '0') PQV.on = false; } catch (e) {}
+  if (/(^|[#&])nopqc\b/.test(h)) PQV.on = false; else if (/(^|[#&])pqc\b/.test(h)) PQV.on = true;
+  PQV.a = PQV.on ? 1 : 0;
   const cm = /cam=([a-z]+)/.exec(h); if (cm) { const p = PRESETS.find(q => q.id === cm[1]); if (p) { ST.th = p.c[0] * D2R; ST.ph = p.c[1] * D2R; ST.rl = p.c[2] * D2R; } }
-  const sp = /step=(\d+)/.exec(h); if (sp) ST.step = clamp(parseInt(sp[1], 10) - 1, 0, USE_CASES[ST.uc].steps.length - 1);
+  const sp = /step=(\d+)/.exec(h); if (sp) ST.step = clamp(parseInt(sp[1], 10) - 1, 0, USE_CASES[ST.uc].v[LEVELS.indexOf(ST.level)].steps.length - 1);
 }
-function selectUC(i) { ST.uc = i; ST.step = 0; ST.stepStart = ST.autoStart = performance.now(); ST.ddOpen = false; hover = null; pinned = null; }
-function autoIndex() { const uc = USE_CASES[ST.uc], t = ((performance.now() - ST.autoStart) / 1000) % uc.total; return (uc.prog.states.find(s => t >= s.t0 && t < s.t1) || uc.prog.states[0]).step.idx; }
+const curUC = () => USE_CASES[ST.uc].v[LEVELS.indexOf(ST.level)];
+function togglePlay() {
+  const now = performance.now(), uc = curUC();
+  if (ST.paused) { ST.autoStart = now - ST.pauseT * 1000; ST.paused = false; }
+  else { ST.pauseT = ((now - ST.autoStart) / 1000) % uc.total; ST.paused = true; }
+}
+function jumpAuto(i) { const uc = curUC(), t0 = uc.prog.states[i].t0; ST.autoStart = performance.now() - t0 * 1000; if (ST.paused) ST.pauseT = t0 + 0.01; }
+function selectUC(i) { if (USE_CASES[i].id === 'pqc') setPQC(true); ST.paused = false; ST.uc = i; ST.step = 0; ST.stepStart = ST.autoStart = performance.now(); ST.ddOpen = false; hover = null; pinned = null; }
+function autoIndex() { const uc = curUC(), t = (ST.paused ? ST.pauseT : (performance.now() - ST.autoStart) / 1000) % uc.total; return (uc.prog.states.find(s => t >= s.t0 && t < s.t1) || uc.prog.states[0]).step.idx; }
 function setGuided(on) {
   if (on === ST.guided) return;
-  const now = performance.now(), uc = USE_CASES[ST.uc];
+  const now = performance.now(), uc = curUC();
   if (on) { ST.step = autoIndex(); ST.stepStart = now; }
   else ST.autoStart = now - uc.prog.states[ST.step].t0 * 1000;
   ST.guided = on; hover = null; pinned = null;
 }
-function goStep(i) { const N = USE_CASES[ST.uc].steps.length; ST.step = ((i % N) + N) % N; ST.stepStart = performance.now(); hover = null; pinned = null; }
+function goStep(i) { const N = curUC().steps.length; ST.step = ((i % N) + N) % N; ST.stepStart = performance.now(); hover = null; pinned = null; }
 const clampPh = p => clamp(p, PH_MIN, PH_MAX);
 const wrapNear = (a, ref) => a + Math.round((ref - a) / TAU) * TAU;
 const camNow = () => [ST.th, ST.ph, ST.rl];
@@ -1498,29 +1853,56 @@ function camStep(axis, deg) {
   camTo(c, 0.5);
 }
 function setMode(m) { if (m === ST.mode) return; ST.mode = m; hover = null; pinned = null; try { localStorage.setItem('lamassu.view', m); } catch (e) {} }
-function setLevel(l) { if (l === ST.level) return; ST.level = l; hover = null; pinned = null; try { localStorage.setItem('lamassu.level', l); } catch (e) {} }
+function setLevel(l) {
+  if (l === ST.level) return;
+  // keep the walkthrough on the same moment of the story in the new level's step list
+  const before = curUC(), i0 = ST.guided ? ST.step : autoIndex(), base = before.steps[i0].src[0];
+  ST.level = l;
+  const after = curUC(), ni = Math.max(0, after.steps.findIndex(s => s.src.includes(base)));
+  if (ST.guided) { ST.step = ni; ST.stepStart = performance.now(); } else ST.autoStart = performance.now() - after.prog.states[ni].t0 * 1000; hover = null; pinned = null; try { localStorage.setItem('lamassu.level', l); } catch (e) {} }
 
 // ---- controls (HUD, logical coords)
 const CTL = {
-  uc: { x: 836, y: 26, w: 204, h: 28, label: 'USE CASE', lw: 58 },
-  mode: { x: 1090, y: 26, w: 140, h: 28, label: 'MODE', opts: ['Auto', 'Guided'], lw: 36 },
-  level: { x: 1284, y: 26, w: 136, h: 28, label: 'LEVEL', opts: ['Low', 'Medium'], lw: 40 },
-  view: { x: 1468, y: 26, w: 104, h: 28, label: 'VIEW', opts: ['2D', '3D'], lw: 34 }
+  uc: { x: 818, y: 26, w: 204, h: 28, label: 'USE CASE', lw: 58 },
+  mode: { x: 1066, y: 26, w: 132, h: 28, label: 'MODE', opts: ['Auto', 'Guided'], lw: 36 },
+  level: { x: 1250, y: 26, w: 186, h: 28, label: 'LEVEL', opts: ['Low', 'Medium', 'High'], lw: 40 },
+  view: { x: 1480, y: 26, w: 92, h: 28, label: 'VIEW', opts: ['2D', '3D'], lw: 34 }
 };
-const DD = { x: 836, y: 60, w: 300, item: 50 };
+const DD = { x: 818, y: 60, w: 300, item: 50 };
+const CXC = {
+  pki: { x: 622, y: 64, w: 90, h: 24, label: 'PKI', opts: ['T', 'PQ', 'PQ/T'], lw: 30 },
+  kex: { x: 782, y: 64, w: 90, h: 24, label: 'TLS KEX', opts: ['T', 'PQ', 'PQ/T'], lw: 56 },
+  auth: { x: 948, y: 64, w: 90, h: 24, label: 'TLS AUTH', opts: ['T', 'PQ', 'PQ/T'], lw: 62 }
+};
+const FAMS = ['T', 'PQ', 'H'];
+const PQT = { x: 530, y: 64, w: 48, h: 24, label: 'PQC', lw: 40 };
+function setPQC(on) {
+  if (PQV.on === on) return; PQV.on = on;
+  try { localStorage.setItem('lamassu.pqc', on ? '1' : '0'); } catch (e) {}
+  if (!on && USE_CASES[ST.uc].id === 'pqc') selectUC(0);
+}
+function drawPQCSwitch() {
+  const { x, y, w, h } = PQT, k = easeIO(PQV.a);
+  text(PQT.label, x - 8, y + h / 2 + 0.5, { size: 8.4, w: 800, fam: MONO, col: PQV.on ? C.P : C.g5, ls: 1.2, align: 'right' });
+  rr(x + 1, y + 2, w, h, h / 2); g.fillStyle = 'rgba(15,31,61,0.06)'; g.fill();
+  rr(x, y, w, h, h / 2); g.fillStyle = mix(C.g2, C.P, k); g.fill(); g.strokeStyle = mix('rgba(30,58,138,0.25)', C.b9, k); g.lineWidth = 1; g.stroke();
+  const kx = x + 12 + k * (w - 24); circ(kx, y + h / 2, 9, '#ffffff');
+  text(PQV.on ? 'ON' : 'OFF', PQV.on ? x + 12 : x + w - 13, y + h / 2 + 0.5, { size: 7, w: 800, fam: MONO, col: PQV.on ? '#ffffff' : C.g5, align: 'center' });
+}
+const CXK = { pki: 0, kex: 0, auth: 0 };   // eased pill positions
+function setCrypto(k, v) { if (CX[k] === v) return; CX[k] = v; try { localStorage.setItem('lamassu.crypto', JSON.stringify(CX)); } catch (e) {} }
 const PN = { x: 1368, y: 694, w: 214, h: 200 };
 const CAMS = { x: 1106, y: 64, w: 240, h: 24 }, CAMR = { x: 1356, y: 64, w: 216, h: 24 };
 const inCtl = (c, mx, my) => mx >= c.x - (c.lw || 42) && mx <= c.x + c.w && my >= c.y && my <= c.y + c.h;
 const inRect = (r, mx, my) => r && mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h;
 function drawSegmented(c, k) {
-  const { x, y, w, h } = c, half = w / 2;
+  const { x, y, w, h } = c, n = c.opts.length, sw = w / n;
   text(c.label, x - 8, y + h / 2 + 0.5, { size: 8.4, w: 700, fam: MONO, col: C.g5, ls: 1.2, align: 'right' });
   rr(x + 1, y + 2, w, h, 6); g.fillStyle = 'rgba(15,31,61,0.06)'; g.fill();
   rr(x, y, w, h, 6); g.fillStyle = '#ffffff'; g.fill(); g.strokeStyle = 'rgba(30,58,138,0.25)'; g.lineWidth = 1; g.stroke();
-  rr(x + 3 + k * half, y + 3, half - 6, h - 6, 4); g.fillStyle = C.P; g.fill();
+  rr(x + 3 + k * sw, y + 3, sw - 6, h - 6, 4); g.fillStyle = c.pill || C.P; g.fill();
   const mono = c.opts[0].length <= 2, fam = mono ? MONO : SANS, wt = mono ? 700 : 650;
-  text(c.opts[0], x + half / 2, y + h / 2 + 0.5, { size: 10.5, w: wt, fam, col: mix(C.g6, '#ffffff', 1 - k), align: 'center' });
-  text(c.opts[1], x + half * 1.5, y + h / 2 + 0.5, { size: 10.5, w: wt, fam, col: mix(C.g6, '#ffffff', k), align: 'center' });
+  c.opts.forEach((o, i) => text(o, x + sw * (i + 0.5), y + h / 2 + 0.5, { size: n > 2 ? 10.2 : 10.5, w: wt, fam, col: mix(C.g6, '#ffffff', clamp(1 - Math.abs(k - i))), align: 'center' }));
 }
 function ucIcon(kind, cx, cy, s, col) {
   g.save(); g.translate(cx, cy); g.scale(s / 20, s / 20); g.strokeStyle = col; g.fillStyle = col; g.lineWidth = 1.7; g.lineCap = 'round'; g.lineJoin = 'round';
@@ -1530,6 +1912,15 @@ function ucIcon(kind, cx, cy, s, col) {
   } else if (kind === 'est') {
     rr(-8, -7, 12, 14, 2); g.stroke(); g.beginPath(); g.moveTo(-5, -3); g.lineTo(1, -3); g.moveTo(-5, 0); g.lineTo(-1, 0); g.stroke();
     g.beginPath(); g.moveTo(7, -7); g.lineTo(7, 6); g.moveTo(3.5, 2.5); g.lineTo(7, 6.5); g.lineTo(10.5, 2.5); g.stroke();
+  } else if (kind === 'pqc') {
+    for (const a of [Math.PI / 4, -Math.PI / 4]) { g.save(); g.rotate(a); g.beginPath(); g.ellipse(0, 0, 9, 3.6, 0, 0, Math.PI * 2); g.stroke(); g.restore(); }
+    g.beginPath(); g.arc(0, 0, 2.2, 0, Math.PI * 2); g.fill();
+  } else if (kind === 'nac') {
+    rr(-9, 1, 18, 7, 1.5); g.stroke(); for (let i = 0; i < 4; i++) g.fillRect(-6.6 + i * 3.6, 3.6, 2, 2);
+    for (const r of [3.5, 7]) { g.beginPath(); g.arc(0, -1, r, Math.PI * 1.22, Math.PI * 1.78); g.stroke(); }
+  } else if (kind === 'crl') {
+    rr(-7, -8, 14, 16, 2); g.stroke(); g.beginPath(); g.moveTo(-4, -4); g.lineTo(3, -4); g.moveTo(-4, -0.5); g.lineTo(1, -0.5); g.stroke();
+    g.beginPath(); g.moveTo(-1, 2.5); g.lineTo(4.5, 7.5); g.moveTo(4.5, 2.5); g.lineTo(-1, 7.5); g.stroke();
   } else if (kind === 'ocsp') {
     g.beginPath(); g.arc(0, 0, 8, 0, Math.PI * 2); g.stroke(); g.beginPath(); g.moveTo(-3.8, 0.2); g.lineTo(-0.9, 3.2); g.lineTo(4.2, -2.8); g.stroke();
   } else {
@@ -1561,7 +1952,7 @@ function drawDropdown() {
     ucIcon(uc.icon, x + 27, iy + 23, 18, sel ? '#ffffff' : C.P);
     text(uc.name, x + 52, iy + 16, { size: 11.5, w: 650, col: C.navy });
     text(uc.summary, x + 52, iy + 32, { size: 9.6, w: 450, col: C.g6 });
-    text(uc.steps.length + ' steps', x + w - 16, iy + 16, { size: 8.6, w: 700, fam: MONO, col: sel ? C.P : C.g4, align: 'right' });
+    text(uc.v[LEVELS.indexOf(ST.level)].steps.length + ' steps', x + w - 16, iy + 16, { size: 8.6, w: 700, fam: MONO, col: sel ? C.P : C.g4, align: 'right' });
   });
 }
 const degOf = th => { let d = Math.round(th / D2R) % 360; if (d < 0) d += 360; return d; };
@@ -1615,10 +2006,10 @@ function drawPanel(uc, st, tAuto) {
   text(chip, x + w - 12 - cw / 2, y + 17.5, { size: 7.8, w: 700, fam: MONO, col: guided ? '#ffffff' : C.P, align: 'center' });
   text('Step ' + (idx + 1) + ' of ' + N, x + 14, y + 32, { size: 9.2, w: 500, col: C.g5 });
   // number disc + title
-  circ(x + 27, y + 56, 13, C.P); text(String(idx + 1), x + 27, y + 56.5, { size: 12, w: 750, fam: MONO, col: '#ffffff', align: 'center' });
-  font(12.5, 650); const tl = wrapLines(step.title, w - 64).slice(0, 2);
+  circ(x + 27, y + 56, 13, '#0b1220', C.b4, 1.5); text(String(idx + 1), x + 27, y + 56.5, { size: 12, w: 800, fam: MONO, col: '#ffffff', align: 'center' });
+  font(12.5, 650); const tl = wrapLines(fillTok(step.title), w - 64).slice(0, 2);
   tl.forEach((l, i) => text(l, x + 48, y + 56 + (i - (tl.length - 1) / 2) * 15, { size: 12.5, w: 650, col: C.navy }));
-  font(10.2, 450); const dl = wrapLines(step.desc, w - 28).slice(0, 5);
+  font(10.2, 450); const dl = wrapLines(fillTok(step.desc), w - 28).slice(0, 6);
   dl.forEach((l, i) => text(l, x + 14, y + 86 + i * 14, { size: 10.2, w: 450, col: C.g6 }));
   // progress
   const py = y + h - 44, gap = 3, segW = (w - 28 - gap * (N - 1)) / N;
@@ -1646,7 +2037,12 @@ function drawPanel(uc, st, tAuto) {
 }
 // numbered step markers on the diagram (guided mode)
 let BADGES = [];
-function badgeTarget(b, lv) {
+function badgeTarget(b, lv, hv = 0) {
+  if (hv >= 0.5) {
+    if (b.e) { const m = mapEdge(b.e, 1, 1); return m ? (m === b.e ? b : { e: m, f: 0.5, side: b.side }) : { n: 'lamassu' }; }
+    if (b.n && (NATIVE.has(b.n) || CLUSTER.has(b.n))) return { n: 'lamassu' };
+    return b;
+  }
   if (lv >= 0.5) {
     if (b.e) { const m = b.e in MAP ? MAP[b.e] : b.e; return m ? { e: m, f: MAP[b.e] ? 0.5 : b.f, side: b.side, side2: MAP[b.e] ? undefined : b.side2, f2: MAP[b.e] ? undefined : b.f2 } : { n: 'lamassu' }; }
     if (b.n && NATIVE.has(b.n)) return { n: 'lamassu' };
@@ -1658,7 +2054,7 @@ function drawBadges(V, uc, cur, fs) {
   const placed = [];
   uc.steps.forEach((s, i) => {
     if (!s.badge) return;
-    const b = badgeTarget(s.badge, fs.lv);
+    const b = badgeTarget(s.badge, fs.lv, fs.hv);
     let p;
     if (b.n) { if (!V.N[b.n]) return; p = V.nodeBadge(b.n); }
     else {
@@ -1675,56 +2071,72 @@ function drawBadges(V, uc, cur, fs) {
   });
   for (const B of BADGES) {
     const state = B.i < cur ? 'done' : B.i === cur ? 'cur' : 'next';
+    const INK = '#0b1220';
     if (state === 'cur') {
       const k = 0.5 + 0.5 * Math.sin(fs.t * 4);
-      circ(B.x, B.y, 15 + 3 * k, rgba(C.P, 0.1 + 0.08 * k));
-      circ(B.x, B.y, 11.5, C.P, '#ffffff', 2);
-    } else if (state === 'done') circ(B.x, B.y, 10, C.b1, C.P, 1.3);
-    else circ(B.x, B.y, 10, '#ffffff', rgba(C.P, 0.45), 1.2);
-    text(String(B.i + 1), B.x, B.y + 0.5, { size: state === 'cur' ? 11.5 : 10, w: 750, fam: MONO, col: state === 'cur' ? '#ffffff' : state === 'done' ? C.P : C.g5, align: 'center' });
+      circ(B.x, B.y, 15 + 3 * k, rgba(C.P, 0.14 + 0.1 * k));
+      circ(B.x, B.y, 11.5, INK, C.b4, 2);
+    } else if (state === 'done') circ(B.x, B.y, 10, C.b1, INK, 1.3);
+    else circ(B.x, B.y, 10, '#ffffff', rgba(INK, 0.55), 1.2);
+    text(String(B.i + 1), B.x, B.y + 0.5, { size: state === 'cur' ? 11.5 : 10.5, w: 800, fam: MONO, col: state === 'cur' ? '#ffffff' : INK, align: 'center' });
   }
 }
 
 // ---- per-frame shared state
 let hover = null, pinned = null, mouse = null;
-function adjacency(id, lv) {
-  const nodes = new Set([id]), edges = new Set(), allowed = lv < 0.5 ? ['common', 'low'] : ['common', 'med'];
-  for (const m of META_LIST) { const e = META[m[0]]; if (!allowed.includes(e.cls)) continue; if (e.from === id || e.to === id) { edges.add(e.id); nodes.add(e.from); nodes.add(e.to); } }
+function adjacency(id, lvFull) {
+  const lv = Math.min(1, lvFull), hi = lvFull >= 1.5;
+  const nodes = new Set([id]), edges = new Set(), allowed = lv < 0.5 ? ['common', 'low'] : hi ? ['common', 'med', 'hi'] : ['common', 'med'];
+  for (const m of META_LIST) { const e = META[m[0]]; if (!allowed.includes(e.cls) || (hi && e.k8s)) continue; if (e.from === id || e.to === id) { edges.add(e.id); nodes.add(e.from); nodes.add(e.to); } }
   if (OWNER[id]) nodes.add(lv >= 0.5 && NATIVE.has(OWNER[id]) ? 'lamassu' : OWNER[id]);
   if (lv < 0.5 && ['dms', 'ca', 'kms', 'devmgr', 'va', 'awsiot', 'alerts'].includes(id)) edges.add('bus');
   if (id === 'rabbit') { edges.add('bus'); for (const m of META_LIST) { const e = META[m[0]]; if (e.type === 'event' && allowed.includes(e.cls)) { edges.add(e.id); nodes.add(e.from); } } }
   return { nodes, edges };
 }
-function frameState(prog, t, lv, guided) {
+// node status for the current step; onArrive switches a node the instant the last packet reaches it
+function stepStatus(step, tl) {
+  if (!step.status && !step.onArrive) return null;
+  const out = Object.assign({}, step.status || {});
+  for (const id in step.onArrive || {}) {
+    let end = 0; for (const f of step.flowsC) if (f.arrive === id) end = Math.max(end, f.t0 + f.dur);
+    if (tl >= end) out[id] = step.onArrive[id];
+  }
+  return out;
+}
+function frameState(prog, t, lvFull, guided) {
+  const lv = Math.min(1, lvFull), hv = clamp(lvFull - 1, 0, 1);
+  LVS.lv = lv; LVS.hv = hv;
   const st = prog.states.find(s => t >= s.t0 && t < s.t1) || prog.states[prog.states.length - 1], step = st.step;
   const focusId = (ST.m === 0 || ST.m === 1) ? (pinned || hover) : null;
   let FN = null, FE = null, dimN = 1, dimE = 1;
-  if (focusId) { const a = adjacency(focusId, lv); FN = a.nodes; FE = a.edges; dimN = 0.32; dimE = 0.1; }
+  if (focusId) { const a = adjacency(focusId, lvFull); FN = a.nodes; FE = a.edges; dimN = 0.32; dimE = 0.1; }
   else if (step.spotNodes) {
     const k = guided ? 1 : smooth((t - st.t0) / 0.5) * smooth((st.t1 - t) / 0.5);
     FN = new Set(step.spotNodes); FE = new Set(step.spotEdges);
-    for (const id of step.spotEdges) if (MAP[id]) FE.add(MAP[id]);
-    if (step.spotNodes.some(id => NATIVE.has(id))) FN.add('lamassu');
-    dimN = 1 - 0.42 * k; dimE = 1 - 0.55 * k;
+    for (const id of step.spotEdges) { if (MAP[id]) FE.add(MAP[id]); const h = mapEdge(id, 1, 1); if (h) FE.add(h); if (MAPH[id]) FE.add(MAPH[id]); }
+    if (step.spotNodes.some(id => NATIVE.has(id) || (hv >= 0.5 && CLUSTER.has(id)))) FN.add('lamassu');
+    dimN = 1 - 0.6 * k; dimE = 1 - 0.72 * k;
   }
   const pulse = {}, glow = {}, active = [];
   for (const f of prog.flows) {
-    const end = f.t0 + f.dur, eid = lv < 0.5 ? f.e : (f.e in MAP ? MAP[f.e] : f.e);
+    const end = f.t0 + f.dur, eid = mapEdge(f.e, lv, hv);
     if (t >= f.t0 && t <= end) { if (eid) { active.push({ f, eid, p: flowEase((t - f.t0) / f.dur) }); glow[eid] = 1; } }
     else if (t > end && t < end + 0.9) { const k = 1 - (t - end) / 0.9; pulse[f.arrive] = Math.max(pulse[f.arrive] || 0, k); if (eid) glow[eid] = Math.max(glow[eid] || 0, k * 0.8); }
     if (t >= f.t0 - 0.05 && t < f.t0 + 0.3) pulse[f.src] = Math.max(pulse[f.src] || 0, 0.5);
   }
-  let lp = 0; for (const id of NATIVE) lp = Math.max(lp, pulse[id] || 0); pulse.lamassu = lp * boxF(lv);
+  let lp = 0, lc = 0; for (const id of NATIVE) lp = Math.max(lp, pulse[id] || 0); for (const id of CLUSTER) lc = Math.max(lc, pulse[id] || 0);
+  pulse.lamassu = Math.max(lp * boxF(lv), Math.max(lp, lc) * hBoxF(hv));
   let busAct = pulse.rabbit || 0; for (const id in glow) if (META[id] && META[id].type === 'event') busAct = Math.max(busAct, glow[id]);
   const cg = step.crypto ? smooth((t - st.t0) / 0.4) * (guided ? 1 : smooth((st.t1 - t) / 0.5)) : 0;
   let stepEdges = null;
-  if (guided) { stepEdges = new Set(); for (const id of step.spotEdges) { stepEdges.add(id); if (MAP[id]) stepEdges.add(MAP[id]); } }
+  if (guided) { stepEdges = new Set(); for (const id of step.spotEdges) { stepEdges.add(id); if (MAP[id]) stepEdges.add(MAP[id]); const h = mapEdge(id, 1, 1); if (h) stepEdges.add(h); if (MAPH[id]) stepEdges.add(MAPH[id]); } }
   const eA = id => (!FE || FE.has(id)) ? 1 : dimE;
   return {
-    t, lv, st, step, focusId, FN, FE, dimN, dimE, pulse, glow, active, busAct, cg,
-    nA: id => (!FN || FN.has(id)) ? 1 : dimN,
+    status: stepStatus(step, t - st.t0),
+    t, lv, hv, st, step, focusId, FN, FE, dimN, dimE, pulse, glow, active, busAct, cg,
+    nA: id => ((!FN || FN.has(id)) ? 1 : dimN) * (CLUSTER.has(id) ? 1 - hOutF(hv) : 1),
     edgeAlpha: id => {
-      const m = META[id], la = levelAlpha(m.cls, lv); if (la <= 0.005) return 0;
+      const m = META[id], la = edgeLA(id, { lv, hv }); if (la <= 0.005) return 0;
       if (m.hidden) { const show = (focusId && FE && FE.has(id)) || (stepEdges && stepEdges.has(id) && !focusId) ? 1 : (glow[id] || 0); return show * 0.9 * la; }
       return eA(id) * la;
     }
@@ -1741,8 +2153,6 @@ function chevron3(x, y, ang, col) { g.save(); g.translate(x, y); g.rotate(ang); 
 function morphFrame(e, fs) {
   const lv = fs.lv;
   // background grid: continuous crossfade (both layers are opaque)
-  g.drawImage(layers['2d'].grid, 0, 0, LW, LH);
-  g.globalAlpha = e; g.drawImage(layers['3d'].grid, 0, 0, LW, LH); g.globalAlpha = 1;
 
   // zones: rounded rectangles flatten into isometric parallelograms
   for (const z of V2.ZONES) {
@@ -1818,7 +2228,7 @@ function morphFrame(e, fs) {
     for (const A of fs.active) {
       if (touchesBox(A.eid) !== boxPass) continue;
       const e2 = V2.E[A.eid], e3 = V3.E[A.eid]; if (!e2 || !e3) continue;
-      const la = levelAlpha(META[A.eid].cls, lv); if (la <= 0.02) continue;
+      const la = edgeLA(A.eid, fs); if (la <= 0.02) continue;
       if (!e2.rsF) e2.rsF = resample(e2.sp, 96);
       if (!e3.rsF) e3.rsF = resample(e3.sp, 96);
       const f = A.f.rev ? 1 - A.p : A.p, p2 = along(e2.rsF, f), p3 = along(e3.rsF, f), q = lerp2(p2, p3, e);
@@ -1830,7 +2240,7 @@ function morphFrame(e, fs) {
       const b = boxF(lv);
       if (b > 0.01) {
         const c2 = V2.boxCorners(b), c3 = V3.slabGround(), ground = c2.map((p, i) => lerp2(p, c3[i], e));
-        const hz = V3.slabH * b * smooth((e - 0.35) / 0.65), U = V3.upV(), top = ground.map(p => [p[0] + U[0] * hz, p[1] + U[1] * hz]), pal = V3.slabPal;
+        const hz = V3.slabH() * b * smooth((e - 0.35) / 0.65), U = V3.upV(), top = ground.map(p => [p[0] + U[0] * hz, p[1] + U[1] * hz]), pal = V3.slabPal;
         g.globalAlpha = b * fs.nA('lamassu');
     if (hz > 0.3) for (let i = 0; i < 4; i++) {
       const a = ground[i], b2 = ground[(i + 1) % 4], cxm = (ground[0][0] + ground[2][0]) / 2, cym = (ground[0][1] + ground[2][1]) / 2;
@@ -1845,7 +2255,7 @@ function morphFrame(e, fs) {
           g.globalAlpha = b * fs.nA('lamassu');
         }
         const c2c = [(c2[0][0] + c2[2][0]) / 2, (c2[0][1] + c2[2][1]) / 2], c3c = V3.slabTop(hz), cc = lerp2(c2c, c3c, e), M = lerpMat([1, 0, 0, 1], V3.basis(), e);
-        g.save(); g.translate(cc[0], cc[1]); g.transform(M[0], M[1], M[2], M[3], 0, 0); drawLogo(0, 0, 170, '#ffffff'); g.restore();
+        g.save(); g.translate(cc[0], cc[1]); g.transform(M[0], M[1], M[2], M[3], 0, 0); drawLogo(0, 0, V3.slabLogo(), '#ffffff'); g.restore();
         g.globalAlpha = 1;
       }
 
@@ -1854,6 +2264,7 @@ function morphFrame(e, fs) {
   // annotations belong to one view each: hand over at the ends
   V2.drawAnns(fs, 1 - smooth(e / 0.25));
   V3.drawAnns(fs, smooth((e - 0.75) / 0.25));
+  V3.drawChannel(fs, smooth((e - 0.7) / 0.3));
 
   // nodes: flat cards travel and tilt onto the isometric floor, then the 3D objects extrude from their footprint
   const ids = Object.keys(V2.N).filter(id => !V2.N[id].box);
@@ -1880,31 +2291,231 @@ function drawHUD(uc, st, tAuto, sub) {
   rr(lx + 1, ly + 2, lw, lh, 5); g.fillStyle = 'rgba(15,31,61,0.06)'; g.fill();
   rr(lx, ly, lw, lh, 5); g.fillStyle = 'rgba(255,255,255,0.95)'; g.fill(); g.strokeStyle = 'rgba(30,58,138,0.2)'; g.lineWidth = 1; g.stroke();
   text('CONNECTION LANGUAGE', lx + 12, ly + 16, { size: 8.2, w: 700, fam: MONO, col: C.g5, ls: 1.1 });
-  const rows = [['http', 'Synchronous HTTP'], ['event', 'AMQP / CloudEvents'], ['auth', 'AuthN / AuthZ · JWKS'], ['key', 'Key operation'], ['infra', 'Infrastructure'], ['db', 'Persistence (on focus)']];
+  const rows = [['http', 'Synchronous HTTP'], ['event', 'AMQP / CloudEvents'], ['auth', 'AuthN / AuthZ · JWKS'], ['key', 'Key operation'], ['infra', 'Infrastructure'], ['db', 'Persistence (on focus)']].concat(PQV.on ? [['tls', 'TLS: KEX inner · Auth outer']] : []);
   rows.forEach(([k, label], i) => {
     const yy = ly + 36 + i * 17, s2 = STY[k];
+    if (k === 'tls') {
+      g.lineCap = 'round'; line(lx + 14, yy, lx + 42, yy, rgba(FAM[CX.auth].c, 0.3), 11); line(lx + 14, yy, lx + 42, yy, rgba(FAM[CX.kex].c, 0.45), 5.5); g.lineCap = 'butt';
+      line(lx + 12, yy, lx + 44, yy, STY.http.c, 1.6);
+      text(label, lx + 54, yy + 0.5, { size: 10.3, col: C.n2 }); return;
+    }
     g.setLineDash(s2.dash || []); line(lx + 12, yy, lx + 44, yy, s2.c, s2.w + 0.2); g.setLineDash([]);
     if (k !== 'infra' && k !== 'db') drawPacket(k, lx + 28, yy, 1, 0);
     text(label, lx + 54, yy + 0.5, { size: 10.3, col: C.n2 });
   });
   text('Hover to trace · click to pin', lx + 12, ly + lh - 37, { size: 9.3, w: 450, col: C.g5 });
-  text('Drag: orbit Z, tilt X · Shift+drag: roll Y', lx + 12, ly + lh - 24, { size: 9, w: 450, col: C.g5 });
-  text('Keys: V L G U · Q/E W/S A/D · R', lx + 12, ly + lh - 11, { size: 9, w: 450, col: C.g4 });
+  text('Wheel zoom · right-drag pan · Shift roll', lx + 12, ly + lh - 24, { size: 9, w: 450, col: C.g5 });
+  text('Keys: V L G U P K · QE WS AD · R · + − 0', lx + 12, ly + lh - 11, { size: 9, w: 450, col: C.g4 });
   drawPanel(uc, st, tAuto);
+  drawStory(uc, st, tAuto);
+  drawZoomChip();
   drawUCPill(uc);
   drawSegmented(CTL.mode, easeIO(ST.gk));
-  drawSegmented(CTL.level, easeIO(ST.lv));
+  drawSegmented(CTL.level, ST.lv <= 1 ? easeIO(ST.lv) : 1 + easeIO(ST.lv - 1));
   drawSegmented(CTL.view, easeIO(ST.m));
+  drawPQCSwitch();
+  if (PQV.a > 0.01) { g.globalAlpha = PQV.a; for (const k in CXC) { const c = CXC[k]; c.pill = FAM[CX[k]].c; drawSegmented(c, CXK[k]); } g.globalAlpha = 1; }
   drawCamera(smooth((ST.m - 0.6) / 0.4));
 }
 
+function drawCryptoChips(V, fs) {
+  if (PQV.a <= 0.01) return;
+  const gA = PQV.a;
+  const rowsOf = { ca: [['SIG', 'sig', 'pki']], kms: [['KEYS', 'keys', 'pki']], envoy: [['KEX', 'kex', 'kex'], ['AUTH', 'auth', 'auth']] };
+  const put = (a, rows, alpha) => {
+    alpha *= gA; if (!a || alpha <= 0.01) return;
+    g.globalAlpha = alpha;
+    rows.forEach(([tag, lk, dim], i) => cryptoChip(a.x, a.y + i * a.step, tag, CXL[lk][CX[dim]], CX[dim], a.align));
+    g.globalAlpha = 1;
+  };
+  put(V.chipAnchor('ca'), rowsOf.ca, lowF(fs.lv) * fs.nA('ca'));
+  put(V.chipAnchor('kms'), rowsOf.kms, lowF(fs.lv) * fs.nA('kms'));
+  put(V.chipAnchor('envoy'), rowsOf.envoy, (1 - hOutF(fs.hv)) * fs.nA('envoy'));
+  const box = [];
+  if (medF(fs.lv) > 0.01) box.push(['SIG', 'sig', 'pki']);
+  if (hInF(fs.hv) > 0.01) box.push(['AUTH', 'auth', 'auth'], ['KEX', 'kex', 'kex']);
+  if (box.length) put(V.boxChipAnchor(), box, Math.max(medF(fs.lv), 0.01) * (fs.hv > 0.01 ? 1 : 1) * Math.max(0.35, fs.nA('lamassu')));
+}
+// ---- use-case story bar (bottom centre): play / pause, the use case, and every step on one track
+const SB = { x: 238, y: 838, w: 1118, h: 50 };
+const ZC = { x: 1452, y: 662, w: 130, h: 24 };
+let STORY = { x0: 0, x1: 0, n: 0 };
+function storyHit(mx) { const { x0, x1, n } = STORY; if (n < 1) return -1; const sp = n > 1 ? (x1 - x0) / (n - 1) : 0; for (let i = 0; i < n; i++) if (Math.abs(mx - (x0 + i * sp)) < Math.max(12, sp / 2)) return i; return -1; }
+function drawStory(uc, st, tAuto) {
+  const { x, y, w, h } = SB, N = uc.steps.length, idx = st.step.idx, INK = '#0b1220', guided = ST.guided;
+  rr(x + 1, y + 2, w, h, 10); g.fillStyle = 'rgba(15,31,61,0.08)'; g.fill();
+  rr(x, y, w, h, 10); g.fillStyle = 'rgba(255,255,255,0.95)'; g.fill(); g.strokeStyle = 'rgba(30,58,138,0.2)'; g.lineWidth = 1; g.stroke();
+  // play / pause (auto) or replay (guided)
+  const bx = x + 22, by = y + h / 2;
+  circ(bx, by, 13, guided ? C.b1 : INK);
+  g.fillStyle = guided ? C.P : '#ffffff'; g.strokeStyle = guided ? C.P : '#ffffff';
+  if (guided) { g.lineWidth = 1.8; g.beginPath(); g.arc(bx, by, 5.5, -Math.PI * 0.2, Math.PI * 1.45); g.stroke(); g.beginPath(); g.moveTo(bx + 5.2, by - 6.8); g.lineTo(bx + 5.6, by - 2.2); g.lineTo(bx + 1.2, by - 3.2); g.closePath(); g.fill(); }
+  else if (ST.paused) { g.beginPath(); g.moveTo(bx - 3.5, by - 6); g.lineTo(bx + 6, by); g.lineTo(bx - 3.5, by + 6); g.closePath(); g.fill(); }
+  else { g.fillRect(bx - 5, by - 5.5, 3.6, 11); g.fillRect(bx + 1.4, by - 5.5, 3.6, 11); }
+  // use case
+  rr(x + 46, y + 11, 28, 28, 7); g.fillStyle = C.P; g.fill(); ucIcon(uc.icon, x + 60, y + 25, 18, '#ffffff');
+  text(uc.name, x + 82, y + 19, { size: 12.5, w: 700, col: C.navy });
+  text(N + ' STEPS · ' + ST.level.toUpperCase() + ' · ' + (guided ? 'GUIDED' : ST.paused ? 'PAUSED' : 'PLAYING'), x + 82, y + 35, { size: 8, w: 700, fam: MONO, col: C.g5, ls: 0.6 });
+  // track
+  const x0 = x + 318, x1 = x + w - 40, sp = N > 1 ? (x1 - x0) / (N - 1) : 0, ty = y + 17;
+  STORY = { x0, x1, n: N };
+  line(x0, ty, x1, ty, C.b1, 3);
+  let prog;
+  if (guided) prog = idx;
+  else { const S2 = uc.prog.states[idx]; prog = idx + clamp((tAuto - S2.t0) / (S2.t1 - S2.t0)); }
+  const px = x0 + Math.min(prog, N - 1) * sp;
+  g.lineCap = 'round'; line(x0, ty, px, ty, C.P, 3); g.lineCap = 'butt';
+  for (let i = 0; i < N; i++) {
+    const cx = x0 + i * sp, state = i < idx ? 'done' : i === idx ? 'cur' : 'next', s2 = uc.steps[i];
+    if (state === 'cur') { const k = 0.5 + 0.5 * Math.sin(performance.now() / 260); circ(cx, ty, 13 + 2 * k, rgba(C.P, 0.16)); circ(cx, ty, 10, INK, C.b4, 2); }
+    else if (state === 'done') circ(cx, ty, 8.5, C.b1, INK, 1.2);
+    else circ(cx, ty, 8.5, '#ffffff', rgba(INK, 0.4), 1.1);
+    text(String(i + 1), cx, ty + 0.5, { size: state === 'cur' ? 10.5 : 9.5, w: 800, fam: MONO, col: state === 'cur' ? '#ffffff' : INK, align: 'center' });
+    font(8.6, state === 'cur' ? 700 : 500); let lab = fillTok(s2.title); const maxW = Math.max(40, sp - 8);
+    while (g.measureText(lab).width > maxW && lab.length > 4) lab = lab.slice(0, -2).trimEnd() + '…';
+    text(lab.replace(/……$/, '…'), cx, y + 38, { size: 8.6, w: state === 'cur' ? 700 : 500, col: state === 'cur' ? INK : C.g5, align: 'center' });
+  }
+}
+// zoom chip (above the step panel)
+function drawZoomChip() {
+  const { x, y, w, h } = ZC, pct = Math.round(Z.k * 100) + '%', on = Z.k > 1.01;
+  rr(x + 1, y + 2, w, h, h / 2); g.fillStyle = 'rgba(15,31,61,0.06)'; g.fill();
+  rr(x, y, w, h, h / 2); g.fillStyle = on ? C.b0 : '#ffffff'; g.fill(); g.strokeStyle = on ? rgba(C.P, 0.5) : 'rgba(30,58,138,0.22)'; g.lineWidth = 1; g.stroke();
+  text('−', x + 16, y + h / 2 + 0.5, { size: 14, w: 600, col: Z.k > 1.01 ? C.navy : C.g3, align: 'center' });
+  text('+', x + w - 16, y + h / 2 + 0.5, { size: 14, w: 600, col: Z.k < ZMAX - 0.01 ? C.navy : C.g3, align: 'center' });
+  text(on ? pct + ' · reset' : 'zoom ' + pct, x + w / 2, y + h / 2 + 0.5, { size: 9, w: 700, fam: MONO, col: on ? C.P : C.g5, align: 'center' });
+}
+// on-diagram caption for the step in play, anchored where its marker sits
+function stepPoint(V, s, fs) {
+  if (!s.badge) return null;
+  const b = badgeTarget(s.badge, fs.lv, fs.hv);
+  if (b.n) return V.N[b.n] ? V.nodeBadge(b.n) : null;
+  const e = V.E[b.e]; if (!e) return null;
+  const vt = e.len[e.vis.length - 1] || e.total, q = pointAt(e, ((V.id === '2d' && b.f2 !== undefined) ? b.f2 : (b.f ?? 0.5)) * vt), k = Math.min(q[2], e.sp.length - 2);
+  const dx = e.sp[k + 1][0] - e.sp[k][0], dy = e.sp[k + 1][1] - e.sp[k][1], L = Math.hypot(dx, dy) || 1, side = (V.id === '2d' && b.side2 !== undefined) ? b.side2 : (b.side || -1);
+  return [q[0] - dy / L * 14 * side, q[1] + dx / L * 14 * side];
+}
+const nodeName = (V, id) => id === 'lamassu' ? 'Lamassu PKI' : (V.N[id] ? V.N[id].name : id);
+function drawCallout(V, uc, fs, pst) {
+  const s = pst.step; if (!s || s.noSpot) return;
+  let p = stepPoint(V, s, fs); if (!p) return;
+  if (ST.guided) { const B = BADGES.find(b => b.i === s.idx); if (B) p = [B.x, B.y]; }
+  p = toHud(p);
+  const tl = ST.guided ? fs.t : fs.t - fs.st.t0, fa = smooth(tl / 0.35);
+  if (fa <= 0.01) return;
+  // actors of the first link that is visible at this level
+  let actors = '';
+  for (const f of s.flowsC) { const m = mapEdge(f.e, fs.lv, fs.hv); if (!m) continue; const M = META[m], a = f.rev ? M.to : M.from, b = f.rev ? M.from : M.to; actors = nodeName(V, a) + '  →  ' + nodeName(V, b); break; }
+  const title = (s.idx + 1) + '  ' + fillTok(s.title), INK = '#0b1220';
+  font(11.5, 700); let w = g.measureText(title).width; if (actors) { font(8.8, 600, MONO); w = Math.max(w, g.measureText(actors).width); }
+  w = Math.ceil(w) + 22; const h = actors ? 38 : 24;
+  let bx = p[0] + 22, by = p[1] - h - 16;
+  if (bx + w > SB.x + SB.w + 180) bx = p[0] - 22 - w;
+  bx = clamp(bx, 12, LW - w - 12); by = clamp(by, 100, SB.y - h - 8);
+  g.globalAlpha = fa;
+  if (!ST.guided) { const k = 0.5 + 0.5 * Math.sin(fs.t * 5); circ(p[0], p[1], 7 + 3 * k, rgba(C.P, 0.18)); circ(p[0], p[1], 4, INK, '#ffffff', 1.5); }
+  const cx = clamp(p[0], bx + 8, bx + w - 8);
+  g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(cx, by + h); g.strokeStyle = rgba(INK, 0.55); g.lineWidth = 1; g.stroke();
+  rr(bx + 1, by + 2, w, h, 6); g.fillStyle = 'rgba(15,31,61,0.18)'; g.fill();
+  rr(bx, by, w, h, 6); g.fillStyle = INK; g.fill();
+  g.fillStyle = C.b4; g.fillRect(bx, by + 6, 2.5, h - 12);
+  text(title, bx + 11, by + 12.5, { size: 11.5, w: 700, col: '#ffffff' });
+  if (actors) text(actors, bx + 11, by + 28, { size: 8.8, w: 600, fam: MONO, col: C.b3 });
+  g.globalAlpha = 1;
+}
+const STATUS_Q = () => {
+  const q = qStatus(), n = (q.hndl ? 1 : 0) + (q.tnfl ? 1 : 0);
+  if (n === 2) return { n, q, c: '#047857', t: 'PQ-SECURE CHANNEL', s: 'Quantum-safe in both dimensions' };
+  if (n === 1) return { n, q, c: '#b45309', t: 'PARTIALLY PQ-SECURE', s: q.hndl ? 'Confidential, but authentication is classical' : 'Authenticated, but traffic can be harvested' };
+  return { n, q, c: '#b91c1c', t: 'CLASSICAL CHANNEL', s: 'Not quantum-safe: harvest and forgery possible' };
+};
+let CARD = null, CARD_BTN = null, cardPick = -1;
+// the channel card: header in the status colour, one row per quantum threat, and a one-click upgrade
+function drawChannelCard(V, fs) {
+  CARD = CARD_BTN = null;
+  if (PQV.a <= 0.01) return;
+  const S0 = STATUS_Q(), compact = V.id === '2d', W = compact ? 206 : 300, H = compact ? 96 : 150, t = fs.t;
+  let x, y, anc = null;
+  if (compact) { x = 20; y = 92; anc = [196, 285]; }
+  else {
+    if (!CHA.p) return;
+    anc = toHud(CHA.p);
+    // pick the spot around the emblem that hides the fewest labels and panels
+    const obst = [];
+    for (const id in V.N) { const n = V.N[id]; if (n.bb && V.present(n, ST.lv) && !n.box && fs.nA(id) > 0.05) for (const b of n.bb) { const p = toHud([b.x, b.y]); obst.push({ x: p[0], y: p[1], w: b.w * Z.k, h: b.h * Z.k }); } }
+    obst.push({ x: 0, y: 0, w: LW, h: 96 }, { x: 20, y: 687, w: 204, h: 190 }, PN, SB, ZC);
+    const cand = [[anc[0] + 36, anc[1] - H - 6], [anc[0] - 36 - W, anc[1] - H - 6], [anc[0] + 36, anc[1] + 26], [anc[0] - 36 - W, anc[1] + 26], [anc[0] - W / 2, anc[1] - H - 34], [anc[0] - W / 2, anc[1] + 34],
+      [LW - W - 20, 104], [20, 104], [LW - W - 20, 470]];
+    const ov = (a, b) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+    const score = c => { const r = { x: c[0], y: c[1], w: W, h: H }; let s = Math.hypot(c[0] + W / 2 - anc[0], c[1] + H / 2 - anc[1]) * 3; for (const o of obst) s += ov(r, o) * 4; if (c[0] < 8 || c[0] + W > LW - 8 || c[1] < 8 || c[1] + H > LH - 8) s += 1e6; return s; };
+    const sc = cand.map(score); let best = sc.indexOf(Math.min(...sc));
+    if (cardPick >= 0 && cardPick < cand.length && sc[cardPick] <= sc[best] * 1.25 + 200) best = cardPick;
+    cardPick = best; [x, y] = cand[best];
+  }
+  x = Math.round(x) + 0.5; y = Math.round(y) + 0.5;
+  g.save(); g.globalAlpha = PQV.a;
+  const pulse = S0.n < 2 ? 0.5 + 0.5 * Math.sin(t * 4) : 0;
+  // leader from the channel
+  if (anc && Math.hypot(clamp(anc[0], x, x + W) - anc[0], clamp(anc[1], y, y + H) - anc[1]) < 420) { const cx = clamp(anc[0], x + 10, x + W - 10), cy = anc[1] < y ? y : anc[1] > y + H ? y + H : clamp(anc[1], y + 10, y + H - 10), ex2 = anc[0] < x ? x : anc[0] > x + W ? x + W : cx;
+    g.beginPath(); g.moveTo(anc[0], anc[1]); g.lineTo(anc[0] < x || anc[0] > x + W ? ex2 : cx, anc[0] < x || anc[0] > x + W ? clamp(anc[1], y + 12, y + H - 12) : cy); g.strokeStyle = rgba(S0.c, 0.7); g.lineWidth = 1.4; g.setLineDash([3, 3]); g.stroke(); g.setLineDash([]); }
+  if (S0.n < 2) { rr(x - 4, y - 4, W + 8, H + 8, 13); g.strokeStyle = rgba(S0.c, 0.18 + 0.22 * pulse); g.lineWidth = 4; g.stroke(); }
+  rr(x + 1.5, y + 3, W, H, 10); g.fillStyle = 'rgba(15,31,61,0.16)'; g.fill();
+  rr(x, y, W, H, 10); g.fillStyle = '#ffffff'; g.fill(); g.strokeStyle = rgba(S0.c, 0.75); g.lineWidth = 1.4; g.stroke();
+  // header band
+  const hh = compact ? 26 : 38;
+  g.save(); rr(x, y, W, H, 10); g.clip(); g.fillStyle = S0.c; g.fillRect(x, y, W, hh);
+  const gr = g.createLinearGradient(x, y, x + W, y); gr.addColorStop(0, 'rgba(255,255,255,0.14)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(x, y, W, hh); g.restore();
+  const sx = x + (compact ? 14 : 19), sy = y + hh / 2, R0 = compact ? 7 : 9;
+  g.beginPath(); g.moveTo(sx, sy - R0); g.lineTo(sx + R0 * 0.85, sy - R0 * 0.6); g.lineTo(sx + R0 * 0.77, sy + R0 * 0.15); g.quadraticCurveTo(sx + R0 * 0.55, sy + R0 * 0.8, sx, sy + R0); g.quadraticCurveTo(sx - R0 * 0.55, sy + R0 * 0.8, sx - R0 * 0.77, sy + R0 * 0.15); g.lineTo(sx - R0 * 0.85, sy - R0 * 0.6); g.closePath();
+  g.fillStyle = '#ffffff'; g.fill();
+  text(S0.t, x + (compact ? 27 : 36), y + (compact ? hh / 2 + 0.5 : 14), { size: compact ? 9 : 11, w: 800, fam: MONO, col: '#ffffff', ls: compact ? 0.8 : 1.4 });
+  if (!compact) text(S0.s, x + 36, y + 28, { size: 9.2, w: 500, col: 'rgba(255,255,255,0.9)' });
+  const score = S0.n + '/2', pw = compact ? 28 : 34;
+  rr(x + W - pw - 10, y + hh / 2 - 8, pw, 16, 8); g.fillStyle = '#ffffff'; g.fill();
+  text(score, x + W - 10 - pw / 2, y + hh / 2 + 0.5, { size: compact ? 8.4 : 9.4, w: 800, fam: MONO, col: S0.c, align: 'center' });
+  // threat rows
+  const rows = [[S0.q.hndl, 'HNDL', 'Harvest now, decrypt later', 'KEX', CXL.kex[CX.kex]], [S0.q.tnfl, 'TNFL', 'Trust now, forge later', 'AUTH', CXL.auth[CX.auth]]];
+  const rh = compact ? 26 : 38, ry0 = y + hh + (compact ? 3 : 5);
+  rows.forEach(([ok, lab, desc, dim, alg], k) => {
+    const ry = ry0 + k * rh, c = ok ? '#047857' : '#b91c1c', cy = ry + rh / 2;
+    if (k) line(x + 12, ry, x + W - 12, ry, 'rgba(30,58,138,0.1)', 1);
+    circ(x + (compact ? 16 : 21), cy, compact ? 7 : 9, ok ? '#d1fae5' : '#fee2e2');
+    g.strokeStyle = c; g.lineWidth = 1.9; g.lineCap = 'round'; g.beginPath(); const ix = x + (compact ? 16 : 21), s2 = compact ? 0.78 : 1;
+    if (ok) { g.moveTo(ix - 4 * s2, cy); g.lineTo(ix - 1 * s2, cy + 3 * s2); g.lineTo(ix + 4.2 * s2, cy - 3 * s2); }
+    else { g.moveTo(ix - 3.2 * s2, cy - 3.2 * s2); g.lineTo(ix + 3.2 * s2, cy + 3.2 * s2); g.moveTo(ix + 3.2 * s2, cy - 3.2 * s2); g.lineTo(ix - 3.2 * s2, cy + 3.2 * s2); }
+    g.stroke(); g.lineCap = 'butt';
+    if (compact) {
+      text(lab, x + 29, cy + 0.5, { size: 10, w: 800, fam: MONO, col: C.navy });
+      text(ok ? 'PROTECTED' : 'EXPOSED', x + W - 12, cy + 0.5, { size: 8.4, w: 800, fam: MONO, col: c, align: 'right', ls: 0.6 });
+    } else {
+      text(lab, x + 38, cy - 6, { size: 11.5, w: 800, fam: MONO, col: C.navy });
+      text(desc, x + 38, cy + 8, { size: 9, w: 450, col: C.g5 });
+      text(ok ? 'PROTECTED' : 'EXPOSED', x + W - 12, cy - 6, { size: 9.2, w: 800, fam: MONO, col: c, align: 'right', ls: 0.8 });
+      text(dim + ' ' + alg, x + W - 12, cy + 8, { size: 8, w: 500, fam: MONO, col: C.g5, align: 'right' });
+    }
+  });
+  // footer: scope + one-click upgrade
+  const fy = y + H - (compact ? 12 : 15);
+  line(x + 12, fy - (compact ? 10 : 12), x + W - 12, fy - (compact ? 10 : 12), 'rgba(30,58,138,0.1)', 1);
+  text(compact ? 'Client ⇄ Envoy' : 'Client ⇄ Envoy · TLS 1.3', x + 12, fy, { size: compact ? 8.4 : 9, w: 500, col: C.g5 });
+  if (S0.n < 2) {
+    const lab = compact ? 'Make PQ/T →' : 'Upgrade to PQ/T  →'; font(compact ? 8.6 : 9.4, 700); const bw = g.measureText(lab).width + 16;
+    const b = { x: x + W - 10 - bw, y: fy - 9, w: bw, h: 18 };
+    rr(b.x, b.y, b.w, b.h, 9); g.fillStyle = ST.btnHover === 'pqup' ? C.b6 : C.P; g.fill();
+    text(lab, b.x + b.w / 2, fy + 0.5, { size: compact ? 8.6 : 9.4, w: 700, col: '#ffffff', align: 'center' });
+    CARD_BTN = b;
+  } else text('✓ ready for CRQC', x + W - 12, fy, { size: compact ? 8.4 : 9, w: 700, col: '#047857', align: 'right' });
+  g.restore();
+  CARD = { x, y, w: W, h: H };
+}
 function drawTooltip(V, id) {
-  const lines = DESC[id] || [], name = id === 'lamassu' ? 'Lamassu PKI Platform' : (V.N[id].name);
+  const extra = !PQV.on ? [] : id === 'ca' ? ['Signs with ' + CXL.sig[CX.pki] + ' (' + FAM[CX.pki].s + ').'] : id === 'kms' ? ['Keys: ' + CXL.keys[CX.pki] + ' (' + FAM[CX.pki].s + ').'] : id === 'envoy' ? ['TLS 1.3 KEX ' + CXL.kex[CX.kex] + ', auth ' + CXL.auth[CX.auth] + '.'] : [];
+  const lines = ((id === 'lamassu' && LVS.hv >= 0.5 ? DESC_HI : DESC[id]) || []).concat(extra), name = id === 'lamassu' ? 'Lamassu PKI Platform' : (V.N[id].name);
   font(11.5, 650); let w = g.measureText(name).width;
   font(10.5, 450); for (const l of lines) w = Math.max(w, g.measureText(l).width);
   w = Math.ceil(w) + 26; const h = 30 + lines.length * 15;
-  const mp = mouse || V.anchor(id);
-  let ref = id === 'lamassu' || !V.tipAnchor(id) ? { x: mp[0] - 1, y: mp[1] - 8, w: 2, h: 2 } : V.tipAnchor(id);
+  const mp = mouse || toHud(V.anchor(id));
+  let ref = id === 'lamassu' || !V.tipAnchor(id) ? { x: mp[0] - 1, y: mp[1] - 8, w: 2, h: 2 } : (r0 => { const p = toHud([r0.x, r0.y]); return { x: p[0], y: p[1], w: r0.w * Z.k, h: r0.h * Z.k }; })(V.tipAnchor(id));
   let x = ref.x + ref.w / 2 - w / 2, y = ref.y - h - 10;
   if (y < 100) y = ref.y + ref.h + 12;
   x = clamp(x, 10, LW - w - 10); y = clamp(y, 10, LH - h - 10);
@@ -1932,7 +2543,13 @@ function pointer(mx, my, click) {
   if (inCtl(CTL.uc, mx, my)) { if (click) { ST.ddOpen = true; ST.ddHover = -1; } return 'ctl'; }
   const seg = (c, a, b, cur) => mx < c.x ? (cur === a ? b : a) : mx < c.x + c.w / 2 ? a : b;
   if (inCtl(CTL.mode, mx, my)) { if (click) setGuided(seg(CTL.mode, 'auto', 'guided', ST.guided ? 'guided' : 'auto') === 'guided'); return 'ctl'; }
-  if (inCtl(CTL.level, mx, my)) { if (click) setLevel(seg(CTL.level, 'low', 'medium', ST.level)); return 'ctl'; }
+  if (inCtl(CTL.level, mx, my)) { if (click) setLevel(mx < CTL.level.x ? LEVELS[(LEVELS.indexOf(ST.level) + 1) % 3] : LEVELS[clamp(Math.floor((mx - CTL.level.x) / (CTL.level.w / 3)), 0, 2)]); return 'ctl'; }
+  if (inCtl(PQT, mx, my)) { if (click) setPQC(!PQV.on); return 'ctl'; }
+  if (CARD && inRect(CARD, mx, my)) { if (CARD_BTN && inRect(CARD_BTN, mx, my)) { ST.btnHover = 'pqup'; if (click) { setCrypto('kex', 'H'); setCrypto('auth', 'H'); } } return 'ctl'; }
+  for (const k in CXC) if (PQV.on && inCtl(CXC[k], mx, my)) {
+    if (click) { const c = CXC[k]; setCrypto(k, mx < c.x ? FAMS[(FAMS.indexOf(CX[k]) + 1) % 3] : FAMS[clamp(Math.floor((mx - c.x) / (c.w / 3)), 0, 2)]); }
+    return 'ctl';
+  }
   if (inCtl(CTL.view, mx, my)) { if (click) setMode(seg(CTL.view, '2d', '3d', ST.mode)); return 'ctl'; }
   ST.camHover = -1;
   if (ST.m === 1 && inRect(CAMS, mx, my)) { const i = clamp(Math.floor((mx - CAMS.x) / (CAMS.w / PRESETS.length)), 0, PRESETS.length - 1); ST.camHover = i; if (click) camPreset(i); return 'ctl'; }
@@ -1941,11 +2558,20 @@ function pointer(mx, my, click) {
   if (ST.guided) {
     if (inRect(BTN.next, mx, my)) { ST.btnHover = 'next'; if (click) goStep(ST.step + 1); return 'ctl'; }
     if (inRect(BTN.prev, mx, my)) { if (click) goStep(ST.step - 1); return 'ctl'; }
-    if (settled()) for (const B of BADGES) if (Math.hypot(B.x - mx, B.y - my) < 13) { if (click) goStep(B.i); return 'ctl'; }
+    if (settled()) { const [sx, sy] = toScene([mx, my]); for (const B of BADGES) if (Math.hypot(B.x - sx, B.y - sy) < 13) { if (click) goStep(B.i); return 'ctl'; } }
+  }
+  if (inRect(ZC, mx, my)) { const t = (mx - ZC.x) / ZC.w; if (click) { if (t < 0.28) zoomAt(LW / 2, LH / 2, 1 / 1.35); else if (t > 0.72) zoomAt(LW / 2, LH / 2, 1.35); else zoomReset(); } return 'ctl'; }
+  if (inRect(SB, mx, my)) {
+    if (click) {
+      if (mx < SB.x + 40) togglePlay();
+      else { const i = storyHit(mx); if (i >= 0) { if (ST.guided) goStep(i); else jumpAuto(i); } }
+    }
+    return 'ctl';
   }
   if (inRect(PN, mx, my)) return null;
   if (!settled()) return null;
-  const n = curView().hit(mx, my, ST.lv);
+  const [sx, sy] = toScene([mx, my]);
+  const n = curView().hit(sx, sy, ST.lv);
   return n ? n.id : null;
 }
 function orbitDown(x, y, roll) { if (ST.m !== 1) return; ST.drag = { x0: x, y0: y, x, y, t: performance.now(), moved: false, roll: !!roll }; ST.vel = [0, 0, 0]; ST.tw = null; }
@@ -1964,14 +2590,35 @@ function orbitMove(x, y) {
   return d.moved;
 }
 function orbitUp() { const d = ST.drag; ST.drag = null; if (d && performance.now() - d.t > 80) ST.vel = [0, 0, 0]; return d && d.moved; }
+// ---- zoom / pan (scene only; the HUD stays put). scene point p -> screen p * k + (x, y)
+const Z = { k: 1, x: 0, y: 0 }, ZT = { k: 1, x: 0, y: 0 }, ZMAX = 4;
+let zoomKey = '';
+const clampZ = z => { z.k = clamp(z.k, 1, ZMAX); z.x = clamp(z.x, LW * (1 - z.k), 0); z.y = clamp(z.y, LH * (1 - z.k), 0); };
+const toScene = p => [(p[0] - Z.x) / Z.k, (p[1] - Z.y) / Z.k];
+const toHud = p => [p[0] * Z.k + Z.x, p[1] * Z.k + Z.y];
+function zoomAt(mx, my, f) { const sx = (mx - ZT.x) / ZT.k, sy = (my - ZT.y) / ZT.k; ZT.k = clamp(ZT.k * f, 1, ZMAX); ZT.x = mx - sx * ZT.k; ZT.y = my - sy * ZT.k; clampZ(ZT); }
+const zoomReset = () => { ZT.k = 1; ZT.x = 0; ZT.y = 0; };
+const sceneXf = () => [S * DPR * Z.k, 0, 0, S * DPR * Z.k, S * DPR * Z.x, S * DPR * Z.y];
 let suppressClick = false;
-view.addEventListener('mousedown', ev => { const [mx, my] = toLogical(ev); if (pointer(mx, my, false) === 'ctl' || inRect(PN, mx, my) || ST.ddOpen) return; orbitDown(ev.clientX, ev.clientY, ev.shiftKey || ev.button === 2); });
-view.addEventListener('contextmenu', ev => { if (ST.m === 1) ev.preventDefault(); });
-window.addEventListener('mouseup', () => { suppressClick = !!orbitUp(); });
-view.addEventListener('dblclick', ev => { const [mx, my] = toLogical(ev); if (ST.m === 1 && !inRect(PN, mx, my) && pointer(mx, my, false) !== 'ctl') camReset(); });
+view.addEventListener('mousedown', ev => {
+  const [mx, my] = toLogical(ev); if (pointer(mx, my, false) === 'ctl' || inRect(PN, mx, my) || ST.ddOpen) return;
+  // right / middle drag pans (both views); left drag pans in 2D, orbits in 3D (Shift: roll)
+  if (ev.button === 1 || ev.button === 2 || (ev.button === 0 && ST.m === 0 && !ev.shiftKey)) { ev.preventDefault(); ST.pan = { x0: ev.clientX, y0: ev.clientY, zx: ZT.x, zy: ZT.y, moved: false }; return; }
+  orbitDown(ev.clientX, ev.clientY, ev.shiftKey);
+});
+view.addEventListener('contextmenu', ev => ev.preventDefault());
+window.addEventListener('mouseup', () => { const p = ST.pan; ST.pan = null; suppressClick = !!orbitUp() || !!(p && p.moved); });
+view.addEventListener('wheel', ev => { ev.preventDefault(); const [mx, my] = toLogical(ev); zoomAt(mx, my, Math.exp(-ev.deltaY * (ev.ctrlKey ? 0.008 : 0.0012))); }, { passive: false });
+view.addEventListener('dblclick', ev => { const [mx, my] = toLogical(ev); if (inRect(PN, mx, my) || pointer(mx, my, false) === 'ctl') return; zoomReset(); if (ST.m === 1) camReset(); });
 view.addEventListener('touchmove', ev => { const t = ev.touches[0]; if (t && ST.drag) { orbitMove(t.clientX, t.clientY); ev.preventDefault(); } }, { passive: false });
 view.addEventListener('touchend', () => { orbitUp(); });
-view.addEventListener('mousemove', ev => { if (ST.drag && orbitMove(ev.clientX, ev.clientY)) { hover = null; view.style.cursor = 'grabbing'; return; } mouse = toLogical(ev); const r = pointer(mouse[0], mouse[1], false); hover = r && r !== 'ctl' ? r : null; view.style.cursor = r ? 'pointer' : (ST.m === 1 && !inRect(PN, mouse[0], mouse[1]) ? 'grab' : 'default'); });
+view.addEventListener('mousemove', ev => {
+  if (ST.pan) {
+    const p = ST.pan, dx = (ev.clientX - p.x0) / S, dy = (ev.clientY - p.y0) / S;
+    if (!p.moved && Math.hypot(dx, dy) > 3) p.moved = true;
+    if (p.moved) { ZT.x = p.zx + dx; ZT.y = p.zy + dy; clampZ(ZT); Z.x = ZT.x; Z.y = ZT.y; Z.k = ZT.k; hover = null; view.style.cursor = 'grabbing'; return; }
+  }
+  if (ST.drag && orbitMove(ev.clientX, ev.clientY)) { hover = null; view.style.cursor = 'grabbing'; return; } mouse = toLogical(ev); const r = pointer(mouse[0], mouse[1], false); hover = r && r !== 'ctl' ? r : null; view.style.cursor = r ? 'pointer' : ((ST.m === 1 || Z.k > 1.01) && !inRect(PN, mouse[0], mouse[1]) ? 'grab' : 'default'); });
 view.addEventListener('mouseleave', () => { hover = null; mouse = null; ST.ddHover = -1; ST.btnHover = null; });
 view.addEventListener('click', ev => { if (suppressClick) { suppressClick = false; return; } const [mx, my] = toLogical(ev); mouse = [mx, my]; const r = pointer(mx, my, true); if (r === 'ctl') return; pinned = r ? (pinned === r ? null : r) : null; });
 view.addEventListener('touchstart', ev => { const t = ev.touches[0]; if (!t) return; const [mx, my] = toLogical(t); mouse = [mx, my]; if (!inRect(PN, mx, my) && pointer(mx, my, false) !== 'ctl') orbitDown(t.clientX, t.clientY); const r = pointer(mx, my, true); if (r !== 'ctl') pinned = r; }, { passive: true });
@@ -1980,13 +2627,18 @@ window.addEventListener('keydown', ev => {
   if (k === 'escape') { ST.ddOpen = false; pinned = null; return; }
   if (k === 'v') setMode(ST.mode === '3d' ? '2d' : '3d');
   else if (k === '2') setMode('2d'); else if (k === '3') setMode('3d');
-  else if (k === 'l') setLevel(ST.level === 'low' ? 'medium' : 'low');
+  else if (k === 'l') setLevel(LEVELS[(LEVELS.indexOf(ST.level) + 1) % 3]);
   else if (k === 'g') setGuided(!ST.guided);
   else if (k === 'u') selectUC((ST.uc + 1) % USE_CASES.length);
   else if (k === 'q' || k === 'e') camStep(0, k === 'e' ? 45 : -45);
   else if (k === 'w' || k === 's') camStep(1, k === 'w' ? 15 : -15);
   else if (k === 'a' || k === 'd') camStep(2, k === 'd' ? 15 : -15);
   else if (k === 'r') camReset();
+  else if (k === 'k') setPQC(!PQV.on);
+  else if (k === '+' || k === '=') zoomAt(LW / 2, LH / 2, 1.35);
+  else if (k === '-' || k === '_') zoomAt(LW / 2, LH / 2, 1 / 1.35);
+  else if (k === '0') zoomReset();
+  else if (!ST.guided && (k === ' ' || k === 'p')) { ev.preventDefault(); togglePlay(); }
   else if (ST.guided && (k === 'arrowright' || k === ' ' || k === 'enter' || k === 'pagedown')) { ev.preventDefault(); goStep(ST.step + 1); }
   else if (ST.guided && (k === 'arrowleft' || k === 'backspace' || k === 'pageup')) { ev.preventDefault(); goStep(ST.step - 1); }
 });
@@ -1997,9 +2649,11 @@ const readHash = () => { const m = /t=([\d.]+)/.exec(location.hash); freeze = m 
 readHash(); window.addEventListener('hashchange', readHash);
 function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000); last = now;
-  const tm = ST.mode === '3d' ? 1 : 0, tl = ST.level === 'medium' ? 1 : 0;
+  const tm = ST.mode === '3d' ? 1 : 0, tl = LEVELS.indexOf(ST.level);
   ST.m = tm > ST.m ? Math.min(tm, ST.m + dt / 1.4) : Math.max(tm, ST.m - dt / 1.4);
-  ST.lv = tl > ST.lv ? Math.min(tl, ST.lv + dt / 0.95) : Math.max(tl, ST.lv - dt / 0.95);
+  ST.lv = tl > ST.lv ? Math.min(tl, ST.lv + dt / 0.9) : Math.max(tl, ST.lv - dt / 0.9);
+  PQV.a = PQV.on ? Math.min(1, PQV.a + dt / 0.45) : Math.max(0, PQV.a - dt / 0.45);
+  for (const k in CXK) { const tg = FAMS.indexOf(CX[k]); CXK[k] += (tg - CXK[k]) * Math.min(1, dt * 12); if (Math.abs(tg - CXK[k]) < 0.002) CXK[k] = tg; }
   ST.gk = ST.guided ? Math.min(1, ST.gk + dt / 0.35) : Math.max(0, ST.gk - dt / 0.35);
   if (!ST.drag) {
     if (ST.tw) {
@@ -2013,15 +2667,17 @@ function frame(now) {
     } else ST.vel = [0, 0, 0];
   }
   if (!ST.tw && !ST.drag && ST.vel.every(v => v === 0)) { const nw = a => { a = ((a % TAU) + TAU) % TAU; return a > Math.PI ? a - TAU : a; }; ST.th = nw(ST.th); ST.rl = nw(ST.rl); }
-  const ck = ST.th + ',' + ST.ph + ',' + ST.rl;
+  if (!ST.pan) { const f = Math.min(1, dt * 14); for (const k of ['k', 'x', 'y']) { Z[k] += (ZT[k] - Z[k]) * f; if (Math.abs(ZT[k] - Z[k]) < (k === 'k' ? 0.0005 : 0.05)) Z[k] = ZT[k]; } }
+  const zk = Z.k + ',' + Z.x + ',' + Z.y, ck = ST.th + ',' + ST.ph + ',' + ST.rl;
   if (ck !== ST.camKey) { V3.setCamera(ST.th, ST.ph, ST.rl); ST.camKey = ck; renderLayer3D(); }
-  const uc = USE_CASES[ST.uc];
+  if (zk !== zoomKey) { zoomKey = zk; renderLayerOf('3d'); renderLayerOf('2d'); }
+  const uc = curUC();
   let prog, t, tAuto = 0;
   if (ST.guided) {
     const s = uc.steps[ST.step];
     prog = s.prog; t = freeze !== null ? Math.min(freeze, s.dur) : ((now - ST.stepStart) / 1000) % (s.dur + STEP_PAUSE);
   } else {
-    prog = uc.prog; tAuto = t = (freeze !== null ? freeze : (now - ST.autoStart) / 1000) % uc.total;
+    prog = uc.prog; tAuto = t = (freeze !== null ? freeze : ST.paused ? ST.pauseT : (now - ST.autoStart) / 1000) % uc.total;
   }
   const fs = frameState(prog, t, ST.lv, ST.guided);
   const pst = ST.guided ? { step: uc.steps[ST.step] } : fs.st;
@@ -2031,17 +2687,23 @@ function frame(now) {
   if (ST.m === 0 || ST.m === 1) {
     const V = ST.m === 1 ? V3 : V2, Lr = layers[V.id];
     g.drawImage(Lr.grid, 0, 0); g.drawImage(Lr.zones, 0, 0);
-    g.setTransform(S * DPR, 0, 0, S * DPR, 0, 0);
+    g.setTransform(...sceneXf());
     V.frame(fs);
+    drawCryptoChips(V, fs);
     if (ST.guided) drawBadges(V, uc, ST.step, fs); else BADGES = [];
+    g.setTransform(S * DPR, 0, 0, S * DPR, 0, 0);
+    drawChannelCard(V, fs);
+    drawCallout(V, uc, fs, pst);
     drawHUD(uc, pst, tAuto, V.sub);
     const tip = hover || pinned; if (tip && V.N[tip]) drawTooltip(V, tip);
     drawDropdown();
   } else {
-    g.setTransform(S * DPR, 0, 0, S * DPR, 0, 0);
     const e = easeIO(ST.m);
+    g.drawImage(layers['2d'].grid, 0, 0); g.globalAlpha = e; g.drawImage(layers['3d'].grid, 0, 0); g.globalAlpha = 1;
+    g.setTransform(...sceneXf());
     morphFrame(e, fs);
-    BADGES = [];
+    g.setTransform(S * DPR, 0, 0, S * DPR, 0, 0);
+    BADGES = []; CARD = CARD_BTN = null;
     drawHUD(uc, pst, tAuto, e < 0.5 ? V2.sub : V3.sub);
     drawDropdown();
   }
@@ -2051,22 +2713,22 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
-function renderLayer3D() {
-  const L3 = layers['3d'];
-  g = L3.grid.getContext('2d'); g.setTransform(S * DPR, 0, 0, S * DPR, 0, 0); V3.renderGrid();
-  g = L3.zones.getContext('2d'); g.setTransform(S * DPR, 0, 0, S * DPR, 0, 0); g.clearRect(0, 0, LW, LH); V3.renderZones();
+function renderLayerOf(id) {
+  const Lr = layers[id], V = id === '3d' ? V3 : V2, X = sceneXf();
+  g = Lr.grid.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = C.bg; g.fillRect(0, 0, Lr.grid.width, Lr.grid.height); g.setTransform(...X); V.renderGrid();
+  g = Lr.zones.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, Lr.zones.width, Lr.zones.height); g.setTransform(...X); V.renderZones();
   g = sctx;
 }
+function renderLayer3D() { renderLayerOf('3d'); }
 function resize() {
   DPR = Math.min(window.devicePixelRatio || 1, 3);
   const w = window.innerWidth, h = window.innerHeight;
   view.width = Math.round(w * DPR); view.height = Math.round(h * DPR);
   S = Math.min(w / LW, h / LH); offX = (w - LW * S) / 2; offY = (h - LH * S) / 2;
   scene.width = Math.round(LW * S * DPR); scene.height = Math.round(LH * S * DPR);
-  for (const [id, V] of [['3d', V3], ['2d', V2]]) {
+  for (const id of ['3d', '2d']) {
     for (const k of ['grid', 'zones']) { const c = layers[id][k]; c.width = scene.width; c.height = scene.height; }
-    g = layers[id].grid.getContext('2d'); g.setTransform(S * DPR, 0, 0, S * DPR, 0, 0); V.renderGrid();
-    g = layers[id].zones.getContext('2d'); g.setTransform(S * DPR, 0, 0, S * DPR, 0, 0); g.clearRect(0, 0, LW, LH); V.renderZones();
+    renderLayerOf(id);
   }
   g = sctx;
 }
