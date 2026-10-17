@@ -1,0 +1,30 @@
+{
+  "generator": "Built-in image_gen tool; generated on 2026-10-17",
+  "palette": [
+    "#ffffff",
+    "#f5f7fc",
+    "#e2e7f1",
+    "#405fff",
+    "#4ac2f5",
+    "#09111f"
+  ],
+  "assets": [
+    {
+      "file": "lamassu-network.webp",
+      "source": "exec-0d8ff17e-44b2-4dba-a78a-65586c820093.png",
+      "prompt": "Final production technical brand visual in the refined direction of Cloudflare network animations, interpreted in Lamassu blue. Horizontal 16:9, pure white background, centered large globe with full silhouette. White porcelain globe, very fine pale grey and cobalt longitudinal contour lines and dotted recognizable continents, restrained blue network arcs and discreet nodes. Airy high-end editorial 3D render, no text, logos, UI, icons, neon bloom, orange or purple. Static image base for live code animation."
+    },
+    {
+      "file": "lamassu-architecture.webp",
+      "source": "exec-23ec6976-2682-42fd-bfa3-481885716077.png",
+      "prompt": "Premium orthographic isometric 3D architecture of a cryptographic root of trust. Five thin white ceramic and frosted clear-glass square planes in a precise vertical stack, sharply machined cobalt aperture and blue core connecting layers, a few hair-thin technical traces. White studio, controlled material detail and soft neutral shadows, white/cool grey/cobalt/cyan only. No text, logo, lock, shield, UI, rainbow or purple. Finished website asset, not a page mockup."
+    },
+    {
+      "file": "lamassu-quantum.webp",
+      "source": "exec-546fa412-eee8-4a91-9001-0f2178176eb1.png",
+      "prompt": "Horizontal technical generative sculpture on exact deep navy #09111f. Two finely interwoven cobalt and cyan filament fields form a sculptural toroidal lattice across the right two thirds. Hundreds of precise smooth strands, minute nodes, controlled depth and restrained white highlights. Clean dark left third for separate HTML text. Cloudflare engineering animation quality, no excess bloom, text, numbers, logo, UI, shield or lock; no purple, pink, orange or green."
+    }
+  ],
+  "processing": "Lossy WebP format conversion only, quality 88, original dimensions preserved. Original PNG files remain in the generator output directory.",
+  "animation": "Live Canvas 2D overlay; one shared loop capped at 30 fps, visibility and reduced-motion checks, global pause/resume control."
+}

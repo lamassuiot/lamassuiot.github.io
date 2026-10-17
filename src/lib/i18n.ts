@@ -27,6 +27,106 @@ export const sharedTranslations = {
       ctaLogin: 'Log in',
     },
     footer: {
+      "aria": "Lamassu footer",
+      "navigationAria": "Footer navigation",
+      "tagline": "Open PKI for every connected device.",
+      "principle": "Open source. Open standards.",
+      "backToTop": "Back to top",
+      "navigation": [
+        {
+          "title": "Platform",
+          "links": [
+            {
+              "label": "Certificate authorities",
+              "href": "/#pki"
+            },
+            {
+              "label": "Device identity",
+              "href": "/#automation"
+            },
+            {
+              "label": "Key custody",
+              "href": "/#keys"
+            },
+            {
+              "label": "Post-quantum",
+              "href": "/#pqc"
+            },
+            {
+              "label": "Deployment",
+              "href": "/#deployment"
+            }
+          ]
+        },
+        {
+          "title": "Developers",
+          "links": [
+            {
+              "label": "Documentation",
+              "href": "/docs/"
+            },
+            {
+              "label": "Architecture",
+              "href": "/arch/"
+            },
+            {
+              "label": "Source code",
+              "href": "https://github.com/lamassuiot"
+            },
+            {
+              "label": "Blog",
+              "href": "https://www.lamassu.io/blog/"
+            }
+          ]
+        },
+        {
+          "title": "Industries",
+          "links": [
+            {
+              "label": "Railway",
+              "href": "/ferroviario/"
+            },
+            {
+              "label": "Connected hospitality",
+              "href": "/hosteleria-conectada/"
+            },
+            {
+              "label": "Energy & batteries",
+              "href": "/energia-baterias/"
+            },
+            {
+              "label": "Cranes",
+              "href": "/gruas/"
+            },
+            {
+              "label": "Connected access",
+              "href": "/puertas-de-acceso-conectadas/"
+            }
+          ]
+        },
+        {
+          "title": "Connect",
+          "links": [
+            {
+              "label": "info@lamassu.io",
+              "href": "mailto:info@lamassu.io"
+            },
+            {
+              "label": "Open the console",
+              "href": "https://lab.lamassu.io"
+            },
+            {
+              "label": "LinkedIn",
+              "href": "https://www.linkedin.com/company/lamassu-iot/"
+            },
+            {
+              "label": "Slack community",
+              "href": "https://www.lamassu.io/slack/"
+            }
+          ]
+        }
+      ],
+
       documentation: 'Documentation',
       apiDefinition: 'API Definition',
       resources: 'Resources',
@@ -59,6 +159,106 @@ export const sharedTranslations = {
       ctaLogin: 'Inicia sesión',
     },
     footer: {
+      "aria": "Pie de página de Lamassu",
+      "navigationAria": "Navegación del pie de página",
+      "tagline": "Una PKI abierta para cada dispositivo conectado.",
+      "principle": "Código abierto. Estándares abiertos.",
+      "backToTop": "Volver arriba",
+      "navigation": [
+        {
+          "title": "Plataforma",
+          "links": [
+            {
+              "label": "Autoridades de certificación",
+              "href": "/#pki"
+            },
+            {
+              "label": "Identidad de dispositivos",
+              "href": "/#automation"
+            },
+            {
+              "label": "Custodia de claves",
+              "href": "/#keys"
+            },
+            {
+              "label": "Post-cuántica",
+              "href": "/#pqc"
+            },
+            {
+              "label": "Despliegue",
+              "href": "/#deployment"
+            }
+          ]
+        },
+        {
+          "title": "Desarrolladores",
+          "links": [
+            {
+              "label": "Documentación",
+              "href": "/docs/es/"
+            },
+            {
+              "label": "Arquitectura",
+              "href": "/arch/"
+            },
+            {
+              "label": "Código fuente",
+              "href": "https://github.com/lamassuiot"
+            },
+            {
+              "label": "Blog",
+              "href": "https://www.lamassu.io/blog/"
+            }
+          ]
+        },
+        {
+          "title": "Sectores",
+          "links": [
+            {
+              "label": "Ferroviario",
+              "href": "/ferroviario/"
+            },
+            {
+              "label": "Hostelería conectada",
+              "href": "/hosteleria-conectada/"
+            },
+            {
+              "label": "Energía y baterías",
+              "href": "/energia-baterias/"
+            },
+            {
+              "label": "Grúas",
+              "href": "/gruas/"
+            },
+            {
+              "label": "Accesos conectados",
+              "href": "/puertas-de-acceso-conectadas/"
+            }
+          ]
+        },
+        {
+          "title": "Contacto",
+          "links": [
+            {
+              "label": "info@lamassu.io",
+              "href": "mailto:info@lamassu.io"
+            },
+            {
+              "label": "Acceder a la consola",
+              "href": "https://lab.lamassu.io"
+            },
+            {
+              "label": "LinkedIn",
+              "href": "https://www.linkedin.com/company/lamassu-iot/"
+            },
+            {
+              "label": "Comunidad de Slack",
+              "href": "https://www.lamassu.io/slack/"
+            }
+          ]
+        }
+      ],
+
       documentation: 'Documentación',
       apiDefinition: 'Definición API',
       resources: 'Recursos',
@@ -91,6 +291,106 @@ export const sharedTranslations = {
       ctaLogin: 'Hasi saioa',
     },
     footer: {
+      "aria": "Lamassuren orri-oina",
+      "navigationAria": "Orri-oinaren nabigazioa",
+      "tagline": "PKI irekia konektatutako gailu bakoitzarentzat.",
+      "principle": "Kode irekia. Estandar irekiak.",
+      "backToTop": "Itzuli gora",
+      "navigation": [
+        {
+          "title": "Plataforma",
+          "links": [
+            {
+              "label": "Ziurtapen-agintariak",
+              "href": "/#pki"
+            },
+            {
+              "label": "Gailuen identitatea",
+              "href": "/#automation"
+            },
+            {
+              "label": "Gakoen zaintza",
+              "href": "/#keys"
+            },
+            {
+              "label": "Post-kuantikoa",
+              "href": "/#pqc"
+            },
+            {
+              "label": "Hedapena",
+              "href": "/#deployment"
+            }
+          ]
+        },
+        {
+          "title": "Garatzaileak",
+          "links": [
+            {
+              "label": "Dokumentazioa",
+              "href": "/docs/"
+            },
+            {
+              "label": "Arkitektura",
+              "href": "/arch/"
+            },
+            {
+              "label": "Iturburu-kodea",
+              "href": "https://github.com/lamassuiot"
+            },
+            {
+              "label": "Bloga",
+              "href": "https://www.lamassu.io/blog/"
+            }
+          ]
+        },
+        {
+          "title": "Sektoreak",
+          "links": [
+            {
+              "label": "Trenbidea",
+              "href": "/ferroviario/"
+            },
+            {
+              "label": "Ostalaritza konektatua",
+              "href": "/hosteleria-conectada/"
+            },
+            {
+              "label": "Energia eta bateriak",
+              "href": "/energia-baterias/"
+            },
+            {
+              "label": "Garabiak",
+              "href": "/gruas/"
+            },
+            {
+              "label": "Sarbide konektatuak",
+              "href": "/puertas-de-acceso-conectadas/"
+            }
+          ]
+        },
+        {
+          "title": "Kontaktua",
+          "links": [
+            {
+              "label": "info@lamassu.io",
+              "href": "mailto:info@lamassu.io"
+            },
+            {
+              "label": "Ireki kontsola",
+              "href": "https://lab.lamassu.io"
+            },
+            {
+              "label": "LinkedIn",
+              "href": "https://www.linkedin.com/company/lamassu-iot/"
+            },
+            {
+              "label": "Slack komunitatea",
+              "href": "https://www.lamassu.io/slack/"
+            }
+          ]
+        }
+      ],
+
       documentation: 'Dokumentazioa',
       apiDefinition: 'API definizioa',
       resources: 'Baliabideak',

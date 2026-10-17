@@ -1,102 +1,36 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { homeTranslations } from '../lib/i18n';
+import { landingTranslations } from '../lib/landing-content';
 import '../styles/landing-tokens.css';
 import '../styles/landing.css';
 
-const home = homeTranslations.es.home;
+const home = landingTranslations.es.home;
+const copy = home.redesign;
 
-// erreka.png is currently a copy of the CAF logo — add Erreka back once the real file is in place.
+// Erreka is omitted until its real logo replaces the duplicate CAF asset.
 const customerLogos = [
   { name: 'CAF', src: '/company/caf.png' },
   { name: 'Cegasa', src: '/company/cegasa.svg' },
   { name: 'GH Cranes & Components', src: '/company/gh.png' },
   { name: 'Fagor Professional', src: '/company/fagor_professional.svg' },
 ];
-
-const referenceLinks = [
-  '/ferroviario/',
-  '/hosteleria-conectada/',
-  '/energia-baterias/',
-  '/gruas/',
-  '/puertas-de-acceso-conectadas/',
+const referenceLinks = ['/ferroviario/', '/hosteleria-conectada/', '/energia-baterias/', '/gruas/', '/puertas-de-acceso-conectadas/'];
+const pillarLinks = ['#pki', '#automation', '#deployment'];
+const products = [
+  { id: 'pki', key: 'pki', data: home.pki, doc: home.docs.pki, scene: 'authority' },
+  { id: 'automation', key: 'devices', data: home.devices, doc: home.docs.enrollment, scene: 'devices' },
+  { id: 'keys', key: 'keys', data: home.keys, doc: home.docs.keys, scene: 'keys' },
 ];
-
-// Stroke icons (24×24, drawn with currentColor).
-const icons = {
-  ca: '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>',
-  key: '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L20 3M17 6l3 3M14.5 8.5l2 2"/>',
-  profile: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
-  device: '<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
-  revoke: '<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
-  tree: '<rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/>',
-  enrol: '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>',
-  renew: '<path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/>',
-  grid: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
-  chip: '<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
-  cloud: '<path d="M17.5 19H8a5 5 0 1 1 .9-9.9A6 6 0 0 1 20 11.5 3.8 3.8 0 0 1 17.5 19z"/>',
-  vault: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5V7M15.5 12H17M12 15.5V17M8.5 12H7"/>',
-  import: '<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
-  file: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
-  lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
-  code: '<path d="M8 6l-6 6 6 6M16 6l6 6-6 6M14 4l-4 16"/>',
-  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',
-  link: '<path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>',
-  console: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13l2 2-2 2M12 17h4"/>',
-};
-const platformIcons = ['ca', 'device', 'key'];
-const pkiIcons = ['tree', 'profile', 'revoke'];
-const devicesIcons = ['enrol', 'renew', 'grid'];
-const keysIcons = ['chip', 'vault', 'import'];
-const toastIcons = ['enrol', 'revoke'];
-
-// Product mocks. They imitate the console, whose UI is in English.
-const caRows = [
-  { tree: '', name: 'Lamassu Root CA', algo: 'RSA 4096', engine: 'PKCS#11 HSM', status: ['ok', 'Active'] },
-  { tree: '└─', name: 'Factory Issuing CA', algo: 'ECDSA P-384', engine: 'AWS KMS', status: ['ok', 'Active'] },
-  { tree: '   └─', name: 'Line 3 Devices CA', algo: 'ECDSA P-256', engine: 'AWS KMS', status: ['ok', 'Active'] },
-  { tree: '└─', name: 'Field Gateways CA', algo: 'ECDSA P-256', engine: 'Azure Key Vault', status: ['warn', 'Expiring'] },
-  { tree: '', name: 'Legacy OT CA', algo: 'RSA 2048', engine: 'Imported', status: ['bad', 'Revoked'] },
-];
-const deviceEvents = [
-  { time: '10:42:07', op: '/simpleenroll', device: 'plc-line3-0042', status: ['ok', 'Issued'] },
-  { time: '10:41:55', op: '/simplereenroll', device: 'gw-north-17', status: ['info', 'Renewed'] },
-  { time: '10:40:12', op: '/cacerts', device: 'hmi-panel-08', status: ['info', 'Served'] },
-  { time: '10:38:40', op: 'revoke', device: 'lock-b2-883', status: ['bad', 'Revoked'] },
-  { time: '10:37:02', op: '/simpleenroll', device: 'bms-rack-12', status: ['ok', 'Issued'] },
-  { time: '10:35:19', op: '/serverkeygen', device: 'meter-ft-2207', status: ['ok', 'Issued'] },
-];
-const engines = [
-  { icon: 'chip', name: 'PKCS#11 HSM', id: 'pkcs11-hsm-01', level: 'Level 2' },
-  { icon: 'cloud', name: 'AWS KMS', id: 'aws-kms-eu-west-1', level: 'Level 2' },
-  { icon: 'cloud', name: 'Azure Key Vault Keys', id: 'azure-kv-prod', level: 'Level 2' },
-  { icon: 'vault', name: 'HashiCorp Vault', id: 'vault-kv-plant', level: 'Level 1' },
-  { icon: 'file', name: 'File system', id: 'fs-dev', level: 'Level 0' },
-];
-const auditEvents = [
-  ['ca.create', 'admin@acme'],
-  ['certificate.revoke', 'secops'],
-  ['dms.update', 'ops-bot'],
-];
-
-// The page renders in Spanish first; the FAQ structured data follows that default.
 const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
+  '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: home.faq.items.map((item) => ({
-    '@type': 'Question',
-    name: item.q,
+    '@type': 'Question', name: item.q,
     acceptedAnswer: { '@type': 'Answer', text: item.a },
   })),
 };
 ---
 
-<SiteLayout
-  title={homeTranslations.es.meta.title}
-  lang="es"
-  activeNav="home"
-  pageTranslations={homeTranslations}
->
+<SiteLayout title={landingTranslations.es.meta.title} lang="es" activeNav="home" pageTranslations={landingTranslations}>
   <Fragment slot="head">
     <script is:inline>
       // Light is the landing's default; a choice made with the theme toggle still wins.
@@ -112,14 +46,13 @@ const faqJsonLd = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   </Fragment>
 
   <main class="lp">
-
     <!-- ═══ Hero — gradient panel ═══ -->
     <section class="lp-hero" id="home">
       <div class="lp-hero-inner">
@@ -145,540 +78,170 @@ const faqJsonLd = {
       </div>
     </section>
 
-    <!-- ═══ Logos ═══════════════════════════════════════════════ -->
-    <section class="lp-wrap lp-logos" aria-label={home.logos.aria} data-i18n-attr-aria-label="home.logos.aria">
-      <p class="lp-logos-title" data-i18n="home.logos.title">{home.logos.title}</p>
-      <ul>
-        {customerLogos.map((logo) => (
-          <li><img src={logo.src} alt={logo.name} loading="lazy" /></li>
-        ))}
-      </ul>
-    </section>
 
-    <!-- ═══ Platform — framed statement + three cells ═══════════ -->
-    <section class="lp-section" id="platform">
-      <div class="lp-wrap">
-        <header class="lp-framed lp-head lp-head--center" data-reveal>
-          <p class="lp-label" data-i18n="home.platform.label">{home.platform.label}</p>
-          <h2>
-            <span data-i18n="home.platform.title">{home.platform.title}</span>
-            <span class="lp-mark" data-i18n="home.platform.titleMark">{home.platform.titleMark}</span>
-            <span data-i18n="home.platform.titleEnd">{home.platform.titleEnd}</span>
-          </h2>
-          <p class="lp-lead" data-i18n="home.platform.lead">{home.platform.lead}</p>
+    <div class="lp-content">
+      <section class="lp-region lp-network" id="platform">
+        <header class="lp-section-heading" data-reveal>
+          <h2 data-i18n="home.redesign.platformTitle">{copy.platformTitle}</h2>
+          <p data-i18n="home.redesign.platformLead">{copy.platformLead}</p>
         </header>
-
-        <div class="lp-cells" data-reveal>
-          {home.platform.items.map((item, index) => (
-            <article class="lp-cell">
-              <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[platformIcons[index]]} />
-              <h3 data-i18n={`home.platform.items.${index}.title`}>{item.title}</h3>
-              <p class="lp-body" data-i18n={`home.platform.items.${index}.body`}>{item.body}</p>
-              <a class="lp-link" href={item.href} data-i18n={`home.platform.items.${index}.link`}>{item.link}</a>
-            </article>
-          ))}
+        <div class="lp-network-stage" data-motion-scene data-reveal>
+          <img class="lp-network-image" src="/media/lamassu-network.webp" width="1672" height="941" alt={copy.networkAlt} data-i18n-attr-alt="home.redesign.networkAlt" fetchpriority="high" />
+          <canvas class="lp-network-canvas" data-animation="network" aria-hidden="true"></canvas>
+          <div class="lp-network-note lp-network-note--left"><strong>X.509</strong><span data-i18n="home.redesign.networkLabels.3">{copy.networkLabels[3]}</span></div>
+          <div class="lp-network-note lp-network-note--right"><strong>EST</strong><span data-i18n="home.redesign.networkLabels.4">{copy.networkLabels[4]}</span></div>
+          <p class="lp-network-caption" data-i18n="home.redesign.networkLabels.2">{copy.networkLabels[2]}</p>
+          <button class="lp-motion-control" type="button" data-motion-toggle aria-pressed="false" aria-label={copy.pauseMotion} data-pause-label={copy.pauseMotion} data-resume-label={copy.resumeMotion} data-i18n-attr-data-pause-label="home.redesign.pauseMotion" data-i18n-attr-data-resume-label="home.redesign.resumeMotion">
+            <span class="lp-pause-symbol" aria-hidden="true"></span>
+          </button>
         </div>
-      </div>
-    </section>
-
-    <!-- ═══ Product: certificate authorities ════════════════════ -->
-    <section class="lp-section lp-product" id="pki">
-      <div class="lp-wrap">
-        <div class="lp-product-head" data-reveal>
-          <header class="lp-head">
-            <p class="lp-label" data-i18n="home.pki.label">{home.pki.label}</p>
-            <h2><span class="lp-mark" data-i18n="home.pki.title">{home.pki.title}</span></h2>
-            <p class="lp-lead" data-i18n="home.pki.lead">{home.pki.lead}</p>
-          </header>
-          <a class="lp-btn lp-btn--secondary" href={home.docs.pki} data-i18n-attr-href="home.docs.pki" data-i18n="home.pki.cta">{home.pki.cta}</a>
+        <div class="lp-platform-points lp-frame">
+          {copy.pillars.map((pillar, index) => <article data-reveal><h3><a href={pillarLinks[index]} data-i18n={`home.redesign.pillars.${index}.title`}>{pillar.title}</a></h3><p data-i18n={`home.redesign.pillars.${index}.body`}>{pillar.body}</p><a class="lp-point-arrow" href={pillarLinks[index]} aria-label={pillar.title} data-i18n-attr-aria-label={`home.redesign.pillars.${index}.title`}>↗</a></article>)}
         </div>
+      </section>
 
-        <div class="lp-product-frame" data-reveal>
-          <ul class="lp-features">
-            {home.pki.features.map((feature, index) => (
-              <li class="lp-feature">
-                <p class="lp-feature-tag">
-                  <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[pkiIcons[index]]} />
-                  <span data-i18n={`home.pki.features.${index}.tag`}>{feature.tag}</span>
-                </p>
-                <p data-i18n={`home.pki.features.${index}.body`}>{feature.body}</p>
-                <a class="lp-link" href={feature.href} data-i18n-attr-href={`home.pki.features.${index}.href`} data-i18n={`home.pki.features.${index}.link`}>{feature.link}</a>
-              </li>
-            ))}
-          </ul>
-          <div class="lp-visual" aria-hidden="true">
-            <div class="lp-window">
-              <div class="lp-window-bar">
-                <div>
-                  <p class="lp-window-title">Certification Authorities</p>
-                  <p class="lp-window-sub">Hierarchy · 5 CAs · 3 crypto engines</p>
-                </div>
-                <span class="lp-window-btn">+ Create CA</span>
-              </div>
-              <table class="lp-table">
-                <thead>
-                  <tr><th>Name</th><th>Key</th><th>Engine</th><th>Status</th></tr>
-                </thead>
-                <tbody>
-                  {caRows.map((row) => (
-                    <tr>
-                      <td>{row.tree && <span class="lp-tree">{row.tree}</span>}{row.name}</td>
-                      <td class="lp-mono">{row.algo}</td>
-                      <td>{row.engine}</td>
-                      <td><span class={`lp-status lp-status--${row.status[0]}`}>{row.status[1]}</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Product: device identity (EST / CMP) ════════════════ -->
-    <section class="lp-section lp-product lp-product--flip" id="automation">
-      <div class="lp-wrap">
-        <div class="lp-product-head" data-reveal>
-          <header class="lp-head">
-            <p class="lp-label" data-i18n="home.devices.label">{home.devices.label}</p>
-            <h2><span class="lp-mark" data-i18n="home.devices.title">{home.devices.title}</span></h2>
-            <p class="lp-lead" data-i18n="home.devices.lead">{home.devices.lead}</p>
-            <div class="lp-chips">
-              {home.devices.protocols.map((protocol, index) => (
-                <span class="lp-chip" data-i18n={`home.devices.protocols.${index}`}>{protocol}</span>
-              ))}
-            </div>
-          </header>
-          <a class="lp-btn lp-btn--secondary" href={home.docs.enrollment} data-i18n-attr-href="home.docs.enrollment" data-i18n="home.devices.cta">{home.devices.cta}</a>
-        </div>
-
-        <div class="lp-product-frame" data-reveal>
-          <ul class="lp-features">
-            {home.devices.features.map((feature, index) => (
-              <li class="lp-feature">
-                <p class="lp-feature-tag">
-                  <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[devicesIcons[index]]} />
-                  <span data-i18n={`home.devices.features.${index}.tag`}>{feature.tag}</span>
-                </p>
-                <p data-i18n={`home.devices.features.${index}.body`}>{feature.body}</p>
-                <a class="lp-link" href={feature.href} data-i18n-attr-href={`home.devices.features.${index}.href`} data-i18n={`home.devices.features.${index}.link`}>{feature.link}</a>
-              </li>
-            ))}
-          </ul>
-          <div class="lp-visual" aria-hidden="true">
-            <div class="lp-window">
-              <div class="lp-window-bar">
-                <div>
-                  <p class="lp-window-title">Device events</p>
-                  <p class="lp-window-sub">DMS · factory-line-3 · /.well-known/est</p>
-                </div>
-                <span class="lp-status lp-status--ok">Live</span>
-              </div>
-              <ul class="lp-log">
-                {deviceEvents.map((event) => (
-                  <li>
-                    <span class="lp-log-time">{event.time}</span>
-                    <span class="lp-log-op">{event.op}</span>
-                    <span>{event.device}</span>
-                    <span class={`lp-status lp-status--${event.status[0]}`}>{event.status[1]}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Product: key custody ════════════════════════════════ -->
-    <section class="lp-section lp-product" id="keys">
-      <div class="lp-wrap">
-        <div class="lp-product-head" data-reveal>
-          <header class="lp-head">
-            <p class="lp-label" data-i18n="home.keys.label">{home.keys.label}</p>
-            <h2><span class="lp-mark" data-i18n="home.keys.title">{home.keys.title}</span></h2>
-            <p class="lp-lead" data-i18n="home.keys.lead">{home.keys.lead}</p>
-          </header>
-          <a class="lp-btn lp-btn--secondary" href={home.docs.keys} data-i18n-attr-href="home.docs.keys" data-i18n="home.keys.cta">{home.keys.cta}</a>
-        </div>
-
-        <div class="lp-product-frame" data-reveal>
-          <ul class="lp-features">
-            {home.keys.features.map((feature, index) => (
-              <li class="lp-feature">
-                <p class="lp-feature-tag">
-                  <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[keysIcons[index]]} />
-                  <span data-i18n={`home.keys.features.${index}.tag`}>{feature.tag}</span>
-                </p>
-                <p data-i18n={`home.keys.features.${index}.body`}>{feature.body}</p>
-              </li>
-            ))}
-          </ul>
-          <div class="lp-visual" aria-hidden="true">
-            <div class="lp-window">
-              <div class="lp-window-bar">
-                <div>
-                  <p class="lp-window-title">Crypto Engines</p>
-                  <p class="lp-window-sub">KMS · 5 engines connected</p>
-                </div>
-                <span class="lp-window-btn">+ Add engine</span>
-              </div>
-              <div class="lp-engines">
-                {engines.map((engine) => (
-                  <div class="lp-engine">
-                    <span class="lp-engine-icon"><svg class="lp-icon" viewBox="0 0 24 24" set:html={icons[engine.icon]} /></span>
-                    <span>
-                      <span class="lp-engine-name">{engine.name}</span><br />
-                      <span class="lp-engine-id">{engine.id}</span>
-                    </span>
-                    <span class="lp-status lp-status--info">{engine.level}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Post-quantum — inverted band ════════════════════════ -->
-    <section class="lp-band" id="pqc">
-      <div class="lp-wrap">
-        <div class="lp-band-head" data-reveal>
-          <header class="lp-head">
-            <p class="lp-badge" data-i18n="home.pqc.badge">{home.pqc.badge}</p>
-            <h2>
-              <span data-i18n="home.pqc.title">{home.pqc.title}</span>
-              <span data-i18n="home.pqc.titleMuted">{home.pqc.titleMuted}</span>
-            </h2>
-            <p class="lp-lead" data-i18n="home.pqc.lead">{home.pqc.lead}</p>
-          </header>
-          <div class="lp-actions">
-            <a class="lp-btn lp-btn--primary" href="#contact" data-i18n="home.pqc.ctaPrimary">{home.pqc.ctaPrimary}</a>
-          </div>
-        </div>
-
-        <ol class="lp-certs" data-reveal>
-          {home.pqc.certs.map((cert, index) => (
-            <li class:list={['lp-cert', index === 1 && 'lp-cert--hl']}>
-              <p class="lp-cert-step" data-i18n={`home.pqc.certs.${index}.tag`}>{cert.tag}</p>
-              <h3 data-i18n={`home.pqc.certs.${index}.name`}>{cert.name}</h3>
-              <div class="lp-chips">
-                {index < 2 && <span class="lp-sig">RSA · ECDSA</span>}
-                {index > 0 && <span class="lp-sig lp-sig--pq">ML-DSA</span>}
-              </div>
-              <p class="lp-body" data-i18n={`home.pqc.certs.${index}.body`}>{cert.body}</p>
-            </li>
-          ))}
-        </ol>
-
-        <div class="lp-points" data-reveal>
-          {home.pqc.points.map((point, index) => (
-            <div class="lp-point">
-              <h3 data-i18n={`home.pqc.points.${index}.title`}>{point.title}</h3>
-              <p class="lp-body" data-i18n={`home.pqc.points.${index}.body`}>{point.body}</p>
-            </div>
-          ))}
-        </div>
-
-        <p class="lp-note" data-i18n="home.pqc.note">{home.pqc.note}</p>
-      </div>
-    </section>
-
-    <!-- ═══ Why now — three big numbers ═════════════════════════ -->
-    <section class="lp-section lp-section--bare" id="why-now">
-      <div class="lp-wrap">
-        <header class="lp-head lp-head--center" data-reveal>
-          <p class="lp-label" data-i18n="home.whyNow.label">{home.whyNow.label}</p>
-          <h2 data-i18n="home.whyNow.title">{home.whyNow.title}</h2>
-          <p class="lp-lead" data-i18n="home.whyNow.lead">{home.whyNow.lead}</p>
+      <section class="lp-region lp-customers" id="cases">
+        <header class="lp-section-heading" data-reveal>
+          <h2 data-i18n="home.redesign.trustTitle">{copy.trustTitle}</h2>
+          <p data-i18n="home.redesign.trustLead">{copy.trustLead}</p>
         </header>
-        <div class="lp-stats" data-reveal>
-          {home.whyNow.items.map((item, index) => (
-            <article class="lp-stat">
-              <p class="lp-stat-value" data-i18n={`home.whyNow.items.${index}.value`}>{item.value}</p>
-              <h3 data-i18n={`home.whyNow.items.${index}.label`}>{item.label}</h3>
-              <p class="lp-body" data-i18n={`home.whyNow.items.${index}.body`}>{item.body}</p>
-              <p class="lp-source" data-i18n={`home.whyNow.items.${index}.source`}>{item.source}</p>
-            </article>
-          ))}
-        </div>
-        <p class="lp-statement" data-reveal data-i18n="home.whyNow.closing">{home.whyNow.closing}</p>
-      </div>
-    </section>
-
-    <!-- ═══ Operations bento ════════════════════════════════════ -->
-    <section class="lp-section" id="operations">
-      <div class="lp-wrap">
-        <header class="lp-head lp-head--center" data-reveal>
-          <p class="lp-label" data-i18n="home.ops.label">{home.ops.label}</p>
-          <h2 data-i18n="home.ops.title">{home.ops.title}</h2>
-          <p class="lp-lead" data-i18n="home.ops.lead">{home.ops.lead}</p>
-        </header>
-
-        <div class="lp-bento" data-reveal>
-          <article class="lp-tile lp-tile--wide lp-tile--shot">
-            <div class="lp-tile-text">
-              <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.console} />
-              <h3 data-i18n="home.ops.tiles.0.title">{home.ops.tiles[0].title}</h3>
-              <p class="lp-body" data-i18n="home.ops.tiles.0.body">{home.ops.tiles[0].body}</p>
-            </div>
-            <div class="lp-tile-shot" aria-hidden="true"></div>
-          </article>
-
-          <article class="lp-tile lp-tile--solid">
-            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.code} />
-            <div class="lp-tile-text">
-              <h3 data-i18n="home.ops.tiles.1.title">{home.ops.tiles[1].title}</h3>
-              <p class="lp-body" data-i18n="home.ops.tiles.1.body">{home.ops.tiles[1].body}</p>
-              <div class="lp-chips">
-                {['GitHub', 'X.509', 'EST', 'OpenAPI'].map((chip) => <span class="lp-chip">{chip}</span>)}
-              </div>
-            </div>
-          </article>
-
-          <article class="lp-tile">
-            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.users} />
-            <div class="lp-tile-text">
-              <h3 data-i18n="home.ops.tiles.2.title">{home.ops.tiles[2].title}</h3>
-              <p class="lp-body" data-i18n="home.ops.tiles.2.body">{home.ops.tiles[2].body}</p>
-            </div>
-          </article>
-
-          <article class="lp-tile">
-            <ul class="lp-mini-log" aria-hidden="true">
-              {auditEvents.map(([event, who]) => (
-                <li><span>{event}</span><span>{who}</span></li>
-              ))}
-            </ul>
-            <div class="lp-tile-text">
-              <h3 data-i18n="home.ops.tiles.3.title">{home.ops.tiles[3].title}</h3>
-              <p class="lp-body" data-i18n="home.ops.tiles.3.body">{home.ops.tiles[3].body}</p>
-            </div>
-          </article>
-
-          <article class="lp-tile">
-            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.link} />
-            <div class="lp-tile-text">
-              <h3 data-i18n="home.ops.tiles.4.title">{home.ops.tiles[4].title}</h3>
-              <p class="lp-body" data-i18n="home.ops.tiles.4.body">{home.ops.tiles[4].body}</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Deployment — plans grid ═════════════════════════════ -->
-    <section class="lp-section" id="deployment">
-      <div class="lp-wrap">
-        <header class="lp-head" data-reveal>
-          <p class="lp-label" data-i18n="home.deployment.label">{home.deployment.label}</p>
-          <h2 data-i18n="home.deployment.title">{home.deployment.title}</h2>
-          <p class="lp-lead" data-i18n="home.deployment.lead">{home.deployment.lead}</p>
-        </header>
-
-        <div class="lp-plans" data-reveal>
-          {home.deployment.options.map((option, index) => (
-            <article class="lp-plan">
-              <p class="lp-label lp-label--plain" data-i18n={`home.deployment.options.${index}.tag`}>{option.tag}</p>
-              <h3 data-i18n={`home.deployment.options.${index}.title`}>{option.title}</h3>
-              <p class="lp-body" data-i18n={`home.deployment.options.${index}.body`}>{option.body}</p>
-              <div class="lp-chips">
-                {option.chips.map((chip, chipIndex) => (
-                  <span class="lp-chip" data-i18n={`home.deployment.options.${index}.chips.${chipIndex}`}>{chip}</span>
-                ))}
-              </div>
-              <dl class="lp-facts">
-                <div>
-                  <dt data-i18n="home.deployment.operatedByLabel">{home.deployment.operatedByLabel}</dt>
-                  <dd data-i18n={`home.deployment.options.${index}.operatedBy`}>{option.operatedBy}</dd>
-                </div>
-                <div>
-                  <dt data-i18n="home.deployment.bestForLabel">{home.deployment.bestForLabel}</dt>
-                  <dd data-i18n={`home.deployment.options.${index}.bestFor`}>{option.bestFor}</dd>
-                </div>
-              </dl>
-              <a class="lp-btn lp-btn--secondary" href={option.href} data-i18n-attr-href={`home.deployment.options.${index}.href`} data-i18n={`home.deployment.options.${index}.cta`}>{option.cta}</a>
-            </article>
-          ))}
-          <p class="lp-plans-foot">
-            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.lock} />
-            <span data-i18n="home.deployment.keys">{home.deployment.keys}</span>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Comparison ══════════════════════════════════════════ -->
-    <section class="lp-section" id="compare">
-      <div class="lp-wrap">
-        <header class="lp-head lp-head--center" data-reveal>
-          <p class="lp-label" data-i18n="home.compare.label">{home.compare.label}</p>
-          <h2 data-i18n="home.compare.title">{home.compare.title}</h2>
-          <p class="lp-lead" data-i18n="home.compare.lead">{home.compare.lead}</p>
-        </header>
-        <div class="lp-compare" data-reveal>
-          <table>
-            <thead>
-              <tr>
-                {home.compare.headers.map((header, index) => (
-                  <th scope="col" class:list={[index === 3 && 'is-us']} data-i18n={`home.compare.headers.${index}`}>{header}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {home.compare.rows.map((row, rowIndex) => (
-                <tr>
-                  {row.map((cell, cellIndex) =>
-                    cellIndex === 0 ? (
-                      <th scope="row" data-i18n={`home.compare.rows.${rowIndex}.${cellIndex}`}>{cell}</th>
-                    ) : (
-                      <td class:list={[cellIndex === 3 && 'is-us']} data-i18n={`home.compare.rows.${rowIndex}.${cellIndex}`}>{cell}</td>
-                    ),
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Customer stories — tabs ══════════════════════════════ -->
-    <section class="lp-section" id="cases">
-      <div class="lp-wrap">
-        <header class="lp-head" data-reveal>
-          <p class="lp-label" data-i18n="home.references.label">{home.references.label}</p>
-          <h2 data-i18n="home.references.title">{home.references.title}</h2>
-          <p class="lp-lead" data-i18n="home.references.lead">{home.references.lead}</p>
-        </header>
-
-        <div class="lp-stories" data-reveal>
-          <div class="lp-tabs" role="tablist" aria-label={home.references.tabsAria} data-i18n-attr-aria-label="home.references.tabsAria">
-            {home.references.cards.map((card, index) => (
-              <button
-                type="button"
-                class="lp-tab"
-                role="tab"
-                id={`story-tab-${index}`}
-                aria-controls={`story-${index}`}
-                aria-selected={index === 0 ? 'true' : 'false'}
-                tabindex={index === 0 ? '0' : '-1'}
-                data-i18n={`home.references.cards.${index}.sector`}
-              >{card.sector}</button>
-            ))}
+        <ul class="lp-customer-logos" data-reveal>
+          {customerLogos.map((logo) => <li><img src={logo.src} alt={logo.name} loading="lazy" /></li>)}
+        </ul>
+        <div class="lp-case-browser" data-tabs>
+          <div class="lp-tabs lp-tabs--sectors" data-tab-list hidden aria-label={home.references.tabsAria} data-i18n-attr-aria-label="home.references.tabsAria">
+            {home.references.cards.map((card, index) => <button type="button" id={`story-tab-${index}`} aria-controls={`story-${index}`} data-tab data-i18n={`home.references.cards.${index}.sector`}>{card.sector}</button>)}
           </div>
           {home.references.cards.map((card, index) => (
-            <div class="lp-story" role="tabpanel" id={`story-${index}`} aria-labelledby={`story-tab-${index}`} hidden={index !== 0}>
-              <div class="lp-story-main">
-                <p class="lp-story-quote">
-                  <span data-i18n={`home.references.cards.${index}.title`}>{card.title}</span>{' '}
-                  <em data-i18n={`home.references.cards.${index}.highlight`}>{card.highlight}</em>
-                </p>
-                <p class="lp-lead" data-i18n={`home.references.cards.${index}.body`}>{card.body}</p>
-              </div>
-              <div class="lp-story-card">
-                <p class="lp-label lp-label--plain" data-i18n="home.references.sectorLabel">{home.references.sectorLabel}</p>
-                <p class="lp-story-sector" data-i18n={`home.references.cards.${index}.sector`}>{card.sector}</p>
-                <a class="lp-link" href={referenceLinks[index]} data-i18n="home.references.cta">{home.references.cta}</a>
-              </div>
+            <article class="lp-case" id={`story-${index}`} data-tab-panel aria-labelledby={`story-tab-${index}`}>
+              <div class="lp-case-monogram" aria-hidden="true"><span>{['CAF', 'FAGOR', 'CEGASA', 'GH', 'IoT'][index]}</span><canvas data-animation="industry" data-variant={index} aria-hidden="true"></canvas></div>
+              <div class="lp-case-copy"><h3 data-i18n={`home.references.cards.${index}.title`}>{card.title}</h3><p class="lp-case-outcome" data-i18n={`home.references.cards.${index}.highlight`}>{card.highlight}</p><p data-i18n={`home.references.cards.${index}.body`}>{card.body}</p><a class="lp-link" href={referenceLinks[index]} data-i18n="home.references.cta">{home.references.cta}</a></div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="lp-region" id="compare">
+        <header class="lp-section-heading" data-reveal><h2 data-i18n="home.redesign.compareTitle">{copy.compareTitle}</h2><p data-i18n="home.redesign.compareLead">{copy.compareLead}</p></header>
+        <div class="lp-comparison lp-frame" data-reveal>
+          <article class="lp-comparison-side lp-comparison-side--fragmented">
+            <h3 data-i18n="home.redesign.beforeTitle">{copy.beforeTitle}</h3><p data-i18n="home.redesign.beforeLead">{copy.beforeLead}</p>
+            <div class="lp-fragment-scene" aria-hidden="true">
+              <canvas data-animation="fragmented"></canvas>
+              {copy.fragmentLabels.map((label, i) => <span class={`lp-fragment lp-fragment--${i}`} data-i18n={`home.redesign.fragmentLabels.${i}`}>{label}</span>)}
             </div>
-          ))}
+          </article>
+          <article class="lp-comparison-side lp-comparison-side--unified">
+            <h3 data-i18n="home.redesign.afterTitle">{copy.afterTitle}</h3><p data-i18n="home.redesign.afterLead">{copy.afterLead}</p>
+            <div class="lp-unified-scene" aria-hidden="true"><canvas data-animation="unified"></canvas><img src="/lamassu_logo_white.svg" alt="" width="76" height="76" loading="lazy" /><span data-i18n="home.redesign.unifiedLabel">{copy.unifiedLabel}</span></div>
+          </article>
         </div>
-      </div>
-    </section>
+        <details class="lp-compare-details"><summary data-i18n="home.redesign.featureMore">{copy.featureMore}</summary><div class="lp-compare-table"><table><thead><tr>{home.compare.headers.map((label, i) => <th scope="col" data-i18n={`home.compare.headers.${i}`}>{label}</th>)}</tr></thead><tbody>{home.compare.rows.map((row, r) => <tr>{row.map((cell, c) => c === 0 ? <th scope="row" data-i18n={`home.compare.rows.${r}.${c}`}>{cell}</th> : <td data-i18n={`home.compare.rows.${r}.${c}`}>{cell}</td>)}</tr>)}</tbody></table></div></details>
+      </section>
 
-    <!-- ═══ FAQ ═════════════════════════════════════════════════ -->
-    <section class="lp-section" id="faq">
-      <div class="lp-wrap lp-split">
-        <header class="lp-head lp-faq-head" data-reveal>
-          <p class="lp-label" data-i18n="home.faq.label">{home.faq.label}</p>
-          <h2 data-i18n="home.faq.title">{home.faq.title}</h2>
-          <p class="lp-lead" data-i18n="home.faq.lead">{home.faq.lead}</p>
-          <div class="lp-actions">
-            <a class="lp-btn lp-btn--primary" href="#contact" data-i18n="home.faq.cta">{home.faq.cta}</a>
+      <section class="lp-region lp-catalog" id="capabilities">
+        <header class="lp-section-heading" data-reveal><h2 data-i18n="home.redesign.productTitle">{copy.productTitle}</h2><p data-i18n="home.redesign.productLead">{copy.productLead}</p></header>
+        <div data-tabs>
+          <div class="lp-tabs lp-tabs--products" data-tab-list hidden aria-label={copy.productTabsAria} data-i18n-attr-aria-label="home.redesign.productTabsAria">
+            {products.map((product, i) => <button type="button" id={`product-tab-${i}`} aria-controls={product.id} data-tab data-i18n={`home.redesign.productTabs.${i}`}>{copy.productTabs[i]}</button>)}
           </div>
-        </header>
-        <div class="lp-faq" data-reveal>
-          {home.faq.items.map((item, index) => (
-            <details>
-              <summary data-i18n={`home.faq.items.${index}.q`}>{item.q}</summary>
-              <p class="lp-body" data-i18n={`home.faq.items.${index}.a`}>{item.a}</p>
-            </details>
+          {products.map((product, i) => (
+            <article class="lp-capability lp-frame" id={product.id} data-tab-panel aria-labelledby={`product-tab-${i}`}>
+              <div class="lp-capability-main">
+                <div class="lp-capability-copy"><h3 data-i18n={`home.${product.key}.title`}>{product.data.title}</h3><p data-i18n={`home.${product.key}.lead`}>{product.data.lead}</p>{i === 1 && <p class="lp-protocols">{home.devices.protocols.map((protocol, index) => <span data-i18n={`home.devices.protocols.${index}`}>{protocol}</span>)}</p>}<a class="lp-link" href={product.doc} data-i18n-attr-href={`home.docs.${['pki', 'enrollment', 'keys'][i]}`} data-i18n={`home.${product.key}.cta`}>{product.data.cta}</a></div>
+                <div class:list={['lp-product-scene', `lp-product-scene--${product.scene}`]} aria-hidden="true">
+                  {i === 0 ? <img src="/media/lamassu-architecture.webp" width="1448" height="1086" alt="" loading="lazy" /> : <div class="lp-canvas-fallback"><span>{i === 1 ? 'EST' : 'HSM / KMS'}</span><span>X.509</span></div>}
+                  <canvas data-animation={product.scene}></canvas>
+                  <span class="lp-product-scene-label">{['Root CA → Issuing CA → X.509', 'EST → X.509 → mTLS', 'PKCS#11 · AWS KMS · Azure Key Vault'][i]}</span>
+                </div>
+              </div>
+              <div class="lp-capability-details">{product.data.features.map((feature, f) => <details><summary data-i18n={`home.${product.key}.features.${f}.tag`}>{feature.tag}</summary><p data-i18n={`home.${product.key}.features.${f}.body`}>{feature.body}</p>{'href' in feature && <a class="lp-link" href={feature.href} data-i18n-attr-href={`home.${product.key}.features.${f}.href`} data-i18n={`home.${product.key}.features.${f}.link`}>{feature.link}</a>}</details>)}</div>
+            </article>
           ))}
         </div>
-      </div>
-    </section>
-
-    <!-- ═══ Closing panel ═══════════════════════════════════════ -->
-    <section class="lp-closing" id="contact" data-reveal>
-      <div class="lp-closing-main">
-        <p class="lp-label" data-i18n="home.cta.left.label">{home.cta.left.label}</p>
-        <h2 data-i18n="home.cta.left.heading">{home.cta.left.heading}</h2>
-        <div class="lp-actions">
-          <a href="mailto:info@lamassu.io" class="lp-btn lp-btn--white" data-i18n="home.cta.left.btn">{home.cta.left.btn}</a>
+        <div class="lp-deployment" id="deployment">
+          <div class="lp-deployment-intro"><h3 data-i18n="home.redesign.deploymentTitle">{copy.deploymentTitle}</h3><p data-i18n="home.redesign.deploymentLead">{copy.deploymentLead}</p></div>
+          <div class="lp-deployment-grid">
+            {home.deployment.options.map((option, i) => <article class="lp-deployment-option" data-reveal><p class="lp-deployment-name" data-i18n={`home.redesign.deployNames.${i}`}>{copy.deployNames[i]}</p><h3 data-i18n={`home.deployment.options.${i}.title`}>{option.title}</h3><p data-i18n={`home.deployment.options.${i}.body`}>{option.body}</p><ul>{option.chips.map((chip, c) => <li data-i18n={`home.deployment.options.${i}.chips.${c}`}>{chip}</li>)}</ul><dl><dt data-i18n="home.deployment.operatedByLabel">{home.deployment.operatedByLabel}</dt><dd data-i18n={`home.deployment.options.${i}.operatedBy`}>{option.operatedBy}</dd></dl><a class:list={['lp-btn', i === 0 ? 'lp-btn--primary' : 'lp-btn--secondary']} href={option.href} data-i18n-attr-href={`home.deployment.options.${i}.href`} data-i18n={`home.redesign.deployLinks.${i}`}>{copy.deployLinks[i]}</a></article>)}
+          </div>
+          <p class="lp-deployment-note" data-i18n="home.deployment.keys">{home.deployment.keys}</p>
         </div>
-      </div>
-      <div class="lp-news">
-        <p class="lp-label" data-i18n="home.cta.right.label">{home.cta.right.label}</p>
-        <p class="lp-news-heading" data-i18n="home.cta.right.heading">{home.cta.right.heading}</p>
-        <form onsubmit="return false;">
-          <input
-            type="email"
-            placeholder={home.cta.right.inputPlaceholder}
-            aria-label={home.cta.right.inputPlaceholder}
-            data-i18n-attr-placeholder="home.cta.right.inputPlaceholder"
-            data-i18n-attr-aria-label="home.cta.right.inputPlaceholder"
-          />
-          <button type="submit" class="lp-btn lp-btn--primary" data-i18n="home.cta.right.submitLabel">{home.cta.right.submitLabel}</button>
-        </form>
-      </div>
-    </section>
+      </section>
 
+      <section class="lp-region lp-operations" id="operations">
+        <header class="lp-section-heading" data-reveal><h2 data-i18n="home.redesign.operationsTitle">{copy.operationsTitle}</h2><p data-i18n="home.redesign.operationsLead">{copy.operationsLead}</p></header>
+        <div class="lp-team-grid lp-frame">
+          <article class="lp-team-workflow" data-reveal><div class="lp-workflow-scene" aria-hidden="true"><canvas data-animation="workflow"></canvas><div class="lp-workflow-steps">{copy.workflowSteps.map((step, i) => <span data-i18n={`home.redesign.workflowSteps.${i}`}>{step}</span>)}</div></div><div><h3 data-i18n="home.redesign.workflowTitle">{copy.workflowTitle}</h3><p data-i18n="home.redesign.workflowLead">{copy.workflowLead}</p><a class="lp-link" href="https://lab.lamassu.io" data-i18n="home.redesign.consoleLink">{copy.consoleLink}</a></div></article>
+          <article class="lp-team-open" data-reveal><span class="lp-code-symbol" aria-hidden="true">&lt;/&gt;</span><h3 data-i18n="home.ops.tiles.1.title">{home.ops.tiles[1].title}</h3><p data-i18n="home.ops.tiles.1.body">{home.ops.tiles[1].body}</p><a class="lp-link" href="https://github.com/lamassuiot" target="_blank" rel="noopener" data-i18n="home.redesign.sourceLink">{copy.sourceLink}</a></article>
+          {home.ops.tiles.slice(2).map((tile, i) => <article class:list={['lp-team-feature', `lp-team-feature--${i}`]} data-reveal><div class="lp-feature-scene" aria-hidden="true"><canvas data-animation={['access', 'audit', 'integration'][i]}></canvas></div><div><h3 data-i18n={`home.ops.tiles.${i + 2}.title`}>{tile.title}</h3><p data-i18n={`home.ops.tiles.${i + 2}.body`}>{tile.body}</p></div></article>)}
+        </div>
+      </section>
+
+      <section class="lp-region lp-quantum" id="pqc">
+        <div class="lp-quantum-visual" aria-hidden="true"><img src="/media/lamassu-quantum.webp" width="1672" height="941" alt="" loading="lazy" /><canvas data-animation="quantum"></canvas></div>
+        <div class="lp-quantum-intro" data-reveal><p class="lp-experimental" data-i18n="home.pqc.badge">{home.pqc.badge}</p><h2 data-i18n="home.redesign.pqcTitle">{copy.pqcTitle}</h2><p data-i18n="home.redesign.pqcLead">{copy.pqcLead}</p><a class="lp-btn lp-btn--primary" href="#contact" data-i18n="home.pqc.ctaPrimary">{home.pqc.ctaPrimary}</a></div>
+        <ol class="lp-quantum-path">{home.pqc.certs.map((cert, i) => <li data-reveal><h3 data-i18n={`home.pqc.certs.${i}.name`}>{cert.name}</h3><p class="lp-quantum-algorithm">{['RSA · ECDSA', 'RSA / ECDSA + ML-DSA', 'ML-DSA · SLH-DSA'][i]}</p><p data-i18n={`home.pqc.certs.${i}.body`}>{cert.body}</p></li>)}</ol>
+        <p class="lp-quantum-note" data-i18n="home.pqc.note">{home.pqc.note}</p>
+      </section>
+
+      <section class="lp-region lp-faq" id="faq"><div class="lp-faq-intro" data-reveal><h2 data-i18n="home.redesign.faqTitle">{copy.faqTitle}</h2><p data-i18n="home.faq.lead">{home.faq.lead}</p></div><div class="lp-questions">{home.faq.items.map((item, i) => <details><summary data-i18n={`home.faq.items.${i}.q`}>{item.q}</summary><p data-i18n={`home.faq.items.${i}.a`}>{item.a}</p></details>)}</div></section>
+    </div>
+
+    <section class="lp-finale" id="contact"><canvas data-animation="closing" aria-hidden="true"></canvas><div class="lp-wrap" data-reveal><h2 data-i18n="home.redesign.closingTitle">{copy.closingTitle}</h2><p data-i18n="home.redesign.closingLead">{copy.closingLead}</p><div class="lp-actions"><a href="mailto:info@lamassu.io" class="lp-btn lp-btn--white" data-i18n="home.cta.left.btn">{home.cta.left.btn}</a><a href={copy.docsHref} data-i18n-attr-href="home.redesign.docsHref" class="lp-btn lp-btn--outline-white" data-i18n="home.redesign.closingDocs">{copy.closingDocs}</a></div><ul>{copy.closingProof.map((proof, i) => <li data-i18n={`home.redesign.closingProof.${i}`}>{proof}</li>)}</ul></div></section>
   </main>
-
-  <script is:inline>
-    (function () {
-      // Customer-story tabs
-      var tabs = Array.prototype.slice.call(document.querySelectorAll('.lp-tab'));
-      function select(tab) {
-        tabs.forEach(function (other) {
-          var on = other === tab;
-          other.setAttribute('aria-selected', on ? 'true' : 'false');
-          other.setAttribute('tabindex', on ? '0' : '-1');
-          var panel = document.getElementById(other.getAttribute('aria-controls'));
-          if (panel) panel.hidden = !on;
+  <script>
+    // Every panel is readable without JavaScript. Enhance each group independently.
+    document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((group) => {
+      const list = group.querySelector<HTMLElement>('[data-tab-list]');
+      const tabs = Array.from(group.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+      const panels = Array.from(group.querySelectorAll<HTMLElement>('[data-tab-panel]'));
+      if (!list || !tabs.length || tabs.length !== panels.length) return;
+      group.classList.add('has-tabs');
+      list.hidden = false;
+      list.setAttribute('role', 'tablist');
+      const select = (index: number, focus = false) => {
+        tabs.forEach((tab, i) => {
+          const active = i === index;
+          tab.setAttribute('role', 'tab');
+          tab.setAttribute('aria-selected', String(active));
+          tab.tabIndex = active ? 0 : -1;
+          panels[i].setAttribute('role', 'tabpanel');
+          panels[i].tabIndex = 0;
+          panels[i].hidden = !active;
         });
-      }
-      tabs.forEach(function (tab, index) {
-        tab.addEventListener('click', function () { select(tab); });
-        tab.addEventListener('keydown', function (event) {
-          var step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
-          if (!step) return;
-          var next = tabs[(index + step + tabs.length) % tabs.length];
-          select(next);
-          next.focus();
+        if (focus) tabs[index].focus();
+      };
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => select(index));
+        tab.addEventListener('keydown', (event) => {
+          let next = index;
+          if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          select(next, true);
         });
       });
-
-      // Reveal on scroll
-      var root = document.documentElement;
-      if (!root.classList.contains('lp-motion')) return;
-      var targets = document.querySelectorAll('[data-reveal]');
-      if (!('IntersectionObserver' in window)) {
-        targets.forEach(function (el) { el.classList.add('is-visible'); });
-        return;
-      }
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
+      const syncHash = () => {
+        const index = panels.findIndex((panel) => '#' + panel.id === window.location.hash);
+        if (index < 0) return;
+        select(index);
+        requestAnimationFrame(() => panels[index].scrollIntoView({ block: 'start' }));
+      };
+      select(0);
+      syncHash();
+      window.addEventListener('hashchange', syncHash);
+      // A repeated link to the current hash must still reveal its panel.
+      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"], a[href^="/#"]').forEach((link) => {
+        link.addEventListener('click', () => {
+          const index = panels.findIndex((panel) => '#' + panel.id === link.hash);
+          if (index >= 0) select(index);
         });
-      }, { rootMargin: '0px 0px -8% 0px' });
-      targets.forEach(function (el) { observer.observe(el); });
-    })();
+      });
+    });
+
+    import '../scripts/landing-motion';
   </script>
 </SiteLayout>
