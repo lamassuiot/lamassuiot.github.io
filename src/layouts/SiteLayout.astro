@@ -57,7 +57,7 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
           if (window.innerWidth <= 1240) return false;
 
           if (overview) {
-            var headerHeight = header.getBoundingClientRect().height;
+            var headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--shell-header-h')) || header.getBoundingClientRect().height;
             return overview.getBoundingClientRect().top <= headerHeight + 6;
           }
 
@@ -462,25 +462,78 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
 
   @media (min-width: 1241px) {
     body.site-shell-header-sticky .site-shell-header {
-      position: sticky;
+      position: fixed;
       top: 8px;
-      width: min(1360px, calc(100% - 32px));
-      height: 64px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: calc(100% - 32px);
+      height: 40px;
       box-sizing: border-box;
-      padding: 10px 16px;
-      gap: 12px;
+      margin: 0;
+      padding: 4px 13px;
+      justify-content: center;
+      gap: 17px;
       z-index: 70;
       border: 1px solid rgba(63, 80, 119, 0.72);
-      border-radius: 14px;
+      border-radius: 12px;
       background: rgba(9, 15, 28, 0.88);
       box-shadow: 0 12px 30px rgba(2, 6, 16, 0.34);
       backdrop-filter: blur(8px);
-      animation: siteShellStickyIn 230ms ease both;
+    }
+
+    body.site-shell-header-sticky .site-shell-logo-full {
+      height: 21px;
+    }
+
+    body.site-shell-header-sticky .site-shell-nav {
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    body.site-shell-header-sticky .site-shell-cta-group {
+      gap: 7px;
+    }
+
+    body.site-shell-header-sticky .locale-switcher {
+      gap: 0;
+      padding: 0;
+    }
+
+    body.site-shell-header-sticky .locale-switcher-btn {
+      padding: 5px;
+      font-size: 10.5px;
+      line-height: 18px;
+    }
+
+    body.site-shell-header-sticky .locale-switcher-btn::after {
+      left: 5px;
+      right: 5px;
+    }
+
+    body.site-shell-header-sticky .theme-toggle {
+      width: 30px;
+      height: 30px;
+      box-sizing: border-box;
+      border-radius: 6px;
+    }
+
+    body.site-shell-header-sticky .theme-toggle svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    body.site-shell-header-sticky .site-shell-cta {
+      min-height: 30px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      line-height: 18px;
     }
 
     body.site-shell-header-sticky .site-shell-header-spacer {
       display: block;
-      height: calc(var(--shell-header-h) - 64px);
+      height: var(--shell-header-h);
     }
 
     [data-theme='light'] body.site-shell-header-sticky .site-shell-header {
@@ -489,27 +542,18 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
       box-shadow: 0 10px 26px rgba(13, 26, 51, 0.14);
     }
 
-    body.site-shell-header-sticky .site-shell-logo-full {
-      height: 26px;
-    }
-
-    body.site-shell-header-sticky .site-shell-nav {
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
     body.site-shell-header-sticky .site-shell-nav a {
-      font-size: 13px;
+      font-size: 13.5px;
+      line-height: 19px;
       white-space: nowrap;
       opacity: 0;
       transform: translateY(-3px);
       animation: siteShellStickyLinkIn 180ms ease forwards;
     }
 
-    body.site-shell-header-sticky .site-shell-cta {
-      min-height: 34px;
-      padding: 8px 10px;
-      font-size: 13px;
+    body.site-shell-header-sticky .site-shell-nav a.github-link svg {
+      width: 17px;
+      height: 17px;
     }
 
     body.site-shell-header-sticky .site-shell-nav a:nth-child(1) { animation-delay: 30ms; }
@@ -522,7 +566,7 @@ const { title, lang = 'es', activeNav = '', pageTranslations = {} } = Astro.prop
     body.site-shell-header-sticky .site-shell-nav a:nth-child(8) { animation-delay: 205ms; }
 
     @media (prefers-reduced-motion: reduce) {
-      body.site-shell-header-sticky .site-shell-header,
+      body.site-shell-header-sticky .site-shell-nav,
       body.site-shell-header-sticky .site-shell-nav a {
         animation: none;
       }
