@@ -1,16 +1,11 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { homeTranslations } from '../lib/i18n';
+import '../styles/landing-tokens.css';
+import '../styles/landing.css';
 
 const home = homeTranslations.es.home;
-const referenceLinks = [
-  '/ferroviario/',
-  '/hosteleria-conectada/',
-  '/energia-baterias/',
-  '/gruas/',
-  '/puertas-de-acceso-conectadas/',
-];
-const pillarLinks = ['#capabilities', '#automation', '#pqc'];
+
 // erreka.png is currently a copy of the CAF logo — add Erreka back once the real file is in place.
 const customerLogos = [
   { name: 'CAF', src: '/company/caf.png' },
@@ -18,11 +13,13 @@ const customerLogos = [
   { name: 'GH Cranes & Components', src: '/company/gh.png' },
   { name: 'Fagor Professional', src: '/company/fagor_professional.svg' },
 ];
-const trustBadges = [
-  ['MPL-2.0', 'GitHub'],
-  ['X.509', 'EST', 'CMP'],
-  ['NIS2', 'CRA', 'IEC 62443'],
-  ['EU', 'Self-hostable'],
+
+const referenceLinks = [
+  '/ferroviario/',
+  '/hosteleria-conectada/',
+  '/energia-baterias/',
+  '/gruas/',
+  '/puertas-de-acceso-conectadas/',
 ];
 
 // Stroke icons (24×24, drawn with currentColor).
@@ -32,38 +29,55 @@ const icons = {
   profile: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
   device: '<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
   revoke: '<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
-  bell: '<path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
-  cloud: '<path d="M17.5 19H8a5 5 0 1 1 .9-9.9A6 6 0 0 1 20 11.5 3.8 3.8 0 0 1 17.5 19z"/>',
-  box: '<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
-  server: '<rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01M7 16.5h.01"/>',
-  code: '<path d="M8 6l-6 6 6 6M16 6l6 6-6 6M14 4l-4 16"/>',
-  layers: '<path d="M12 2l10 5-10 5L2 7z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5"/>',
-  audit: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 13l2 2 4-4"/>',
-  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  tree: '<rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/>',
   enrol: '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>',
-  pulse: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
   renew: '<path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/>',
-  lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
-  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
   grid: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
-  atom: '<circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>',
+  chip: '<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+  cloud: '<path d="M17.5 19H8a5 5 0 1 1 .9-9.9A6 6 0 0 1 20 11.5 3.8 3.8 0 0 1 17.5 19z"/>',
+  vault: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5V7M15.5 12H17M12 15.5V17M8.5 12H7"/>',
+  import: '<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+  file: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
+  lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  code: '<path d="M8 6l-6 6 6 6M16 6l6 6-6 6M14 4l-4 16"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',
+  link: '<path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>',
+  console: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13l2 2-2 2M12 17h4"/>',
 };
-const toastIcons = ['renew', 'enrol', 'atom'];
-const consoleIcons = ['eye', 'device', 'grid'];
-const stepIcons = ['enrol', 'pulse', 'renew', 'revoke'];
-const capabilityIcons = ['ca', 'key', 'profile', 'device', 'revoke', 'bell'];
-const deployIcons = ['cloud', 'box', 'server'];
-const trustIcons = ['code', 'layers', 'audit', 'globe'];
+const platformIcons = ['ca', 'device', 'key'];
+const pkiIcons = ['tree', 'profile', 'revoke'];
+const devicesIcons = ['enrol', 'renew', 'grid'];
+const keysIcons = ['chip', 'vault', 'import'];
+const toastIcons = ['enrol', 'revoke'];
 
-// Timeline: 2026 → 2035. Positions are percentages along the axis.
-const timelineYears = [2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035];
-const yearToPercent = (year: number) => ((year - 2026) / 9) * 100;
-const timelineToday = yearToPercent(2026.74);
-// Same order as home.whyNow.items: 47-day certificates (Mar 2029), CRA (Dec 2027), RSA/ECC phase-out (2030).
-const timelineMarkers = [yearToPercent(2029.2), yearToPercent(2027.95), yearToPercent(2030)];
-
-const hexBytes = '3A 7F C2 19 E4 0B 5D 88 A1 6C F3 2E 94 D7 41 B0 0F 63 CA 5B 8E 17 F9 24 D2 70 AB 3C 96 E1 4F 08 B5 62 1D C8 7A F0 33 9E 25 D1 6B 84 0E A7 58 C3 11 FA 4D 92 E6 3B 70 CF 05 A8 1E 69 B4 57 8D 20'.split(' ');
-const hexFingerprint = hexBytes.map((byte, index) => (index % 11 === 4 ? `<em>${byte}</em>` : byte)).join(' ');
+// Product mocks. They imitate the console, whose UI is in English.
+const caRows = [
+  { tree: '', name: 'Lamassu Root CA', algo: 'RSA 4096', engine: 'PKCS#11 HSM', status: ['ok', 'Active'] },
+  { tree: '└─', name: 'Factory Issuing CA', algo: 'ECDSA P-384', engine: 'AWS KMS', status: ['ok', 'Active'] },
+  { tree: '   └─', name: 'Line 3 Devices CA', algo: 'ECDSA P-256', engine: 'AWS KMS', status: ['ok', 'Active'] },
+  { tree: '└─', name: 'Field Gateways CA', algo: 'ECDSA P-256', engine: 'Azure Key Vault', status: ['warn', 'Expiring'] },
+  { tree: '', name: 'Legacy OT CA', algo: 'RSA 2048', engine: 'Imported', status: ['bad', 'Revoked'] },
+];
+const deviceEvents = [
+  { time: '10:42:07', op: '/simpleenroll', device: 'plc-line3-0042', status: ['ok', 'Issued'] },
+  { time: '10:41:55', op: '/simplereenroll', device: 'gw-north-17', status: ['info', 'Renewed'] },
+  { time: '10:40:12', op: '/cacerts', device: 'hmi-panel-08', status: ['info', 'Served'] },
+  { time: '10:38:40', op: 'revoke', device: 'lock-b2-883', status: ['bad', 'Revoked'] },
+  { time: '10:37:02', op: '/simpleenroll', device: 'bms-rack-12', status: ['ok', 'Issued'] },
+  { time: '10:35:19', op: '/serverkeygen', device: 'meter-ft-2207', status: ['ok', 'Issued'] },
+];
+const engines = [
+  { icon: 'chip', name: 'PKCS#11 HSM', id: 'pkcs11-hsm-01', level: 'Level 2' },
+  { icon: 'cloud', name: 'AWS KMS', id: 'aws-kms-eu-west-1', level: 'Level 2' },
+  { icon: 'cloud', name: 'Azure Key Vault Keys', id: 'azure-kv-prod', level: 'Level 2' },
+  { icon: 'vault', name: 'HashiCorp Vault', id: 'vault-kv-plant', level: 'Level 1' },
+  { icon: 'file', name: 'File system', id: 'fs-dev', level: 'Level 0' },
+];
+const auditEvents = [
+  ['ca.create', 'admin@acme'],
+  ['certificate.revoke', 'secops'],
+  ['dms.update', 'ops-bot'],
+];
 
 // The page renders in Spanish first; the FAQ structured data follows that default.
 const faqJsonLd = {
@@ -84,2718 +98,55 @@ const faqJsonLd = {
   pageTranslations={homeTranslations}
 >
   <Fragment slot="head">
+    <script is:inline>
+      // Light is the landing's default; a choice made with the theme toggle still wins.
+      (function () {
+        try {
+          if (!localStorage.getItem('ls-theme')) document.documentElement.setAttribute('data-theme', 'light');
+        } catch (e) {}
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('lp-motion');
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-
-    <style is:global>
-      /* ═══ Tokens ═════════════════════════════════════════════ */
-      :root {
-        --lp-bg: #09111f;
-        --lp-surface: #0f1829;
-        --lp-surface-2: #142036;
-        --lp-border: #223250;
-        --lp-border-soft: rgba(143, 161, 195, 0.14);
-        --lp-title: #edf3ff;
-        --lp-text: #bcc9df;
-        --lp-muted: #8fa1c3;
-        --lp-accent: #7e9cff;
-        --lp-accent-soft: rgba(126, 156, 255, 0.12);
-        --lp-accent-text: #08101e;
-        --lp-cyan: #4ac2f5;
-        --lp-cyan-text: #7fd8ff;
-        --lp-green: #5fd49a;
-        --lp-gold: #e7b500;
-        --lp-gold-soft: rgba(231, 181, 0, 0.14);
-        --lp-grad: linear-gradient(90deg, #5a1ff0 0%, #4d41f6 38%, #3d78f6 68%, #4ac2f5 100%);
-        --lp-grad-text: linear-gradient(90deg, #9d8bff 0%, #7e9cff 45%, #4ac2f5 100%);
-        --lp-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 50px -30px rgba(0, 0, 0, 0.8);
-        --lp-radius: 16px;
-        --lp-width: min(1360px, calc(100% - 48px));
-        --lp-mono: 'JetBrains Mono', monospace;
-
-        /* Names the divider styles below still use */
-        --home-bg: var(--lp-bg);
-        --home-surface: var(--lp-surface);
-        --home-border: var(--lp-border);
-        --home-muted: var(--lp-muted);
-        --home-accent: var(--lp-accent);
-      }
-
-      [data-theme='light'] {
-        --lp-bg: #f4f6fa;
-        --lp-surface: #ffffff;
-        --lp-surface-2: #f6f8fd;
-        --lp-border: #d8deeb;
-        --lp-border-soft: rgba(37, 55, 95, 0.1);
-        --lp-title: #0f1728;
-        --lp-text: #36455f;
-        --lp-muted: #5f6e8c;
-        --lp-accent: #405fff;
-        --lp-accent-soft: rgba(64, 95, 255, 0.09);
-        --lp-accent-text: #ffffff;
-        --lp-cyan-text: #0b6c9a;
-        --lp-green: #13804d;
-        --lp-gold: #a86b00;
-        --lp-gold-soft: rgba(168, 107, 0, 0.1);
-        --lp-grad-text: linear-gradient(90deg, #5a1ff0 0%, #405fff 50%, #1b8fd0 100%);
-        --lp-shadow: 0 1px 2px rgba(15, 23, 40, 0.04), 0 18px 40px -28px rgba(15, 23, 40, 0.28);
-      }
-
-      body {
-        font-family: 'Manrope', sans-serif;
-      }
-
-      .lp {
-        width: var(--lp-width);
-        margin: 0 auto;
-        position: relative;
-      }
-
-      .lp *,
-      .lp *::before,
-      .lp *::after {
-        box-sizing: border-box;
-      }
-
-      .lp h1,
-      .lp h2,
-      .lp h3,
-      .lp p {
-        margin: 0;
-      }
-
-      /* ═══ Shared furniture ═══════════════════════════════════ */
-      .lp-section {
-        padding-top: clamp(88px, 10vw, 140px);
-      }
-
-      .lp-section--tight {
-        padding-top: clamp(56px, 6vw, 88px);
-      }
-
-      .lp-head {
-        display: grid;
-        gap: 16px;
-        max-width: 860px;
-      }
-
-      .lp-head--center {
-        margin: 0 auto;
-        text-align: center;
-        justify-items: center;
-      }
-
-      .lp-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-family: var(--lp-mono);
-        font-size: 12px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--lp-accent);
-      }
-
-      .lp-eyebrow::before {
-        content: '';
-        width: 7px;
-        height: 7px;
-        border-radius: 2px;
-        transform: rotate(45deg);
-        background: var(--lp-accent);
-        box-shadow: 0 0 0 4px var(--lp-accent-soft);
-      }
-
-      .lp h2 {
-        color: var(--lp-title);
-        font-size: clamp(30px, 4.4vw, 52px);
-        font-weight: 800;
-        line-height: 1.06;
-        letter-spacing: -0.035em;
-        text-wrap: balance;
-      }
-
-      .lp h3 {
-        color: var(--lp-title);
-        font-size: 19px;
-        font-weight: 800;
-        line-height: 1.25;
-        letter-spacing: -0.015em;
-      }
-
-      .lp-lead {
-        color: var(--lp-text);
-        font-size: clamp(17px, 1.7vw, 19px);
-        line-height: 1.62;
-        text-wrap: pretty;
-      }
-
-      .lp-statement {
-        margin-top: 40px !important;
-        max-width: 880px;
-        padding-left: 20px;
-        border-left: 2px solid var(--lp-accent);
-        color: var(--lp-title);
-        font-size: clamp(18px, 2vw, 22px);
-        font-weight: 700;
-        line-height: 1.45;
-        letter-spacing: -0.01em;
-        text-wrap: pretty;
-      }
-
-      .lp-grid {
-        margin-top: 48px;
-        display: grid;
-        gap: 18px;
-      }
-
-      .lp-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .lp-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-
-      .lp-card {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        padding: 30px;
-        border-radius: var(--lp-radius);
-        border: 1px solid var(--lp-border);
-        background: var(--lp-surface);
-        box-shadow: var(--lp-shadow);
-        transition: border-color 0.2s ease, transform 0.2s ease;
-      }
-
-      .lp-card:hover {
-        border-color: color-mix(in srgb, var(--lp-accent) 45%, var(--lp-border));
-      }
-
-      .lp-card-body {
-        color: var(--lp-text);
-        font-size: 15px;
-        line-height: 1.65;
-      }
-
-      .lp-tag {
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--lp-accent);
-      }
-
-      .lp-chip {
-        display: inline-flex;
-        align-items: center;
-        width: fit-content;
-        padding: 4px 10px;
-        border-radius: 6px;
-        border: 1px solid var(--lp-border);
-        background: var(--lp-surface-2);
-        color: var(--lp-muted);
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        line-height: 1.4;
-      }
-
-      .lp-chips {
-        margin-top: auto;
-        padding-top: 6px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-
-      .lp-icon {
-        width: 40px;
-        height: 40px;
-        flex-shrink: 0;
-        display: grid;
-        place-items: center;
-        border-radius: 11px;
-        color: var(--lp-accent);
-        background: var(--lp-accent-soft);
-        border: 1px solid color-mix(in srgb, var(--lp-accent) 22%, transparent);
-      }
-
-      .lp-icon--lg {
-        width: 48px;
-        height: 48px;
-        border-radius: 13px;
-      }
-
-      .lp-icon svg,
-      .lp-toast-icon svg,
-      .lp-lifecycle-node svg,
-      .lp-pqc-seal svg {
-        width: 20px;
-        height: 20px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 1.6;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      .lp-checks {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        gap: 10px;
-      }
-
-      .lp-checks li {
-        display: flex;
-        gap: 10px;
-        color: var(--lp-text);
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      .lp-checks li::before {
-        content: '';
-        flex-shrink: 0;
-        width: 16px;
-        height: 16px;
-        margin-top: 2px;
-        border-radius: 50%;
-        background:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%237e9cff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-4.9'/%3E%3C/svg%3E") center / 14px no-repeat,
-          var(--lp-accent-soft);
-      }
-
-      .lp-link {
-        margin-top: auto;
-        width: fit-content;
-        padding-top: 6px;
-        color: var(--lp-title);
-        font-size: 14px;
-        font-weight: 700;
-        text-decoration: none;
-        border-bottom: 1px solid color-mix(in srgb, var(--lp-accent) 60%, transparent);
-        transition: color 0.15s ease, border-color 0.15s ease;
-      }
-
-      .lp-link:hover {
-        color: var(--lp-accent);
-        border-color: var(--lp-accent);
-      }
-
-      .lp-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-
-      .lp-actions--center {
-        justify-content: center;
-      }
-
-      .lp-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
-        padding: 0 22px;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 700;
-        text-decoration: none;
-        transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-      }
-
-      .lp-btn:hover {
-        transform: translateY(-1px);
-      }
-
-      .lp-btn--primary {
-        color: var(--lp-accent-text);
-        background: var(--lp-accent);
-        box-shadow: 0 10px 30px -12px rgba(126, 156, 255, 0.8);
-      }
-
-      .lp-btn--primary:hover {
-        background: #95adff;
-      }
-
-      [data-theme='light'] .lp-btn--primary:hover {
-        background: #334ffc;
-      }
-
-      .lp-btn--ghost {
-        color: var(--lp-title);
-        border: 1px solid var(--lp-border);
-        background: color-mix(in srgb, var(--lp-surface) 70%, transparent);
-      }
-
-      .lp-btn--ghost:hover {
-        border-color: var(--lp-muted);
-      }
-
-      .lp-btn--light {
-        color: #1b2a6b;
-        background: #ffffff;
-      }
-
-      .lp-btn--light:hover {
-        background: #e9eeff;
-      }
-
-      .lp-split {
-        display: grid;
-        grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-        gap: clamp(32px, 6vw, 96px);
-        align-items: start;
-      }
-
-      /* Reveal on scroll — only when motion is allowed and JS ran */
-      .lp-motion [data-reveal] {
-        opacity: 0;
-        transform: translateY(18px);
-        transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-      }
-
-      .lp-motion [data-reveal].is-visible {
-        opacity: 1;
-        transform: none;
-      }
-
-      /* ═══ Hero ═══════════════════════════════════════════════ */
-      .lp-hero {
-        position: relative;
-        padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 5vw, 64px);
-        display: grid;
-        justify-items: center;
-        gap: 24px;
-        text-align: center;
-      }
-
-      .lp-hero::before {
-        content: '';
-        position: absolute;
-        top: -40px;
-        bottom: 0;
-        left: calc(50% - 50vw);
-        right: calc(50% - 50vw);
-        z-index: -1;
-        pointer-events: none;
-        background-image: radial-gradient(circle, rgba(143, 165, 228, 0.36) 1px, transparent 1px);
-        background-size: 18px 18px;
-        mask-image: radial-gradient(60% 70% at 50% 30%, #000 0%, transparent 100%);
-        opacity: 0.55;
-      }
-
-      [data-theme='light'] .lp-hero::before {
-        background-image: radial-gradient(circle, rgba(37, 55, 95, 0.3) 1px, transparent 1px);
-      }
-
-      .lp-announce {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 7px 14px 7px 10px;
-        border-radius: 999px;
-        border: 1px solid color-mix(in srgb, var(--lp-gold) 60%, var(--lp-border));
-        background: color-mix(in srgb, var(--lp-gold) 10%, var(--lp-surface));
-        color: var(--lp-title);
-        font-size: 13px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: border-color 0.15s ease;
-      }
-
-      .lp-announce:hover {
-        border-color: var(--lp-gold);
-      }
-
-      .lp-announce > span:last-child {
-        color: var(--lp-gold);
-        font-weight: 700;
-      }
-
-      .lp-announce-dot {
-        width: 8px;
-        height: 8px;
-        flex-shrink: 0;
-        border-radius: 50%;
-        background: var(--lp-gold);
-        box-shadow: 0 0 0 4px var(--lp-gold-soft);
-        animation: lpPulse 2.4s ease-in-out infinite;
-      }
-
-      .lp-hero h1 {
-        max-width: 1080px;
-        color: var(--lp-title);
-        font-size: clamp(42px, 7.2vw, 88px);
-        font-weight: 800;
-        line-height: 0.98;
-        letter-spacing: -0.045em;
-        text-wrap: balance;
-      }
-
-      .lp-grad-text {
-        background: var(--lp-grad-text);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-
-      .lp-hero-lead {
-        max-width: 780px;
-        color: var(--lp-text);
-        font-size: clamp(17px, 1.9vw, 20px);
-        line-height: 1.6;
-        text-wrap: pretty;
-      }
-
-      .lp-hero .lp-actions {
-        margin-top: 4px;
-      }
-
-      .lp-proof {
-        margin: 8px 0 0;
-        padding: 0;
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px 26px;
-      }
-
-      .lp-proof li {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: var(--lp-muted);
-        font-size: 14px;
-        font-weight: 600;
-      }
-
-      .lp-proof li::before {
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--lp-green);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--lp-green) 20%, transparent);
-      }
-
-      /* ═══ Stage — trusted mesh + console ═════════════════════ */
-      .lp-stage {
-        position: relative;
-        padding: clamp(40px, 5vw, 72px) clamp(16px, 6vw, 96px) 0;
-        border-radius: 24px;
-        border: 1px solid rgba(98, 132, 235, 0.5);
-        background: var(--lp-grad);
-        overflow: hidden;
-        isolation: isolate;
-      }
-
-      .lp-stage-mesh {
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        pointer-events: none;
-      }
-
-      .lp-stage-mesh::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(0deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-        background-size: 100% 34px, 88px 100%;
-        opacity: 0.3;
-      }
-
-      .lp-stage-mesh::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, transparent 40%, rgba(9, 17, 31, 0.35) 100%);
-      }
-
-      .lp-stage-sweep {
-        position: absolute;
-        width: 70%;
-        height: 220%;
-        left: -20%;
-        top: -60%;
-        background: radial-gradient(circle, rgba(131, 255, 255, 0.3) 0%, rgba(131, 255, 255, 0.05) 34%, transparent 70%);
-        transform-origin: 80% 70%;
-        animation: lpSweep 9s linear infinite;
-      }
-
-      .lp-stage-shot-line {
-        position: absolute;
-        left: 4%;
-        right: 4%;
-        top: 22px;
-        height: 12px;
-      }
-
-      .lp-stage-shot-line span {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        transform: translateY(-50%);
-        background: #effcff;
-        box-shadow: 0 0 0 4px rgba(170, 244, 255, 0.18), 0 0 18px rgba(170, 244, 255, 0.95);
-        animation: lpShot 5s linear infinite;
-      }
-
-      .lp-stage-shot-line span::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        right: 4px;
-        width: 120px;
-        height: 2px;
-        transform: translateY(-50%);
-        background: linear-gradient(90deg, transparent, rgba(239, 252, 255, 0.85));
-        filter: blur(0.5px);
-      }
-
-      .lp-stage-label,
-      .lp-stage-numbers {
-        position: absolute;
-        top: 40px;
-        color: rgba(230, 246, 255, 0.7);
-        font-family: var(--lp-mono);
-        letter-spacing: 0.1em;
-      }
-
-      .lp-stage-label {
-        left: 4%;
-        font-size: 10px;
-      }
-
-      .lp-stage-numbers {
-        right: 4%;
-        top: 34px;
-        font-size: 20px;
-        color: rgba(230, 246, 255, 0.5);
-      }
-
-      .lp-stage-shot {
-        margin: 0 auto;
-        max-width: 1180px;
-        height: clamp(240px, 44vw, 600px);
-        overflow: hidden;
-        mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
-      }
-
-      .lp-stage-shot img {
-        display: block;
-        width: 100%;
-        height: auto;
-        filter: drop-shadow(0 40px 60px rgba(9, 17, 31, 0.55));
-      }
-
-      .lp-toast {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 16px 10px 10px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(10, 18, 34, 0.78);
-        backdrop-filter: blur(10px);
-        color: #edf3ff;
-        font-size: 13px;
-        font-weight: 600;
-        box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.6);
-        animation: lpFloat 6s ease-in-out infinite;
-      }
-
-      .lp-toast-icon {
-        width: 30px;
-        height: 30px;
-        display: grid;
-        place-items: center;
-        border-radius: 8px;
-        color: var(--lp-green);
-        background: rgba(95, 212, 154, 0.14);
-      }
-
-      .lp-toast-icon svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      .lp-toast--0 { left: 2.5%; top: 34%; }
-      .lp-toast--1 { right: 2.5%; top: 18%; animation-delay: -2s; }
-      .lp-toast--2 { right: 5%; bottom: 14%; animation-delay: -4s; }
-
-      /* Gold accent: icon tile + inset bar. The toasts are dark glass in both themes,
-         so they keep the bright gold instead of the light-mode ochre. */
-      .lp-toast {
-        padding-left: 14px;
-      }
-
-      .lp-toast::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 9px;
-        bottom: 9px;
-        width: 3px;
-        border-radius: 0 3px 3px 0;
-        background: #e7b500;
-        box-shadow: 0 0 10px rgba(231, 181, 0, 0.55);
-      }
-
-      .lp-toast .lp-toast-icon {
-        color: #ffffff;
-        background: #e7b500;
-      }
-
-      .lp-toast .lp-toast-icon svg {
-        stroke-width: 2.2;
-      }
-
-      /* ═══ Console explainer ══════════════════════════════════ */
-      .lp-console-list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        gap: 0;
-        border-top: 1px solid var(--lp-border);
-      }
-
-      .lp-console-list li {
-        display: flex;
-        gap: 18px;
-        padding: 24px 0;
-        border-bottom: 1px solid var(--lp-border);
-      }
-
-      .lp-console-list p {
-        color: var(--lp-text);
-        font-size: 15px;
-        line-height: 1.65;
-      }
-
-      .lp-console-list p.lp-console-title {
-        margin-bottom: 6px;
-        color: var(--lp-title);
-        font-size: 17px;
-        font-weight: 700;
-      }
-
-      /* ═══ Logos ══════════════════════════════════════════════ */
-      .lp-logos {
-        margin-top: clamp(64px, 7vw, 96px);
-        padding: 36px 0;
-        display: grid;
-        gap: 26px;
-        justify-items: center;
-        border-top: 1px solid var(--lp-border-soft);
-        border-bottom: 1px solid var(--lp-border-soft);
-      }
-
-      .lp-logos-title {
-        font-family: var(--lp-mono);
-        font-size: 12px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--lp-muted);
-        text-align: center;
-      }
-
-      .lp-logos ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 28px 72px;
-      }
-
-      .lp-logos img {
-        display: block;
-        height: 34px;
-        width: auto;
-        max-width: 160px;
-        object-fit: contain;
-        filter: grayscale(1) brightness(0) invert(1);
-        opacity: 0.6;
-        transition: opacity 0.15s ease;
-      }
-
-      [data-theme='light'] .lp-logos img {
-        filter: grayscale(1) brightness(0);
-        opacity: 0.5;
-      }
-
-      .lp-logos img:hover {
-        opacity: 0.95;
-      }
-
-      /* ═══ Why now — timeline + clocks ════════════════════════ */
-      .lp-timeline {
-        margin-top: 56px;
-        padding: 64px 28px 44px;
-        border-radius: var(--lp-radius);
-        border: 1px solid var(--lp-border);
-        background: var(--lp-surface);
-      }
-
-      .lp-timeline-axis {
-        position: relative;
-        height: 2px;
-        margin: 0 12px;
-        background: linear-gradient(90deg, var(--lp-accent) 0%, var(--lp-cyan) 45%, var(--lp-border) 100%);
-        border-radius: 2px;
-      }
-
-      .lp-timeline-tick {
-        position: absolute;
-        top: 14px;
-        transform: translateX(-50%);
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        color: var(--lp-muted);
-      }
-
-      .lp-timeline-tick::before {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: -17px;
-        width: 1px;
-        height: 8px;
-        background: var(--lp-border);
-      }
-
-      .lp-timeline-today {
-        position: absolute;
-        top: 50%;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        background: var(--lp-green);
-        box-shadow: 0 0 0 5px color-mix(in srgb, var(--lp-green) 22%, transparent);
-      }
-
-      .lp-timeline-today b {
-        position: absolute;
-        top: -32px;
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--lp-green);
-      }
-
-      .lp-timeline-marker {
-        position: absolute;
-        bottom: 0;
-        transform: translateX(-50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .lp-timeline-marker::after {
-        content: '';
-        width: 14px;
-        height: 14px;
-        margin-bottom: -8px;
-        border-radius: 4px;
-        transform: rotate(45deg);
-        border: 2px solid var(--lp-accent);
-        background: var(--lp-bg);
-      }
-
-      .lp-timeline-marker i,
-      .lp-clock-num {
-        font-style: normal;
-        font-family: var(--lp-mono);
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--lp-accent);
-      }
-
-      .lp-timeline-marker b {
-        white-space: nowrap;
-        color: var(--lp-title);
-        font-size: 13px;
-        font-weight: 800;
-      }
-
-      .lp-clock {
-        gap: 10px;
-      }
-
-      .lp-clock-num {
-        position: absolute;
-        top: 22px;
-        right: 24px;
-        padding: 3px 7px;
-        border-radius: 6px;
-        border: 1px solid color-mix(in srgb, var(--lp-accent) 40%, transparent);
-      }
-
-      .lp-clock-value {
-        color: var(--lp-title);
-        font-size: clamp(40px, 4.6vw, 58px);
-        font-weight: 800;
-        line-height: 1;
-        letter-spacing: -0.045em;
-      }
-
-      .lp-clock-label {
-        color: var(--lp-accent);
-        font-size: 15px;
-        font-weight: 700;
-        line-height: 1.4;
-      }
-
-      .lp-clock .lp-card-body {
-        flex: 1;
-      }
-
-      .lp-clock-source {
-        padding-top: 14px;
-        border-top: 1px solid var(--lp-border);
-        color: var(--lp-muted);
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        line-height: 1.5;
-      }
-
-      /* ═══ Pillars ════════════════════════════════════════════ */
-      .lp-pillar {
-        padding-top: 0;
-        overflow: hidden;
-      }
-
-      .lp-pillar-visual {
-        margin: 0 -30px 10px;
-        height: 170px;
-        display: grid;
-        place-items: center;
-        border-bottom: 1px solid var(--lp-border);
-        background:
-          radial-gradient(70% 90% at 50% 100%, rgba(126, 156, 255, 0.14), transparent 70%),
-          var(--lp-surface-2);
-      }
-
-      .lp-pillar-visual svg {
-        width: min(260px, 86%);
-        height: auto;
-        overflow: visible;
-      }
-
-      .lp-pillar .lp-checks {
-        flex: 1;
-        align-content: start;
-      }
-
-      .lp-viz-line,
-      .lp-viz-ring {
-        fill: none;
-        stroke: var(--lp-border);
-        stroke-width: 1.5;
-      }
-
-      .lp-viz-node,
-      .lp-viz-chip,
-      .lp-viz-doc,
-      .lp-viz-sig {
-        fill: var(--lp-surface);
-        stroke: var(--lp-accent);
-        stroke-width: 1.2;
-      }
-
-      .lp-viz-node--root {
-        fill: var(--lp-accent-soft);
-        stroke-width: 1.6;
-      }
-
-      .lp-viz-leaf {
-        fill: var(--lp-bg);
-        stroke: var(--lp-cyan);
-        stroke-width: 1.5;
-      }
-
-      .lp-viz-leaf--pulse {
-        fill: var(--lp-cyan);
-        animation: lpBlink 2.4s ease-in-out infinite;
-      }
-
-      .lp-pillar-visual text {
-        fill: var(--lp-title);
-        font-family: var(--lp-mono);
-        font-size: 9px;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-anchor: middle;
-      }
-
-      .lp-pillar-visual text.lp-viz-small {
-        font-size: 8px;
-        fill: var(--lp-text);
-      }
-
-      .lp-pillar-visual text.lp-viz-small--pq {
-        fill: var(--lp-cyan-text);
-      }
-
-      .lp-viz-ring-run {
-        fill: none;
-        stroke: var(--lp-accent);
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-dasharray: 60 242;
-        transform-origin: 120px 65px;
-        animation: lpSpin 5s linear infinite;
-      }
-
-      .lp-viz-dot {
-        fill: var(--lp-bg);
-        stroke: var(--lp-accent);
-        stroke-width: 1.6;
-      }
-
-      .lp-viz-chip--alt {
-        stroke: var(--lp-cyan);
-      }
-
-      .lp-viz-doc {
-        stroke: var(--lp-border);
-      }
-
-      .lp-viz-doc-bar {
-        fill: var(--lp-accent);
-        opacity: 0.55;
-      }
-
-      .lp-viz-doc-bar--soft {
-        fill: var(--lp-border);
-        opacity: 1;
-      }
-
-      .lp-viz-sig {
-        stroke: var(--lp-border);
-      }
-
-      .lp-viz-sig--pq {
-        fill: rgba(74, 194, 245, 0.1);
-        stroke: var(--lp-cyan);
-      }
-
-      /* ═══ Post-quantum ═══════════════════════════════════════ */
-      .lp-pqc {
-        padding: clamp(28px, 5vw, 64px);
-        display: grid;
-        gap: 44px;
-        border-radius: 24px;
-        border: 1px solid color-mix(in srgb, var(--lp-cyan) 35%, var(--lp-border));
-        background:
-          radial-gradient(90% 70% at 100% 0%, rgba(74, 194, 245, 0.14) 0%, transparent 60%),
-          radial-gradient(70% 70% at 0% 100%, rgba(90, 31, 240, 0.18) 0%, transparent 60%),
-          var(--lp-surface);
-        box-shadow: var(--lp-shadow);
-      }
-
-      .lp-badge {
-        width: fit-content;
-        padding: 6px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(74, 194, 245, 0.5);
-        background: rgba(74, 194, 245, 0.1);
-        color: var(--lp-cyan-text);
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-
-      .lp-pqc-path {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 18px;
-        position: relative;
-      }
-
-      .lp-pqc-path::before {
-        content: '';
-        position: absolute;
-        top: 9px;
-        left: 9px;
-        right: 16%;
-        height: 2px;
-        background: linear-gradient(90deg, var(--lp-border), var(--lp-accent) 50%, var(--lp-cyan));
-      }
-
-      .lp-pqc-cert {
-        display: grid;
-        grid-template-rows: auto 1fr;
-        gap: 16px;
-      }
-
-      .lp-pqc-step {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--lp-muted);
-      }
-
-      .lp-pqc-step-dot {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 2px solid var(--lp-border);
-        background: var(--lp-surface);
-      }
-
-      .lp-pqc-cert--1 .lp-pqc-step-dot { border-color: var(--lp-accent); }
-      .lp-pqc-cert--2 .lp-pqc-step-dot { border-color: var(--lp-cyan); background: var(--lp-cyan); }
-
-      .lp-pqc-doc {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        padding: 24px;
-        border-radius: 14px;
-        border: 1px solid var(--lp-border);
-        background: var(--lp-bg);
-      }
-
-      .lp-pqc-cert--1 .lp-pqc-doc {
-        border-color: color-mix(in srgb, var(--lp-accent) 70%, transparent);
-        box-shadow: 0 0 0 4px var(--lp-accent-soft), 0 24px 50px -30px rgba(126, 156, 255, 0.6);
-      }
-
-      .lp-pqc-doc-head {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding-bottom: 14px;
-        border-bottom: 1px dashed var(--lp-border);
-      }
-
-      .lp-pqc-seal {
-        width: 32px;
-        height: 32px;
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        color: var(--lp-accent);
-        background: var(--lp-accent-soft);
-      }
-
-      .lp-pqc-cert--2 .lp-pqc-seal {
-        color: var(--lp-cyan-text);
-        background: rgba(74, 194, 245, 0.12);
-      }
-
-      .lp-pqc-seal svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      .lp-pqc-doc-lines {
-        flex: 1;
-        display: grid;
-        gap: 6px;
-      }
-
-      .lp-pqc-doc-lines i {
-        height: 5px;
-        border-radius: 3px;
-        background: var(--lp-border);
-      }
-
-      .lp-pqc-doc-lines i:first-child { width: 70%; }
-      .lp-pqc-doc-lines i:last-child { width: 45%; opacity: 0.6; }
-
-      .lp-pqc-doc h3 {
-        font-size: 21px;
-      }
-
-      .lp-pqc-doc p {
-        color: var(--lp-text);
-        font-size: 14px;
-        line-height: 1.62;
-      }
-
-      .lp-pqc-sigs {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-
-      .lp-sig {
-        padding: 5px 10px;
-        border-radius: 6px;
-        border: 1px solid var(--lp-border);
-        background: var(--lp-surface-2);
-        color: var(--lp-text);
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        font-weight: 600;
-      }
-
-      .lp-sig--pq {
-        border-color: rgba(74, 194, 245, 0.55);
-        background: rgba(74, 194, 245, 0.1);
-        color: var(--lp-cyan-text);
-      }
-
-      .lp-pqc-points {
-        margin-top: 0;
-        gap: 28px;
-      }
-
-      .lp-pqc-point {
-        display: grid;
-        gap: 8px;
-        align-content: start;
-        padding-left: 18px;
-        border-left: 2px solid var(--lp-border);
-      }
-
-      .lp-pqc-point p {
-        color: var(--lp-text);
-        font-size: 14px;
-        line-height: 1.62;
-      }
-
-      .lp-pqc-point p.lp-pqc-point-title {
-        color: var(--lp-title);
-        font-size: 16px;
-        font-weight: 700;
-      }
-
-      .lp-pqc-foot {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        padding-top: 28px;
-        border-top: 1px solid var(--lp-border);
-      }
-
-      .lp-note {
-        max-width: 680px;
-        color: var(--lp-muted);
-        font-size: 13px;
-        line-height: 1.62;
-      }
-
-      /* ═══ Automation ═════════════════════════════════════════ */
-      .lp-lifecycle {
-        margin: 56px 0 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 28px;
-        position: relative;
-      }
-
-      .lp-lifecycle::before,
-      .lp-lifecycle::after {
-        content: '';
-        position: absolute;
-        top: 27px;
-        left: 28px;
-        right: 28px;
-        height: 2px;
-      }
-
-      .lp-lifecycle::before {
-        background: var(--lp-border);
-      }
-
-      .lp-lifecycle::after {
-        right: auto;
-        width: 120px;
-        background: linear-gradient(90deg, transparent, var(--lp-cyan));
-        box-shadow: 0 0 12px rgba(74, 194, 245, 0.7);
-        animation: lpTrack 6s ease-in-out infinite;
-      }
-
-      .lp-lifecycle li {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        gap: 8px;
-        align-content: start;
-      }
-
-      .lp-lifecycle-node {
-        width: 56px;
-        height: 56px;
-        margin-bottom: 10px;
-        display: grid;
-        place-items: center;
-        border-radius: 16px;
-        color: var(--lp-accent);
-        border: 1px solid color-mix(in srgb, var(--lp-accent) 45%, var(--lp-border));
-        background: var(--lp-surface);
-        box-shadow: 0 0 0 6px var(--lp-bg);
-      }
-
-      .lp-lifecycle-node svg {
-        width: 22px;
-        height: 22px;
-      }
-
-      .lp-lifecycle-num {
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        color: var(--lp-muted);
-      }
-
-      .lp-lifecycle-title {
-        color: var(--lp-title);
-        font-size: 20px;
-        font-weight: 800;
-        letter-spacing: -0.015em;
-      }
-
-      .lp-lifecycle-body {
-        color: var(--lp-text);
-        font-size: 14.5px;
-        line-height: 1.62;
-      }
-
-      .lp-protocol-head {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .lp-protocol h3 {
-        font-family: var(--lp-mono);
-        font-size: 26px;
-        font-weight: 600;
-        letter-spacing: 0;
-      }
-
-      .lp-status {
-        margin-left: auto;
-        padding: 4px 10px;
-        border-radius: 999px;
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--lp-green);
-        background: color-mix(in srgb, var(--lp-green) 14%, transparent);
-      }
-
-      .lp-status--early {
-        color: var(--lp-cyan-text);
-        background: rgba(74, 194, 245, 0.12);
-      }
-
-      /* ═══ Mosaic — hairline feature grid ═════════════════════ */
-      .lp-mosaic {
-        margin-top: 48px;
-        display: grid;
-        gap: 1px;
-        border-radius: var(--lp-radius);
-        border: 1px solid var(--lp-border);
-        background: var(--lp-border);
-        overflow: hidden;
-      }
-
-      .lp-mosaic--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .lp-mosaic--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-      .lp-mosaic-cell {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        padding: 32px 30px;
-        background: var(--lp-surface);
-        transition: background-color 0.2s ease;
-      }
-
-      .lp-mosaic-cell:hover {
-        background: var(--lp-surface-2);
-      }
-
-      .lp-mosaic-cell .lp-icon {
-        margin-bottom: 6px;
-      }
-
-      /* ═══ Deployment ═════════════════════════════════════════ */
-      .lp-deploy-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-      }
-
-      .lp-deploy h3 {
-        font-size: 24px;
-      }
-
-      .lp-deploy .lp-card-body {
-        flex: 1;
-      }
-
-      .lp-facts {
-        margin: 0;
-        display: grid;
-        gap: 14px;
-        padding-top: 18px;
-        border-top: 1px solid var(--lp-border);
-      }
-
-      .lp-facts dt {
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--lp-muted);
-      }
-
-      .lp-facts dd {
-        margin: 4px 0 0;
-        color: var(--lp-title);
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 1.5;
-      }
-
-      .lp-keys {
-        margin-top: 18px !important;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 18px 22px;
-        border-radius: 14px;
-        border: 1px dashed var(--lp-border);
-        color: var(--lp-text);
-        font-size: 15px;
-        line-height: 1.6;
-      }
-
-      /* ═══ Comparison ═════════════════════════════════════════ */
-      .lp-compare {
-        margin-top: 48px;
-        overflow-x: auto;
-        border-radius: var(--lp-radius);
-        border: 1px solid var(--lp-border);
-        background: var(--lp-surface);
-        box-shadow: var(--lp-shadow);
-      }
-
-      .lp-compare table {
-        width: 100%;
-        min-width: 760px;
-        border-collapse: collapse;
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      .lp-compare th,
-      .lp-compare td {
-        padding: 18px 22px;
-        text-align: left;
-        vertical-align: top;
-        color: var(--lp-text);
-        border-bottom: 1px solid var(--lp-border);
-      }
-
-      .lp-compare tbody tr:last-child > * {
-        border-bottom: none;
-      }
-
-      .lp-compare thead th {
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--lp-muted);
-        vertical-align: middle;
-      }
-
-      .lp-compare tbody th {
-        width: 20%;
-        color: var(--lp-title);
-        font-weight: 700;
-      }
-
-      .lp-compare td:not(.is-us) {
-        color: var(--lp-muted);
-      }
-
-      .lp-compare .is-us {
-        background: var(--lp-accent-soft);
-        color: var(--lp-title);
-        font-weight: 600;
-      }
-
-      .lp-compare thead .is-us {
-        color: var(--lp-accent);
-        white-space: nowrap;
-      }
-
-      .lp-compare td.is-us {
-        padding-left: 50px;
-        background:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%237e9cff'/%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-4.9' fill='none' stroke='%2308101e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 22px 20px / 16px no-repeat,
-          var(--lp-accent-soft);
-      }
-
-      [data-theme='light'] .lp-compare td.is-us {
-        background:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23405fff'/%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-4.9' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 22px 20px / 16px no-repeat,
-          var(--lp-accent-soft);
-      }
-
-      .lp-compare-mark {
-        display: inline-block;
-        vertical-align: -3px;
-        width: 16px;
-        height: 16px;
-        margin-right: 8px;
-        background: var(--lp-accent);
-        -webkit-mask: url('/lamassu_logo_white.svg') center / contain no-repeat;
-        mask: url('/lamassu_logo_white.svg') center / contain no-repeat;
-      }
-
-      /* ═══ References ═════════════════════════════════════════ */
-      .lp-tabs {
-        margin-top: 36px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .lp-tabs a {
-        padding: 8px 14px;
-        border-radius: 999px;
-        border: 1px solid var(--lp-border);
-        color: var(--lp-muted);
-        font-size: 13px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: color 0.15s ease, border-color 0.15s ease;
-      }
-
-      .lp-tabs a:hover {
-        color: var(--lp-title);
-        border-color: var(--lp-accent);
-      }
-
-      .lp-refs {
-        margin-top: 20px;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-      }
-
-      .lp-refs > * {
-        grid-column: span 2;
-      }
-
-      .lp-refs > :nth-child(-n + 2) {
-        grid-column: span 3;
-      }
-
-      .lp-ref {
-        text-decoration: none;
-      }
-
-      .lp-ref:hover {
-        transform: translateY(-2px);
-      }
-
-      .lp-ref h3 {
-        font-size: 23px;
-        letter-spacing: -0.025em;
-      }
-
-      .lp-ref-highlight {
-        color: var(--lp-title);
-        font-size: 15px;
-        font-weight: 700;
-        line-height: 1.5;
-      }
-
-      .lp-ref .lp-link::after {
-        content: ' →';
-      }
-
-      /* ═══ FAQ ════════════════════════════════════════════════ */
-      .lp-faq-head {
-        position: sticky;
-        top: 110px;
-      }
-
-      .lp-faq-head .lp-actions {
-        margin-top: 8px;
-      }
-
-      .lp-faq {
-        border-top: 1px solid var(--lp-border);
-      }
-
-      .lp-faq-item {
-        border-bottom: 1px solid var(--lp-border);
-      }
-
-      .lp-faq-item summary {
-        position: relative;
-        padding: 24px 48px 24px 0;
-        cursor: pointer;
-        list-style: none;
-        color: var(--lp-title);
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 1.4;
-      }
-
-      .lp-faq-item summary::-webkit-details-marker {
-        display: none;
-      }
-
-      .lp-faq-item summary::after {
-        content: '';
-        position: absolute;
-        right: 4px;
-        top: 50%;
-        width: 28px;
-        height: 28px;
-        transform: translateY(-50%);
-        border-radius: 50%;
-        border: 1px solid var(--lp-border);
-        background:
-          linear-gradient(var(--lp-accent), var(--lp-accent)) center / 10px 2px no-repeat,
-          linear-gradient(var(--lp-accent), var(--lp-accent)) center / 2px 10px no-repeat;
-        transition: transform 0.2s ease;
-      }
-
-      .lp-faq-item[open] summary::after {
-        transform: translateY(-50%) rotate(45deg);
-      }
-
-      .lp-faq-item p {
-        padding: 0 48px 26px 0;
-        color: var(--lp-text);
-        font-size: 16px;
-        line-height: 1.7;
-      }
-
-      /* ═══ Closing CTA ════════════════════════════════════════ */
-      .lp-cta {
-        display: grid;
-        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-        border-radius: 24px;
-        overflow: hidden;
-        border: 1px solid rgba(98, 132, 235, 0.5);
-        background: var(--lp-surface);
-        box-shadow: var(--lp-shadow);
-      }
-
-      .lp-cta-main {
-        position: relative;
-        display: grid;
-        gap: 18px;
-        align-content: center;
-        padding: clamp(32px, 5vw, 64px);
-        background: linear-gradient(135deg, #4d41f6 0%, #3d78f6 60%, #4ac2f5 100%);
-        overflow: hidden;
-        isolation: isolate;
-      }
-
-      .lp-cta-main::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background:
-          linear-gradient(0deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-        background-size: 100% 34px, 88px 100%;
-      }
-
-      .lp-cta-mark {
-        position: absolute;
-        right: -30px;
-        bottom: -40px;
-        z-index: -1;
-        width: 260px;
-        opacity: 0.12;
-      }
-
-      .lp-cta-eyebrow {
-        font-family: var(--lp-mono);
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--lp-muted);
-      }
-
-      .lp-cta-main .lp-cta-eyebrow {
-        color: rgba(237, 243, 255, 0.72);
-      }
-
-      .lp-cta-main h2 {
-        max-width: 640px;
-        color: #ffffff;
-        font-size: clamp(26px, 3.4vw, 40px);
-      }
-
-      .lp-cta-main .lp-actions {
-        margin-top: 8px;
-      }
-
-      .lp-cta-news {
-        display: grid;
-        gap: 16px;
-        align-content: center;
-        padding: clamp(28px, 4vw, 56px);
-      }
-
-      .lp-cta-news-heading {
-        color: var(--lp-title);
-        font-size: clamp(18px, 1.8vw, 21px);
-        font-weight: 700;
-        line-height: 1.4;
-      }
-
-      .lp-cta-form {
-        display: flex;
-        gap: 8px;
-        padding: 6px;
-        border-radius: 12px;
-        border: 1px solid var(--lp-border);
-        background: var(--lp-surface-2);
-      }
-
-      .lp-cta-form:focus-within {
-        border-color: var(--lp-accent);
-      }
-
-      .lp-cta-form input {
-        flex: 1;
-        min-width: 0;
-        padding: 10px 12px;
-        border: none;
-        outline: none;
-        background: transparent;
-        color: var(--lp-title);
-        font-family: inherit;
-        font-size: 15px;
-      }
-
-      .lp-cta-form input::placeholder {
-        color: var(--lp-muted);
-      }
-
-      .lp-cta-form button {
-        padding: 10px 18px;
-        border: none;
-        border-radius: 8px;
-        background: var(--lp-accent);
-        color: var(--lp-accent-text);
-        font-family: inherit;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-      }
-
-      .lp-cta-form button:hover {
-        opacity: 0.88;
-      }
-
-      /* ═══ Keyframes ══════════════════════════════════════════ */
-      @keyframes lpPulse {
-        0%, 100% { box-shadow: 0 0 0 4px rgba(231, 181, 0, 0.22); }
-        50% { box-shadow: 0 0 0 8px rgba(231, 181, 0, 0.04); }
-      }
-
-      @keyframes lpSweep {
-        to { transform: rotate(360deg); }
-      }
-
-      @keyframes lpShot {
-        0% { left: 0; opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { left: 100%; opacity: 0; }
-      }
-
-      @keyframes lpFloat {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-      }
-
-      @keyframes lpBlink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.35; }
-      }
-
-      @keyframes lpSpin {
-        to { transform: rotate(360deg); }
-      }
-
-      @keyframes lpTrack {
-        0% { left: 28px; opacity: 0; }
-        12% { opacity: 1; }
-        88% { opacity: 1; }
-        100% { left: calc(100% - 148px); opacity: 0; }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .lp-announce-dot,
-        .lp-stage-sweep,
-        .lp-stage-shot-line span,
-        .lp-toast,
-        .lp-viz-leaf--pulse,
-        .lp-viz-ring-run,
-        .lp-lifecycle::after {
-          animation: none;
-        }
-
-        .lp-stage-shot-line,
-        .lp-lifecycle::after {
-          display: none;
-        }
-      }
-
-      /* ═══ Responsive ═════════════════════════════════════════ */
-      @media (max-width: 1100px) {
-        .lp-grid--3,
-        .lp-mosaic--3 {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .lp-mosaic--4 {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .lp-lifecycle {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          row-gap: 44px;
-        }
-
-        .lp-lifecycle::before,
-        .lp-lifecycle::after {
-          display: none;
-        }
-
-        .lp-split {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .lp-faq-head {
-          position: static;
-        }
-
-        .lp-cta {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .lp-toast--0 { left: 2%; top: 26%; }
-        .lp-toast--2 { display: none; }
-      }
-
-      @media (max-width: 1100px) {
-        .lp-refs {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .lp-refs > *,
-        .lp-refs > :nth-child(-n + 2) {
-          grid-column: auto;
-        }
-      }
-
-      @media (max-width: 860px) {
-        .lp-pqc-cert {
-          grid-template-columns: auto 1fr;
-          grid-template-rows: none;
-          column-gap: 14px;
-        }
-
-        .lp-pqc-path {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .lp-pqc-path::before {
-          top: 9px;
-          bottom: 16%;
-          left: 9px;
-          right: auto;
-          width: 2px;
-          height: auto;
-          background: linear-gradient(180deg, var(--lp-border), var(--lp-accent) 50%, var(--lp-cyan));
-        }
-
-        .lp-pqc-step {
-          padding-top: 0;
-        }
-
-        .lp-timeline-tick:nth-child(even) {
-          display: none;
-        }
-
-        .lp-toast {
-          display: none;
-        }
-      }
-
-      @media (max-width: 680px) {
-        .lp {
-          width: calc(100% - 32px);
-        }
-
-        .lp-grid--2,
-        .lp-grid--3,
-        .lp-refs,
-        .lp-mosaic--3,
-        .lp-mosaic--4,
-        .lp-lifecycle {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .lp-stage {
-          border-radius: 16px;
-          padding-top: 56px;
-        }
-
-        .lp-stage-numbers {
-          display: none;
-        }
-
-        .lp-card,
-        .lp-mosaic-cell {
-          padding: 24px;
-        }
-
-        .lp-pillar {
-          padding-top: 0;
-        }
-
-        .lp-pillar-visual {
-          margin: 0 -24px 8px;
-        }
-
-        .lp-timeline {
-          padding: 60px 14px 44px;
-        }
-
-        .lp-timeline-marker b {
-          display: none;
-        }
-
-        .lp-proof {
-          display: grid;
-          justify-content: start;
-          text-align: left;
-        }
-
-        .lp-keys {
-          align-items: flex-start;
-        }
-
-        .lp-faq-item summary {
-          font-size: 16px;
-        }
-
-        .lp-faq-item p {
-          padding-right: 0;
-        }
-
-        .lp-cta-form {
-          flex-direction: column;
-        }
-
-        /* Comparison: one stacked card per row, so the Lamassu answer is always visible */
-        .lp-compare {
-          overflow: visible;
-          border: none;
-          background: none;
-          box-shadow: none;
-        }
-
-        .lp-compare table,
-        .lp-compare tbody,
-        .lp-compare tr,
-        .lp-compare th,
-        .lp-compare td {
-          display: block;
-          min-width: 0;
-          width: auto;
-        }
-
-        .lp-compare thead {
-          display: none;
-        }
-
-        .lp-compare tbody {
-          display: grid;
-          gap: 12px;
-        }
-
-        .lp-compare tr {
-          border-radius: 14px;
-          border: 1px solid var(--lp-border);
-          background: var(--lp-surface);
-          overflow: hidden;
-        }
-
-        .lp-compare tbody th {
-          width: auto;
-          padding: 16px 18px 12px;
-          font-size: 16px;
-        }
-
-        .lp-compare td {
-          padding: 10px 18px;
-          border-bottom: none;
-        }
-
-        .lp-compare td::before {
-          content: attr(data-label);
-          display: block;
-          margin-bottom: 2px;
-          font-family: var(--lp-mono);
-          font-size: 10px;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: var(--lp-muted);
-        }
-
-        .lp-compare td.is-us {
-          margin-top: 6px;
-          padding: 14px 18px 16px 50px;
-          background-position: 20px 34px, 0 0;
-        }
-
-        .lp-compare td.is-us::before {
-          color: var(--lp-accent);
-        }
-
-        .lp-compare tbody tr:last-child > * {
-          border-bottom: none;
-        }
-      }
-
-      /* ═══ Dividers ═══════════════════════════════════════════ */
-      .home-divider {
-        width: 100vw;
-        margin-left: calc(-50vw + 50%);
-        margin-top: clamp(64px, 8vw, 112px);
-        height: 100px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .home-divider + .lp-section {
-        padding-top: clamp(64px, 8vw, 112px);
-      }
-
-      /* ── Divider variants ─────────────────────────────────────── */
-      .home-divider--chain,
-      .home-divider--hex,
-      .home-divider--signal,
-      .home-divider--grid {
-        display: grid;
-        place-items: center;
-      }
-
-      /* Chain of trust: root → issuing → device */
-      .home-divider--chain {
-        height: 96px;
-      }
-
-      .home-divider--chain::before,
-      .home-divider--chain::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        width: calc(50% - 330px);
-        height: 1px;
-      }
-
-      .home-divider--chain::before {
-        left: 0;
-        background: linear-gradient(90deg, transparent, var(--home-border));
-      }
-
-      .home-divider--chain::after {
-        right: 0;
-        background: linear-gradient(90deg, var(--home-border), transparent);
-      }
-
-      .chain-track {
-        display: flex;
-        align-items: center;
-        width: min(640px, calc(100% - 48px));
-      }
-
-      .chain-node {
-        position: relative;
-        display: grid;
-        place-items: center;
-        flex-shrink: 0;
-      }
-
-      .chain-node i {
-        width: 14px;
-        height: 14px;
-        border-radius: 4px;
-        transform: rotate(45deg);
-        border: 1.5px solid var(--home-accent);
-        background: var(--home-bg);
-        box-shadow: 0 0 0 5px rgba(126, 156, 255, 0.1);
-      }
-
-      .chain-node--leaf i {
-        border-radius: 50%;
-        transform: none;
-        border-color: #4ac2f5;
-        box-shadow: 0 0 0 5px rgba(74, 194, 245, 0.12), 0 0 18px rgba(74, 194, 245, 0.45);
-      }
-
-      .chain-node b {
-        position: absolute;
-        top: 24px;
-        white-space: nowrap;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 0.1em;
-        color: var(--home-muted);
-      }
-
-      .chain-link {
-        flex: 1;
-        height: 2px;
-        margin: 0 10px;
-        background-image: linear-gradient(90deg, var(--home-accent) 50%, transparent 50%);
-        background-size: 12px 2px;
-        opacity: 0.75;
-        animation: dividerChainFlow 1.6s linear infinite;
-      }
-
-      /* Two waves: classical and post-quantum */
-      .home-divider--wave svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-
-      .home-divider--wave path {
-        fill: none;
-        vector-effect: non-scaling-stroke;
-      }
-
-      .wave-classic {
-        stroke: url(#divider-wave-classic);
-        stroke-width: 1.5;
-      }
-
-      .wave-pq {
-        stroke: url(#divider-wave-pq);
-        stroke-width: 1.5;
-        stroke-dasharray: 2 6;
-      }
-
-      .wave-pulse {
-        stroke: #effcff;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-dasharray: 40 1600;
-        filter: drop-shadow(0 0 6px rgba(74, 194, 245, 0.9));
-        animation: dividerWavePulse 6s linear infinite;
-      }
-
-      [data-theme='light'] .wave-pulse {
-        stroke: #405fff;
-        filter: none;
-      }
-
-      /* Certificate fingerprint stream */
-      .home-divider--hex {
-        height: 64px;
-        border-top: 1px solid var(--home-border);
-        border-bottom: 1px solid var(--home-border);
-        background: var(--home-surface);
-        mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
-      }
-
-      .hex-track {
-        display: flex;
-        width: max-content;
-        animation: dividerHexDrift 70s linear infinite;
-      }
-
-      .hex-track span {
-        padding-right: 48px;
-        white-space: nowrap;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 12px;
-        letter-spacing: 0.14em;
-        color: var(--home-muted);
-        opacity: 0.7;
-      }
-
-      .hex-track em {
-        font-style: normal;
-        color: var(--home-accent);
-      }
-
-      /* Signal: a pulse travelling into the Lamassu mark */
-      .signal-line {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 50%;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(126, 156, 255, 0.55) 30%, rgba(74, 194, 245, 0.8) 50%, rgba(126, 156, 255, 0.55) 70%, transparent);
-      }
-
-      .signal-pulse {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 140px;
-        height: 2px;
-        transform: translateY(-50%);
-        background: linear-gradient(90deg, transparent, #effcff);
-        box-shadow: 0 0 12px rgba(170, 244, 255, 0.9);
-        animation: dividerSignal 4.5s cubic-bezier(0.55, 0, 0.45, 1) infinite;
-      }
-
-      [data-theme='light'] .signal-pulse {
-        background: linear-gradient(90deg, transparent, #405fff);
-        box-shadow: none;
-      }
-
-      .signal-badge {
-        position: relative;
-        width: 52px;
-        height: 52px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        border: 1px solid rgba(126, 156, 255, 0.55);
-        background: var(--home-bg);
-        box-shadow: 0 0 0 8px rgba(126, 156, 255, 0.07), 0 0 0 18px rgba(126, 156, 255, 0.04);
-      }
-
-      .signal-badge i {
-        width: 26px;
-        height: 26px;
-        background: var(--home-accent);
-        -webkit-mask: url('/lamassu_logo_white.svg') center / contain no-repeat;
-        mask: url('/lamassu_logo_white.svg') center / contain no-repeat;
-      }
-
-      /* Dotted grid with a scanning line */
-      .home-divider--grid {
-        background-image: radial-gradient(circle, rgba(143, 165, 228, 0.5) 1px, transparent 1.4px);
-        background-size: 18px 18px;
-        background-position: center;
-        mask-image: radial-gradient(60% 100% at 50% 50%, #000 0%, transparent 100%);
-      }
-
-      [data-theme='light'] .home-divider--grid {
-        background-image: radial-gradient(circle, rgba(37, 55, 95, 0.4) 1px, transparent 1.4px);
-      }
-
-      .grid-scan {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 120px;
-        background: linear-gradient(90deg, transparent, rgba(126, 156, 255, 0.22), transparent);
-        animation: dividerScan 7s ease-in-out infinite;
-      }
-
-      .grid-marker {
-        width: 12px;
-        height: 12px;
-        transform: rotate(45deg);
-        border: 1.5px solid var(--home-accent);
-        background: var(--home-bg);
-        box-shadow: 0 0 0 6px rgba(126, 156, 255, 0.12);
-      }
-
-      @keyframes dividerChainFlow {
-        to { background-position: 12px 0; }
-      }
-
-      @keyframes dividerWavePulse {
-        from { stroke-dashoffset: 1640; }
-        to { stroke-dashoffset: 0; }
-      }
-
-      @keyframes dividerHexDrift {
-        to { transform: translateX(-50%); }
-      }
-
-      @keyframes dividerSignal {
-        0% { left: -140px; opacity: 0; }
-        15% { opacity: 1; }
-        50% { left: calc(50% - 140px); opacity: 1; }
-        55%, 100% { left: calc(50% - 140px); opacity: 0; }
-      }
-
-      @keyframes dividerScan {
-        0%, 100% { left: 10%; }
-        50% { left: calc(90% - 120px); }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .chain-link,
-        .wave-pulse,
-        .hex-track,
-        .signal-pulse,
-        .grid-scan {
-          animation: none;
-        }
-
-        .wave-pulse,
-        .signal-pulse {
-          display: none;
-        }
-      }
-
-      @media (max-width: 640px) {
-        .home-divider--chain {
-          height: 72px;
-        }
-
-        .chain-node b {
-          font-size: 9px;
-          top: 20px;
-        }
-
-        .home-divider--hex {
-          height: 48px;
-        }
-
-        .signal-badge {
-          width: 40px;
-          height: 40px;
-        }
-
-        .signal-badge i {
-          width: 20px;
-          height: 20px;
-        }
-      }
-
-      /* ═══ Phones ═════════════════════════════════════════════ */
-      .lp-dots {
-        display: none;
-      }
-
-      @media (max-width: 680px) {
-        /* Rhythm */
-        .lp-section {
-          padding-top: 64px;
-        }
-
-        .lp-section--tight {
-          padding-top: 44px;
-        }
-
-        .home-divider {
-          margin-top: 48px;
-        }
-
-        .home-divider + .lp-section {
-          padding-top: 48px;
-        }
-
-        .lp-grid,
-        .lp-mosaic,
-        .lp-compare {
-          margin-top: 32px;
-        }
-
-        .lp-head {
-          gap: 12px;
-        }
-
-        .lp-head--center {
-          margin: 0;
-          text-align: left;
-          justify-items: start;
-        }
-
-        .lp-lead {
-          font-size: 16.5px;
-        }
-
-        .lp-statement {
-          margin-top: 28px !important;
-          padding-left: 16px;
-          font-size: 17px;
-        }
-
-        /* Hero */
-        .lp-hero {
-          padding: 32px 0 36px;
-          gap: 20px;
-        }
-
-        .lp-announce {
-          font-size: 12px;
-          text-align: left;
-        }
-
-        .lp-hero h1 {
-          font-size: clamp(38px, 11vw, 46px);
-        }
-
-        .lp-hero-lead {
-          font-size: 16.5px;
-        }
-
-        .lp-hero .lp-actions {
-          width: 100%;
-          flex-direction: column;
-        }
-
-        .lp-hero .lp-btn {
-          width: 100%;
-          min-height: 50px;
-        }
-
-        .lp-proof {
-          gap: 8px;
-        }
-
-        /* Stage: show the whole console, notification underneath it */
-        .lp-stage {
-          padding: 42px 10px 12px;
-        }
-
-        .lp-stage-label {
-          top: 20px;
-          left: 14px;
-        }
-
-        .lp-stage-shot-line {
-          top: 10px;
-        }
-
-        .lp-stage-shot {
-          height: auto;
-          margin: 0 -2%;
-          mask-image: none;
-        }
-
-        .lp-stage-shot img {
-          filter: drop-shadow(0 18px 24px rgba(9, 17, 31, 0.45));
-        }
-
-        .lp-toast.lp-toast--0 {
-          position: relative;
-          display: flex;
-          left: auto;
-          top: auto;
-          margin-top: 6px;
-          font-size: 13px;
-          animation: none;
-        }
-
-        /* The cards already carry the dates; the axis is too cramped at this width */
-        .lp-timeline {
-          display: none;
-        }
-
-        /* Swipe rows */
-        .lp-scroll {
-          display: flex;
-          gap: 12px;
-          margin-left: -16px;
-          margin-right: -16px;
-          padding: 4px 16px 6px;
-          overflow-x: auto;
-          scroll-snap-type: x mandatory;
-          scroll-padding-inline: 16px;
-          overscroll-behavior-x: contain;
-          scrollbar-width: none;
-          -webkit-overflow-scrolling: touch;
-        }
-
-        .lp-scroll::-webkit-scrollbar {
-          display: none;
-        }
-
-        .lp-scroll > * {
-          flex: 0 0 min(84%, 340px);
-          scroll-snap-align: start;
-        }
-
-        .lp-mosaic.lp-scroll {
-          border: none;
-          border-radius: 0;
-          background: none;
-        }
-
-        .lp-mosaic.lp-scroll > .lp-mosaic-cell {
-          border: 1px solid var(--lp-border);
-          border-radius: var(--lp-radius);
-        }
-
-        .lp-dots {
-          display: flex;
-          justify-content: center;
-          gap: 6px;
-          margin-top: 14px;
-        }
-
-        .lp-dots span {
-          width: 6px;
-          height: 6px;
-          border-radius: 999px;
-          background: var(--lp-border);
-          transition: width 0.2s ease, background-color 0.2s ease;
-        }
-
-        .lp-dots span.is-active {
-          width: 18px;
-          background: var(--lp-accent);
-        }
-
-        /* Post-quantum: panel padding + certificates as a swipe row */
-        .lp-pqc {
-          padding: 26px 18px;
-          gap: 32px;
-          border-radius: 18px;
-        }
-
-        .lp-pqc .lp-scroll {
-          margin-left: -18px;
-          margin-right: -18px;
-          padding-left: 18px;
-          padding-right: 18px;
-          scroll-padding-inline: 18px;
-        }
-
-        .lp-pqc-path::before {
-          display: none;
-        }
-
-        .lp-pqc-cert {
-          grid-template-columns: none;
-          grid-template-rows: auto 1fr;
-        }
-
-        .lp-pqc-step {
-          flex-direction: row;
-          align-items: center;
-        }
-
-        .lp-pqc-step-dot {
-          width: 14px;
-          height: 14px;
-        }
-
-        .lp-pqc-points {
-          gap: 22px;
-        }
-
-        .lp-pqc-foot .lp-actions,
-        .lp-pqc-foot .lp-btn {
-          width: 100%;
-        }
-
-        /* Automation: compact vertical list with a connecting rail */
-        .lp-lifecycle {
-          margin-top: 36px;
-          gap: 26px;
-        }
-
-        .lp-lifecycle::before {
-          display: block;
-          top: 24px;
-          bottom: 24px;
-          left: 23px;
-          right: auto;
-          width: 2px;
-          height: auto;
-        }
-
-        .lp-lifecycle li {
-          grid-template-columns: 48px minmax(0, 1fr);
-          grid-template-areas:
-            'node num'
-            'node title'
-            'node body';
-          column-gap: 16px;
-          row-gap: 2px;
-        }
-
-        .lp-lifecycle-node {
-          grid-area: node;
-          width: 48px;
-          height: 48px;
-          margin: 0;
-          border-radius: 14px;
-        }
-
-        .lp-lifecycle-num { grid-area: num; }
-        .lp-lifecycle-title { grid-area: title; font-size: 18px; }
-        .lp-lifecycle-body { grid-area: body; }
-
-        .lp-protocol h3 {
-          font-size: 22px;
-        }
-
-        /* References: one scrolling row of filters */
-        .lp-tabs {
-          flex-wrap: nowrap;
-          margin: 28px -16px 0;
-          padding: 0 16px 4px;
-          overflow-x: auto;
-          scrollbar-width: none;
-        }
-
-        .lp-tabs::-webkit-scrollbar {
-          display: none;
-        }
-
-        .lp-tabs a {
-          flex-shrink: 0;
-        }
-
-        .lp-refs {
-          margin-top: 16px;
-        }
-
-        /* FAQ + CTA */
-        .lp-faq-head .lp-actions {
-          display: none;
-        }
-
-        .lp-cta {
-          border-radius: 18px;
-        }
-
-        .lp-cta-main .lp-btn {
-          width: 100%;
-        }
-
-        .lp-btn,
-        .lp-faq-item summary,
-        .lp-tabs a {
-          -webkit-tap-highlight-color: transparent;
-        }
-      }
-    </style>
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   </Fragment>
-
-  <script is:inline>
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('lp-motion');
-    }
-  </script>
 
   <main class="lp">
 
-    <!-- ═══ Hero ═══════════════════════════════════════════════ -->
+    <!-- ═══ Hero — gradient panel ═══ -->
     <section class="lp-hero" id="home">
-      <a class="lp-announce" href="#pqc">
-        <span class="lp-announce-dot" aria-hidden="true"></span>
-        <span data-i18n="home.hero.announce">{home.hero.announce}</span>
-        <span aria-hidden="true">→</span>
-      </a>
-      <h1>
-        <span data-i18n="home.hero.title">{home.hero.title}</span>
-        <span class="lp-grad-text" data-i18n="home.hero.titleAccent">{home.hero.titleAccent}</span>
-      </h1>
-      <p class="lp-hero-lead" data-i18n="home.hero.lead">{home.hero.lead}</p>
-      <div class="lp-actions lp-actions--center">
-        <a class="lp-btn lp-btn--primary" href="#contact" data-i18n="home.hero.ctaPrimary">{home.hero.ctaPrimary}</a>
-        <a class="lp-btn lp-btn--ghost" href="#deployment" data-i18n="home.hero.ctaSecondary">{home.hero.ctaSecondary}</a>
-      </div>
-      <ul class="lp-proof" aria-label={home.hero.proofAria} data-i18n-attr-aria-label="home.hero.proofAria">
-        {home.hero.proof.map((item, index) => (
-          <li data-i18n={`home.hero.proof.${index}`}>{item}</li>
-        ))}
-      </ul>
-    </section>
-
-    <!-- ═══ Product stage — the trusted mesh with the console on top ═ -->
-    <section class="lp-stage" id="overview" aria-label={home.overview.imageAlt} data-i18n-attr-aria-label="home.overview.imageAlt">
-      <div class="lp-stage-mesh" aria-hidden="true">
-        <div class="lp-stage-sweep"></div>
-        <div class="lp-stage-shot-line"><span></span></div>
-        <p class="lp-stage-label">LAMASSU TRUSTED MESH</p>
-        <p class="lp-stage-numbers">89 24</p>
-      </div>
-      <figure class="lp-stage-shot">
-        <img src="/dashboard.png" alt={home.overview.imageAlt} data-i18n-attr-alt="home.overview.imageAlt" width="3776" height="2475" />
-      </figure>
-      {home.hero.toasts.map((toast, index) => (
-        <div class:list={['lp-toast', `lp-toast--${index}`]} aria-hidden="true">
-          <span class="lp-toast-icon"><svg viewBox="0 0 24 24" set:html={icons[toastIcons[index]]} /></span>
-          <span data-i18n={`home.hero.toasts.${index}`}>{toast}</span>
+      <div class="lp-hero-inner">
+        <a class="lp-announce" href="#pqc">
+          <span class="lp-announce-tag" data-i18n="home.hero.announceTag">{home.hero.announceTag}</span>
+          <span class="lp-announce-text" data-i18n="home.hero.announce">{home.hero.announce}</span>
+          <span class="lp-announce-arrow" aria-hidden="true">&gt;</span>
+        </a>
+        <h1>
+          <span data-i18n="home.hero.title">{home.hero.title}</span>
+          <span class="lp-mark" data-i18n="home.hero.titleMark">{home.hero.titleMark}</span>
+        </h1>
+        <p class="lp-hero-lead" data-i18n="home.hero.lead">{home.hero.lead}</p>
+        <div class="lp-actions">
+          <a class="lp-btn lp-btn--white" href="#contact" data-i18n="home.hero.ctaPrimary">{home.hero.ctaPrimary}</a>
+          <a class="lp-btn lp-btn--outline-white" href="#deployment" data-i18n="home.hero.ctaSecondary">{home.hero.ctaSecondary}</a>
         </div>
-      ))}
-    </section>
-
-    <!-- ═══ Console explainer ══════════════════════════════════ -->
-    <section class="lp-section lp-section--tight">
-      <div class="lp-split">
-        <header class="lp-head" data-reveal>
-          <p class="lp-eyebrow" data-i18n="home.overview.eyebrow">{home.overview.eyebrow}</p>
-          <h2 data-i18n="home.overview.title">{home.overview.title}</h2>
-          <p class="lp-lead" data-i18n="home.overview.body">{home.overview.body}</p>
-        </header>
-        <ol class="lp-console-list" data-reveal>
-          {home.overview.blocks.map((block, index) => (
-            <li>
-              <span class="lp-icon"><svg viewBox="0 0 24 24" set:html={icons[consoleIcons[index]]} /></span>
-              <div>
-                <p class="lp-console-title" data-i18n={`home.overview.blocks.${index}.title`}>{block.title}</p>
-                <p data-i18n={`home.overview.blocks.${index}.body1`}>{block.body1}</p>
-              </div>
-            </li>
+        <ul class="lp-proof" aria-label={home.hero.proofAria} data-i18n-attr-aria-label="home.hero.proofAria">
+          {home.hero.proof.map((item, index) => (
+            <li data-i18n={`home.hero.proof.${index}`}>{item}</li>
           ))}
-        </ol>
+        </ul>
       </div>
     </section>
 
-    <!-- ═══ Logos ══════════════════════════════════════════════ -->
-    <section class="lp-logos" aria-label={home.logos.aria} data-i18n-attr-aria-label="home.logos.aria">
+    <!-- ═══ Logos ═══════════════════════════════════════════════ -->
+    <section class="lp-wrap lp-logos" aria-label={home.logos.aria} data-i18n-attr-aria-label="home.logos.aria">
       <p class="lp-logos-title" data-i18n="home.logos.title">{home.logos.title}</p>
       <ul>
         {customerLogos.map((logo) => (
@@ -2804,431 +155,484 @@ const faqJsonLd = {
       </ul>
     </section>
 
-    <!-- ═══ Why now — three clocks on a timeline ═══════════════ -->
-    <section class="lp-section" id="why-now">
-      <header class="lp-head" data-reveal>
-        <p class="lp-eyebrow" data-i18n="home.whyNow.eyebrow">{home.whyNow.eyebrow}</p>
-        <h2 data-i18n="home.whyNow.title">{home.whyNow.title}</h2>
-        <p class="lp-lead" data-i18n="home.whyNow.lead">{home.whyNow.lead}</p>
-      </header>
+    <!-- ═══ Platform — framed statement + three cells ═══════════ -->
+    <section class="lp-section" id="platform">
+      <div class="lp-wrap">
+        <header class="lp-framed lp-head lp-head--center" data-reveal>
+          <p class="lp-label" data-i18n="home.platform.label">{home.platform.label}</p>
+          <h2>
+            <span data-i18n="home.platform.title">{home.platform.title}</span>
+            <span class="lp-mark" data-i18n="home.platform.titleMark">{home.platform.titleMark}</span>
+            <span data-i18n="home.platform.titleEnd">{home.platform.titleEnd}</span>
+          </h2>
+          <p class="lp-lead" data-i18n="home.platform.lead">{home.platform.lead}</p>
+        </header>
 
-      <div class="lp-timeline" aria-hidden="true" data-reveal>
-        <div class="lp-timeline-axis">
-          {timelineYears.map((year, index) => (
-            <span class="lp-timeline-tick" style={`left:${(index / (timelineYears.length - 1)) * 100}%`}>{year}</span>
-          ))}
-          <span class="lp-timeline-today" style={`left:${timelineToday}%`}>
-            <b data-i18n="home.whyNow.today">{home.whyNow.today}</b>
-          </span>
-          {home.whyNow.items.map((item, index) => (
-            <span class="lp-timeline-marker" style={`left:${timelineMarkers[index]}%`}>
-              <i>{`0${index + 1}`}</i>
-              <b data-i18n={`home.whyNow.items.${index}.value`}>{item.value}</b>
-            </span>
+        <div class="lp-cells" data-reveal>
+          {home.platform.items.map((item, index) => (
+            <article class="lp-cell">
+              <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[platformIcons[index]]} />
+              <h3 data-i18n={`home.platform.items.${index}.title`}>{item.title}</h3>
+              <p class="lp-body" data-i18n={`home.platform.items.${index}.body`}>{item.body}</p>
+              <a class="lp-link" href={item.href} data-i18n={`home.platform.items.${index}.link`}>{item.link}</a>
+            </article>
           ))}
         </div>
       </div>
-
-      <div class="lp-grid lp-grid--3 lp-scroll" data-reveal>
-        {home.whyNow.items.map((item, index) => (
-          <article class="lp-card lp-clock">
-            <span class="lp-clock-num" aria-hidden="true">{`0${index + 1}`}</span>
-            <p class="lp-clock-value" data-i18n={`home.whyNow.items.${index}.value`}>{item.value}</p>
-            <p class="lp-clock-label" data-i18n={`home.whyNow.items.${index}.label`}>{item.label}</p>
-            <p class="lp-card-body" data-i18n={`home.whyNow.items.${index}.body`}>{item.body}</p>
-            <p class="lp-clock-source" data-i18n={`home.whyNow.items.${index}.source`}>{item.source}</p>
-          </article>
-        ))}
-      </div>
-      <p class="lp-statement" data-reveal data-i18n="home.whyNow.closing">{home.whyNow.closing}</p>
     </section>
 
-    <!-- ═══ Three pillars ══════════════════════════════════════ -->
-    <section class="lp-section" id="platform">
-      <header class="lp-head lp-head--center" data-reveal>
-        <p class="lp-eyebrow" data-i18n="home.pillars.eyebrow">{home.pillars.eyebrow}</p>
-        <h2 data-i18n="home.pillars.title">{home.pillars.title}</h2>
-        <p class="lp-lead" data-i18n="home.pillars.lead">{home.pillars.lead}</p>
-      </header>
-      <div class="lp-grid lp-grid--3 lp-scroll" data-reveal>
-        {home.pillars.items.map((item, index) => (
-          <article class="lp-card lp-pillar">
-            <div class="lp-pillar-visual" aria-hidden="true">
-              {index === 0 && (
-                <svg viewBox="0 0 240 130" class="lp-viz-tree">
-                  <path class="lp-viz-line" d="M120 30 V52 M120 52 H66 V74 M120 52 H174 V74 M66 90 V104 H40 V116 M66 104 H92 V116 M174 90 V104 H148 V116 M174 104 H200 V116" />
-                  <rect class="lp-viz-node lp-viz-node--root" x="96" y="10" width="48" height="20" rx="6" />
-                  <text x="120" y="24">ROOT</text>
-                  <rect class="lp-viz-node" x="44" y="74" width="44" height="16" rx="5" />
-                  <rect class="lp-viz-node" x="152" y="74" width="44" height="16" rx="5" />
-                  <text x="66" y="85.5" class="lp-viz-small">CA</text>
-                  <text x="174" y="85.5" class="lp-viz-small">CA</text>
-                  <circle class="lp-viz-leaf" cx="40" cy="120" r="5" />
-                  <circle class="lp-viz-leaf" cx="92" cy="120" r="5" />
-                  <circle class="lp-viz-leaf" cx="148" cy="120" r="5" />
-                  <circle class="lp-viz-leaf lp-viz-leaf--pulse" cx="200" cy="120" r="5" />
-                </svg>
-              )}
-              {index === 1 && (
-                <svg viewBox="0 0 240 130" class="lp-viz-loop">
-                  <circle class="lp-viz-ring" cx="120" cy="65" r="48" />
-                  <circle class="lp-viz-ring-run" cx="120" cy="65" r="48" />
-                  <circle class="lp-viz-dot" cx="120" cy="17" r="5" />
-                  <circle class="lp-viz-dot" cx="168" cy="65" r="5" />
-                  <circle class="lp-viz-dot" cx="120" cy="113" r="5" />
-                  <circle class="lp-viz-dot" cx="72" cy="65" r="5" />
-                  <rect class="lp-viz-chip" x="97" y="47" width="46" height="16" rx="8" />
-                  <text x="120" y="58.5" class="lp-viz-small">EST</text>
-                  <rect class="lp-viz-chip lp-viz-chip--alt" x="97" y="67" width="46" height="16" rx="8" />
-                  <text x="120" y="78.5" class="lp-viz-small">CMP</text>
-                </svg>
-              )}
-              {index === 2 && (
-                <svg viewBox="0 0 240 130" class="lp-viz-cert">
-                  <rect class="lp-viz-doc" x="52" y="10" width="136" height="110" rx="10" />
-                  <rect class="lp-viz-doc-bar" x="66" y="24" width="60" height="6" rx="3" />
-                  <rect class="lp-viz-doc-bar lp-viz-doc-bar--soft" x="66" y="36" width="92" height="5" rx="2.5" />
-                  <rect class="lp-viz-sig" x="66" y="56" width="108" height="20" rx="6" />
-                  <text x="120" y="69.5" class="lp-viz-small">RSA · ECDSA</text>
-                  <rect class="lp-viz-sig lp-viz-sig--pq" x="66" y="84" width="108" height="20" rx="6" />
-                  <text x="120" y="97.5" class="lp-viz-small lp-viz-small--pq">ML-DSA</text>
-                </svg>
-              )}
-            </div>
-            <p class="lp-tag" data-i18n={`home.pillars.items.${index}.tag`}>{item.tag}</p>
-            <h3 data-i18n={`home.pillars.items.${index}.title`}>{item.title}</h3>
-            <p class="lp-card-body" data-i18n={`home.pillars.items.${index}.body`}>{item.body}</p>
-            <ul class="lp-checks">
-              {item.points.map((point, pi) => (
-                <li data-i18n={`home.pillars.items.${index}.points.${pi}`}>{point}</li>
-              ))}
-            </ul>
-            <a class="lp-link" href={pillarLinks[index]} data-i18n={`home.pillars.items.${index}.link`}>{item.link}</a>
-          </article>
-        ))}
-      </div>
-    </section>
+    <!-- ═══ Product: certificate authorities ════════════════════ -->
+    <section class="lp-section lp-product" id="pki">
+      <div class="lp-wrap">
+        <div class="lp-product-head" data-reveal>
+          <header class="lp-head">
+            <p class="lp-label" data-i18n="home.pki.label">{home.pki.label}</p>
+            <h2><span class="lp-mark" data-i18n="home.pki.title">{home.pki.title}</span></h2>
+            <p class="lp-lead" data-i18n="home.pki.lead">{home.pki.lead}</p>
+          </header>
+          <a class="lp-btn lp-btn--secondary" href={home.docs.pki} data-i18n-attr-href="home.docs.pki" data-i18n="home.pki.cta">{home.pki.cta}</a>
+        </div>
 
-    <div class="home-divider home-divider--chain" aria-hidden="true">
-      <div class="chain-track">
-        <span class="chain-node"><i></i><b>ROOT CA</b></span>
-        <span class="chain-link"></span>
-        <span class="chain-node"><i></i><b>ISSUING CA</b></span>
-        <span class="chain-link"></span>
-        <span class="chain-node chain-node--leaf"><i></i><b>DEVICE</b></span>
-      </div>
-    </div>
-
-    <!-- ═══ Post-quantum spotlight ═════════════════════════════ -->
-    <section class="lp-section" id="pqc">
-      <div class="lp-pqc">
-        <header class="lp-head" data-reveal>
-          <p class="lp-badge" data-i18n="home.pqc.badge">{home.pqc.badge}</p>
-          <h2 data-i18n="home.pqc.title">{home.pqc.title}</h2>
-          <p class="lp-lead" data-i18n="home.pqc.lead">{home.pqc.lead}</p>
-        </header>
-
-        <ol class="lp-pqc-path lp-scroll" data-reveal>
-          {home.pqc.certs.map((cert, index) => (
-            <li class:list={['lp-pqc-cert', `lp-pqc-cert--${index}`]}>
-              <p class="lp-pqc-step">
-                <span class="lp-pqc-step-dot" aria-hidden="true"></span>
-                <span data-i18n={`home.pqc.certs.${index}.tag`}>{cert.tag}</span>
-              </p>
-              <div class="lp-pqc-doc">
-                <div class="lp-pqc-doc-head" aria-hidden="true">
-                  <span class="lp-pqc-seal"><svg viewBox="0 0 24 24" set:html={icons.ca} /></span>
-                  <span class="lp-pqc-doc-lines"><i></i><i></i></span>
+        <div class="lp-product-frame" data-reveal>
+          <ul class="lp-features">
+            {home.pki.features.map((feature, index) => (
+              <li class="lp-feature">
+                <p class="lp-feature-tag">
+                  <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[pkiIcons[index]]} />
+                  <span data-i18n={`home.pki.features.${index}.tag`}>{feature.tag}</span>
+                </p>
+                <p data-i18n={`home.pki.features.${index}.body`}>{feature.body}</p>
+                <a class="lp-link" href={feature.href} data-i18n-attr-href={`home.pki.features.${index}.href`} data-i18n={`home.pki.features.${index}.link`}>{feature.link}</a>
+              </li>
+            ))}
+          </ul>
+          <div class="lp-visual" aria-hidden="true">
+            <div class="lp-window">
+              <div class="lp-window-bar">
+                <div>
+                  <p class="lp-window-title">Certification Authorities</p>
+                  <p class="lp-window-sub">Hierarchy · 5 CAs · 3 crypto engines</p>
                 </div>
-                <h3 data-i18n={`home.pqc.certs.${index}.name`}>{cert.name}</h3>
-                <div class="lp-pqc-sigs" aria-hidden="true">
-                  {index !== 2 && <span class="lp-sig">RSA · ECDSA</span>}
-                  {index !== 0 && <span class="lp-sig lp-sig--pq">ML-DSA</span>}
-                </div>
-                <p data-i18n={`home.pqc.certs.${index}.body`}>{cert.body}</p>
+                <span class="lp-window-btn">+ Create CA</span>
               </div>
+              <table class="lp-table">
+                <thead>
+                  <tr><th>Name</th><th>Key</th><th>Engine</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                  {caRows.map((row) => (
+                    <tr>
+                      <td>{row.tree && <span class="lp-tree">{row.tree}</span>}{row.name}</td>
+                      <td class="lp-mono">{row.algo}</td>
+                      <td>{row.engine}</td>
+                      <td><span class={`lp-status lp-status--${row.status[0]}`}>{row.status[1]}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Product: device identity (EST / CMP) ════════════════ -->
+    <section class="lp-section lp-product lp-product--flip" id="automation">
+      <div class="lp-wrap">
+        <div class="lp-product-head" data-reveal>
+          <header class="lp-head">
+            <p class="lp-label" data-i18n="home.devices.label">{home.devices.label}</p>
+            <h2><span class="lp-mark" data-i18n="home.devices.title">{home.devices.title}</span></h2>
+            <p class="lp-lead" data-i18n="home.devices.lead">{home.devices.lead}</p>
+            <div class="lp-chips">
+              {home.devices.protocols.map((protocol, index) => (
+                <span class="lp-chip" data-i18n={`home.devices.protocols.${index}`}>{protocol}</span>
+              ))}
+            </div>
+          </header>
+          <a class="lp-btn lp-btn--secondary" href={home.docs.enrollment} data-i18n-attr-href="home.docs.enrollment" data-i18n="home.devices.cta">{home.devices.cta}</a>
+        </div>
+
+        <div class="lp-product-frame" data-reveal>
+          <ul class="lp-features">
+            {home.devices.features.map((feature, index) => (
+              <li class="lp-feature">
+                <p class="lp-feature-tag">
+                  <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[devicesIcons[index]]} />
+                  <span data-i18n={`home.devices.features.${index}.tag`}>{feature.tag}</span>
+                </p>
+                <p data-i18n={`home.devices.features.${index}.body`}>{feature.body}</p>
+                <a class="lp-link" href={feature.href} data-i18n-attr-href={`home.devices.features.${index}.href`} data-i18n={`home.devices.features.${index}.link`}>{feature.link}</a>
+              </li>
+            ))}
+          </ul>
+          <div class="lp-visual" aria-hidden="true">
+            <div class="lp-window">
+              <div class="lp-window-bar">
+                <div>
+                  <p class="lp-window-title">Device events</p>
+                  <p class="lp-window-sub">DMS · factory-line-3 · /.well-known/est</p>
+                </div>
+                <span class="lp-status lp-status--ok">Live</span>
+              </div>
+              <ul class="lp-log">
+                {deviceEvents.map((event) => (
+                  <li>
+                    <span class="lp-log-time">{event.time}</span>
+                    <span class="lp-log-op">{event.op}</span>
+                    <span>{event.device}</span>
+                    <span class={`lp-status lp-status--${event.status[0]}`}>{event.status[1]}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Product: key custody ════════════════════════════════ -->
+    <section class="lp-section lp-product" id="keys">
+      <div class="lp-wrap">
+        <div class="lp-product-head" data-reveal>
+          <header class="lp-head">
+            <p class="lp-label" data-i18n="home.keys.label">{home.keys.label}</p>
+            <h2><span class="lp-mark" data-i18n="home.keys.title">{home.keys.title}</span></h2>
+            <p class="lp-lead" data-i18n="home.keys.lead">{home.keys.lead}</p>
+          </header>
+          <a class="lp-btn lp-btn--secondary" href={home.docs.keys} data-i18n-attr-href="home.docs.keys" data-i18n="home.keys.cta">{home.keys.cta}</a>
+        </div>
+
+        <div class="lp-product-frame" data-reveal>
+          <ul class="lp-features">
+            {home.keys.features.map((feature, index) => (
+              <li class="lp-feature">
+                <p class="lp-feature-tag">
+                  <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[keysIcons[index]]} />
+                  <span data-i18n={`home.keys.features.${index}.tag`}>{feature.tag}</span>
+                </p>
+                <p data-i18n={`home.keys.features.${index}.body`}>{feature.body}</p>
+              </li>
+            ))}
+          </ul>
+          <div class="lp-visual" aria-hidden="true">
+            <div class="lp-window">
+              <div class="lp-window-bar">
+                <div>
+                  <p class="lp-window-title">Crypto Engines</p>
+                  <p class="lp-window-sub">KMS · 5 engines connected</p>
+                </div>
+                <span class="lp-window-btn">+ Add engine</span>
+              </div>
+              <div class="lp-engines">
+                {engines.map((engine) => (
+                  <div class="lp-engine">
+                    <span class="lp-engine-icon"><svg class="lp-icon" viewBox="0 0 24 24" set:html={icons[engine.icon]} /></span>
+                    <span>
+                      <span class="lp-engine-name">{engine.name}</span><br />
+                      <span class="lp-engine-id">{engine.id}</span>
+                    </span>
+                    <span class="lp-status lp-status--info">{engine.level}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Post-quantum — inverted band ════════════════════════ -->
+    <section class="lp-band" id="pqc">
+      <div class="lp-wrap">
+        <div class="lp-band-head" data-reveal>
+          <header class="lp-head">
+            <p class="lp-badge" data-i18n="home.pqc.badge">{home.pqc.badge}</p>
+            <h2>
+              <span data-i18n="home.pqc.title">{home.pqc.title}</span>
+              <span data-i18n="home.pqc.titleMuted">{home.pqc.titleMuted}</span>
+            </h2>
+            <p class="lp-lead" data-i18n="home.pqc.lead">{home.pqc.lead}</p>
+          </header>
+          <div class="lp-actions">
+            <a class="lp-btn lp-btn--primary" href="#contact" data-i18n="home.pqc.ctaPrimary">{home.pqc.ctaPrimary}</a>
+          </div>
+        </div>
+
+        <ol class="lp-certs" data-reveal>
+          {home.pqc.certs.map((cert, index) => (
+            <li class:list={['lp-cert', index === 1 && 'lp-cert--hl']}>
+              <p class="lp-cert-step" data-i18n={`home.pqc.certs.${index}.tag`}>{cert.tag}</p>
+              <h3 data-i18n={`home.pqc.certs.${index}.name`}>{cert.name}</h3>
+              <div class="lp-chips">
+                {index < 2 && <span class="lp-sig">RSA · ECDSA</span>}
+                {index > 0 && <span class="lp-sig lp-sig--pq">ML-DSA</span>}
+              </div>
+              <p class="lp-body" data-i18n={`home.pqc.certs.${index}.body`}>{cert.body}</p>
             </li>
           ))}
         </ol>
 
-        <div class="lp-grid lp-grid--3 lp-pqc-points" data-reveal>
+        <div class="lp-points" data-reveal>
           {home.pqc.points.map((point, index) => (
-            <div class="lp-pqc-point">
-              <p class="lp-pqc-point-title" data-i18n={`home.pqc.points.${index}.title`}>{point.title}</p>
-              <p data-i18n={`home.pqc.points.${index}.body`}>{point.body}</p>
+            <div class="lp-point">
+              <h3 data-i18n={`home.pqc.points.${index}.title`}>{point.title}</h3>
+              <p class="lp-body" data-i18n={`home.pqc.points.${index}.body`}>{point.body}</p>
             </div>
           ))}
         </div>
 
-        <footer class="lp-pqc-foot">
-          <p class="lp-note" data-i18n="home.pqc.note">{home.pqc.note}</p>
-          <div class="lp-actions">
-            <a class="lp-btn lp-btn--primary" href="#contact" data-i18n="home.pqc.ctaPrimary">{home.pqc.ctaPrimary}</a>
-            <a class="lp-btn lp-btn--ghost" href="/docs/" data-i18n="home.pqc.ctaSecondary">{home.pqc.ctaSecondary}</a>
-          </div>
-        </footer>
+        <p class="lp-note" data-i18n="home.pqc.note">{home.pqc.note}</p>
       </div>
     </section>
 
-    <div class="home-divider home-divider--wave" aria-hidden="true">
-      <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="divider-wave-classic" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#5a1ff0" stop-opacity="0" />
-            <stop offset="0.5" stop-color="#7e9cff" />
-            <stop offset="1" stop-color="#5a1ff0" stop-opacity="0" />
-          </linearGradient>
-          <linearGradient id="divider-wave-pq" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#4ac2f5" stop-opacity="0" />
-            <stop offset="0.5" stop-color="#4ac2f5" />
-            <stop offset="1" stop-color="#4ac2f5" stop-opacity="0" />
-          </linearGradient>
-        </defs>
-        <path class="wave-classic" d="M0 50 C 120 14, 240 14, 360 50 S 600 86, 720 50 S 960 14, 1080 50 S 1320 86, 1440 50" />
-        <path class="wave-pq" d="M0 50 C 120 86, 240 86, 360 50 S 600 14, 720 50 S 960 86, 1080 50 S 1320 14, 1440 50" />
-        <path class="wave-pulse" d="M0 50 C 120 86, 240 86, 360 50 S 600 14, 720 50 S 960 86, 1080 50 S 1320 14, 1440 50" />
-      </svg>
-    </div>
+    <!-- ═══ Why now — three big numbers ═════════════════════════ -->
+    <section class="lp-section lp-section--bare" id="why-now">
+      <div class="lp-wrap">
+        <header class="lp-head lp-head--center" data-reveal>
+          <p class="lp-label" data-i18n="home.whyNow.label">{home.whyNow.label}</p>
+          <h2 data-i18n="home.whyNow.title">{home.whyNow.title}</h2>
+          <p class="lp-lead" data-i18n="home.whyNow.lead">{home.whyNow.lead}</p>
+        </header>
+        <div class="lp-stats" data-reveal>
+          {home.whyNow.items.map((item, index) => (
+            <article class="lp-stat">
+              <p class="lp-stat-value" data-i18n={`home.whyNow.items.${index}.value`}>{item.value}</p>
+              <h3 data-i18n={`home.whyNow.items.${index}.label`}>{item.label}</h3>
+              <p class="lp-body" data-i18n={`home.whyNow.items.${index}.body`}>{item.body}</p>
+              <p class="lp-source" data-i18n={`home.whyNow.items.${index}.source`}>{item.source}</p>
+            </article>
+          ))}
+        </div>
+        <p class="lp-statement" data-reveal data-i18n="home.whyNow.closing">{home.whyNow.closing}</p>
+      </div>
+    </section>
 
-    <!-- ═══ Automation by standards ════════════════════════════ -->
-    <section class="lp-section" id="automation">
-      <header class="lp-head" data-reveal>
-        <p class="lp-eyebrow" data-i18n="home.automation.eyebrow">{home.automation.eyebrow}</p>
-        <h2 data-i18n="home.automation.title">{home.automation.title}</h2>
-        <p class="lp-lead" data-i18n="home.automation.lead">{home.automation.lead}</p>
-      </header>
+    <!-- ═══ Operations bento ════════════════════════════════════ -->
+    <section class="lp-section" id="operations">
+      <div class="lp-wrap">
+        <header class="lp-head lp-head--center" data-reveal>
+          <p class="lp-label" data-i18n="home.ops.label">{home.ops.label}</p>
+          <h2 data-i18n="home.ops.title">{home.ops.title}</h2>
+          <p class="lp-lead" data-i18n="home.ops.lead">{home.ops.lead}</p>
+        </header>
 
-      <ol class="lp-lifecycle" data-reveal>
-        {home.automation.steps.map((step, index) => (
-          <li>
-            <span class="lp-lifecycle-node"><svg viewBox="0 0 24 24" set:html={icons[stepIcons[index]]} /></span>
-            <p class="lp-lifecycle-num" aria-hidden="true">{`0${index + 1}`}</p>
-            <p class="lp-lifecycle-title" data-i18n={`home.automation.steps.${index}.title`}>{step.title}</p>
-            <p class="lp-lifecycle-body" data-i18n={`home.automation.steps.${index}.body`}>{step.body}</p>
-          </li>
-        ))}
-      </ol>
-
-      <div class="lp-grid lp-grid--2" data-reveal>
-        {home.automation.protocols.map((protocol, index) => (
-          <article class="lp-card lp-protocol">
-            <div class="lp-protocol-head">
-              <h3>{protocol.name}</h3>
-              <span class="lp-chip">{protocol.spec}</span>
-              <span class:list={['lp-status', index === 1 && 'lp-status--early']} data-i18n={`home.automation.protocols.${index}.status`}>{protocol.status}</span>
+        <div class="lp-bento" data-reveal>
+          <article class="lp-tile lp-tile--wide lp-tile--shot">
+            <div class="lp-tile-text">
+              <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.console} />
+              <h3 data-i18n="home.ops.tiles.0.title">{home.ops.tiles[0].title}</h3>
+              <p class="lp-body" data-i18n="home.ops.tiles.0.body">{home.ops.tiles[0].body}</p>
             </div>
-            <p class="lp-card-body" data-i18n={`home.automation.protocols.${index}.body`}>{protocol.body}</p>
+            <div class="lp-tile-shot" aria-hidden="true"></div>
           </article>
-        ))}
-      </div>
-      <p class="lp-statement" data-reveal data-i18n="home.automation.closing">{home.automation.closing}</p>
-    </section>
 
-    <!-- ═══ Capabilities ═══════════════════════════════════════ -->
-    <section class="lp-section" id="capabilities">
-      <header class="lp-head lp-head--center" data-reveal>
-        <p class="lp-eyebrow" data-i18n="home.capabilities.eyebrow">{home.capabilities.eyebrow}</p>
-        <h2 data-i18n="home.capabilities.title">{home.capabilities.title}</h2>
-        <p class="lp-lead" data-i18n="home.capabilities.lead">{home.capabilities.lead}</p>
-      </header>
-      <div class="lp-mosaic lp-mosaic--3 lp-scroll" data-reveal>
-        {home.capabilities.items.map((item, index) => (
-          <article class="lp-mosaic-cell">
-            <span class="lp-icon"><svg viewBox="0 0 24 24" set:html={icons[capabilityIcons[index]]} /></span>
-            <h3 data-i18n={`home.capabilities.items.${index}.title`}>{item.title}</h3>
-            <p class="lp-card-body" data-i18n={`home.capabilities.items.${index}.body`}>{item.body}</p>
-            <ul class="lp-checks">
-              {item.points.map((point, pi) => (
-                <li data-i18n={`home.capabilities.items.${index}.points.${pi}`}>{point}</li>
+          <article class="lp-tile lp-tile--solid">
+            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.code} />
+            <div class="lp-tile-text">
+              <h3 data-i18n="home.ops.tiles.1.title">{home.ops.tiles[1].title}</h3>
+              <p class="lp-body" data-i18n="home.ops.tiles.1.body">{home.ops.tiles[1].body}</p>
+              <div class="lp-chips">
+                {['GitHub', 'X.509', 'EST', 'OpenAPI'].map((chip) => <span class="lp-chip">{chip}</span>)}
+              </div>
+            </div>
+          </article>
+
+          <article class="lp-tile">
+            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.users} />
+            <div class="lp-tile-text">
+              <h3 data-i18n="home.ops.tiles.2.title">{home.ops.tiles[2].title}</h3>
+              <p class="lp-body" data-i18n="home.ops.tiles.2.body">{home.ops.tiles[2].body}</p>
+            </div>
+          </article>
+
+          <article class="lp-tile">
+            <ul class="lp-mini-log" aria-hidden="true">
+              {auditEvents.map(([event, who]) => (
+                <li><span>{event}</span><span>{who}</span></li>
               ))}
             </ul>
+            <div class="lp-tile-text">
+              <h3 data-i18n="home.ops.tiles.3.title">{home.ops.tiles[3].title}</h3>
+              <p class="lp-body" data-i18n="home.ops.tiles.3.body">{home.ops.tiles[3].body}</p>
+            </div>
           </article>
-        ))}
+
+          <article class="lp-tile">
+            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.link} />
+            <div class="lp-tile-text">
+              <h3 data-i18n="home.ops.tiles.4.title">{home.ops.tiles[4].title}</h3>
+              <p class="lp-body" data-i18n="home.ops.tiles.4.body">{home.ops.tiles[4].body}</p>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <div class="home-divider home-divider--hex" aria-hidden="true">
-      <div class="hex-track">
-        <span set:html={`SHA-256 · ${hexFingerprint}`} />
-        <span set:html={`SHA-256 · ${hexFingerprint}`} />
-      </div>
-    </div>
-
-    <!-- ═══ Deployment ═════════════════════════════════════════ -->
+    <!-- ═══ Deployment — plans grid ═════════════════════════════ -->
     <section class="lp-section" id="deployment">
-      <header class="lp-head" data-reveal>
-        <p class="lp-eyebrow" data-i18n="home.deployment.eyebrow">{home.deployment.eyebrow}</p>
-        <h2 data-i18n="home.deployment.title">{home.deployment.title}</h2>
-        <p class="lp-lead" data-i18n="home.deployment.lead">{home.deployment.lead}</p>
-      </header>
-      <div class="lp-grid lp-grid--3 lp-scroll" data-reveal>
-        {home.deployment.options.map((option, index) => (
-          <article class="lp-card lp-deploy">
-            <div class="lp-deploy-top">
-              <span class="lp-icon lp-icon--lg"><svg viewBox="0 0 24 24" set:html={icons[deployIcons[index]]} /></span>
-              <p class="lp-chip" data-i18n={`home.deployment.options.${index}.tag`}>{option.tag}</p>
-            </div>
-            <h3 data-i18n={`home.deployment.options.${index}.title`}>{option.title}</h3>
-            <p class="lp-card-body" data-i18n={`home.deployment.options.${index}.body`}>{option.body}</p>
-            <dl class="lp-facts">
-              <div>
-                <dt data-i18n="home.deployment.operatedByLabel">{home.deployment.operatedByLabel}</dt>
-                <dd data-i18n={`home.deployment.options.${index}.operatedBy`}>{option.operatedBy}</dd>
+      <div class="lp-wrap">
+        <header class="lp-head" data-reveal>
+          <p class="lp-label" data-i18n="home.deployment.label">{home.deployment.label}</p>
+          <h2 data-i18n="home.deployment.title">{home.deployment.title}</h2>
+          <p class="lp-lead" data-i18n="home.deployment.lead">{home.deployment.lead}</p>
+        </header>
+
+        <div class="lp-plans" data-reveal>
+          {home.deployment.options.map((option, index) => (
+            <article class="lp-plan">
+              <p class="lp-label lp-label--plain" data-i18n={`home.deployment.options.${index}.tag`}>{option.tag}</p>
+              <h3 data-i18n={`home.deployment.options.${index}.title`}>{option.title}</h3>
+              <p class="lp-body" data-i18n={`home.deployment.options.${index}.body`}>{option.body}</p>
+              <div class="lp-chips">
+                {option.chips.map((chip, chipIndex) => (
+                  <span class="lp-chip" data-i18n={`home.deployment.options.${index}.chips.${chipIndex}`}>{chip}</span>
+                ))}
               </div>
-              <div>
-                <dt data-i18n="home.deployment.bestForLabel">{home.deployment.bestForLabel}</dt>
-                <dd data-i18n={`home.deployment.options.${index}.bestFor`}>{option.bestFor}</dd>
-              </div>
-            </dl>
-          </article>
-        ))}
+              <dl class="lp-facts">
+                <div>
+                  <dt data-i18n="home.deployment.operatedByLabel">{home.deployment.operatedByLabel}</dt>
+                  <dd data-i18n={`home.deployment.options.${index}.operatedBy`}>{option.operatedBy}</dd>
+                </div>
+                <div>
+                  <dt data-i18n="home.deployment.bestForLabel">{home.deployment.bestForLabel}</dt>
+                  <dd data-i18n={`home.deployment.options.${index}.bestFor`}>{option.bestFor}</dd>
+                </div>
+              </dl>
+              <a class="lp-btn lp-btn--secondary" href={option.href} data-i18n-attr-href={`home.deployment.options.${index}.href`} data-i18n={`home.deployment.options.${index}.cta`}>{option.cta}</a>
+            </article>
+          ))}
+          <p class="lp-plans-foot">
+            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons.lock} />
+            <span data-i18n="home.deployment.keys">{home.deployment.keys}</span>
+          </p>
+        </div>
       </div>
-      <p class="lp-keys" data-reveal>
-        <span class="lp-icon"><svg viewBox="0 0 24 24" set:html={icons.lock} /></span>
-        <span data-i18n="home.deployment.keys">{home.deployment.keys}</span>
-      </p>
     </section>
 
-    <!-- ═══ Comparison ═════════════════════════════════════════ -->
+    <!-- ═══ Comparison ══════════════════════════════════════════ -->
     <section class="lp-section" id="compare">
-      <header class="lp-head lp-head--center" data-reveal>
-        <p class="lp-eyebrow" data-i18n="home.compare.eyebrow">{home.compare.eyebrow}</p>
-        <h2 data-i18n="home.compare.title">{home.compare.title}</h2>
-        <p class="lp-lead" data-i18n="home.compare.lead">{home.compare.lead}</p>
-      </header>
-      <div class="lp-compare" data-reveal>
-        <table>
-          <thead>
-            <tr>
-              {home.compare.headers.map((header, index) => (
-                <th scope="col" class:list={[index === 3 && 'is-us']}>
-                  {index === 3 && <span class="lp-compare-mark" aria-hidden="true"></span>}
-                  <span data-i18n={`home.compare.headers.${index}`}>{header}</span>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {home.compare.rows.map((row, rowIndex) => (
+      <div class="lp-wrap">
+        <header class="lp-head lp-head--center" data-reveal>
+          <p class="lp-label" data-i18n="home.compare.label">{home.compare.label}</p>
+          <h2 data-i18n="home.compare.title">{home.compare.title}</h2>
+          <p class="lp-lead" data-i18n="home.compare.lead">{home.compare.lead}</p>
+        </header>
+        <div class="lp-compare" data-reveal>
+          <table>
+            <thead>
               <tr>
-                {row.map((cell, cellIndex) => cellIndex === 0
-                  ? <th scope="row" data-i18n={`home.compare.rows.${rowIndex}.${cellIndex}`}>{cell}</th>
-                  : <td
-                      class:list={[cellIndex === 3 && 'is-us']}
-                      data-label={home.compare.headers[cellIndex]}
-                      data-i18n-attr-data-label={`home.compare.headers.${cellIndex}`}
-                      data-i18n={`home.compare.rows.${rowIndex}.${cellIndex}`}
-                    >{cell}</td>
-                )}
+                {home.compare.headers.map((header, index) => (
+                  <th scope="col" class:list={[index === 3 && 'is-us']} data-i18n={`home.compare.headers.${index}`}>{header}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {home.compare.rows.map((row, rowIndex) => (
+                <tr>
+                  {row.map((cell, cellIndex) =>
+                    cellIndex === 0 ? (
+                      <th scope="row" data-i18n={`home.compare.rows.${rowIndex}.${cellIndex}`}>{cell}</th>
+                    ) : (
+                      <td class:list={[cellIndex === 3 && 'is-us']} data-i18n={`home.compare.rows.${rowIndex}.${cellIndex}`}>{cell}</td>
+                    ),
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <div class="home-divider home-divider--signal" aria-hidden="true">
-      <span class="signal-line"></span>
-      <span class="signal-pulse"></span>
-      <span class="signal-badge"><i></i></span>
-    </div>
-
-    <!-- ═══ Trust ══════════════════════════════════════════════ -->
-    <section class="lp-section" id="trust">
-      <header class="lp-head" data-reveal>
-        <p class="lp-eyebrow" data-i18n="home.trust.eyebrow">{home.trust.eyebrow}</p>
-        <h2 data-i18n="home.trust.title">{home.trust.title}</h2>
-      </header>
-      <div class="lp-mosaic lp-mosaic--4 lp-scroll" data-reveal>
-        {home.trust.items.map((item, index) => (
-          <article class="lp-mosaic-cell">
-            <span class="lp-icon"><svg viewBox="0 0 24 24" set:html={icons[trustIcons[index]]} /></span>
-            <h3 data-i18n={`home.trust.items.${index}.title`}>{item.title}</h3>
-            <p class="lp-card-body" data-i18n={`home.trust.items.${index}.body`}>{item.body}</p>
-            <div class="lp-chips">
-              {trustBadges[index].map((badge) => <span class="lp-chip">{badge}</span>)}
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-
-    <!-- ═══ Customer references ════════════════════════════════ -->
+    <!-- ═══ Customer stories — tabs ══════════════════════════════ -->
     <section class="lp-section" id="cases">
-      <header class="lp-head" data-reveal>
-        <p class="lp-eyebrow" data-i18n="home.references.eyebrow">{home.references.eyebrow}</p>
-        <h2 data-i18n="home.references.title">{home.references.title}</h2>
-        <p class="lp-lead" data-i18n="home.references.subtitle">{home.references.subtitle}</p>
-      </header>
-      <nav class="lp-tabs" aria-label={home.references.title}>
-        {home.references.cards.map((card, index) => (
-          <a href={`#reference-card-${index}`} data-i18n={`home.references.cards.${index}.sector`}>{card.sector}</a>
-        ))}
-      </nav>
-      <div class="lp-grid lp-grid--3 lp-refs lp-scroll" data-reveal>
-        {home.references.cards.map((card, index) => (
-          <a class="lp-card lp-ref" id={`reference-card-${index}`} href={referenceLinks[index]}>
-            <p class="lp-chip" data-i18n={`home.references.cards.${index}.sector`}>{card.sector}</p>
-            <h3 data-i18n={`home.references.cards.${index}.title`}>{card.title}</h3>
-            <p class="lp-ref-highlight" data-i18n={`home.references.cards.${index}.highlight`}>{card.highlight}</p>
-            <p class="lp-card-body" data-i18n={`home.references.cards.${index}.body`}>{card.body}</p>
-            <span class="lp-link" data-i18n="home.references.cta">{home.references.cta}</span>
-          </a>
-        ))}
+      <div class="lp-wrap">
+        <header class="lp-head" data-reveal>
+          <p class="lp-label" data-i18n="home.references.label">{home.references.label}</p>
+          <h2 data-i18n="home.references.title">{home.references.title}</h2>
+          <p class="lp-lead" data-i18n="home.references.lead">{home.references.lead}</p>
+        </header>
+
+        <div class="lp-stories" data-reveal>
+          <div class="lp-tabs" role="tablist" aria-label={home.references.tabsAria} data-i18n-attr-aria-label="home.references.tabsAria">
+            {home.references.cards.map((card, index) => (
+              <button
+                type="button"
+                class="lp-tab"
+                role="tab"
+                id={`story-tab-${index}`}
+                aria-controls={`story-${index}`}
+                aria-selected={index === 0 ? 'true' : 'false'}
+                tabindex={index === 0 ? '0' : '-1'}
+                data-i18n={`home.references.cards.${index}.sector`}
+              >{card.sector}</button>
+            ))}
+          </div>
+          {home.references.cards.map((card, index) => (
+            <div class="lp-story" role="tabpanel" id={`story-${index}`} aria-labelledby={`story-tab-${index}`} hidden={index !== 0}>
+              <div class="lp-story-main">
+                <p class="lp-story-quote">
+                  <span data-i18n={`home.references.cards.${index}.title`}>{card.title}</span>{' '}
+                  <em data-i18n={`home.references.cards.${index}.highlight`}>{card.highlight}</em>
+                </p>
+                <p class="lp-lead" data-i18n={`home.references.cards.${index}.body`}>{card.body}</p>
+              </div>
+              <div class="lp-story-card">
+                <p class="lp-label lp-label--plain" data-i18n="home.references.sectorLabel">{home.references.sectorLabel}</p>
+                <p class="lp-story-sector" data-i18n={`home.references.cards.${index}.sector`}>{card.sector}</p>
+                <a class="lp-link" href={referenceLinks[index]} data-i18n="home.references.cta">{home.references.cta}</a>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
 
-    <div class="home-divider home-divider--grid" aria-hidden="true">
-      <span class="grid-scan"></span>
-      <span class="grid-marker"></span>
-    </div>
-
-    <!-- ═══ FAQ ════════════════════════════════════════════════ -->
+    <!-- ═══ FAQ ═════════════════════════════════════════════════ -->
     <section class="lp-section" id="faq">
-      <div class="lp-split lp-split--faq">
+      <div class="lp-wrap lp-split">
         <header class="lp-head lp-faq-head" data-reveal>
-          <p class="lp-eyebrow" data-i18n="home.faq.eyebrow">{home.faq.eyebrow}</p>
+          <p class="lp-label" data-i18n="home.faq.label">{home.faq.label}</p>
           <h2 data-i18n="home.faq.title">{home.faq.title}</h2>
           <p class="lp-lead" data-i18n="home.faq.lead">{home.faq.lead}</p>
           <div class="lp-actions">
-            <a class="lp-btn lp-btn--ghost" href="#contact" data-i18n="home.faq.cta">{home.faq.cta}</a>
+            <a class="lp-btn lp-btn--primary" href="#contact" data-i18n="home.faq.cta">{home.faq.cta}</a>
           </div>
         </header>
         <div class="lp-faq" data-reveal>
           {home.faq.items.map((item, index) => (
-            <details class="lp-faq-item" open={index === 0}>
+            <details>
               <summary data-i18n={`home.faq.items.${index}.q`}>{item.q}</summary>
-              <p data-i18n={`home.faq.items.${index}.a`}>{item.a}</p>
+              <p class="lp-body" data-i18n={`home.faq.items.${index}.a`}>{item.a}</p>
             </details>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- ═══ Closing CTA + newsletter ═══════════════════════════ -->
-    <section class="lp-section lp-section--tight" id="contact">
-      <div class="lp-cta" data-reveal>
-        <div class="lp-cta-main">
-          <img class="lp-cta-mark" src="/lamassu_logo_white.svg" alt="" aria-hidden="true" />
-          <p class="lp-cta-eyebrow" data-i18n="home.cta.left.eyebrow">{home.cta.left.eyebrow}</p>
-          <h2 data-i18n="home.cta.left.heading">{home.cta.left.heading}</h2>
-          <div class="lp-actions">
-            <a href="mailto:info@lamassu.io" class="lp-btn lp-btn--light" data-i18n="home.cta.left.btn">{home.cta.left.btn}</a>
-          </div>
+    <!-- ═══ Closing panel ═══════════════════════════════════════ -->
+    <section class="lp-closing" id="contact" data-reveal>
+      <div class="lp-closing-main">
+        <p class="lp-label" data-i18n="home.cta.left.label">{home.cta.left.label}</p>
+        <h2 data-i18n="home.cta.left.heading">{home.cta.left.heading}</h2>
+        <div class="lp-actions">
+          <a href="mailto:info@lamassu.io" class="lp-btn lp-btn--white" data-i18n="home.cta.left.btn">{home.cta.left.btn}</a>
         </div>
-        <div class="lp-cta-news">
-          <p class="lp-cta-eyebrow" data-i18n="home.cta.right.eyebrow">{home.cta.right.eyebrow}</p>
-          <p class="lp-cta-news-heading" data-i18n="home.cta.right.heading">{home.cta.right.heading}</p>
-          <form class="lp-cta-form" onsubmit="return false;">
-            <input
-              type="email"
-              placeholder={home.cta.right.inputPlaceholder}
-              aria-label={home.cta.right.inputPlaceholder}
-              data-i18n-attr-placeholder="home.cta.right.inputPlaceholder"
-            />
-            <button type="submit" data-i18n="home.cta.right.submitLabel">{home.cta.right.submitLabel}</button>
-          </form>
-        </div>
+      </div>
+      <div class="lp-news">
+        <p class="lp-label" data-i18n="home.cta.right.label">{home.cta.right.label}</p>
+        <p class="lp-news-heading" data-i18n="home.cta.right.heading">{home.cta.right.heading}</p>
+        <form onsubmit="return false;">
+          <input
+            type="email"
+            placeholder={home.cta.right.inputPlaceholder}
+            aria-label={home.cta.right.inputPlaceholder}
+            data-i18n-attr-placeholder="home.cta.right.inputPlaceholder"
+            data-i18n-attr-aria-label="home.cta.right.inputPlaceholder"
+          />
+          <button type="submit" class="lp-btn lp-btn--primary" data-i18n="home.cta.right.submitLabel">{home.cta.right.submitLabel}</button>
+        </form>
       </div>
     </section>
 
@@ -3236,11 +640,34 @@ const faqJsonLd = {
 
   <script is:inline>
     (function () {
+      // Customer-story tabs
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.lp-tab'));
+      function select(tab) {
+        tabs.forEach(function (other) {
+          var on = other === tab;
+          other.setAttribute('aria-selected', on ? 'true' : 'false');
+          other.setAttribute('tabindex', on ? '0' : '-1');
+          var panel = document.getElementById(other.getAttribute('aria-controls'));
+          if (panel) panel.hidden = !on;
+        });
+      }
+      tabs.forEach(function (tab, index) {
+        tab.addEventListener('click', function () { select(tab); });
+        tab.addEventListener('keydown', function (event) {
+          var step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+          if (!step) return;
+          var next = tabs[(index + step + tabs.length) % tabs.length];
+          select(next);
+          next.focus();
+        });
+      });
+
+      // Reveal on scroll
       var root = document.documentElement;
       if (!root.classList.contains('lp-motion')) return;
       var targets = document.querySelectorAll('[data-reveal]');
       if (!('IntersectionObserver' in window)) {
-        targets.forEach(function (element) { element.classList.add('is-visible'); });
+        targets.forEach(function (el) { el.classList.add('is-visible'); });
         return;
       }
       var observer = new IntersectionObserver(function (entries) {
@@ -3250,37 +677,8 @@ const faqJsonLd = {
             observer.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-      targets.forEach(function (element) {
-        observer.observe(element);
-      });
+      }, { rootMargin: '0px 0px -8% 0px' });
+      targets.forEach(function (el) { observer.observe(el); });
     })();
   </script>
-  <script is:inline>
-    (function () {
-      document.querySelectorAll('.lp-scroll').forEach(function (scroller) {
-        var items = scroller.children;
-        if (items.length < 2) return;
-        var dots = document.createElement('div');
-        dots.className = 'lp-dots';
-        dots.setAttribute('aria-hidden', 'true');
-        for (var i = 0; i < items.length; i++) dots.appendChild(document.createElement('span'));
-        scroller.insertAdjacentElement('afterend', dots);
-
-        function update() {
-          var step = items[1].offsetLeft - items[0].offsetLeft || 1;
-          var atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 4;
-          var index = atEnd ? items.length - 1 : Math.round(scroller.scrollLeft / step);
-          Array.prototype.forEach.call(dots.children, function (dot, dotIndex) {
-            dot.classList.toggle('is-active', dotIndex === index);
-          });
-        }
-
-        scroller.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', update);
-        update();
-      });
-    })();
-  </script>
-  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>
 </SiteLayout>

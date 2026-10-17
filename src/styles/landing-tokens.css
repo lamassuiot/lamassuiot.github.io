@@ -1,0 +1,114 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Landing design tokens — the single place to tune the look of "/".
+
+   Colours, type, shape and spacing live here; src/styles/landing.css
+   only references these variables. Copy lives in src/lib/i18n.ts
+   (homeTranslations.<locale>.home.*).
+
+   Sections:  1 Palette   2 Type   3 Shape   4 Layout   5 Surfaces
+   Themes:    light is the landing's default (set in index.astro unless
+              the visitor picked dark). :root holds the dark values,
+              [data-theme='light'] overrides only what differs.
+   If you change a font family, update the Google Fonts <link> in
+   index.astro to load it.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── 1. Palette (dark) ─────────────────────────────────────────── */
+  --lp-bg: #09111f;
+  --lp-surface: #0f1829;
+  --lp-surface-2: #142036;
+  --lp-border: #223250;
+  --lp-border-strong: #31476d;
+  --lp-title: #edf3ff;
+  --lp-text: #bcc9df;
+  --lp-muted: #8fa1c3;
+
+  --lp-accent: #7e9cff; /* links, icons, primary buttons */
+  --lp-accent-hover: #98b0ff;
+  --lp-accent-soft: rgba(126, 156, 255, 0.12);
+  --lp-accent-text: #08101e; /* text on a solid accent fill */
+  --lp-mark: rgba(126, 156, 255, 0.24); /* highlighter behind key words */
+  --lp-cyan: #4ac2f5;
+  --lp-green: #5fd49a;
+  --lp-gold: #e7b500;
+  --lp-red: #ff7a7a;
+  --lp-hero-mark: linear-gradient(95deg, #00e5ff 0%, #7dfbd8 40%, #fffbd1 75%, #ffffff 100%); /* hero key words (gradient text) */
+
+  /* Brand gradients */
+  --lp-grad: linear-gradient(120deg, #5a1ff0 0%, #4d41f6 30%, #3d78f6 64%, #4ac2f5 100%); /* hero + closing panels */
+  --lp-grad-text: linear-gradient(90deg, #9d8bff 0%, #7e9cff 45%, #4ac2f5 100%); /* big numbers */
+  --lp-tile-grad: linear-gradient(135deg, #4d41f6 0%, #3d78f6 62%, #4ac2f5 100%); /* solid bento tile */
+  --lp-frame-grad: linear-gradient(125deg, #4d41f6 0%, #3d78f6 50%, #4ac2f5 100%); /* product visuals */
+
+  /* Deep-navy band (post-quantum). Always dark, in both themes. */
+  --lp-band-bg: #09111f;
+  --lp-band-surface: #0f1829;
+  --lp-band-border: #223250;
+  --lp-band-title: #edf3ff;
+  --lp-band-text: #bcc9df;
+  --lp-band-muted: #8fa1c3;
+  --lp-band-accent: #7e9cff;
+  --lp-band-cyan: #4ac2f5;
+
+  /* ── 2. Type ───────────────────────────────────────────────────── */
+  --lp-font-body: 'Manrope', sans-serif;
+  --lp-font-head: 'Manrope', sans-serif;
+  --lp-mono: 'JetBrains Mono', monospace;
+
+  --lp-weight-h1: 700;
+  --lp-weight-h2: 600;
+  --lp-weight-h3: 600;
+  --lp-h1-size: clamp(40px, 6.2vw, 84px);
+  --lp-h2-size: clamp(30px, 3.9vw, 50px);
+  --lp-h3-size: 19px;
+  --lp-lead-size: clamp(17px, 1.6vw, 19px);
+  --lp-body-size: 15px;
+  --lp-label-size: 11.5px; /* mono uppercase labels */
+  --lp-h1-tracking: -0.042em;
+  --lp-h2-tracking: -0.032em;
+
+  /* ── 3. Shape ──────────────────────────────────────────────────── */
+  --lp-radius-sm: 6px; /* buttons, chips, inputs */
+  --lp-radius-md: 10px; /* cards, frames, windows */
+  --lp-radius-xl: 22px; /* hero and closing panels */
+
+  /* ── 4. Layout ─────────────────────────────────────────────────── */
+  --lp-width: min(1280px, calc(100% - 48px));
+  --lp-rail-gap: 18px; /* distance from content edge to the dashed rails */
+  --lp-section-gap: clamp(72px, 8vw, 120px); /* space above a section rule */
+  --lp-section-pad: clamp(56px, 6vw, 88px); /* space below it */
+  --lp-btn-height: 44px;
+  --lp-btn-pad: 0 20px;
+
+  /* ── 5. Surfaces ───────────────────────────────────────────────── */
+  --lp-shadow-window: 0 24px 60px -28px rgba(4, 10, 30, 0.55);
+  --lp-dots: radial-gradient(circle, rgba(255, 255, 255, 0.55) 1px, transparent 1.4px); /* halftone */
+  --lp-dots-ink: radial-gradient(circle, rgba(143, 161, 195, 0.35) 1px, transparent 1.4px);
+  --lp-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+[data-theme='light'] {
+  --lp-bg: #ffffff;
+  --lp-surface: #ffffff;
+  --lp-surface-2: #f5f7fc;
+  --lp-border: #e2e7f1;
+  --lp-border-strong: #c9d2e4;
+  --lp-title: #0d1424;
+  --lp-text: #3d4a63;
+  --lp-muted: #66738f;
+
+  --lp-accent: #405fff;
+  --lp-accent-hover: #2f4cf0;
+  --lp-accent-soft: rgba(64, 95, 255, 0.08);
+  --lp-accent-text: #ffffff;
+  --lp-mark: #dfe6ff;
+  --lp-cyan: #1b8fd0;
+  --lp-green: #13804d;
+  --lp-gold: #a86b00;
+  --lp-red: #c53030;
+
+  --lp-grad-text: linear-gradient(90deg, #5a1ff0 0%, #405fff 50%, #1b8fd0 100%);
+  --lp-shadow-window: 0 24px 60px -30px rgba(13, 20, 36, 0.35);
+  --lp-dots-ink: radial-gradient(circle, rgba(64, 80, 120, 0.22) 1px, transparent 1.4px);
+}

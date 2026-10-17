@@ -105,167 +105,174 @@ export const sharedTranslations = {
   },
 } as const;
 
+// Home copy. Product claims follow the docs at /docs (lamassu docs repo); the
+// post-quantum and CMP sections describe early-access features not covered there yet.
+// Doc links are per locale: English has no prefix, Spanish lives under /docs/es/,
+// Basque falls back to the English docs.
 export const homeTranslations = {
   en: {
     meta: {
-      title: 'Lamassu | Open PKI for device identity — automated with EST & CMP, post-quantum ready',
+      title: 'Lamassu | Open PKI for IoT and industrial device identity',
     },
     home: {
+      docs: {
+        pki: '/docs/platform/pki/overview',
+        enrollment: '/docs/platform/iot-fleets/enrollment/overview',
+        keys: '/docs/platform/pki/key-management',
+      },
       hero: {
-        kicker: 'Open PKI · Device identity · Post-quantum ready',
+        announceTag: 'Preview',
+        announce: 'Post-quantum certificates in early access',
         title: 'Trusted identity for every',
-        titleAccent: 'connected device',
-        announce: 'New · Post-quantum certificates in early access',
-        toasts: ['Certificate renewed automatically', 'New device enrolled via EST', 'Hybrid post-quantum certificate issued'],
+        titleMark: 'connected device',
         lead:
-          'Lamassu is an open, enterprise-grade PKI that issues, renews and revokes certificates on its own — through open standards like EST and CMP, with your keys in the HSM or cloud KMS you choose, and with post-quantum certificates you can start testing today.',
+          'Lamassu is an open PKI for IoT and industrial fleets. Create your certificate authorities, enrol devices over EST and manage every X.509 identity — issuance, renewal and revocation — with keys in the HSM or KMS you choose.',
         ctaPrimary: 'Talk to an expert',
         ctaSecondary: 'See deployment options',
         proofAria: 'Key facts about Lamassu',
-        proof: [
-          'Complete PKI: CAs, keys, CRL & OCSP',
-          'Automated with EST & CMP',
-          'Experimental pure & hybrid PQC certificates',
-          'SaaS, AWS or on-premises',
-          'Open source',
-        ],
+        proof: ['CAs, profiles, CRL & OCSP', 'Enrolment and renewal over EST', 'Keys in HSM, AWS KMS, Azure or Vault', 'SaaS, AWS or Kubernetes'],
+        imageAlt: 'Lamassu console showing the managed device inventory',
+        toasts: ['Device enrolled via EST', 'Certificate revoked · MQTT session closed'],
       },
       logos: {
         aria: 'Companies working with Lamassu',
-        title: 'Industrial companies working with Lamassu',
+        title: 'Industrial companies that trust Lamassu with their device identity',
       },
-      whyNow: {
-        eyebrow: 'Why now',
-        today: 'Today',
-        title: 'Three clocks are running on your certificates',
+      platform: {
+        label: 'The platform',
+        title: 'A',
+        titleMark: 'complete PKI',
+        titleEnd: 'for your device identity',
         lead:
-          'Certificates are getting shorter lives, regulation is turning device security into a condition of sale, and the cryptography inside today’s certificates has an expiry date of its own. Any one of these makes manual PKI untenable. Together, they make it a board-level risk.',
+          'Lamassu ties together a root of trust, an issuance policy and every device that has to prove who it is. All in one console and one API, with access control and traceability.',
         items: [
           {
-            value: '47 days',
-            label: 'Maximum public TLS certificate lifetime by 2029',
-            body:
-              'The industry has voted to cut public certificate validity from 398 days to 47. Renewals become eight times more frequent — and the same pressure is reaching private and device PKI. Spreadsheets and calendar reminders stop working long before that.',
-            source: 'CA/Browser Forum · Ballot SC-081 (2025)',
+            title: 'Certificate authorities',
+            body: 'Root and intermediate hierarchies, created or imported, and profiles that decide what gets issued and for how long.',
+            link: 'Explore the PKI',
+            href: '#pki',
           },
           {
-            value: 'Dec 2027',
-            label: 'The EU Cyber Resilience Act fully applies',
-            body:
-              'Every product with digital elements sold in the EU must be secure by design: unique identities, protected communications, secure updates. Vulnerability-reporting obligations already apply since September 2026.',
-            source: 'Regulation (EU) 2024/2847',
+            title: 'Device identity',
+            body: 'Enrolment over EST, the state of every device and renewal windows set fleet by fleet.',
+            link: 'See device enrolment',
+            href: '#automation',
           },
           {
-            value: '2030',
-            label: 'RSA and ECC start being phased out',
-            body:
-              'Transition plans on both sides of the Atlantic begin deprecating quantum-vulnerable algorithms in 2030 and retire them by 2035. A device you ship this year will still be in the field when that happens.',
-            source: 'NIST IR 8547 · EU coordinated PQC roadmap (2025)',
-          },
-        ],
-        closing:
-          'The only sustainable answer is a PKI that automates the whole certificate lifecycle and can change its cryptography without touching every device by hand. That is what Lamassu is built for.',
-      },
-      pillars: {
-        eyebrow: 'The platform',
-        title: 'Three pillars, one platform',
-        lead:
-          'Lamassu combines a complete certificate authority, standards-based automation and crypto-agility — so security keeps control and operations stop firefighting.',
-        items: [
-          {
-            tag: 'PKI first',
-            title: 'A complete PKI, not a certificate add-on',
-            body:
-              'Root and subordinate certificate authorities, issuance profiles, registration and validation authorities, CRL and OCSP — everything a production PKI needs, in one platform your team can govern.',
-            points: [
-              'Multi-level CA hierarchies, created or imported',
-              'CA keys in HSM, cloud KMS or Vault',
-              'Revocation published over CRL and OCSP',
-            ],
-            link: 'What’s inside →',
-          },
-          {
-            tag: 'Automation by standards',
-            title: 'Enrolment and renewal without human hands',
-            body:
-              'Devices and servers obtain, renew and replace their own certificates using EST and CMP — open IETF standards already built into industrial hardware and software. No proprietary agent, no scripts, no lock-in.',
-            points: [
-              'EST and CMP enrolment out of the box',
-              'Automatic re-enrolment before expiry',
-              'Policies per product line, site or customer',
-            ],
-            link: 'How automation works →',
-          },
-          {
-            tag: 'Post-quantum ready',
-            title: 'Crypto-agility you can test today',
-            body:
-              'Issue pure post-quantum and hybrid certificates next to your classical ones. Validate the migration in your own lab now, and roll it out by policy when your devices are ready.',
-            points: [
-              'NIST-standardised post-quantum algorithms',
-              'Hybrid certificates: classical + post-quantum',
-              'Same CA, same workflows, same API',
-            ],
-            link: 'Explore post-quantum →',
+            title: 'Key custody',
+            body: 'Seven kinds of crypto engine, from HSMs to AWS KMS or Azure Key Vault, running side by side.',
+            link: 'See the engines',
+            href: '#keys',
           },
         ],
       },
-      overview: {
-        eyebrow: 'The console',
-        title: 'One console for every authority, certificate and device',
-        body:
-          'Security and operations teams share a single, real-time view of the PKI: who issued what, what is about to expire, what was revoked and why — from a lab prototype to a full production fleet.',
-        imageAlt: 'Lamassu console showing the managed device inventory',
-        blocks: [
+      pki: {
+        label: 'PKI',
+        title: 'Certificate authorities',
+        lead:
+          'Build your hierarchy from the root or import the CAs you already run. Issuance profiles set validity, usages and allowed algorithms, and every CA publishes its revocation status.',
+        cta: 'Explore the PKI',
+        features: [
           {
-            title: 'Risk you can see before it happens.',
-            body1:
-              'Active, expiring and revoked certificates across every authority and environment, in one view. Deviations are visible before they affect availability.',
+            tag: 'Hierarchy & rotation',
+            body: 'Root and intermediate CAs, reissue on the same key or rotate to a successor CA, with the whole lineage linked and visible as a tree or a graph.',
+            link: 'Hierarchy and rotation',
+            href: '/docs/platform/pki/ca-hierarchy-and-rotation',
           },
           {
-            title: 'Every device, its identity and its status.',
-            body1:
-              'Each device shows whether it is active, revoked, decommissioned or still waiting for an identity — and the team can act on it directly from the console.',
+            tag: 'Issuance profiles',
+            body: 'Templates for IoT devices, TLS servers or code signing that fix validity, key usages and which algorithms and sizes are accepted.',
+            link: 'Certificate profiles',
+            href: '/docs/platform/pki/certificate-profiles',
           },
           {
-            title: 'Organised the way your business is.',
-            body1:
-              'Groups, tags and registration authorities map the PKI to product lines, plants and customers, with access control and traceability to match.',
+            tag: 'CRL & OCSP',
+            body: 'Every CA publishes its CRL and answers OCSP per RFC 6960. And from the browser you can inspect, validate and zlint any certificate.',
+            link: 'Certificate validation',
+            href: '/docs/platform/pki/certificate-validation',
+          },
+        ],
+      },
+      devices: {
+        label: 'IoT fleets',
+        title: 'Device identity',
+        lead:
+          'Each fleet has its own registration authority (DMS): it decides how a device authenticates, how it enrols and when it must renew. Your devices speak open standards, with no proprietary agents.',
+        protocols: ['EST · RFC 7030 · Available', 'CMP · RFC 9483 · Early access'],
+        cta: 'How a device enrols',
+        features: [
+          {
+            tag: 'Enrolment over EST',
+            body: 'RFC 7030 endpoints per fleet: /cacerts, /simpleenroll, /simplereenroll and /serverkeygen. Authenticate with a factory certificate, an authorization webhook or both.',
+            link: 'EST reference',
+            href: '/docs/platform/iot-fleets/enrollment/est-reference',
+          },
+          {
+            tag: 'Renewal by policy',
+            body: 'Renewal windows and warning thresholds per fleet: the device re-enrols before it expires, and you see which state each one is in.',
+            link: 'Renewal and recovery',
+            href: '/docs/platform/iot-fleets/enrollment/renewal-and-recovery',
+          },
+          {
+            tag: 'Groups & states',
+            body: 'Dynamic groups by tags and metadata, identity history and an event timeline for every device.',
+            link: 'Device groups',
+            href: '/docs/platform/iot-fleets/device-groups',
+          },
+        ],
+      },
+      keys: {
+        label: 'KMS',
+        title: 'Key custody',
+        lead:
+          'Your CA private keys live wherever your policy requires. Connect several engines at once and choose the custody level CA by CA.',
+        cta: 'See the crypto engines',
+        features: [
+          {
+            tag: 'Hardware & cloud KMS',
+            body: 'HSMs over PKCS#11, AWS KMS and Azure Key Vault Keys: the key does not need to leave the module to sign.',
+          },
+          {
+            tag: 'Secret stores',
+            body: 'HashiCorp Vault, AWS Secrets Manager and Azure Key Vault Secrets, for environments where software custody is acceptable.',
+          },
+          {
+            tag: 'Bring your own key',
+            body: 'Import existing keys, generate CSRs from KMS keys and combine several engines, even of the same type.',
           },
         ],
       },
       pqc: {
         badge: 'Experimental · Early access',
-        title: 'Start your post-quantum migration before it becomes urgent',
+        title: 'Start your post-quantum migration.',
+        titleMuted: 'Before it becomes urgent.',
         lead:
-          'Quantum computers able to break RSA and ECC are not here yet — but the devices you deploy this year will still be running when they arrive. Lamassu lets you issue post-quantum certificates today, so your teams can measure the impact, validate compatibility and plan the migration with real data instead of assumptions.',
+          "Quantum computers able to break RSA and ECC don't exist yet, but the devices you deploy this year will still be running when they arrive. Lamassu lets you issue post-quantum certificates today, so your teams can measure the impact, validate compatibility and plan the migration with real data, not assumptions.",
         certs: [
           {
             tag: 'Today',
-            name: 'Classical',
-            body: 'RSA and ECDSA certificates for everything you run in production now. Fully supported, fully automated.',
+            name: 'Classic',
+            body: 'RSA and ECDSA certificates for everything already in production. Fully supported.',
           },
           {
             tag: 'Transition',
             name: 'Hybrid',
-            body:
-              'One certificate, two signatures — classical and post-quantum — bound together following the emerging IETF standard. It stays secure as long as either algorithm holds.',
+            body: 'One certificate, two signatures — classic and post-quantum — bound together following the emerging IETF standard. It stays secure as long as either algorithm holds.',
           },
           {
-            tag: 'Target',
+            tag: 'Destination',
             name: 'Pure post-quantum',
-            body:
-              'ML-DSA or SLH-DSA only, as standardised by NIST. For new ecosystems where you control both ends — and for proving your stack is ready.',
+            body: 'ML-DSA or SLH-DSA only, as standardised by NIST. For new ecosystems where you control both ends, and to prove your stack is ready.',
           },
         ],
         points: [
           {
             title: 'Harvest now, decrypt later',
-            body: 'Adversaries can record traffic today and break it tomorrow. Long-lived assets and long-lived secrets are already exposed.',
+            body: 'An attacker can record traffic today and break it tomorrow. Long-lived assets and secrets are already exposed.',
           },
           {
-            title: 'Migration by policy, not by site visit',
-            body: 'Because renewal is automated, moving a product line to post-quantum certificates is a configuration change, not a field campaign. Devices that support it pick it up on their next renewal.',
+            title: 'Migration by policy, not by truck roll',
+            body: 'Because devices renew through the same flows, moving a product line to post-quantum certificates becomes a profile change, not a field campaign.',
           },
           {
             title: 'No surprises in 2030',
@@ -273,395 +280,358 @@ export const homeTranslations = {
           },
         ],
         note:
-          'Post-quantum support is experimental and offered as early access for pilots. It follows NIST standards and IETF drafts that are still being finalised. For now, post-quantum keys are protected in software, until HSM and cloud KMS vendors support these algorithms.',
+          'Post-quantum support is experimental and offered in early access for pilots. It follows NIST standards and IETF drafts that are still being finalised. For now, post-quantum keys are protected in software, until HSM and cloud KMS vendors support these algorithms.',
         ctaPrimary: 'Request a PQC pilot',
-        ctaSecondary: 'Learn more about PQC',
       },
-      automation: {
-        eyebrow: 'Automation by standards',
-        title: 'Certificates that renew themselves. Devices that onboard themselves.',
+      whyNow: {
+        label: 'Why now',
+        title: 'Your certificates are racing three clocks',
         lead:
-          'Most certificate outages are not attacks — they are expired certificates nobody renewed. Lamassu takes people out of the loop with open enrolment protocols your devices, gateways and servers already speak.',
-        steps: [
+          'Certificates live shorter lives, regulation turns device security into a condition of sale, and the cryptography in today’s certificates has its own expiry date. Any one of them makes a manual PKI unsustainable. Together, they make it a board-level risk.',
+        items: [
           {
-            title: 'Enrol',
-            body: 'A new device proves its factory identity and receives its operational certificate automatically — on the production line or on first connection in the field.',
+            value: '47 days',
+            label: 'Maximum lifetime of a public TLS certificate in 2029',
+            body: 'The industry has voted to cut public certificate validity from 398 to 47 days. Renewals multiply eightfold, and the same pressure is already reaching private and device PKIs. Spreadsheets and reminders break down long before that.',
+            source: 'CA/Browser Forum · Ballot SC-081 (2025)',
           },
           {
-            title: 'Monitor',
-            body: 'Every certificate is tracked against its expiry, its issuing authority and its device. Your team is alerted well before anything becomes an incident.',
+            value: 'Dec 2027',
+            label: 'Cyber Resilience Act (CRA) fully applies',
+            body: 'Every product with digital elements sold in the EU must be secure by design: unique identities, protected communications, secure updates. Vulnerability-reporting obligations already apply from September 2026.',
+            source: 'Regulation (EU) 2024/2847',
           },
           {
-            title: 'Renew',
-            body: 'Devices re-enrol on their own before expiry, following the policy set for their product line. No tickets, no maintenance windows.',
-          },
-          {
-            title: 'Revoke',
-            body: 'A compromised or retired device loses its trust in seconds, and every system that checks CRL or OCSP knows it.',
-          },
-        ],
-        protocols: [
-          {
-            name: 'EST',
-            spec: 'RFC 7030',
-            status: 'Available',
-            body:
-              'The lightweight enrolment standard already built into a wide range of IoT and industrial devices. If your device speaks EST, it already speaks Lamassu.',
-          },
-          {
-            name: 'CMP',
-            spec: 'RFC 9483',
-            status: 'Early access',
-            body:
-              'The standard of choice in industrial automation, designed for controllers, PLCs and plant networks that need the full certificate lifecycle.',
+            value: '2030',
+            label: 'RSA and ECC start being phased out',
+            body: 'Transition plans on both sides of the Atlantic start deprecating quantum-vulnerable algorithms in 2030 and retire them by 2035. A device you ship this year will still be in the field when that happens.',
+            source: 'NIST IR 8547 · Coordinated EU PQC roadmap (2025)',
           },
         ],
         closing:
-          'Open standards mean no proprietary agents on your devices and no lock-in: your devices keep speaking the same protocols whatever you decide tomorrow.',
+          'The only sustainable answer is a PKI that runs the whole certificate lifecycle and can change its cryptography fleet by fleet. That is what Lamassu is built for.',
       },
-      capabilities: {
-        eyebrow: 'Capabilities',
-        title: 'What’s inside',
-        lead: 'Everything a production PKI needs, delivered as one platform with a web console, single sign-on and a complete API.',
-        items: [
+      ops: {
+        label: 'Operations & governance',
+        title: 'For the people who run it and the people who audit it',
+        lead: 'Security sets the rules, operations applies them and audit can follow every step, from the same platform.',
+        tiles: [
           {
-            title: 'Certificate authorities',
-            body: 'Build and govern your hierarchy, from offline root to issuing CAs, or import the authorities you already run.',
-            points: ['Root, intermediate and issuing CAs', 'Import existing CAs, with or without their keys', 'CA renewal without losing traceability'],
+            title: 'One console for the whole PKI',
+            body: 'CAs as a table, a hierarchy or a key graph; certificates, devices and fleets, with their state, in a single view.',
           },
           {
-            title: 'Key custody',
-            body: 'Pluggable crypto engines keep private keys exactly where your security policy says — in hardware or in the cloud.',
-            points: ['PKCS#11 hardware security modules', 'AWS KMS, AWS Secrets Manager, HashiCorp Vault', 'Several engines side by side'],
+            title: 'Open by design',
+            body: 'Open source, IETF standards and a REST API documented with OpenAPI. No proprietary agent on your devices.',
           },
           {
-            title: 'Issuance policies',
-            body: 'Issuance profiles define what a certificate may contain and how long it lives, per product line or use case.',
-            points: ['Reusable profiles per product line', 'What each certificate may contain, and for how long', 'Only approved cryptography gets issued'],
+            title: 'Policy-based access',
+            body: 'Users from your OIDC provider or X.509 certificates, policies that deny by default and listings filtered by who is asking.',
           },
           {
-            title: 'Registration & device identity',
-            body: 'Registration authorities decide who may enrol and how. A live inventory tracks every device, its identity history and its certificates, from provisioning to decommission.',
-            points: ['Enrolment and renewal policies per product line', 'Dynamic device groups, tags and metadata', 'Full identity history per device'],
+            title: 'Audit & alerts',
+            body: 'Every change to CAs, certificates, keys and devices emits an event with who, what and the outcome. Notifications by email, Microsoft Teams or webhook.',
           },
           {
-            title: 'Validation & revocation',
-            body: 'Validation authorities publish revocation status so every relying system knows, in seconds, which identities to stop trusting.',
-            points: ['CRL distribution', 'OCSP responder', 'Revocation status available to every system'],
-          },
-          {
-            title: 'Alerts & integrations',
-            body: 'Proactive alerts and ready-made connectors plug Lamassu into the tools and platforms your teams already use.',
-            points: ['Expiry alerts by email or webhook', 'Connects to your existing security tools', 'Native AWS IoT Core integration'],
+            title: 'AWS IoT Core, built in',
+            body: 'Register your CAs in AWS IoT, create Things and policies at enrolment, and drop a device’s MQTT session as soon as it is revoked.',
           },
         ],
       },
       deployment: {
-        eyebrow: 'Deployment',
-        title: 'Your PKI, where your policy says it should run',
-        lead:
-          'Start in minutes as a managed service, run it inside your own AWS account, or operate it on-premises — including isolated networks. Same product, same capabilities, your choice of control.',
+        label: 'Deployment',
+        title: 'Your PKI, where your policy says it should live',
+        lead: 'As a managed service, in your own AWS account or on your Kubernetes. The same product in all three models; you choose how much you control.',
         operatedByLabel: 'Operated by',
         bestForLabel: 'Best for',
         options: [
           {
             tag: 'SaaS',
-            title: 'Lamassu Cloud',
-            body: 'Fully managed by our team. The fastest path from evaluation to production, with no infrastructure to run.',
-            operatedBy: 'Us — fully managed',
-            bestFor: 'Teams that want to move fast without dedicated PKI operations staff',
+            title: 'Lamassu SaaS',
+            body: 'We run it, with backups and upgrades included. The shortest path from evaluation to production.',
+            chips: ['Starter · 1,000 devices', 'Professional · 10,000', 'Enterprise · unlimited'],
+            operatedBy: 'Us, end to end',
+            bestFor: 'Teams that want production without operating a PKI',
+            cta: 'See plans',
+            href: '/docs/deployment/saas',
           },
           {
-            tag: 'AWS Marketplace · EC2',
+            tag: 'AWS Marketplace',
             title: 'Lamassu on AWS',
-            body: 'A ready-to-run machine image for Amazon EC2. Launch it in your own AWS account and region, next to your workloads and under your cloud governance.',
+            body: 'An EC2 image you launch in your own account and region, next to your workloads and under your cloud governance.',
+            chips: ['Amazon EC2', 't3.large or larger'],
             operatedBy: 'You, in your AWS account',
-            bestFor: 'Cloud-first organisations that need data to stay in their own account',
+            bestFor: 'Cloud-first organisations that keep data in their own account',
+            cta: 'AWS guide',
+            href: '/docs/deployment/aws-marketplace',
           },
           {
             tag: 'Kubernetes · Helm',
-            title: 'On-premises & private cloud',
-            body: 'Official Helm charts for any Kubernetes cluster — in your data centre, a private cloud or an isolated network.',
+            title: 'Self-hosted',
+            body: 'Official Helm charts for your cluster: in your data centre, a private cloud or disconnected environments with your own mirror.',
+            chips: ['Kubernetes 1.24+', 'Helm 3'],
             operatedBy: 'You, on your infrastructure',
-            bestFor: 'Regulated, critical and industrial environments with strict sovereignty requirements',
+            bestFor: 'Regulated and industrial environments with sovereignty requirements',
+            cta: 'Helm guide',
+            href: '/docs/deployment/self-hosted/helm',
           },
         ],
-        keys:
-          'In every model you choose where CA keys live. With PKCS#11 HSMs or AWS KMS they never leave the hardware; AWS Secrets Manager, HashiCorp Vault or a software engine cover environments where software custody is acceptable.',
+        keys: 'In all three models you choose where your CA keys live: HSM over PKCS#11, AWS KMS, Azure Key Vault, HashiCorp Vault or AWS Secrets Manager.',
       },
       compare: {
-        eyebrow: 'Comparison',
+        label: 'Comparison',
         title: 'Why teams move to Lamassu',
-        lead:
-          'Most organisations start with scripts and a spreadsheet, or stretch a corporate PKI built for laptops and web servers. Both break at device scale.',
-        headers: ['', 'Scripts & spreadsheets', 'Traditional enterprise PKI', 'Lamassu'],
+        lead: 'Most organisations start with scripts and a spreadsheet, or by stretching a corporate PKI built for laptops and web servers. Both break at device scale.',
+        headers: ['', 'Scripts & spreadsheets', 'Traditional corporate PKI', 'Lamassu'],
         rows: [
-          ['Device enrolment', 'Manual steps or custom scripts per project', 'Built for users and servers; limited device protocols', 'Zero-touch, via EST and CMP'],
-          ['Certificate renewal', 'Calendar reminders; outages when one is missed', 'Often manual or agent-based', 'Automatic and policy-driven, before expiry'],
-          ['Post-quantum readiness', 'Not addressed', 'On the vendor roadmap', 'Experimental pure and hybrid certificates to pilot today'],
-          ['Key protection', 'Keys on disk, often shared', 'HSM, at significant cost', 'HSM, cloud KMS or Vault — your choice'],
-          ['Deployment', 'Wherever the scripts happen to run', 'On-premises, heavy to operate', 'SaaS, your AWS account or on-prem Kubernetes'],
-          ['Lock-in', 'Tied to the people who wrote it', 'Proprietary licences and agents', 'Open source, open standards, open API'],
+          ['Device enrolment', 'Manual steps or custom scripts per project', 'Built for users and servers; few device protocols', 'Standards-based: EST, with CMP in early access'],
+          ['Renewal', 'Calendar reminders; outages when one is missed', 'Often manual or agent-based', 'Renewal windows per fleet; the device re-enrols itself'],
+          ['Post-quantum readiness', 'Not addressed', 'On the vendor roadmap', 'Pure and hybrid certificates in early access'],
+          ['Key protection', 'Keys on disk, often shared', 'HSM, at significant cost', 'HSM, AWS KMS, Azure Key Vault or Vault'],
+          ['Deployment', 'Wherever the scripts run', 'On-premises, heavy to operate', 'SaaS, your AWS account or Kubernetes'],
+          ['Lock-in', 'Tied to whoever wrote them', 'Proprietary licences and agents', 'Open source, open standards, OpenAPI'],
         ],
       },
-      trust: {
-        eyebrow: 'Trust',
-        title: 'Built to be trusted',
+      references: {
+        label: 'Success stories',
+        title: 'Success stories in energy and connected industry',
+        lead: 'Real references where Lamassu reduced operational friction and raised the security posture of OT and IoT environments.',
+        tabsAria: 'Sectors',
+        sectorLabel: 'Sector',
+        cta: 'See the case',
+        cards: [
+          {
+            sector: 'Railway',
+            title: 'Rolling stock and signalling.',
+            highlight: '24x7 operational continuity.',
+            body: 'Device security for trains, stations and trackside systems, segmented by line, operator or region.',
+          },
+          {
+            sector: 'Connected hospitality',
+            title: 'Multi-site hospitality and restaurant chains.',
+            highlight: 'Secure onboarding for on-site devices.',
+            body: 'Identity control for smart locks, POS terminals, kiosks and sensors, with simplified operations.',
+          },
+          {
+            sector: 'Energy · Batteries',
+            title: 'BESS, inverters and energy management.',
+            highlight: 'Lower operational risk across distributed assets.',
+            body: 'Strong identity for controllers and gateways in storage plants and connected energy networks.',
+          },
+          {
+            sector: 'Cranes',
+            title: 'Industrial fleets and remote operations.',
+            highlight: 'More control over assets with variable connectivity.',
+            body: 'Security for telemetry, control and remote maintenance in logistics, port and construction environments.',
+          },
+          {
+            sector: 'Connected access doors',
+            title: 'Smart physical access at scale.',
+            highlight: 'Fast revocation and central governance.',
+            body: 'Certificate management for controllers, readers and locks across building and campus deployments.',
+          },
+        ],
+      },
+      faq: {
+        label: 'FAQ',
+        title: 'What CISOs and CTOs ask us',
+        lead: "Can't find your question? Talk directly to the team that builds Lamassu.",
+        cta: 'Talk to an expert',
         items: [
           {
-            title: 'Open source',
-            body: 'The code is public and auditable. Your security team can review exactly what protects your devices, and you are never locked in.',
+            q: 'Do we have to replace our current PKI?',
+            a: 'No. Lamassu can run as a dedicated device PKI next to your corporate PKI, or import the certificate authorities you already operate. Most organisations start with one product line or one plant and grow from there.',
           },
           {
-            title: 'Standards, not inventions',
-            body: 'Built on the open standards your hardware and software already speak — and on NIST’s post-quantum algorithms. No proprietary formats, no surprises.',
+            q: 'Do our devices need a proprietary agent?',
+            a: 'No. Lamassu uses EST (RFC 7030), an open protocol supported by many devices, gateways and operating systems, and CMP is in early access. The console can also generate the openssl and curl commands to test an enrolment.',
           },
           {
-            title: 'Evidence for auditors',
-            body: 'Every issuance, renewal and revocation leaves a trace your security team and your auditors can follow, supporting audits under NIS2, the Cyber Resilience Act and IEC 62443.',
+            q: 'Are post-quantum certificates production-ready?',
+            a: "Not yet, and we say so openly. Lamassu's post-quantum support is experimental: it implements NIST's ML-DSA and SLH-DSA standards and hybrid certificates based on an IETF standard still being finalised, with keys protected in software for now. It is offered in early access so you can test, measure and plan your migration now, and move to production as standards and devices mature.",
           },
           {
-            title: 'European, built for the long run',
-            body: 'Developed in the Basque Country, one of Europe’s industrial heartlands. Open code, open standards and self-hosting mean your trust anchor never depends on a single vendor’s future.',
+            q: 'Where are our private keys stored?',
+            a: 'Wherever your security policy requires: HSMs over PKCS#11, AWS KMS, Azure Key Vault, HashiCorp Vault, AWS Secrets Manager or a file-system engine for testing. With HSMs, AWS KMS or Azure Key Vault Keys, the CA key does not need to leave the module to sign.',
+          },
+          {
+            q: 'How long does it take to get started?',
+            a: 'With the SaaS or the AWS image, a pilot can be issuing certificates within days. Most teams start with one certificate authority, one fleet and a handful of devices enrolling over EST; from there, scaling is a matter of policy, not re-engineering.',
+          },
+          {
+            q: 'Does Lamassu make us CRA or NIS2 compliant?',
+            a: 'No product does that on its own. Lamassu covers key technical requirements — unique device identities, protected communications, a managed credential lifecycle and traceable evidence — and we help you place it within your specific obligations.',
           },
         ],
       },
       cta: {
         left: {
-          eyebrow: 'Take the first step',
-          heading: 'Let’s design your PKI — and your post-quantum roadmap — together.',
+          label: 'Take the first step',
+          heading: "Let's design your PKI and your post-quantum roadmap together.",
           btn: 'Talk to an expert',
         },
         right: {
-          eyebrow: 'Newsletter',
-          heading: 'PKI, post-quantum and regulation insights, plus product news. Monthly, no filler.',
-          inputPlaceholder: 'your@email.com',
+          label: 'Newsletter',
+          heading: 'PKI, post-quantum and regulation news, plus product updates. Once a month, no filler.',
+          inputPlaceholder: 'you@email.com',
           submitLabel: 'Subscribe',
         },
-      },
-      faq: {
-        eyebrow: 'FAQ',
-        lead: 'Didn’t find your question? Talk directly to the team that builds Lamassu.',
-        cta: 'Talk to an expert',
-        title: 'Questions CISOs and CTOs ask us',
-        items: [
-          {
-            q: 'Do we have to replace our existing PKI?',
-            a: 'No. Lamassu can run as a dedicated device PKI next to your corporate PKI, or import the certificate authorities you already operate. Most organisations start with one product line or site and expand from there.',
-          },
-          {
-            q: 'Do our devices need a proprietary agent?',
-            a: 'No. Lamassu uses open protocols — EST and CMP — that many industrial devices, gateways and operating systems already support. Where they do not, open-source clients are available.',
-          },
-          {
-            q: 'Are the post-quantum certificates ready for production?',
-            a: 'Not yet, and we say so openly. Post-quantum support in Lamassu is experimental: it implements NIST’s ML-DSA and SLH-DSA standards and hybrid certificates based on an IETF standard that is still being finalised, with keys protected in software for now. It is available as early access so you can test, measure and plan your migration now, and move to production as standards and devices mature.',
-          },
-          {
-            q: 'Where are our private keys stored?',
-            a: 'Wherever your security policy requires: hardware security modules through PKCS#11, AWS KMS, HashiCorp Vault, or a software engine for development and testing. With HSMs and AWS KMS, CA keys never leave the hardware.',
-          },
-          {
-            q: 'How quickly can we get started?',
-            a: 'With the SaaS or the AWS image, a pilot can be issuing certificates in days, not months. Most teams start with one certificate authority, one product line and a handful of devices enrolling automatically — from there, scaling is a matter of policy, not re-engineering.',
-          },
-          {
-            q: 'Does Lamassu make us compliant with the CRA or NIS2?',
-            a: 'No single product does. Lamassu covers key technical requirements — unique device identities, protected communications, a managed credential lifecycle and traceable evidence. We help you map where it fits in your specific obligations.',
-          },
-        ],
-      },
-      references: {
-        title: 'Success stories in energy and connected industry',
-        subtitle:
-          'Real references where Lamassu reduced operational friction and improved security posture in OT and IoT environments.',
-        eyebrow: 'OUR CUSTOMERS, OUR BEST REFERENCE',
-        cta: 'View dedicated page',
-        cards: [
-          {
-            sector: 'Rail',
-            title: 'Rolling stock and signaling',
-            highlight: '24x7 cryptographic continuity in operation',
-            body: 'Device security for trains, stations and track systems with segmentation by line, operator or region.',
-          },
-          {
-            sector: 'Connected Hospitality',
-            title: 'Multi-site hospitality and restaurant chains',
-            highlight: 'Secure onboarding for in-store devices',
-            body: 'Identity control for smart locks, POS, kiosks and sensors with simplified operations.',
-          },
-          {
-            sector: 'Energy · Batteries',
-            title: 'BESS, inverters and energy management',
-            highlight: 'Lower operational risk in distributed assets',
-            body: 'Strong identity for controllers and gateways in storage plants and connected energy networks.',
-          },
-          {
-            sector: 'Cranes',
-            title: 'Industrial fleets and remote operation',
-            highlight: 'More control over assets with variable connectivity',
-            body: 'Security for telemetry, control and remote maintenance in logistics, port and construction environments.',
-          },
-          {
-            sector: 'Connected Access',
-            title: 'Intelligent physical access control at scale',
-            highlight: 'Fast revocation and centralized governance',
-            body: 'Certificate management for controllers, readers and locks across buildings and campus deployments.',
-          },
-        ],
       },
     },
   },
   es: {
     meta: {
-      title: 'Lamassu | PKI abierta para identidad de dispositivos — automatizada con EST y CMP, preparada para la era post-cuántica',
+      title: 'Lamassu | PKI abierta para la identidad de dispositivos IoT e industriales',
     },
     home: {
+      docs: {
+        pki: '/docs/es/platform/pki/overview',
+        enrollment: '/docs/es/platform/iot-fleets/enrollment/overview',
+        keys: '/docs/es/platform/pki/key-management',
+      },
       hero: {
-        kicker: 'PKI abierta · Identidad de dispositivos · Preparada para post-cuántica',
+        announceTag: 'Preview',
+        announce: 'Certificados post-cuánticos en acceso anticipado',
         title: 'Identidad de confianza para cada',
-        titleAccent: 'dispositivo conectado',
-        announce: 'Novedad · Certificados post-cuánticos en acceso anticipado',
-        toasts: ['Certificado renovado automáticamente', 'Nuevo dispositivo dado de alta vía EST', 'Certificado híbrido post-cuántico emitido'],
+        titleMark: 'dispositivo conectado',
         lead:
-          'Lamassu es una PKI abierta de nivel empresarial que emite, renueva y revoca certificados por sí sola — mediante estándares abiertos como EST y CMP, con tus claves en el HSM o KMS cloud que elijas, y con certificados post-cuánticos que puedes empezar a probar hoy.',
+          'Lamassu es una PKI abierta para flotas IoT e industriales. Crea tus autoridades de certificación, da de alta dispositivos con EST y gestiona cada identidad X.509 —emisión, renovación y revocación— con las claves en el HSM o KMS que elijas.',
         ctaPrimary: 'Habla con un experto',
         ctaSecondary: 'Ver opciones de despliegue',
         proofAria: 'Datos clave sobre Lamassu',
-        proof: [
-          'PKI completa: CAs, claves, CRL y OCSP',
-          'Automatizada con EST y CMP',
-          'Certificados PQC puros e híbridos (experimental)',
-          'SaaS, AWS u on-premise',
-          'Código abierto',
-        ],
+        proof: ['CAs, perfiles, CRL y OCSP', 'Alta y renovación con EST', 'Claves en HSM, AWS KMS, Azure o Vault', 'SaaS, AWS o Kubernetes'],
+        imageAlt: 'Consola de Lamassu con el inventario de dispositivos gestionados',
+        toasts: ['Dispositivo dado de alta vía EST', 'Certificado revocado · sesión MQTT cerrada'],
       },
       logos: {
         aria: 'Empresas que trabajan con Lamassu',
-        title: 'Empresas industriales que trabajan con Lamassu',
+        title: 'Empresas industriales que confían la identidad de sus dispositivos a Lamassu',
       },
-      whyNow: {
-        eyebrow: 'Por qué ahora',
-        today: 'Hoy',
-        title: 'Tus certificados corren contra tres relojes',
+      platform: {
+        label: 'La plataforma',
+        title: 'Una',
+        titleMark: 'PKI completa',
+        titleEnd: 'para la identidad de tus dispositivos',
         lead:
-          'Los certificados viven cada vez menos, la regulación convierte la seguridad del dispositivo en condición de venta y la criptografía de los certificados actuales tiene su propia fecha de caducidad. Cualquiera de las tres hace insostenible una PKI manual. Juntas, la convierten en un riesgo de consejo de dirección.',
+          'Lamassu une una raíz de confianza, una política de emisión y cada dispositivo que necesita demostrar quién es. Todo en una consola y una API, con control de acceso y trazabilidad.',
         items: [
           {
-            value: '47 días',
-            label: 'Vida máxima de un certificado TLS público en 2029',
-            body:
-              'La industria ha votado reducir la validez de los certificados públicos de 398 a 47 días. Las renovaciones se multiplican por ocho, y la misma presión llega ya a las PKI privadas y de dispositivos. Las hojas de cálculo y los recordatorios dejan de funcionar mucho antes.',
-            source: 'CA/Browser Forum · Ballot SC-081 (2025)',
+            title: 'Autoridades de certificación',
+            body: 'Jerarquías raíz e intermedias, creadas o importadas, y perfiles que deciden qué se emite y durante cuánto tiempo.',
+            link: 'Explorar la PKI',
+            href: '#pki',
           },
           {
-            value: 'Dic 2027',
-            label: 'Aplicación plena del Reglamento de Ciberresiliencia (CRA)',
-            body:
-              'Todo producto con elementos digitales vendido en la UE deberá ser seguro desde el diseño: identidades únicas, comunicaciones protegidas, actualizaciones seguras. Las obligaciones de notificación de vulnerabilidades ya se aplican desde septiembre de 2026.',
-            source: 'Reglamento (UE) 2024/2847',
+            title: 'Identidad de dispositivos',
+            body: 'Alta con EST, el estado de cada dispositivo y ventanas de renovación definidas flota a flota.',
+            link: 'Ver el alta de dispositivos',
+            href: '#automation',
           },
           {
-            value: '2030',
-            label: 'RSA y ECC empiezan a retirarse',
-            body:
-              'Los planes de transición a ambos lados del Atlántico empiezan a desaconsejar los algoritmos vulnerables a la computación cuántica en 2030 y los retiran en 2035. Un dispositivo que envíes este año seguirá en campo cuando ocurra.',
-            source: 'NIST IR 8547 · Hoja de ruta PQC coordinada de la UE (2025)',
-          },
-        ],
-        closing:
-          'La única respuesta sostenible es una PKI que automatice todo el ciclo de vida del certificado y pueda cambiar su criptografía sin tocar cada dispositivo a mano. Para eso está construido Lamassu.',
-      },
-      pillars: {
-        eyebrow: 'La plataforma',
-        title: 'Tres pilares, una sola plataforma',
-        lead:
-          'Lamassu combina una autoridad de certificación completa, automatización basada en estándares y agilidad criptográfica — para que seguridad mantenga el control y operaciones deje de apagar fuegos.',
-        items: [
-          {
-            tag: 'PKI primero',
-            title: 'Una PKI completa, no un complemento de certificados',
-            body:
-              'Autoridades de certificación raíz y subordinadas, perfiles de emisión, autoridades de registro y de validación, CRL y OCSP: todo lo que necesita una PKI en producción, en una plataforma que tu equipo puede gobernar.',
-            points: [
-              'Jerarquías de CA multinivel, creadas o importadas',
-              'Claves de CA en HSM, KMS cloud o Vault',
-              'Revocación publicada por CRL y OCSP',
-            ],
-            link: 'Qué incluye →',
-          },
-          {
-            tag: 'Automatización con estándares',
-            title: 'Alta y renovación sin intervención humana',
-            body:
-              'Dispositivos y servidores obtienen, renuevan y sustituyen sus propios certificados mediante EST y CMP, estándares abiertos del IETF que ya incorporan el hardware y el software industrial. Sin agentes propietarios, sin scripts, sin dependencia de proveedor.',
-            points: [
-              'Enrolamiento EST y CMP de serie',
-              'Re-enrolamiento automático antes de la caducidad',
-              'Políticas por línea de producto, planta o cliente',
-            ],
-            link: 'Cómo funciona la automatización →',
-          },
-          {
-            tag: 'Preparada para post-cuántica',
-            title: 'Agilidad criptográfica que puedes probar hoy',
-            body:
-              'Emite certificados post-cuánticos puros e híbridos junto a los clásicos. Valida la migración hoy en tu propio laboratorio y despliégala por política cuando tus dispositivos estén listos.',
-            points: [
-              'Algoritmos post-cuánticos estandarizados por el NIST',
-              'Certificados híbridos: clásico + post-cuántico',
-              'Misma CA, mismos flujos, misma API',
-            ],
-            link: 'Explorar post-cuántica →',
+            title: 'Custodia de claves',
+            body: 'Siete tipos de motor criptográfico, del HSM a AWS KMS o Azure Key Vault, funcionando en paralelo.',
+            link: 'Ver los motores',
+            href: '#keys',
           },
         ],
       },
-      overview: {
-        eyebrow: 'La consola',
-        title: 'Una consola para todas tus autoridades, certificados y dispositivos',
-        body:
-          'Los equipos de seguridad y de operación comparten una visión única y en tiempo real de la PKI: quién emitió qué, qué está a punto de caducar, qué se revocó y por qué — desde un prototipo de laboratorio hasta una flota completa en producción.',
-        imageAlt: 'Consola de Lamassu con el inventario de dispositivos gestionados',
-        blocks: [
+      pki: {
+        label: 'PKI',
+        title: 'Autoridades de certificación',
+        lead:
+          'Construye tu jerarquía desde la raíz o importa las CAs que ya operas. Los perfiles de emisión fijan validez, usos y algoritmos permitidos, y cada CA publica su estado de revocación.',
+        cta: 'Explorar la PKI',
+        features: [
           {
-            title: 'El riesgo, visible antes de que ocurra.',
-            body1:
-              'Certificados activos, a punto de caducar y revocados de todas las autoridades y entornos, en una sola vista. Las desviaciones se ven antes de que afecten a la disponibilidad.',
+            tag: 'Jerarquía y rotación',
+            body: 'CAs raíz e intermedias, reemisión sobre la misma clave o rotación a una CA sucesora, con todo el linaje enlazado y visible como árbol o como grafo.',
+            link: 'Jerarquía y rotación',
+            href: '/docs/es/platform/pki/ca-hierarchy-and-rotation',
           },
           {
-            title: 'Cada dispositivo, su identidad y su estado.',
-            body1:
-              'Cada dispositivo muestra si está activo, revocado, dado de baja o pendiente de identidad, y el equipo puede actuar directamente desde la consola.',
+            tag: 'Perfiles de emisión',
+            body: 'Plantillas para dispositivos IoT, servidores TLS o firma de código que fijan validez, usos de clave y qué algoritmos y tamaños se aceptan.',
+            link: 'Perfiles de certificado',
+            href: '/docs/es/platform/pki/certificate-profiles',
           },
           {
-            title: 'Organizada como tu negocio.',
-            body1:
-              'Grupos, etiquetas y autoridades de registro trasladan la PKI a tus líneas de producto, plantas y clientes, con control de acceso y trazabilidad a la altura.',
+            tag: 'CRL y OCSP',
+            body: 'Cada CA publica su CRL y responde OCSP según la RFC 6960. Y desde el navegador puedes inspeccionar, validar y pasar zlint a cualquier certificado.',
+            link: 'Validación de certificados',
+            href: '/docs/es/platform/pki/certificate-validation',
+          },
+        ],
+      },
+      devices: {
+        label: 'Flotas IoT',
+        title: 'Identidad de dispositivos',
+        lead:
+          'Cada flota tiene su autoridad de registro (DMS): decide cómo se autentica un dispositivo, cómo se da de alta y cuándo debe renovar. Tus dispositivos hablan estándares abiertos, sin agentes propietarios.',
+        protocols: ['EST · RFC 7030 · Disponible', 'CMP · RFC 9483 · Acceso anticipado'],
+        cta: 'Cómo se da de alta un dispositivo',
+        features: [
+          {
+            tag: 'Alta con EST',
+            body: 'Endpoints RFC 7030 por flota: /cacerts, /simpleenroll, /simplereenroll y /serverkeygen. Autenticación con certificado de fábrica, con webhook de autorización o con ambos.',
+            link: 'Referencia EST',
+            href: '/docs/es/platform/iot-fleets/enrollment/est-reference',
+          },
+          {
+            tag: 'Renovación por política',
+            body: 'Ventanas de renovación y umbrales de aviso por flota: el dispositivo se re-enrola antes de caducar y tú ves en qué estado está cada uno.',
+            link: 'Renovación y recuperación',
+            href: '/docs/es/platform/iot-fleets/enrollment/renewal-and-recovery',
+          },
+          {
+            tag: 'Grupos y estados',
+            body: 'Grupos dinámicos por etiquetas y metadatos, historial de identidad y una línea temporal de eventos para cada dispositivo.',
+            link: 'Grupos de dispositivos',
+            href: '/docs/es/platform/iot-fleets/device-groups',
+          },
+        ],
+      },
+      keys: {
+        label: 'KMS',
+        title: 'Custodia de claves',
+        lead:
+          'Las claves privadas de tus CAs viven donde lo exija tu política. Conecta varios motores a la vez y elige, CA a CA, el nivel de custodia.',
+        cta: 'Ver los motores criptográficos',
+        features: [
+          {
+            tag: 'Hardware y KMS cloud',
+            body: 'HSMs vía PKCS#11, AWS KMS y Azure Key Vault Keys: la clave no necesita salir del módulo para firmar.',
+          },
+          {
+            tag: 'Almacenes de secretos',
+            body: 'HashiCorp Vault, AWS Secrets Manager y Azure Key Vault Secrets, para los entornos donde la custodia por software es aceptable.',
+          },
+          {
+            tag: 'Trae tu propia clave',
+            body: 'Importa claves existentes, genera CSRs a partir de claves del KMS y combina varios motores, incluso del mismo tipo.',
           },
         ],
       },
       pqc: {
         badge: 'Experimental · Acceso anticipado',
-        title: 'Empieza tu migración post-cuántica antes de que sea urgente',
+        title: 'Empieza tu migración post-cuántica.',
+        titleMuted: 'Antes de que sea urgente.',
         lead:
           'Los ordenadores cuánticos capaces de romper RSA y ECC aún no existen, pero los dispositivos que despliegues este año seguirán funcionando cuando lleguen. Lamassu te permite emitir certificados post-cuánticos hoy, para que tus equipos midan el impacto, validen la compatibilidad y planifiquen la migración con datos reales y no con suposiciones.',
         certs: [
           {
             tag: 'Hoy',
             name: 'Clásico',
-            body: 'Certificados RSA y ECDSA para todo lo que ya tienes en producción. Plenamente soportados y automatizados.',
+            body: 'Certificados RSA y ECDSA para todo lo que ya tienes en producción. Plenamente soportados.',
           },
           {
             tag: 'Transición',
             name: 'Híbrido',
-            body:
-              'Un certificado, dos firmas — clásica y post-cuántica — unidas según el estándar emergente del IETF. Sigue siendo seguro mientras cualquiera de los dos algoritmos resista.',
+            body: 'Un certificado, dos firmas —clásica y post-cuántica— unidas según el estándar emergente del IETF. Sigue siendo seguro mientras cualquiera de los dos algoritmos resista.',
           },
           {
             tag: 'Destino',
             name: 'Post-cuántico puro',
-            body:
-              'Solo ML-DSA o SLH-DSA, tal y como los ha estandarizado el NIST. Para ecosistemas nuevos en los que controlas ambos extremos, y para demostrar que tu stack está preparado.',
+            body: 'Solo ML-DSA o SLH-DSA, tal y como los ha estandarizado el NIST. Para ecosistemas nuevos en los que controlas ambos extremos, y para demostrar que tu stack está preparado.',
           },
         ],
         points: [
@@ -671,7 +641,7 @@ export const homeTranslations = {
           },
           {
             title: 'Migración por política, no por desplazamiento',
-            body: 'Como la renovación está automatizada, pasar una línea de producto a certificados post-cuánticos es un cambio de configuración, no una campaña en campo. Los dispositivos que lo soportan lo adoptan en su siguiente renovación.',
+            body: 'Como los dispositivos renuevan por los mismos flujos, pasar una línea de producto a certificados post-cuánticos es un cambio de perfil, no una campaña en campo.',
           },
           {
             title: 'Sin sorpresas en 2030',
@@ -681,175 +651,161 @@ export const homeTranslations = {
         note:
           'El soporte post-cuántico es experimental y se ofrece en acceso anticipado para pilotos. Sigue estándares del NIST y borradores del IETF que aún se están cerrando. Por ahora, las claves post-cuánticas se protegen por software, hasta que los fabricantes de HSM y KMS cloud soporten estos algoritmos.',
         ctaPrimary: 'Solicitar un piloto PQC',
-        ctaSecondary: 'Saber más sobre PQC',
       },
-      automation: {
-        eyebrow: 'Automatización con estándares',
-        title: 'Certificados que se renuevan solos. Dispositivos que se dan de alta solos.',
+      whyNow: {
+        label: 'Por qué ahora',
+        title: 'Tus certificados corren contra tres relojes',
         lead:
-          'La mayoría de las caídas por certificados no son ataques: son certificados caducados que nadie renovó. Lamassu saca a las personas del bucle con protocolos de enrolamiento abiertos que tus dispositivos, gateways y servidores ya hablan.',
-        steps: [
+          'Los certificados viven cada vez menos, la regulación convierte la seguridad del dispositivo en condición de venta y la criptografía de los certificados actuales tiene su propia fecha de caducidad. Cualquiera de las tres hace insostenible una PKI manual. Juntas, la convierten en un riesgo de consejo de dirección.',
+        items: [
           {
-            title: 'Alta',
-            body: 'Un dispositivo nuevo demuestra su identidad de fábrica y recibe automáticamente su certificado operativo, en la línea de producción o en su primera conexión en campo.',
+            value: '47 días',
+            label: 'Vida máxima de un certificado TLS público en 2029',
+            body: 'La industria ha votado reducir la validez de los certificados públicos de 398 a 47 días. Las renovaciones se multiplican por ocho, y la misma presión llega ya a las PKI privadas y de dispositivos. Las hojas de cálculo y los recordatorios dejan de funcionar mucho antes.',
+            source: 'CA/Browser Forum · Ballot SC-081 (2025)',
           },
           {
-            title: 'Supervisión',
-            body: 'Cada certificado se sigue según su caducidad, su autoridad emisora y su dispositivo. Tu equipo recibe el aviso mucho antes de que algo se convierta en incidente.',
+            value: 'Dic 2027',
+            label: 'Aplicación plena del Reglamento de Ciberresiliencia (CRA)',
+            body: 'Todo producto con elementos digitales vendido en la UE deberá ser seguro desde el diseño: identidades únicas, comunicaciones protegidas, actualizaciones seguras. Las obligaciones de notificación de vulnerabilidades ya se aplican desde septiembre de 2026.',
+            source: 'Reglamento (UE) 2024/2847',
           },
           {
-            title: 'Renovación',
-            body: 'Los dispositivos se re-enrolan solos antes de caducar, según la política definida para su línea de producto. Sin tickets, sin ventanas de mantenimiento.',
-          },
-          {
-            title: 'Revocación',
-            body: 'Un dispositivo comprometido o retirado pierde la confianza en segundos, y todos los sistemas que consultan CRL u OCSP lo saben.',
-          },
-        ],
-        protocols: [
-          {
-            name: 'EST',
-            spec: 'RFC 7030',
-            status: 'Disponible',
-            body:
-              'El estándar ligero de alta de certificados que ya incorporan multitud de dispositivos IoT e industriales. Si tu dispositivo habla EST, ya habla con Lamassu.',
-          },
-          {
-            name: 'CMP',
-            spec: 'RFC 9483',
-            status: 'Acceso anticipado',
-            body:
-              'El estándar de referencia en automatización industrial, pensado para controladores, PLCs y redes de planta que necesitan el ciclo de vida completo del certificado.',
+            value: '2030',
+            label: 'RSA y ECC empiezan a retirarse',
+            body: 'Los planes de transición a ambos lados del Atlántico empiezan a desaconsejar los algoritmos vulnerables a la computación cuántica en 2030 y los retiran en 2035. Un dispositivo que envíes este año seguirá en campo cuando ocurra.',
+            source: 'NIST IR 8547 · Hoja de ruta PQC coordinada de la UE (2025)',
           },
         ],
         closing:
-          'Estándares abiertos significa ningún agente propietario en tus dispositivos y ninguna dependencia: tus dispositivos seguirán hablando los mismos protocolos decidas lo que decidas mañana.',
+          'La única respuesta sostenible es una PKI que gestione todo el ciclo de vida del certificado y pueda cambiar su criptografía flota a flota. Para eso está construido Lamassu.',
       },
-      capabilities: {
-        eyebrow: 'Capacidades',
-        title: 'Qué incluye',
-        lead: 'Todo lo que necesita una PKI en producción, en una única plataforma con consola web, inicio de sesión único y una API completa.',
-        items: [
+      ops: {
+        label: 'Operación y gobierno',
+        title: 'Para quien la opera y para quien la audita',
+        lead: 'Seguridad define las reglas, operaciones las aplica y auditoría puede seguir cada paso, desde la misma plataforma.',
+        tiles: [
           {
-            title: 'Autoridades de certificación',
-            body: 'Construye y gobierna tu jerarquía, desde la raíz offline hasta las CAs emisoras, o importa las autoridades que ya operas.',
-            points: ['CAs raíz, intermedias y emisoras', 'Importación de CAs existentes, con o sin su clave', 'Renovación de CAs sin perder trazabilidad'],
+            title: 'Una consola para toda la PKI',
+            body: 'CAs en tabla, jerarquía o grafo de claves; certificados, dispositivos y flotas, con su estado, en una sola vista.',
           },
           {
-            title: 'Custodia de claves',
-            body: 'Motores criptográficos conectables que guardan las claves privadas justo donde lo exige tu política de seguridad, en hardware o en la nube.',
-            points: ['HSMs hardware vía PKCS#11', 'AWS KMS, AWS Secrets Manager, HashiCorp Vault', 'Varios motores en paralelo'],
+            title: 'Abierta por diseño',
+            body: 'Código abierto, estándares del IETF y una API REST documentada con OpenAPI. Ningún agente propietario en tus dispositivos.',
           },
           {
-            title: 'Políticas de emisión',
-            body: 'Los perfiles de emisión definen qué puede contener un certificado y cuánto vive, por línea de producto o caso de uso.',
-            points: ['Perfiles reutilizables por línea de producto', 'Qué puede contener cada certificado y cuánto dura', 'Solo se emite criptografía aprobada'],
+            title: 'Acceso por políticas',
+            body: 'Usuarios de tu proveedor OIDC o certificados X.509, políticas que deniegan por defecto y listados filtrados según quién pregunta.',
           },
           {
-            title: 'Registro e identidad de dispositivos',
-            body: 'Las autoridades de registro deciden quién puede darse de alta y cómo. Un inventario vivo sigue cada dispositivo, su historial de identidad y sus certificados, desde el aprovisionamiento hasta la baja.',
-            points: ['Políticas de alta y renovación por línea de producto', 'Grupos dinámicos de dispositivos, etiquetas y metadatos', 'Historial de identidad completo por dispositivo'],
+            title: 'Auditoría y alertas',
+            body: 'Cada cambio en CAs, certificados, claves y dispositivos genera un evento con quién, qué y con qué resultado. Avisos por email, Microsoft Teams o webhook.',
           },
           {
-            title: 'Validación y revocación',
-            body: 'Las autoridades de validación publican el estado de revocación para que cada sistema sepa, en segundos, en qué identidades dejar de confiar.',
-            points: ['Distribución de CRL', 'Respondedor OCSP', 'Estado de revocación disponible para todos los sistemas'],
-          },
-          {
-            title: 'Alertas e integraciones',
-            body: 'Alertas proactivas y conectores listos para usar integran Lamassu con las herramientas y plataformas que tus equipos ya usan.',
-            points: ['Alertas de caducidad por email o webhook', 'Se conecta con tus herramientas de seguridad', 'Integración nativa con AWS IoT Core'],
+            title: 'AWS IoT Core, integrado',
+            body: 'Registra tus CAs en AWS IoT, crea Things y políticas al dar de alta y cierra la sesión MQTT de un dispositivo en cuanto se revoca.',
           },
         ],
       },
       deployment: {
-        eyebrow: 'Despliegue',
+        label: 'Despliegue',
         title: 'Tu PKI, donde tu política dice que debe estar',
-        lead:
-          'Empieza en minutos como servicio gestionado, ejecútala dentro de tu propia cuenta de AWS u opérala on-premise, incluso en redes aisladas. Mismo producto, mismas capacidades, tú eliges el nivel de control.',
+        lead: 'Como servicio gestionado, en tu propia cuenta de AWS o en tu Kubernetes. El mismo producto en los tres modelos; tú eliges cuánto controlas.',
         operatedByLabel: 'Operado por',
         bestForLabel: 'Ideal para',
         options: [
           {
             tag: 'SaaS',
-            title: 'Lamassu Cloud',
-            body: 'Totalmente gestionado por nuestro equipo. El camino más rápido de la evaluación a producción, sin infraestructura que operar.',
-            operatedBy: 'Nosotros — totalmente gestionado',
-            bestFor: 'Equipos que quieren avanzar rápido sin personal dedicado a operar una PKI',
+            title: 'Lamassu SaaS',
+            body: 'Lo operamos nosotros, con copias de seguridad y actualizaciones incluidas. El camino más corto de la evaluación a producción.',
+            chips: ['Starter · 1.000 dispositivos', 'Professional · 10.000', 'Enterprise · sin límite'],
+            operatedBy: 'Nosotros, de principio a fin',
+            bestFor: 'Equipos que quieren llegar a producción sin operar una PKI',
+            cta: 'Ver planes',
+            href: '/docs/es/deployment/saas',
           },
           {
-            tag: 'AWS Marketplace · EC2',
+            tag: 'AWS Marketplace',
             title: 'Lamassu en AWS',
-            body: 'Una imagen lista para Amazon EC2. Lánzala en tu propia cuenta y región de AWS, junto a tus cargas de trabajo y bajo tu gobierno cloud.',
+            body: 'Una imagen de EC2 que lanzas en tu cuenta y región, junto a tus cargas de trabajo y bajo tu gobierno cloud.',
+            chips: ['Amazon EC2', 't3.large o superior'],
             operatedBy: 'Tú, en tu cuenta de AWS',
-            bestFor: 'Organizaciones cloud-first que necesitan que los datos permanezcan en su propia cuenta',
+            bestFor: 'Organizaciones cloud-first que quieren los datos en su propia cuenta',
+            cta: 'Guía de AWS',
+            href: '/docs/es/deployment/aws-marketplace',
           },
           {
             tag: 'Kubernetes · Helm',
-            title: 'On-premise y nube privada',
-            body: 'Charts de Helm oficiales para cualquier clúster de Kubernetes: en tu centro de datos, en una nube privada o en una red aislada.',
+            title: 'Autoalojado',
+            body: 'Charts de Helm oficiales para tu clúster: en tu centro de datos, en una nube privada o en entornos desconectados con tu propio mirror.',
+            chips: ['Kubernetes 1.24+', 'Helm 3'],
             operatedBy: 'Tú, en tu infraestructura',
-            bestFor: 'Entornos regulados, críticos e industriales con requisitos estrictos de soberanía',
+            bestFor: 'Entornos regulados e industriales con requisitos de soberanía',
+            cta: 'Guía de Helm',
+            href: '/docs/es/deployment/self-hosted/helm',
           },
         ],
-        keys:
-          'En todos los modelos eliges dónde viven las claves de tus CAs. Con HSMs PKCS#11 o AWS KMS nunca salen del hardware; AWS Secrets Manager, HashiCorp Vault o un motor software cubren los entornos donde la custodia software es aceptable.',
+        keys: 'En los tres modelos eliges dónde viven las claves de tus CAs: HSM vía PKCS#11, AWS KMS, Azure Key Vault, HashiCorp Vault o AWS Secrets Manager.',
       },
       compare: {
-        eyebrow: 'Comparativa',
+        label: 'Comparativa',
         title: 'Por qué los equipos se pasan a Lamassu',
-        lead:
-          'La mayoría de las organizaciones empiezan con scripts y una hoja de cálculo, o estirando una PKI corporativa pensada para portátiles y servidores web. Ambas cosas se rompen a escala de dispositivos.',
+        lead: 'La mayoría de las organizaciones empiezan con scripts y una hoja de cálculo, o estirando una PKI corporativa pensada para portátiles y servidores web. Ambas cosas se rompen a escala de dispositivos.',
         headers: ['', 'Scripts y hojas de cálculo', 'PKI corporativa tradicional', 'Lamassu'],
         rows: [
-          ['Alta de dispositivos', 'Pasos manuales o scripts a medida por proyecto', 'Pensada para usuarios y servidores; pocos protocolos de dispositivo', 'Sin intervención, vía EST y CMP'],
-          ['Renovación', 'Recordatorios en el calendario; caídas cuando se olvida uno', 'A menudo manual o basada en agentes', 'Automática y por política, antes de caducar'],
-          ['Preparación post-cuántica', 'Sin abordar', 'En la hoja de ruta del proveedor', 'Certificados puros e híbridos experimentales para pilotar hoy'],
-          ['Protección de claves', 'Claves en disco, a menudo compartidas', 'HSM, con un coste considerable', 'HSM, KMS cloud o Vault, a tu elección'],
-          ['Despliegue', 'Donde se ejecuten los scripts', 'On-premise, pesada de operar', 'SaaS, tu cuenta de AWS o Kubernetes on-premise'],
-          ['Dependencia', 'Atada a quien los escribió', 'Licencias y agentes propietarios', 'Código abierto, estándares abiertos, API abierta'],
+          ['Alta de dispositivos', 'Pasos manuales o scripts a medida por proyecto', 'Pensada para usuarios y servidores; pocos protocolos de dispositivo', 'Por estándar: EST, y CMP en acceso anticipado'],
+          ['Renovación', 'Recordatorios en el calendario; caídas cuando se olvida uno', 'A menudo manual o basada en agentes', 'Ventanas de renovación por flota; el dispositivo se re-enrola solo'],
+          ['Preparación post-cuántica', 'Sin abordar', 'En la hoja de ruta del proveedor', 'Certificados puros e híbridos en acceso anticipado'],
+          ['Protección de claves', 'Claves en disco, a menudo compartidas', 'HSM, con un coste considerable', 'HSM, AWS KMS, Azure Key Vault o Vault'],
+          ['Despliegue', 'Donde se ejecuten los scripts', 'On-premise, pesada de operar', 'SaaS, tu cuenta de AWS o Kubernetes'],
+          ['Dependencia', 'Atada a quien los escribió', 'Licencias y agentes propietarios', 'Código abierto, estándares abiertos, OpenAPI'],
         ],
       },
-      trust: {
-        eyebrow: 'Confianza',
-        title: 'Construida para inspirar confianza',
-        items: [
+      references: {
+        label: 'Casos de éxito',
+        title: 'Casos de éxito en energía e industria conectada',
+        lead: 'Referencias reales donde Lamassu redujo la fricción operativa y elevó la postura de seguridad en entornos OT e IoT.',
+        tabsAria: 'Sectores',
+        sectorLabel: 'Sector',
+        cta: 'Ver el caso',
+        cards: [
           {
-            title: 'Código abierto',
-            body: 'El código es público y auditable. Tu equipo de seguridad puede revisar exactamente qué protege tus dispositivos, y nunca quedas atado a un proveedor.',
+            sector: 'Ferroviario',
+            title: 'Material rodante y señalización.',
+            highlight: 'Continuidad operativa en servicio 24x7.',
+            body: 'Seguridad de dispositivos para trenes, estaciones y sistemas de vía con segmentación por línea, operador o región.',
           },
           {
-            title: 'Estándares, no inventos',
-            body: 'Basada en los estándares abiertos que ya hablan tu hardware y tu software, y en los algoritmos post-cuánticos del NIST. Sin formatos propietarios, sin sorpresas.',
+            sector: 'Hostelería conectada',
+            title: 'Cadenas multi-sede de hostelería y restauración.',
+            highlight: 'Onboarding seguro para dispositivos de local.',
+            body: 'Control de identidad para cerraduras inteligentes, TPV, kioscos y sensores con operación simplificada.',
           },
           {
-            title: 'Evidencias para auditoría',
-            body: 'Cada emisión, renovación y revocación deja un rastro que tu equipo de seguridad y tus auditores pueden seguir, lo que respalda tus auditorías de NIS2, del Reglamento de Ciberresiliencia e IEC 62443.',
+            sector: 'Energía · Baterías',
+            title: 'BESS, inversores y gestión energética.',
+            highlight: 'Menor riesgo operativo en activos distribuidos.',
+            body: 'Identidad fuerte para controladores y gateways en plantas de almacenamiento y redes energéticas conectadas.',
           },
           {
-            title: 'Europea y pensada para durar',
-            body: 'Desarrollada en Euskadi, uno de los polos industriales de Europa. Código abierto, estándares abiertos y autoalojamiento: tu ancla de confianza nunca depende del futuro de un único proveedor.',
+            sector: 'Grúas',
+            title: 'Flotas industriales y operación remota.',
+            highlight: 'Mayor control sobre activos con conectividad variable.',
+            body: 'Seguridad para telemetría, control y mantenimiento remoto en entornos logísticos, portuarios y de obra.',
+          },
+          {
+            sector: 'Puertas de acceso conectadas',
+            title: 'Control físico inteligente a escala.',
+            highlight: 'Revocación rápida y gobierno centralizado.',
+            body: 'Gestión de certificados para controladores, lectores y cerraduras en despliegues de edificios y campus.',
           },
         ],
-      },
-      cta: {
-        left: {
-          eyebrow: 'Da el primer paso',
-          heading: 'Diseñemos juntos tu PKI y tu hoja de ruta post-cuántica.',
-          btn: 'Habla con un experto',
-        },
-        right: {
-          eyebrow: 'Newsletter',
-          heading: 'Novedades de PKI, post-cuántica y regulación, y noticias del producto. Una vez al mes, sin relleno.',
-          inputPlaceholder: 'tu@email.com',
-          submitLabel: 'Suscribirse',
-        },
       },
       faq: {
-        eyebrow: 'Preguntas frecuentes',
+        label: 'Preguntas frecuentes',
+        title: 'Lo que nos preguntan CISOs y CTOs',
         lead: '¿No encuentras tu pregunta? Habla directamente con el equipo que construye Lamassu.',
         cta: 'Habla con un experto',
-        title: 'Lo que nos preguntan CISOs y CTOs',
         items: [
           {
             q: '¿Tenemos que sustituir nuestra PKI actual?',
@@ -857,7 +813,7 @@ export const homeTranslations = {
           },
           {
             q: '¿Nuestros dispositivos necesitan un agente propietario?',
-            a: 'No. Lamassu usa protocolos abiertos — EST y CMP — que muchos dispositivos industriales, gateways y sistemas operativos ya soportan. Donde no es así, existen clientes de código abierto.',
+            a: 'No. Lamassu usa EST (RFC 7030), un protocolo abierto que soportan muchos dispositivos, gateways y sistemas operativos, y CMP está en acceso anticipado. La consola también genera los comandos de openssl y curl para probar un alta.',
           },
           {
             q: '¿Los certificados post-cuánticos están listos para producción?',
@@ -865,209 +821,186 @@ export const homeTranslations = {
           },
           {
             q: '¿Dónde se guardan nuestras claves privadas?',
-            a: 'Donde lo exija tu política de seguridad: módulos HSM mediante PKCS#11, AWS KMS, HashiCorp Vault o un motor software para desarrollo y pruebas. Con HSMs y AWS KMS, las claves de CA nunca salen del hardware.',
+            a: 'Donde lo exija tu política de seguridad: HSM vía PKCS#11, AWS KMS, Azure Key Vault, HashiCorp Vault, AWS Secrets Manager o un motor de ficheros para pruebas. Con HSM, AWS KMS o Azure Key Vault Keys, la clave de la CA no necesita salir del módulo para firmar.',
           },
           {
             q: '¿Cuánto tardamos en empezar?',
-            a: 'Con el SaaS o la imagen de AWS, un piloto puede estar emitiendo certificados en días, no en meses. La mayoría de los equipos empiezan con una autoridad de certificación, una línea de producto y unos cuantos dispositivos dándose de alta solos; a partir de ahí, escalar es cuestión de política, no de reingeniería.',
+            a: 'Con el SaaS o la imagen de AWS, un piloto puede estar emitiendo certificados en pocos días. La mayoría de los equipos empiezan con una autoridad de certificación, una flota y unos cuantos dispositivos dándose de alta por EST; a partir de ahí, escalar es cuestión de política, no de reingeniería.',
           },
           {
             q: '¿Lamassu nos hace cumplir el CRA o NIS2?',
-            a: 'Ningún producto lo hace por sí solo. Lamassu cubre requisitos técnicos clave — identidades únicas de dispositivo, comunicaciones protegidas, un ciclo de vida de credenciales gestionado y evidencias trazables — y te ayudamos a situarlo dentro de tus obligaciones concretas.',
+            a: 'Ningún producto lo hace por sí solo. Lamassu cubre requisitos técnicos clave —identidades únicas de dispositivo, comunicaciones protegidas, un ciclo de vida de credenciales gestionado y evidencias trazables— y te ayudamos a situarlo dentro de tus obligaciones concretas.',
           },
         ],
       },
-      references: {
-        title: 'Casos de éxito en energía e industria conectada',
-        subtitle:
-          'Referencias reales donde Lamassu redujo la fricción operativa y elevó la postura de seguridad en entornos OT e IoT.',
-        eyebrow: 'NUESTROS CLIENTES, NUESTRA MEJOR REFERENCIA',
-        cta: 'Ver página dedicada',
-        cards: [
-          {
-            sector: 'Ferroviario',
-            title: 'Material rodante y señalización',
-            highlight: 'Continuidad operativa en servicio 24x7',
-            body: 'Seguridad de dispositivos para trenes, estaciones y sistemas de vía con segmentación por línea, operador o región.',
-          },
-          {
-            sector: 'Hostelería conectada',
-            title: 'Cadenas multi-sede de hostelería y restauración',
-            highlight: 'Onboarding seguro para dispositivos de local',
-            body: 'Control de identidad para cerraduras inteligentes, TPV, kioscos y sensores con operación simplificada.',
-          },
-          {
-            sector: 'Energía · Baterías',
-            title: 'BESS, inversores y gestión energética',
-            highlight: 'Menor riesgo operativo en activos distribuidos',
-            body: 'Identidad fuerte para controladores y gateways en plantas de almacenamiento y redes energéticas conectadas.',
-          },
-          {
-            sector: 'Grúas',
-            title: 'Flotas industriales y operación remota',
-            highlight: 'Mayor control sobre activos con conectividad variable',
-            body: 'Seguridad para telemetría, control y mantenimiento remoto en entornos logísticos, portuarios y de obra.',
-          },
-          {
-            sector: 'Puertas de acceso conectadas',
-            title: 'Control físico inteligente a escala',
-            highlight: 'Revocación rápida y gobierno centralizado',
-            body: 'Gestión de certificados para controladores, lectores y cerraduras en despliegues de edificios y campus.',
-          },
-        ],
+      cta: {
+        left: {
+          label: 'Da el primer paso',
+          heading: 'Diseñemos juntos tu PKI y tu hoja de ruta post-cuántica.',
+          btn: 'Habla con un experto',
+        },
+        right: {
+          label: 'Newsletter',
+          heading: 'Novedades de PKI, post-cuántica y regulación, y noticias del producto. Una vez al mes, sin relleno.',
+          inputPlaceholder: 'tu@email.com',
+          submitLabel: 'Suscribirse',
+        },
       },
     },
   },
   eus: {
     meta: {
-      title: 'Lamassu | Gailuen identitaterako PKI irekia — EST eta CMPrekin automatizatua, post-kuantikorako prest',
+      title: 'Lamassu | IoT eta industria-gailuen identitaterako PKI irekia',
     },
     home: {
+      docs: {
+        pki: '/docs/platform/pki/overview',
+        enrollment: '/docs/platform/iot-fleets/enrollment/overview',
+        keys: '/docs/platform/pki/key-management',
+      },
       hero: {
-        kicker: 'PKI irekia · Gailuen identitatea · Post-kuantikorako prest',
+        announceTag: 'Preview',
+        announce: 'Ziurtagiri post-kuantikoak aurretiazko sarbidean',
         title: 'Konfiantzazko identitatea',
-        titleAccent: 'konektatutako gailu bakoitzarentzat',
-        announce: 'Berria · Ziurtagiri post-kuantikoak aurretiazko sarbidean',
-        toasts: ['Ziurtagiria automatikoki berritua', 'Gailu berria EST bidez alta emanda', 'Ziurtagiri hibrido post-kuantikoa jaulkia'],
+        titleMark: 'konektatutako gailu bakoitzarentzat',
         lead:
-          'Lamassu enpresa-mailako PKI irekia da, ziurtagiriak berez jaulki, berritu eta ezeztatzen dituena — EST eta CMP bezalako estandar irekien bidez, zuk aukeratutako HSM edo cloud KMSan gordetako gakoekin, eta gaur bertan probatzen has zaitezkeen ziurtagiri post-kuantikoekin.',
+          'Lamassu IoT eta industria-flotetarako PKI irekia da. Sortu zure ziurtapen-agintariak, eman gailuei alta EST bidez eta kudeatu X.509 identitate bakoitza —jaulkipena, berritzea eta ezeztapena— gakoak zuk aukeratutako HSM edo KMSan dituzula.',
         ctaPrimary: 'Hitz egin aditu batekin',
         ctaSecondary: 'Ikusi hedapen-aukerak',
         proofAria: 'Lamassuri buruzko datu nagusiak',
-        proof: [
-          'PKI osoa: CAak, gakoak, CRL eta OCSP',
-          'EST eta CMPrekin automatizatua',
-          'PQC ziurtagiri puru eta hibrido esperimentalak',
-          'SaaS, AWS edo on-premise',
-          'Kode irekia',
-        ],
+        proof: ['CAak, profilak, CRL eta OCSP', 'Alta eta berritzea EST bidez', 'Gakoak HSMan, AWS KMSan, Azuren edo Vaulten', 'SaaS, AWS edo Kubernetes'],
+        imageAlt: 'Kudeatutako gailuen inbentarioa erakusten duen Lamassu kontsola',
+        toasts: ['Gailuari alta emana EST bidez', 'Ziurtagiria ezeztatua · MQTT saioa itxia'],
       },
       logos: {
         aria: 'Lamassurekin lan egiten duten enpresak',
-        title: 'Lamassurekin lan egiten duten enpresa industrialak',
+        title: 'Beren gailuen identitatea Lamassuren esku uzten duten enpresa industrialak',
       },
-      whyNow: {
-        eyebrow: 'Zergatik orain',
-        today: 'Gaur',
-        title: 'Hiru erlojuk egiten dute lasterka zure ziurtagirien aurka',
+      platform: {
+        label: 'Plataforma',
+        title: 'Zure gailuen identitaterako',
+        titleMark: 'PKI osoa',
+        titleEnd: '',
         lead:
-          'Ziurtagiriek gero eta bizitza laburragoa dute, araudiak gailuaren segurtasuna salmenta-baldintza bihurtzen du, eta gaur egungo ziurtagirien kriptografiak ere badu iraungitze-data. Horietako edozeinek eskuzko PKIa jasanezin bihurtzen du. Hirurek batera, zuzendaritza-kontseiluko arrisku bihurtzen dute.',
+          'Lamassuk konfiantza-erro bat, jaulkipen-politika bat eta bere identitatea frogatu behar duen gailu bakoitza lotzen ditu. Dena kontsola eta API bakarrean, sarbide-kontrolarekin eta trazabilitatearekin.',
         items: [
           {
-            value: '47 egun',
-            label: 'TLS ziurtagiri publiko baten gehieneko iraupena 2029an',
-            body:
-              'Industriak ziurtagiri publikoen baliozkotasuna 398 egunetik 47ra murriztea bozkatu du. Berritzeak zortzi aldiz maizago egingo dira, eta presio bera iristen ari da PKI pribatu eta gailuetakoetara. Kalkulu-orriek eta oroigarriek askoz lehenago uzten diote funtzionatzeari.',
-            source: 'CA/Browser Forum · Ballot SC-081 (2025)',
+            title: 'Ziurtapen-agintariak',
+            body: 'Erro- eta tarteko hierarkiak, sortuak edo inportatuak, eta zer jaulkitzen den eta zenbat denborarako erabakitzen duten profilak.',
+            link: 'Esploratu PKIa',
+            href: '#pki',
           },
           {
-            value: '2027 abe.',
-            label: 'Zibererresilientzia Erregelamendua (CRA) guztiz aplikatzen da',
-            body:
-              'EBn saltzen den elementu digitalak dituen produktu orok diseinutik segurua izan beharko du: identitate bakarrak, komunikazio babestuak, eguneratze seguruak. Ahultasunak jakinarazteko betebeharrak 2026ko irailetik aplikatzen dira jada.',
-            source: '(EB) 2024/2847 Erregelamendua',
+            title: 'Gailuen identitatea',
+            body: 'Alta EST bidez, gailu bakoitzaren egoera eta flotaz flota definitutako berritze-leihoak.',
+            link: 'Ikusi gailuen alta',
+            href: '#automation',
           },
           {
-            value: '2030',
-            label: 'RSA eta ECC erretiratzen hasiko dira',
-            body:
-              'Atlantikoaren bi aldeetako trantsizio-planek 2030ean hasiko dira konputazio kuantikoaren aurrean ahulak diren algoritmoak baztertzen, eta 2035erako erretiratuko dituzte. Aurten bidaltzen duzun gailua eremuan egongo da oraindik hori gertatzen denean.',
-            source: 'NIST IR 8547 · EBren PQC ibilbide-orri koordinatua (2025)',
-          },
-        ],
-        closing:
-          'Irtenbide iraunkor bakarra ziurtagiriaren bizi-ziklo osoa automatizatzen duen eta gailu bakoitza eskuz ukitu gabe bere kriptografia alda dezakeen PKIa da. Horretarako eraiki da Lamassu.',
-      },
-      pillars: {
-        eyebrow: 'Plataforma',
-        title: 'Hiru zutabe, plataforma bakarra',
-        lead:
-          'Lamassuk ziurtapen-agintari osoa, estandarretan oinarritutako automatizazioa eta arintasun kriptografikoa uztartzen ditu — segurtasunak kontrola mantendu dezan eta eragiketek suteak itzaltzeari utz diezaioten.',
-        items: [
-          {
-            tag: 'PKIa lehenik',
-            title: 'PKI osoa, ez ziurtagirien osagarri bat',
-            body:
-              'Erro- eta menpeko ziurtapen-agintariak, jaulkipen-profilak, erregistro- eta balidazio-agintariak, CRL eta OCSP: ekoizpeneko PKI batek behar duen guztia, zure taldeak gobernatu dezakeen plataforma bakarrean.',
-            points: [
-              'Maila anitzeko CA hierarkiak, sortuak edo inportatuak',
-              'CA gakoak HSMan, cloud KMSan edo Vaulten',
-              'Ezeztapena CRL eta OCSP bidez argitaratua',
-            ],
-            link: 'Zer dakar →',
-          },
-          {
-            tag: 'Estandarren bidezko automatizazioa',
-            title: 'Alta eta berritzea giza esku-hartzerik gabe',
-            body:
-              'Gailuek eta zerbitzariek beren ziurtagiriak lortu, berritu eta ordezkatzen dituzte EST eta CMP erabiliz — hardware eta software industrialak dagoeneko dakartzan IETFko estandar irekiak. Agente jabedunik gabe, scriptik gabe, hornitzailearekiko menpekotasunik gabe.',
-            points: [
-              'EST eta CMP bidezko erroldatzea berez',
-              'Berriro erroldatze automatikoa iraungi aurretik',
-              'Politikak produktu-lerro, planta edo bezeroko',
-            ],
-            link: 'Nola funtzionatzen du automatizazioak →',
-          },
-          {
-            tag: 'Post-kuantikorako prest',
-            title: 'Gaur proba dezakezun arintasun kriptografikoa',
-            body:
-              'Jaulki ziurtagiri post-kuantiko puruak eta hibridoak klasikoen ondoan. Balidatu migrazioa zure laborategian orain, eta zabaldu politika bidez zure gailuak prest daudenean.',
-            points: [
-              'NISTek estandarizatutako algoritmo post-kuantikoak',
-              'Ziurtagiri hibridoak: klasikoa + post-kuantikoa',
-              'CA bera, fluxu berak, API bera',
-            ],
-            link: 'Esploratu post-kuantikoa →',
+            title: 'Gakoen zaintza',
+            body: 'Zazpi motor kriptografiko mota, HSMtik AWS KMS edo Azure Key Vaulteraino, aldi berean lanean.',
+            link: 'Ikusi motorrak',
+            href: '#keys',
           },
         ],
       },
-      overview: {
-        eyebrow: 'Kontsola',
-        title: 'Kontsola bakarra agintari, ziurtagiri eta gailu guztietarako',
-        body:
-          'Segurtasun- eta eragiketa-taldeek PKIaren ikuspegi bakarra eta denbora errealekoa partekatzen dute: nork zer jaulki duen, zer dagoen iraungitzeko zorian, zer ezeztatu den eta zergatik — laborategiko prototipo batetik ekoizpeneko flota oso bateraino.',
-        imageAlt: 'Kudeatutako gailuen inbentarioa erakusten duen Lamassu kontsola',
-        blocks: [
+      pki: {
+        label: 'PKI',
+        title: 'Ziurtapen-agintariak',
+        lead:
+          'Eraiki zure hierarkia errotik edo inportatu dagoeneko kudeatzen dituzun CAak. Jaulkipen-profilek baliozkotasuna, erabilerak eta onartutako algoritmoak finkatzen dituzte, eta CA bakoitzak bere ezeztapen-egoera argitaratzen du.',
+        cta: 'Esploratu PKIa',
+        features: [
           {
-            title: 'Arriskua, gertatu aurretik ikusgai.',
-            body1:
-              'Agintari eta ingurune guztietako ziurtagiri aktiboak, iraungitzear daudenak eta ezeztatuak, ikuspegi bakarrean. Desbideratzeak erabilgarritasunean eragin aurretik ikusten dira.',
+            tag: 'Hierarkia eta errotazioa',
+            body: 'Erro- eta tarteko CAak, gako berean berrargitaratzea edo CA ondorengo batera errotatzea, leinu osoa lotuta eta zuhaitz edo grafo gisa ikusgai.',
+            link: 'Hierarkia eta errotazioa',
+            href: '/docs/platform/pki/ca-hierarchy-and-rotation',
           },
           {
-            title: 'Gailu bakoitza, bere identitatea eta egoera.',
-            body1:
-              'Gailu bakoitzak erakusten du aktibo, ezeztatuta, bajan edo identitatearen zain dagoen, eta taldeak kontsolatik bertatik jardun dezake.',
+            tag: 'Jaulkipen-profilak',
+            body: 'IoT gailu, TLS zerbitzari edo kode-sinadurarako txantiloiak, baliozkotasuna, gako-erabilerak eta onartutako algoritmo eta tamainak finkatzen dituztenak.',
+            link: 'Ziurtagiri-profilak',
+            href: '/docs/platform/pki/certificate-profiles',
           },
           {
-            title: 'Zure negozioa bezala antolatua.',
-            body1:
-              'Taldeek, etiketek eta erregistro-agintariek PKIa zure produktu-lerro, planta eta bezeroetara eramaten dute, sarbide-kontrol eta trazabilitate egokiarekin.',
+            tag: 'CRL eta OCSP',
+            body: 'CA bakoitzak bere CRLa argitaratzen du eta OCSPri erantzuten dio RFC 6960ren arabera. Eta nabigatzailetik edozein ziurtagiri ikuskatu, balidatu eta zlint bidez azter dezakezu.',
+            link: 'Ziurtagirien balidazioa',
+            href: '/docs/platform/pki/certificate-validation',
+          },
+        ],
+      },
+      devices: {
+        label: 'IoT flotak',
+        title: 'Gailuen identitatea',
+        lead:
+          'Flota bakoitzak bere erregistro-agintaria (DMS) du: gailu bat nola autentifikatzen den, nola ematen zaion alta eta noiz berritu behar duen erabakitzen du. Zure gailuek estandar irekiak hitz egiten dituzte, agente jabedunik gabe.',
+        protocols: ['EST · RFC 7030 · Eskuragarri', 'CMP · RFC 9483 · Aurretiazko sarbidea'],
+        cta: 'Nola ematen zaio alta gailu bati',
+        features: [
+          {
+            tag: 'Alta EST bidez',
+            body: 'RFC 7030 endpointak flotako: /cacerts, /simpleenroll, /simplereenroll eta /serverkeygen. Autentifikazioa fabrikako ziurtagiriaren bidez, baimen-webhook bidez edo biak batera.',
+            link: 'EST erreferentzia',
+            href: '/docs/platform/iot-fleets/enrollment/est-reference',
+          },
+          {
+            tag: 'Berritzea politika bidez',
+            body: 'Berritze-leihoak eta abisu-atalaseak flotako: gailua iraungi aurretik erroldatzen da berriro, eta bakoitza zein egoeratan dagoen ikusten duzu.',
+            link: 'Berritzea eta berreskuratzea',
+            href: '/docs/platform/iot-fleets/enrollment/renewal-and-recovery',
+          },
+          {
+            tag: 'Taldeak eta egoerak',
+            body: 'Etiketa eta metadatuen araberako talde dinamikoak, identitate-historia eta gertaeren denbora-lerroa gailu bakoitzeko.',
+            link: 'Gailu-taldeak',
+            href: '/docs/platform/iot-fleets/device-groups',
+          },
+        ],
+      },
+      keys: {
+        label: 'KMS',
+        title: 'Gakoen zaintza',
+        lead:
+          'Zure CAen gako pribatuak zure politikak eskatzen duen lekuan bizi dira. Konektatu hainbat motor aldi berean eta aukeratu, CAz CA, zaintza-maila.',
+        cta: 'Ikusi motor kriptografikoak',
+        features: [
+          {
+            tag: 'Hardwarea eta cloud KMSa',
+            body: 'HSMak PKCS#11 bidez, AWS KMS eta Azure Key Vault Keys: gakoak ez du modulutik atera beharrik sinatzeko.',
+          },
+          {
+            tag: 'Sekretu-biltegiak',
+            body: 'HashiCorp Vault, AWS Secrets Manager eta Azure Key Vault Secrets, software bidezko zaintza onargarria den inguruneetarako.',
+          },
+          {
+            tag: 'Ekarri zure gakoa',
+            body: 'Inportatu dauden gakoak, sortu CSRak KMSko gakoetatik eta konbinatu hainbat motor, mota berekoak ere bai.',
           },
         ],
       },
       pqc: {
         badge: 'Esperimentala · Aurretiazko sarbidea',
-        title: 'Hasi zure migrazio post-kuantikoa premiazko bihurtu aurretik',
+        title: 'Hasi zure migrazio post-kuantikoa.',
+        titleMuted: 'Premiazko bihurtu aurretik.',
         lead:
           'RSA eta ECC hausteko gai diren ordenagailu kuantikoak ez daude oraindik, baina aurten hedatzen dituzun gailuek funtzionatzen jarraituko dute iristen direnean. Lamassurekin gaur jaulki ditzakezu ziurtagiri post-kuantikoak, zure taldeek eragina neur dezaten, bateragarritasuna balida dezaten eta migrazioa datu errealekin planifika dezaten, ez suposizioekin.',
         certs: [
           {
             tag: 'Gaur',
             name: 'Klasikoa',
-            body: 'RSA eta ECDSA ziurtagiriak dagoeneko ekoizpenean duzun guztirako. Guztiz onartuak eta automatizatuak.',
+            body: 'RSA eta ECDSA ziurtagiriak dagoeneko ekoizpenean duzun guztirako. Guztiz onartuak.',
           },
           {
             tag: 'Trantsizioa',
             name: 'Hibridoa',
-            body:
-              'Ziurtagiri bat, bi sinadura — klasikoa eta post-kuantikoa — IETFren estandar berriaren arabera lotuak. Segurua izaten jarraitzen du bi algoritmoetako edozeinek eusten dion bitartean.',
+            body: 'Ziurtagiri bat, bi sinadura —klasikoa eta post-kuantikoa— IETFren estandar berriaren arabera lotuak. Segurua izaten jarraitzen du bi algoritmoetako edozeinek eusten dion bitartean.',
           },
           {
             tag: 'Helmuga',
             name: 'Post-kuantiko purua',
-            body:
-              'ML-DSA edo SLH-DSA bakarrik, NISTek estandarizatu bezala. Bi muturrak zuk kontrolatzen dituzun ekosistema berrietarako, eta zure stacka prest dagoela frogatzeko.',
+            body: 'ML-DSA edo SLH-DSA bakarrik, NISTek estandarizatu bezala. Bi muturrak zuk kontrolatzen dituzun ekosistema berrietarako, eta zure stacka prest dagoela frogatzeko.',
           },
         ],
         points: [
@@ -1077,7 +1010,7 @@ export const homeTranslations = {
           },
           {
             title: 'Migrazioa politika bidez, ez joan-etorri bidez',
-            body: 'Berritzea automatizatuta dagoenez, produktu-lerro bat ziurtagiri post-kuantikoetara pasatzea konfigurazio-aldaketa bat da, ez eremuko kanpaina bat. Onartzen duten gailuek hurrengo berritzean hartzen dute.',
+            body: 'Gailuek fluxu beretatik berritzen dutenez, produktu-lerro bat ziurtagiri post-kuantikoetara pasatzea profil-aldaketa bat da, ez eremuko kanpaina bat.',
           },
           {
             title: 'Ezustekorik ez 2030ean',
@@ -1087,175 +1020,161 @@ export const homeTranslations = {
         note:
           'Euskarri post-kuantikoa esperimentala da eta pilotuetarako aurretiazko sarbide gisa eskaintzen da. Oraindik ixten ari diren NIST estandarrei eta IETF zirriborroei jarraitzen die. Oraingoz, gako post-kuantikoak software bidez babesten dira, HSM eta cloud KMS hornitzaileek algoritmo hauek onartu arte.',
         ctaPrimary: 'Eskatu PQC pilotu bat',
-        ctaSecondary: 'Gehiago PQCri buruz',
       },
-      automation: {
-        eyebrow: 'Estandarren bidezko automatizazioa',
-        title: 'Beren kabuz berritzen diren ziurtagiriak. Beren kabuz alta ematen duten gailuak.',
+      whyNow: {
+        label: 'Zergatik orain',
+        title: 'Hiru erlojuk egiten dute lasterka zure ziurtagirien aurka',
         lead:
-          'Ziurtagiriek eragindako eten gehienak ez dira erasoak: inork berritu ez dituen ziurtagiri iraungiak dira. Lamassuk pertsonak begiztatik ateratzen ditu, zure gailuek, gatewayek eta zerbitzariek dagoeneko hitz egiten dituzten erroldatze-protokolo irekiekin.',
-        steps: [
+          'Ziurtagiriek gero eta bizitza laburragoa dute, araudiak gailuaren segurtasuna salmenta-baldintza bihurtzen du, eta gaur egungo ziurtagirien kriptografiak ere badu iraungitze-data. Horietako edozeinek eskuzko PKIa jasanezin bihurtzen du. Hirurek batera, zuzendaritza-kontseiluko arrisku bihurtzen dute.',
+        items: [
           {
-            title: 'Alta',
-            body: 'Gailu berri batek bere fabrikako identitatea frogatzen du eta bere ziurtagiri operatiboa automatikoki jasotzen du, ekoizpen-lerroan edo eremuko lehen konexioan.',
+            value: '47 egun',
+            label: 'TLS ziurtagiri publiko baten gehieneko iraupena 2029an',
+            body: 'Industriak ziurtagiri publikoen baliozkotasuna 398 egunetik 47ra murriztea bozkatu du. Berritzeak zortzi aldiz maizago egingo dira, eta presio bera iristen ari da PKI pribatu eta gailuetakoetara. Kalkulu-orriek eta oroigarriek askoz lehenago uzten diote funtzionatzeari.',
+            source: 'CA/Browser Forum · Ballot SC-081 (2025)',
           },
           {
-            title: 'Jarraipena',
-            body: 'Ziurtagiri bakoitzaren iraungitzea, agintari jaulkitzailea eta gailua jarraitzen dira. Zure taldeak abisua jasotzen du ezer gorabehera bihurtu baino askoz lehenago.',
+            value: '2027 abe.',
+            label: 'Zibererresilientzia Erregelamendua (CRA) guztiz aplikatzen da',
+            body: 'EBn saltzen den elementu digitalak dituen produktu orok diseinutik segurua izan beharko du: identitate bakarrak, komunikazio babestuak, eguneratze seguruak. Ahultasunak jakinarazteko betebeharrak 2026ko irailetik aplikatzen dira jada.',
+            source: '(EB) 2024/2847 Erregelamendua',
           },
           {
-            title: 'Berritzea',
-            body: 'Gailuak beren kabuz erroldatzen dira berriro iraungi aurretik, beren produktu-lerrorako definitutako politikaren arabera. Txartelik gabe, mantentze-leihorik gabe.',
-          },
-          {
-            title: 'Ezeztapena',
-            body: 'Gailu arriskatu edo erretiratu batek segundotan galtzen du konfiantza, eta CRL edo OCSP kontsultatzen duten sistema guztiek dakite.',
-          },
-        ],
-        protocols: [
-          {
-            name: 'EST',
-            spec: 'RFC 7030',
-            status: 'Eskuragarri',
-            body:
-              'IoT eta industria-gailu askok dagoeneko dakarten ziurtagiri-altarako estandar arina. Zure gailuak EST hitz egiten badu, dagoeneko Lamassurekin hitz egiten du.',
-          },
-          {
-            name: 'CMP',
-            spec: 'RFC 9483',
-            status: 'Aurretiazko sarbidea',
-            body:
-              'Automatizazio industrialeko erreferentziazko estandarra, ziurtagiriaren bizi-ziklo osoa behar duten kontrolagailu, PLC eta planta-sareetarako pentsatua.',
+            value: '2030',
+            label: 'RSA eta ECC erretiratzen hasiko dira',
+            body: 'Atlantikoaren bi aldeetako trantsizio-planek 2030ean hasiko dira konputazio kuantikoaren aurrean ahulak diren algoritmoak baztertzen, eta 2035erako erretiratuko dituzte. Aurten bidaltzen duzun gailua eremuan egongo da oraindik hori gertatzen denean.',
+            source: 'NIST IR 8547 · EBren PQC ibilbide-orri koordinatua (2025)',
           },
         ],
         closing:
-          'Estandar irekiek esan nahi dute ez dagoela agente jabedunik zure gailuetan eta ez dagoela menpekotasunik: zure gailuek protokolo berak hitz egiten jarraituko dute bihar edozer erabakita ere.',
+          'Irtenbide iraunkor bakarra ziurtagiriaren bizi-ziklo osoa kudeatzen duen eta bere kriptografia flotaz flota alda dezakeen PKIa da. Horretarako eraiki da Lamassu.',
       },
-      capabilities: {
-        eyebrow: 'Gaitasunak',
-        title: 'Zer dakar',
-        lead: 'Ekoizpeneko PKI batek behar duen guztia, plataforma bakarrean, web kontsolarekin, saio-hasiera bakarrarekin eta API osoarekin.',
-        items: [
+      ops: {
+        label: 'Eragiketa eta gobernantza',
+        title: 'Kudeatzen duenarentzat eta auditatzen duenarentzat',
+        lead: 'Segurtasunak arauak zehazten ditu, eragiketek aplikatzen dituzte eta auditoriak urrats bakoitza jarrai dezake, plataforma beretik.',
+        tiles: [
           {
-            title: 'Ziurtapen-agintariak',
-            body: 'Eraiki eta gobernatu zure hierarkia, lineaz kanpoko errotik CA jaulkitzaileetaraino, edo inportatu dagoeneko dituzun agintariak.',
-            points: ['Erro-, tarteko eta CA jaulkitzaileak', 'Dauden CAak inportatzea, gakoarekin edo gabe', 'CAen berritzea, trazabilitatea galdu gabe'],
+            title: 'Kontsola bakarra PKI osorako',
+            body: 'CAak taulan, hierarkian edo gako-grafoan; ziurtagiriak, gailuak eta flotak, beren egoerarekin, ikuspegi bakarrean.',
           },
           {
-            title: 'Gakoen zaintza',
-            body: 'Motor kriptografiko konektagarriek gako pribatuak zure segurtasun-politikak eskatzen duen lekuan gordetzen dituzte, hardwarean edo hodeian.',
-            points: ['Hardware HSMak PKCS#11 bidez', 'AWS KMS, AWS Secrets Manager, HashiCorp Vault', 'Hainbat motor aldi berean'],
+            title: 'Diseinuz irekia',
+            body: 'Kode irekia, IETFren estandarrak eta OpenAPI bidez dokumentatutako REST API bat. Agente jabedunik ez zure gailuetan.',
           },
           {
-            title: 'Jaulkipen-politikak',
-            body: 'Jaulkipen-profilek zehazten dute ziurtagiri batek zer izan dezakeen eta zenbat iraungo duen, produktu-lerro edo erabilera-kasu bakoitzeko.',
-            points: ['Profil berrerabilgarriak produktu-lerroko', 'Ziurtagiri bakoitzak zer izan dezakeen eta zenbat iraungo duen', 'Onartutako kriptografia bakarrik jaulkitzen da'],
+            title: 'Sarbidea politiken bidez',
+            body: 'Zure OIDC hornitzaileko erabiltzaileak edo X.509 ziurtagiriak, lehenespenez ukatzen duten politikak eta nork galdetzen duen araberako zerrenda iragaziak.',
           },
           {
-            title: 'Erregistroa eta gailuen identitatea',
-            body: 'Erregistro-agintariek erabakitzen dute nork eman dezakeen alta eta nola. Inbentario bizi batek gailu bakoitza, bere identitate-historia eta ziurtagiriak jarraitzen ditu, horniduratik bajara arte.',
-            points: ['Alta- eta berritze-politikak produktu-lerroko', 'Gailu-talde dinamikoak, etiketak eta metadatuak', 'Identitate-historia osoa gailu bakoitzeko'],
+            title: 'Auditoria eta alertak',
+            body: 'CA, ziurtagiri, gako eta gailuetako aldaketa orok gertaera bat sortzen du: nork, zer eta zein emaitzarekin. Abisuak emailez, Microsoft Teams bidez edo webhook bidez.',
           },
           {
-            title: 'Balidazioa eta ezeztapena',
-            body: 'Balidazio-agintariek ezeztapen-egoera argitaratzen dute, sistema bakoitzak segundotan jakin dezan zein identitatetan utzi behar dion konfiantza izateari.',
-            points: ['CRL banaketa', 'OCSP erantzulea', 'Ezeztapen-egoera sistema guztien eskura'],
-          },
-          {
-            title: 'Alertak eta integrazioak',
-            body: 'Alerta proaktiboek eta erabiltzeko prest dauden konektoreek Lamassu zure taldeek dagoeneko erabiltzen dituzten tresna eta plataformekin integratzen dute.',
-            points: ['Iraungitze-alertak emailez edo webhook bidez', 'Zure segurtasun-tresnekin konektatzen da', 'AWS IoT Corerekin integrazio natiboa'],
+            title: 'AWS IoT Core, integratua',
+            body: 'Erregistratu zure CAak AWS IoTn, sortu Thing-ak eta politikak alta ematean, eta itxi gailu baten MQTT saioa ezeztatu bezain laster.',
           },
         ],
       },
       deployment: {
-        eyebrow: 'Hedapena',
+        label: 'Hedapena',
         title: 'Zure PKIa, zure politikak dioen lekuan',
-        lead:
-          'Hasi minututan zerbitzu kudeatu gisa, exekutatu zure AWS kontuaren barruan, edo erabili on-premise — sare isolatuetan ere bai. Produktu bera, gaitasun berak, zuk aukeratzen duzu kontrol-maila.',
+        lead: 'Zerbitzu kudeatu gisa, zure AWS kontuan edo zure Kubernetesen. Produktu bera hiru ereduetan; zuk aukeratzen duzu zenbat kontrolatzen duzun.',
         operatedByLabel: 'Nork kudeatzen du',
         bestForLabel: 'Egokiena',
         options: [
           {
             tag: 'SaaS',
-            title: 'Lamassu Cloud',
-            body: 'Gure taldeak guztiz kudeatua. Ebaluaziotik ekoizpenera bide azkarrena, kudeatu beharreko azpiegiturarik gabe.',
-            operatedBy: 'Guk — guztiz kudeatua',
-            bestFor: 'PKI eragiketetarako langile espezifikorik gabe azkar aurrera egin nahi duten taldeak',
+            title: 'Lamassu SaaS',
+            body: 'Guk kudeatzen dugu, babeskopiak eta eguneratzeak barne. Ebaluaziotik ekoizpenera bide laburrena.',
+            chips: ['Starter · 1.000 gailu', 'Professional · 10.000', 'Enterprise · mugarik gabe'],
+            operatedBy: 'Guk, hasieratik bukaeraraino',
+            bestFor: 'PKI bat kudeatu gabe ekoizpenera iritsi nahi duten taldeak',
+            cta: 'Ikusi planak',
+            href: '/docs/deployment/saas',
           },
           {
-            tag: 'AWS Marketplace · EC2',
+            tag: 'AWS Marketplace',
             title: 'Lamassu AWSn',
-            body: 'Amazon EC2rako prest dagoen irudia. Abiarazi zure AWS kontu eta eskualdean, zure lan-kargen ondoan eta zure cloud gobernupean.',
+            body: 'Zure kontu eta eskualdean abiarazten duzun EC2 irudia, zure lan-kargen ondoan eta zure cloud gobernupean.',
+            chips: ['Amazon EC2', 't3.large edo handiagoa'],
             operatedBy: 'Zuk, zure AWS kontuan',
-            bestFor: 'Datuak beren kontuan mantendu behar dituzten cloud-first erakundeak',
+            bestFor: 'Datuak beren kontuan nahi dituzten cloud-first erakundeak',
+            cta: 'AWS gida',
+            href: '/docs/deployment/aws-marketplace',
           },
           {
             tag: 'Kubernetes · Helm',
-            title: 'On-premise eta hodei pribatua',
-            body: 'Helm chart ofizialak edozein Kubernetes klusterrerako: zure datu-zentroan, hodei pribatu batean edo sare isolatu batean.',
+            title: 'Norberak ostatatua',
+            body: 'Helm chart ofizialak zure klusterrerako: zure datu-zentroan, hodei pribatu batean edo zure mirror propioa duten ingurune deskonektatuetan.',
+            chips: ['Kubernetes 1.24+', 'Helm 3'],
             operatedBy: 'Zuk, zure azpiegituran',
-            bestFor: 'Subiranotasun-eskakizun zorrotzak dituzten ingurune arautu, kritiko eta industrialak',
+            bestFor: 'Subiranotasun-eskakizunak dituzten ingurune arautu eta industrialak',
+            cta: 'Helm gida',
+            href: '/docs/deployment/self-hosted/helm',
           },
         ],
-        keys:
-          'Eredu guztietan zuk aukeratzen duzu non bizi diren zure CAen gakoak. PKCS#11 HSMekin edo AWS KMSekin ez dira inoiz hardwaretik ateratzen; AWS Secrets Manager, HashiCorp Vault edo software-motor batek software bidezko zaintza onargarria den inguruneak estaltzen dituzte.',
+        keys: 'Hiru ereduetan zuk aukeratzen duzu non bizi diren zure CAen gakoak: HSMa PKCS#11 bidez, AWS KMS, Azure Key Vault, HashiCorp Vault edo AWS Secrets Manager.',
       },
       compare: {
-        eyebrow: 'Konparazioa',
+        label: 'Konparazioa',
         title: 'Zergatik pasatzen diren taldeak Lamassura',
-        lead:
-          'Erakunde gehienak scriptekin eta kalkulu-orri batekin hasten dira, edo ordenagailu eramangarri eta web zerbitzarietarako pentsatutako PKI korporatibo bat luzatuz. Biak hausten dira gailuen eskalan.',
+        lead: 'Erakunde gehienak scriptekin eta kalkulu-orri batekin hasten dira, edo ordenagailu eramangarri eta web zerbitzarietarako pentsatutako PKI korporatibo bat luzatuz. Biak hausten dira gailuen eskalan.',
         headers: ['', 'Scriptak eta kalkulu-orriak', 'PKI korporatibo tradizionala', 'Lamassu'],
         rows: [
-          ['Gailuen alta', 'Eskuzko urratsak edo proiektu bakoitzeko script neurrira eginak', 'Erabiltzaile eta zerbitzarietarako pentsatua; gailu-protokolo gutxi', 'Esku-hartzerik gabe, EST eta CMP bidez'],
-          ['Berritzea', 'Egutegiko oroigarriak; etenak bat ahazten denean', 'Askotan eskuzkoa edo agenteetan oinarritua', 'Automatikoa eta politika bidezkoa, iraungi aurretik'],
-          ['Prestaketa post-kuantikoa', 'Landu gabe', 'Hornitzailearen ibilbide-orrian', 'Ziurtagiri puru eta hibrido esperimentalak gaur pilotatzeko'],
-          ['Gakoen babesa', 'Gakoak diskoan, askotan partekatuak', 'HSMa, kostu handiarekin', 'HSMa, cloud KMSa edo Vault, zuk aukeratuta'],
-          ['Hedapena', 'Scriptak exekutatzen diren lekuan', 'On-premise, kudeatzeko astuna', 'SaaS, zure AWS kontua edo on-premise Kubernetes'],
-          ['Menpekotasuna', 'Idatzi zituenari lotua', 'Lizentzia eta agente jabedunak', 'Kode irekia, estandar irekiak, API irekia'],
+          ['Gailuen alta', 'Eskuzko urratsak edo proiektu bakoitzeko script neurrira eginak', 'Erabiltzaile eta zerbitzarietarako pentsatua; gailu-protokolo gutxi', 'Estandarren bidez: EST, eta CMP aurretiazko sarbidean'],
+          ['Berritzea', 'Egutegiko oroigarriak; etenak bat ahazten denean', 'Askotan eskuzkoa edo agenteetan oinarritua', 'Berritze-leihoak flotako; gailua bere kabuz erroldatzen da berriro'],
+          ['Prestaketa post-kuantikoa', 'Landu gabe', 'Hornitzailearen ibilbide-orrian', 'Ziurtagiri puru eta hibridoak aurretiazko sarbidean'],
+          ['Gakoen babesa', 'Gakoak diskoan, askotan partekatuak', 'HSMa, kostu handiarekin', 'HSMa, AWS KMS, Azure Key Vault edo Vault'],
+          ['Hedapena', 'Scriptak exekutatzen diren lekuan', 'On-premise, kudeatzeko astuna', 'SaaS, zure AWS kontua edo Kubernetes'],
+          ['Menpekotasuna', 'Idatzi zituenari lotua', 'Lizentzia eta agente jabedunak', 'Kode irekia, estandar irekiak, OpenAPI'],
         ],
       },
-      trust: {
-        eyebrow: 'Konfiantza',
-        title: 'Konfiantza emateko eraikia',
-        items: [
+      references: {
+        label: 'Arrakasta kasuak',
+        title: 'Energiako eta industria konektatuko arrakasta kasuak',
+        lead: 'Lamassuk OT eta IoT inguruneetan frikzio operatiboa murriztu eta segurtasun-jarrera hobetu duen erreferentzia errealak.',
+        tabsAria: 'Sektoreak',
+        sectorLabel: 'Sektorea',
+        cta: 'Ikusi kasua',
+        cards: [
           {
-            title: 'Kode irekia',
-            body: 'Kodea publikoa eta auditagarria da. Zure segurtasun-taldeak zehatz berrikus dezake zerk babesten dituen zure gailuak, eta ez zara inoiz hornitzaile bati lotuta geratzen.',
+            sector: 'Ferroviarioa',
+            title: 'Material mugikorra eta seinaleztapena.',
+            highlight: '24x7 eragiketan jarraitutasun operatiboa.',
+            body: 'Gailuen segurtasuna trenetarako, geltokietarako eta bide-sistemetarako, linea, operadore edo eskualdeka segmentatuta.',
           },
           {
-            title: 'Estandarrak, ez asmakizunak',
-            body: 'Zure hardwareak eta softwareak dagoeneko hitz egiten dituzten estandar irekietan eta NISTen algoritmo post-kuantikoetan oinarritua. Formatu jabedunik gabe, ezustekorik gabe.',
+            sector: 'Ostalaritza konektatua',
+            title: 'Ostalaritza eta jatetxe kate multi-siteak.',
+            highlight: 'Lokaleko gailuentzako onboarding segurua.',
+            body: 'Identitate-kontrola sarraila adimendunentzat, TPVentzat, kioskoentzat eta sentsoreentzat, eragiketa sinplifikatuarekin.',
           },
           {
-            title: 'Auditoriarako ebidentziak',
-            body: 'Jaulkipen, berritze eta ezeztapen orok zure segurtasun-taldeak eta auditoreek jarrai dezaketen arrastoa uzten du, eta NIS2, Zibererresilientzia Erregelamendua eta IEC 62443 auditoriak babesten ditu.',
+            sector: 'Energia · Bateriak',
+            title: 'BESS, inbertsoreak eta kudeaketa energetikoa.',
+            highlight: 'Arrisku operatibo txikiagoa aktibo banatuetan.',
+            body: 'Identitate sendoa kontrolagailu eta gatewayentzat biltegiratze-plantetan eta energia-sare konektatuetan.',
           },
           {
-            title: 'Europarra eta iraunkorra',
-            body: 'Euskal Herrian garatua, Europako gune industrialetako batean. Kode irekia, estandar irekiak eta norberak ostatatzeko aukera: zure konfiantza-aingura ez da inoiz hornitzaile bakar baten etorkizunaren menpe egongo.',
+            sector: 'Garabiak',
+            title: 'Flota industrialak eta urruneko eragiketa.',
+            highlight: 'Kontrol handiagoa konektibitate aldakorreko aktiboetan.',
+            body: 'Segurtasuna telemetriarako, kontrolerako eta urruneko mantentzerako logistika, portu eta obra inguruneetan.',
+          },
+          {
+            sector: 'Sarbide ate konektatuak',
+            title: 'Kontrol fisiko adimenduna eskalan.',
+            highlight: 'Ezeztapen azkarra eta gobernantza zentralizatua.',
+            body: 'Ziurtagirien kudeaketa kontrolagailu, irakurgailu eta sarrailetarako eraikin eta campus hedapenetan.',
           },
         ],
-      },
-      cta: {
-        left: {
-          eyebrow: 'Eman lehen urratsa',
-          heading: 'Diseina ditzagun elkarrekin zure PKIa eta zure ibilbide-orri post-kuantikoa.',
-          btn: 'Hitz egin aditu batekin',
-        },
-        right: {
-          eyebrow: 'Newsletter',
-          heading: 'PKI, post-kuantiko eta araudiari buruzko berriak, eta produktuaren albisteak. Hilean behin, betegarririk gabe.',
-          inputPlaceholder: 'zure@email.com',
-          submitLabel: 'Harpidetu',
-        },
       },
       faq: {
-        eyebrow: 'Ohiko galderak',
+        label: 'Ohiko galderak',
+        title: 'CISO eta CTOek egiten dizkiguten galderak',
         lead: 'Ez duzu zure galdera aurkitu? Hitz egin zuzenean Lamassu eraikitzen duen taldearekin.',
         cta: 'Hitz egin aditu batekin',
-        title: 'CISO eta CTOek egiten dizkiguten galderak',
         items: [
           {
             q: 'Gure egungo PKIa ordeztu behar al dugu?',
@@ -1263,64 +1182,38 @@ export const homeTranslations = {
           },
           {
             q: 'Gure gailuek agente jabedun bat behar al dute?',
-            a: 'Ez. Lamassuk protokolo irekiak erabiltzen ditu — EST eta CMP —, industria-gailu, gateway eta sistema eragile askok dagoeneko onartzen dituztenak. Hala ez denean, kode irekiko bezeroak daude.',
+            a: 'Ez. Lamassuk EST (RFC 7030) erabiltzen du, gailu, gateway eta sistema eragile askok onartzen duten protokolo irekia, eta CMP aurretiazko sarbidean dago. Kontsolak alta bat probatzeko openssl eta curl komandoak ere sortzen ditu.',
           },
           {
             q: 'Ziurtagiri post-kuantikoak ekoizpenerako prest al daude?',
-            a: 'Oraindik ez, eta argi esaten dugu. Lamassuren euskarri post-kuantikoa esperimentala da: NISTen ML-DSA eta SLH-DSA estandarrak eta oraindik ixten ari den IETF estandar batean oinarritutako ziurtagiri hibridoak inplementatzen ditu, gakoak oraingoz software bidez babestuta. Aurretiazko sarbide gisa eskaintzen da zure migrazioa orain probatu, neurtu eta planifikatu ahal izateko dago, eta ekoizpenera pasatzeko estandarrak eta gailuak heldu ahala.',
+            a: 'Oraindik ez, eta argi esaten dugu. Lamassuren euskarri post-kuantikoa esperimentala da: NISTen ML-DSA eta SLH-DSA estandarrak eta oraindik ixten ari den IETF estandar batean oinarritutako ziurtagiri hibridoak inplementatzen ditu, gakoak oraingoz software bidez babestuta. Aurretiazko sarbide gisa eskaintzen da, zure migrazioa orain probatu, neurtu eta planifikatu ahal izateko, eta estandarrak eta gailuak heldu ahala ekoizpenera pasatzeko.',
           },
           {
             q: 'Non gordetzen dira gure gako pribatuak?',
-            a: 'Zure segurtasun-politikak eskatzen duen lekuan: HSM moduluak PKCS#11 bidez, AWS KMS, HashiCorp Vault, edo garapen eta probetarako software-motor bat. HSMekin eta AWS KMSekin, CA gakoak ez dira inoiz hardwaretik ateratzen.',
+            a: 'Zure segurtasun-politikak eskatzen duen lekuan: HSMak PKCS#11 bidez, AWS KMS, Azure Key Vault, HashiCorp Vault, AWS Secrets Manager edo probetarako fitxategi-motor bat. HSMekin, AWS KMSekin edo Azure Key Vault Keys-ekin, CAren gakoak ez du modulutik atera beharrik sinatzeko.',
           },
           {
             q: 'Zenbat denbora behar dugu hasteko?',
-            a: 'SaaSarekin edo AWS irudiarekin, pilotu bat egunetan egon daiteke ziurtagiriak jaulkitzen, ez hilabeteetan. Talde gehienak ziurtapen-agintari batekin, produktu-lerro batekin eta beren kabuz alta ematen duten gailu gutxi batzuekin hasten dira; hortik aurrera, eskalatzea politika kontua da, ez berringeniaritza.',
+            a: 'SaaSarekin edo AWS irudiarekin, pilotu bat egun gutxitan egon daiteke ziurtagiriak jaulkitzen. Talde gehienak ziurtapen-agintari batekin, flota batekin eta EST bidez alta ematen duten gailu gutxi batzuekin hasten dira; hortik aurrera, eskalatzea politika kontua da, ez berringeniaritza.',
           },
           {
             q: 'Lamassuk CRA edo NIS2 betetzea bermatzen al digu?',
-            a: 'Produktu batek ere ez du hori berez egiten. Lamassuk funtsezko eskakizun teknikoak betetzen ditu — gailuen identitate bakarrak, komunikazio babestuak, kudeatutako kredentzialen bizi-zikloa eta ebidentzia trazagarriak — eta zure betebehar zehatzetan non kokatzen den zehazten laguntzen dizugu.',
+            a: 'Produktu batek ere ez du hori berez egiten. Lamassuk funtsezko eskakizun teknikoak betetzen ditu —gailuen identitate bakarrak, komunikazio babestuak, kudeatutako kredentzialen bizi-zikloa eta ebidentzia trazagarriak— eta zure betebehar zehatzetan non kokatzen den zehazten laguntzen dizugu.',
           },
         ],
       },
-      references: {
-        title: 'Energiako eta industria konektatuko arrakasta kasuak',
-        subtitle:
-          'Lamassuk OT eta IoT inguruneetan frikzio operatiboa murriztu eta segurtasun-jarrera hobetu duen erreferentzia errealak.',
-        eyebrow: 'GURE BEZEROAK, GURE ERREFERENTZIARIK ONENA',
-        cta: 'Ikusi dagokion orria',
-        cards: [
-          {
-            sector: 'Ferroviarioa',
-            title: 'Material mugikorra eta seinaleztapena',
-            highlight: '24x7 eragiketan jarraitutasun operatiboa',
-            body: 'Gailuen segurtasuna trenetarako, geltokietarako eta bide-sistemetarako, linea, operadore edo eskualdeka segmentatuta.',
-          },
-          {
-            sector: 'Ostalaritza konektatua',
-            title: 'Ostalaritza eta jatetxe kate multi-siteak',
-            highlight: 'Lokaleko gailuentzako onboarding segurua',
-            body: 'Identitate-kontrola sarraila adimendunentzat, TPVentzat, kioskoentzat eta sentsoreentzat, eragiketa sinplifikatuarekin.',
-          },
-          {
-            sector: 'Energia · Bateriak',
-            title: 'BESS, inbertsoreak eta kudeaketa energetikoa',
-            highlight: 'Arrisku operatibo txikiagoa aktibo banatuetan',
-            body: 'Identitate sendoa kontrolagailu eta gateway-entzat biltegiratze-plantetan eta energia-sare konektatuetan.',
-          },
-          {
-            sector: 'Garabiak',
-            title: 'Flota industrialak eta urruneko eragiketa',
-            highlight: 'Kontrol handiagoa konektibitate aldakorreko aktiboetan',
-            body: 'Segurtasuna telemetriarako, kontrolerako eta urruneko mantentzerako logistika, portu eta obra inguruneetan.',
-          },
-          {
-            sector: 'Sarbide ate konektatuak',
-            title: 'Kontrol fisiko adimenduna eskalan',
-            highlight: 'Ezeztapen azkarra eta gobernantza zentralizatua',
-            body: 'Ziurtagirien kudeaketa kontrolagailu, irakurgailu eta sarrailetarako eraikin eta campus hedapenetan.',
-          },
-        ],
+      cta: {
+        left: {
+          label: 'Eman lehen urratsa',
+          heading: 'Diseina ditzagun elkarrekin zure PKIa eta zure ibilbide-orri post-kuantikoa.',
+          btn: 'Hitz egin aditu batekin',
+        },
+        right: {
+          label: 'Newsletter',
+          heading: 'PKI, post-kuantiko eta araudiari buruzko berriak, eta produktuaren albisteak. Hilean behin, betegarririk gabe.',
+          inputPlaceholder: 'zure@email.com',
+          submitLabel: 'Harpidetu',
+        },
       },
     },
   },
