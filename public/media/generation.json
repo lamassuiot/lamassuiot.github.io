@@ -12,7 +12,9 @@
     {
       "file": "lamassu-network.webp",
       "source": "exec-0d8ff17e-44b2-4dba-a78a-65586c820093.png",
-      "prompt": "Final production technical brand visual in the refined direction of Cloudflare network animations, interpreted in Lamassu blue. Horizontal 16:9, pure white background, centered large globe with full silhouette. White porcelain globe, very fine pale grey and cobalt longitudinal contour lines and dotted recognizable continents, restrained blue network arcs and discreet nodes. Airy high-end editorial 3D render, no text, logos, UI, icons, neon bloom, orange or purple. Static image base for live code animation."
+      "prompt": "Final production technical brand visual in the refined direction of Cloudflare network animations, interpreted in Lamassu blue. Horizontal 16:9, pure white background, centered large globe with full silhouette. White porcelain globe, very fine pale grey and cobalt longitudinal contour lines and dotted recognizable continents, restrained blue network arcs and discreet nodes. Airy high-end editorial 3D render, no text, logos, UI, icons, neon bloom, orange or purple. Static image base for live code animation.",
+      "active": false,
+      "replacedBy": "Native animated certificate hierarchy in src/components/TrustHierarchy.astro; the globe is no longer referenced by the homepage."
     },
     {
       "file": "lamassu-architecture.webp",

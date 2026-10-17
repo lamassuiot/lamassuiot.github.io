@@ -1,0 +1,121 @@
+/* Technical sections follow the supplied reference and the existing brand tokens. */
+.lp-tech-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin: 32px 24px 0;
+}
+.lp-tech-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--lp-accent);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.lp-tech-nav a:hover { text-decoration: underline; text-underline-offset: 6px; }
+.lp-technical { padding-top: 64px; scroll-margin-top: 90px; }
+.lp-technical + .lp-technical { padding-top: 100px; }
+.lp-technical-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 32px;
+  padding-inline: 24px;
+  margin-bottom: 36px;
+}
+.lp-technical-heading > div { max-width: 780px; }
+.lp .lp-technical-heading h3 {
+  font-size: clamp(30px, 3.4vw, 44px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -.04em;
+  text-wrap: initial;
+}
+.lp .lp-technical-heading p { margin-top: 18px; font-size: 18px; }
+.lp-technical-heading > a { flex-shrink: 0; max-width: 250px; }
+.lp-tech-protocols { display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 0; margin-top: 18px !important; list-style: none; font-size: 14px; }
+.lp-tech-protocols li { color: var(--lp-accent); }
+.lp-technical-body { display: grid; grid-template-columns: minmax(0, .94fr) minmax(0, 2fr); gap: 16px; align-items: stretch; }
+.lp-tech-features { display: grid; align-content: start; list-style: none; padding: 0; background: var(--lp-surface-2); }
+.lp-tech-features li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 18px; padding: 28px 24px; border-inline-start: 3px solid transparent; }
+.lp-tech-features li:first-child { background: var(--lp-accent-soft); border-inline-start-color: var(--lp-accent); }
+.lp-tech-features .lp-icon { margin-top: 3px; color: var(--lp-muted); }
+.lp-tech-features li:first-child .lp-icon { color: var(--lp-accent); }
+.lp-tech-features h4 { margin: 0 0 10px; color: var(--lp-title); font: 600 18px/1.35 var(--lp-font-body); letter-spacing: -.02em; }
+.lp .lp-tech-features p { font-size: 16px; line-height: 1.5; }
+.lp-tech-features .lp-link { margin-top: 14px; font-size: 14px; line-height: 1.5; }
+
+/* Real tabular content uses the console's border and state conventions. */
+.lp-console-example { min-width: 0; display: flex; flex-direction: column; align-self: stretch; overflow: hidden; border: 1px solid var(--lp-border); border-radius: var(--lp-radius-md); background: var(--lp-surface); }
+.lp-console-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 28px 24px 24px; }
+.lp-console-head .lp-console-title { font-size: 23px; font-weight: 700; line-height: 1.25; letter-spacing: -.035em; color: var(--lp-title); }
+.lp-console-head .lp-console-subtitle { margin-top: 7px; color: var(--lp-muted); font-size: 14px; line-height: 1.5; }
+.lp-console-open { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 40px; padding: 8px 12px; border-radius: var(--lp-radius-sm); color: var(--lp-accent); background: var(--lp-accent-soft); font-size: 13px; font-weight: 600; line-height: 1.4; text-decoration: none; }
+.lp-console-open:hover { background: var(--lp-surface-2); }
+.lp-console-scroll { overflow-x: auto; overscroll-behavior-inline: contain; }
+.lp-console-scroll:focus-visible { outline-offset: -3px; }
+.lp-console-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; line-height: 1.5; }
+.lp-ca-table { min-width: 660px; }
+.lp-events-table { min-width: 650px; }
+.lp-engines-table { min-width: 490px; }
+.lp-console-table thead { background: var(--lp-surface-2); }
+.lp-console-table th, .lp-console-table td { padding: 18px 16px; border-bottom: 1px solid var(--lp-border); white-space: nowrap; }
+.lp-console-table thead th { padding-block: 14px; color: var(--lp-text); font-size: 12px; font-weight: 500; }
+.lp-console-table tbody th { color: var(--lp-title); font-weight: 600; }
+.lp-console-table th:first-child, .lp-console-table td:first-child { padding-left: 24px; }
+.lp-console-table th:last-child, .lp-console-table td:last-child { padding-right: 24px; }
+.lp-console-table code { font-size: 12px; }
+.lp-ca-name { display: flex; align-items: center; gap: 10px; }
+.lp-ca-depth-1 { padding-left: 22px; }
+.lp-ca-depth-2 { padding-left: 40px; }
+.lp-ca-branch { color: var(--lp-muted); font-weight: 400; }
+.lp-ca-toggle { display: grid; place-items: center; width: 28px; height: 28px; margin: -4px -4px -4px -8px; padding: 5px; border: 0; border-radius: 3px; background: transparent; color: var(--lp-title); cursor: pointer; }
+.lp-ca-toggle:hover { background: var(--lp-accent-soft); }
+.lp-ca-toggle svg { width: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.lp-ca-toggle[aria-expanded='false'] svg { transform: rotate(-90deg); }
+.lp-console-status { display: inline-flex; align-items: center; gap: 7px; padding: 4px 8px; border-radius: 4px; background: color-mix(in srgb, currentColor 10%, transparent); font-size: 12px; font-weight: 500; }
+.lp-console-status--active, .lp-console-status--issued { color: var(--lp-green); }
+.lp-console-status--expiring { color: var(--lp-gold); }
+.lp-console-status--revoked { color: var(--lp-red); }
+.lp-console-status--renewed, .lp-console-status--served { color: var(--lp-accent); }
+.lp-engine-identifier { display: block; margin-top: 5px; color: var(--lp-muted); font-size: 12px; font-weight: 400; }
+.lp-console-example figcaption { margin-top: auto; padding: 22px 24px; color: var(--lp-muted); font-size: 12px; line-height: 1.5; }
+.lp-console-scroll-hint { display: none; }
+
+@media (max-width: 1100px) {
+  .lp-technical-heading { align-items: start; flex-direction: column; gap: 24px; }
+  .lp-technical-body { grid-template-columns: minmax(0, 1fr); }
+  .lp-tech-features { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lp-tech-features li { display: block; padding: 24px; }
+  .lp-tech-features .lp-icon { margin: 0 0 14px; }
+  .lp .lp-console-example { margin-inline: 24px; }
+}
+@media (max-width: 760px) {
+  .lp-tech-features { grid-template-columns: minmax(0, 1fr); }
+  .lp-tech-features li { display: grid; grid-template-columns: 24px minmax(0, 1fr); padding: 24px; }
+  .lp-tech-features .lp-icon { margin-top: 3px; }
+  .lp-technical-body { gap: 24px; }
+  .lp-console-head { align-items: start; flex-direction: column; gap: 18px; }
+  .lp .lp-console-example { margin-inline: 16px; }
+  .lp-technical-heading { padding-inline: 24px; }
+  .lp .lp-technical-heading p { font-size: 16px; }
+  .lp-technical + .lp-technical { padding-top: 72px; }
+}
+@media (max-width: 540px) {
+  .lp-tech-nav { gap: 8px 20px; margin-inline: 16px; }
+  .lp-tech-nav a { font-size: 14px; }
+  .lp-technical { padding-top: 40px; }
+  .lp-technical-heading { padding-inline: 16px; margin-bottom: 28px; }
+  .lp .lp-technical-heading h3 { font-size: 29px; }
+  .lp-technical-heading > a { max-width: 100%; }
+  .lp-tech-features li { padding: 24px 16px; gap: 14px; }
+  .lp-tech-features h4 { font-size: 17px; }
+  .lp-console-head { padding: 22px 16px; }
+  .lp-console-head .lp-console-title { font-size: 21px; }
+  .lp-console-head .lp-console-subtitle { font-size: 13px; overflow-wrap: anywhere; }
+  .lp-console-example figcaption { padding: 18px 16px; }
+  .lp-console-scroll-hint { display: block; padding: 0 16px 14px; color: var(--lp-muted); font-size: 12px; line-height: 1.5; }
+}

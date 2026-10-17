@@ -1,5 +1,7 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import TrustHierarchy from '../components/TrustHierarchy.astro';
+import TechnicalCapabilities from '../components/TechnicalCapabilities.astro';
 import { landingTranslations } from '../lib/landing-content';
 import '../styles/landing-tokens.css';
 import '../styles/landing.css';
@@ -16,11 +18,6 @@ const customerLogos = [
 ];
 const referenceLinks = ['/ferroviario/', '/hosteleria-conectada/', '/energia-baterias/', '/gruas/', '/puertas-de-acceso-conectadas/'];
 const pillarLinks = ['#pki', '#automation', '#deployment'];
-const products = [
-  { id: 'pki', key: 'pki', data: home.pki, doc: home.docs.pki, scene: 'authority' },
-  { id: 'automation', key: 'devices', data: home.devices, doc: home.docs.enrollment, scene: 'devices' },
-  { id: 'keys', key: 'keys', data: home.keys, doc: home.docs.keys, scene: 'keys' },
-];
 const faqJsonLd = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: home.faq.items.map((item) => ({
@@ -86,11 +83,7 @@ const faqJsonLd = {
           <p data-i18n="home.redesign.platformLead">{copy.platformLead}</p>
         </header>
         <div class="lp-network-stage" data-motion-scene data-reveal>
-          <img class="lp-network-image" src="/media/lamassu-network.webp" width="1672" height="941" alt={copy.networkAlt} data-i18n-attr-alt="home.redesign.networkAlt" fetchpriority="high" />
-          <canvas class="lp-network-canvas" data-animation="network" aria-hidden="true"></canvas>
-          <div class="lp-network-note lp-network-note--left"><strong>X.509</strong><span data-i18n="home.redesign.networkLabels.3">{copy.networkLabels[3]}</span></div>
-          <div class="lp-network-note lp-network-note--right"><strong>EST</strong><span data-i18n="home.redesign.networkLabels.4">{copy.networkLabels[4]}</span></div>
-          <p class="lp-network-caption" data-i18n="home.redesign.networkLabels.2">{copy.networkLabels[2]}</p>
+          <TrustHierarchy description={copy.networkAlt} branches={copy.hierarchyBranches} devices={copy.hierarchyDevices} rootLabel={copy.networkLabels[2]} />
           <button class="lp-motion-control" type="button" data-motion-toggle aria-pressed="false" aria-label={copy.pauseMotion} data-pause-label={copy.pauseMotion} data-resume-label={copy.resumeMotion} data-i18n-attr-data-pause-label="home.redesign.pauseMotion" data-i18n-attr-data-resume-label="home.redesign.resumeMotion">
             <span class="lp-pause-symbol" aria-hidden="true"></span>
           </button>
@@ -141,24 +134,7 @@ const faqJsonLd = {
 
       <section class="lp-region lp-catalog" id="capabilities">
         <header class="lp-section-heading" data-reveal><h2 data-i18n="home.redesign.productTitle">{copy.productTitle}</h2><p data-i18n="home.redesign.productLead">{copy.productLead}</p></header>
-        <div data-tabs>
-          <div class="lp-tabs lp-tabs--products" data-tab-list hidden aria-label={copy.productTabsAria} data-i18n-attr-aria-label="home.redesign.productTabsAria">
-            {products.map((product, i) => <button type="button" id={`product-tab-${i}`} aria-controls={product.id} data-tab data-i18n={`home.redesign.productTabs.${i}`}>{copy.productTabs[i]}</button>)}
-          </div>
-          {products.map((product, i) => (
-            <article class="lp-capability lp-frame" id={product.id} data-tab-panel aria-labelledby={`product-tab-${i}`}>
-              <div class="lp-capability-main">
-                <div class="lp-capability-copy"><h3 data-i18n={`home.${product.key}.title`}>{product.data.title}</h3><p data-i18n={`home.${product.key}.lead`}>{product.data.lead}</p>{i === 1 && <p class="lp-protocols">{home.devices.protocols.map((protocol, index) => <span data-i18n={`home.devices.protocols.${index}`}>{protocol}</span>)}</p>}<a class="lp-link" href={product.doc} data-i18n-attr-href={`home.docs.${['pki', 'enrollment', 'keys'][i]}`} data-i18n={`home.${product.key}.cta`}>{product.data.cta}</a></div>
-                <div class:list={['lp-product-scene', `lp-product-scene--${product.scene}`]} aria-hidden="true">
-                  {i === 0 ? <img src="/media/lamassu-architecture.webp" width="1448" height="1086" alt="" loading="lazy" /> : <div class="lp-canvas-fallback"><span>{i === 1 ? 'EST' : 'HSM / KMS'}</span><span>X.509</span></div>}
-                  <canvas data-animation={product.scene}></canvas>
-                  <span class="lp-product-scene-label">{['Root CA → Issuing CA → X.509', 'EST → X.509 → mTLS', 'PKCS#11 · AWS KMS · Azure Key Vault'][i]}</span>
-                </div>
-              </div>
-              <div class="lp-capability-details">{product.data.features.map((feature, f) => <details><summary data-i18n={`home.${product.key}.features.${f}.tag`}>{feature.tag}</summary><p data-i18n={`home.${product.key}.features.${f}.body`}>{feature.body}</p>{'href' in feature && <a class="lp-link" href={feature.href} data-i18n-attr-href={`home.${product.key}.features.${f}.href`} data-i18n={`home.${product.key}.features.${f}.link`}>{feature.link}</a>}</details>)}</div>
-            </article>
-          ))}
-        </div>
+        <TechnicalCapabilities home={home} />
         <div class="lp-deployment" id="deployment">
           <div class="lp-deployment-intro"><h3 data-i18n="home.redesign.deploymentTitle">{copy.deploymentTitle}</h3><p data-i18n="home.redesign.deploymentLead">{copy.deploymentLead}</p></div>
           <div class="lp-deployment-grid">

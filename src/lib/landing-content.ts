@@ -1,4 +1,5 @@
 import { homeTranslations } from './i18n';
+import { technicalTranslations } from './technical-content';
 
 // The opening hero and the technical reference copy stay in the shared dictionary.
 // This copy gives the homepage its platform-first narrative in all supported languages.
@@ -147,7 +148,9 @@ const experience = {
   "es": {
     "platformTitle": "Confianza, en cualquier lugar",
     "platformLead": "Una misma infraestructura de identidad para tus dispositivos. En fábrica, en campo y durante toda su vida útil.",
-    "networkAlt": "Globo tridimensional con conexiones entre dispositivos y su infraestructura de confianza.",
+    "networkAlt": "Jerarquía de certificación con una CA raíz, tres CAs intermedias, nueve CAs emisoras y certificados X.509 de dispositivos.",
+    "hierarchyBranches": ["CA de fábrica", "CA de operación", "CA de servicios"],
+    "hierarchyDevices": "Dispositivos · X.509",
     "networkLabels": [
       "De fábrica",
       "A cualquier destino",
@@ -196,7 +199,9 @@ const experience = {
   "en": {
     "platformTitle": "Trust, wherever you operate",
     "platformLead": "One identity infrastructure for your devices. On the factory floor, in the field and throughout their lifetime.",
-    "networkAlt": "Three-dimensional globe with connections between devices and their trust infrastructure.",
+    "networkAlt": "Certificate hierarchy with a root CA, three intermediate CAs, nine issuing CAs and device X.509 certificates.",
+    "hierarchyBranches": ["Manufacturing CA", "Operations CA", "Services CA"],
+    "hierarchyDevices": "Devices · X.509",
     "networkLabels": [
       "From the factory",
       "To any destination",
@@ -245,7 +250,9 @@ const experience = {
   "eus": {
     "platformTitle": "Konfiantza, edonon",
     "platformLead": "Identitate-azpiegitura bera zure gailuentzat. Fabrikan, eremuan eta bizitza erabilgarri osoan.",
-    "networkAlt": "Gailuak eta konfiantza-azpiegitura lotzen dituen hiru dimentsioko globoa.",
+    "networkAlt": "Ziurtapen-hierarkia: erroko CA bat, tarteko hiru CA, bederatzi CA jaulkitzaile eta gailuen X.509 ziurtagiriak.",
+    "hierarchyBranches": ["Fabrikako CA", "Eragiketetako CA", "Zerbitzuetako CA"],
+    "hierarchyDevices": "Gailuak · X.509",
     "networkLabels": [
       "Fabrikatik",
       "Edozein helmugara",
@@ -294,7 +301,7 @@ const experience = {
 } as const;
 
 export const landingTranslations = {
-  es: { ...homeTranslations.es, home: { ...homeTranslations.es.home, redesign: { ...redesign.es, ...experience.es } } },
-  en: { ...homeTranslations.en, home: { ...homeTranslations.en.home, redesign: { ...redesign.en, ...experience.en } } },
-  eus: { ...homeTranslations.eus, home: { ...homeTranslations.eus.home, redesign: { ...redesign.eus, ...experience.eus } } },
+  es: { ...homeTranslations.es, home: { ...homeTranslations.es.home, technical: technicalTranslations.es, redesign: { ...redesign.es, ...experience.es } } },
+  en: { ...homeTranslations.en, home: { ...homeTranslations.en.home, technical: technicalTranslations.en, redesign: { ...redesign.en, ...experience.en } } },
+  eus: { ...homeTranslations.eus, home: { ...homeTranslations.eus.home, technical: technicalTranslations.eus, redesign: { ...redesign.eus, ...experience.eus } } },
 } as const;

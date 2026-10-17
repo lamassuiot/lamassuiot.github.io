@@ -1,0 +1,210 @@
+---
+interface Props {
+  description: string;
+  branches: readonly string[];
+  devices: string;
+  rootLabel: string;
+}
+
+const { description, branches, devices, rootLabel } = Astro.props;
+---
+
+<figure class="trust-hierarchy" aria-label={description} data-i18n-attr-aria-label="home.redesign.networkAlt">
+  <canvas class="lp-network-canvas" data-animation="network" aria-hidden="true"></canvas>
+  <div class="trust-root">
+    <span class="trust-root-node" data-trust-root aria-hidden="true">CA</span>
+    <strong>Root CA</strong>
+    <span class="trust-root-caption" data-i18n="home.redesign.networkLabels.2">{rootLabel}</span>
+  </div>
+  <ol class="trust-branches">
+    {branches.map((branch, index) => (
+      <li class="trust-branch">
+        <div class="trust-authority">
+          <span class="trust-authority-node" data-trust-authority={index} aria-hidden="true">CA</span>
+          <span class="trust-authority-name" data-i18n={`home.redesign.hierarchyBranches.${index}`}>{branch}</span>
+        </div>
+        <div class="trust-issuing" aria-hidden="true">
+          {[0, 1, 2].map((issuer) => (
+            <div class="trust-issuing-branch">
+              <span class="trust-issuing-node" data-trust-issuer={`${index}-${issuer}`}>CA</span>
+              <div class="trust-endpoints">
+                {[0, 1, 2].map((leaf) => <span class="trust-certificate" data-trust-leaf={`${index}-${issuer}-${leaf}`}></span>)}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="trust-devices" data-i18n="home.redesign.hierarchyDevices">{devices}</p>
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .trust-hierarchy {
+    position: relative;
+    width: min(100%, 1040px);
+    height: 100%;
+    margin: 0 auto;
+    color: var(--lp-title);
+  }
+
+  .trust-root {
+    position: absolute;
+    top: 34px;
+    left: 50%;
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    transform: translateX(-50%);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .trust-root-node {
+    display: grid;
+    place-items: center;
+    width: 124px;
+    height: 88px;
+    border: 1px solid var(--lp-accent);
+    border-radius: 0;
+    background: var(--lp-accent-soft);
+    color: var(--lp-accent);
+    font-size: 23px;
+    font-weight: 500;
+    outline: 1px solid var(--lp-border);
+    outline-offset: 6px;
+  }
+
+  .trust-root strong {
+    position: relative;
+    padding-inline: 8px;
+    background: var(--lp-bg);
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -.02em;
+  }
+
+  .trust-root-caption {
+    position: relative;
+    padding-inline: 8px;
+    background: var(--lp-bg);
+    color: var(--lp-text);
+    font-size: 13px;
+  }
+
+  .trust-branches {
+    position: absolute;
+    top: 45%;
+    right: 4%;
+    left: 4%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 42px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .trust-branch { min-width: 0; text-align: center; }
+
+  .trust-authority {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+  }
+
+  .trust-authority-node {
+    display: grid;
+    place-items: center;
+    width: 70px;
+    height: 50px;
+    border: 1px solid var(--lp-accent);
+    border-radius: 0;
+    background: var(--lp-bg);
+    color: var(--lp-accent);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .trust-authority-name {
+    position: relative;
+    padding-inline: 8px;
+    background: var(--lp-bg);
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .trust-issuing {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 58px;
+  }
+
+  .trust-issuing-branch { display: grid; justify-items: center; min-width: 0; }
+  .trust-issuing-node { display: grid; place-items: center; width: 36px; height: 28px; border: 1px solid var(--lp-border-strong); color: var(--lp-accent); background: var(--lp-bg); font-size: 9px; }
+
+  .trust-endpoints {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 38px auto 0;
+  }
+
+  .trust-certificate {
+    position: relative;
+    display: block;
+    width: 12px;
+    height: 16px;
+    border: 1px solid var(--lp-border-strong);
+    border-radius: 0;
+    background: var(--lp-bg);
+  }
+
+  .trust-certificate::before,
+  .trust-certificate::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    width: 5px;
+    border-top: 1px solid var(--lp-accent);
+  }
+
+  .trust-certificate::before { top: 5px; }
+  .trust-certificate::after { top: 10px; width: 3px; }
+  .trust-devices { margin-top: 16px !important; color: var(--lp-text); font-size: 12px !important; }
+
+  .trust-hierarchy:global(.canvas-ready) :is(.trust-root-node, .trust-authority-node, .trust-issuing-node, .trust-certificate) {
+    color: transparent;
+    border-color: transparent;
+    outline-color: transparent;
+    background: transparent;
+  }
+
+  .trust-hierarchy:global(.canvas-ready) .trust-certificate::before,
+  .trust-hierarchy:global(.canvas-ready) .trust-certificate::after { content: none; }
+
+  @media (max-width: 760px) {
+    .trust-root { top: 26px; gap: 10px; }
+    .trust-root-node { width: 106px; height: 76px; font-size: 20px; }
+    .trust-root strong { font-size: 17px; }
+    .trust-root-caption { font-size: 12px; }
+    .trust-branches { top: 44%; left: 2%; right: 2%; gap: 10px; }
+    .trust-authority-name { font-size: 13px; }
+    .trust-issuing { margin-top: 44px; gap: 8px; }
+  }
+
+  @media (max-width: 540px) {
+    .trust-root { top: 22px; }
+    .trust-root-node { width: 88px; height: 62px; }
+    .trust-branches { top: 42%; gap: 12px; }
+    .trust-authority-node { width: 54px; height: 40px; font-size: 11px; }
+    .trust-authority-name { min-height: 32px; font-size: 11px; padding-inline: 2px; }
+    .trust-issuing { margin-top: 30px; gap: 2px; }
+    .trust-issuing-node { width: 24px; height: 18px; font-size: 6px; }
+    .trust-endpoints { margin-top: 26px; }
+    .trust-certificate { width: 7px; height: 10px; }
+    .trust-certificate::before { left: 1px; top: 3px; width: 3px; }
+    .trust-certificate::after { left: 1px; top: 6px; width: 2px; }
+    .trust-devices { font-size: 10px !important; }
+  }
+</style>

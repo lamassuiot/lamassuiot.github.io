@@ -353,18 +353,12 @@ html body {
 .lp [hidden] { display: none !important; }
 .lp-region canvas, .lp-finale > canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
-/* The sphere is a generated high-resolution base; live connections are drawn over it. */
+/* Certificate hierarchy: semantic nodes with animated issuance paths. */
 .lp-network { padding-top: 100px; }
-.lp-network-stage { position: relative; height: 570px; overflow: hidden; margin-top: 12px; background: var(--lp-bg); }
-.lp-network-image { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
-:root:not([data-theme='light']) .lp-network-image { filter: invert(1) hue-rotate(180deg); mix-blend-mode: screen; opacity: .85; }
-.lp-network-note { position: absolute; top: 40%; display: grid; gap: 12px; width: 170px; padding: 16px; background: var(--lp-bg); }
-.lp-network-note--left { left: 30px; } .lp-network-note--right { right: 30px; top: 60%; }
-.lp-network-note strong { color: var(--lp-title); font-size: 34px; font-weight: 500; letter-spacing: -.04em; }
-.lp-network-note span { font-size: 14px; line-height: 1.5; }
-.lp-network .lp-network-caption { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 8px 16px; background: var(--lp-bg); font-size: 14px; white-space: nowrap; }
+.lp-network-stage { position: relative; height: 550px; overflow: hidden; margin-top: 12px; background: var(--lp-bg); }
 .lp-motion-control { position: absolute; right: 22px; bottom: 22px; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--lp-border); border-radius: 50%; background: var(--lp-bg); color: var(--lp-title); cursor: pointer; }
 .lp-motion-control:hover { border-color: var(--lp-accent); }
+.lp-network-stage .lp-motion-control { top: 20px; right: 20px; bottom: auto; }
 .lp-pause-symbol { width: 10px; height: 11px; border-inline: 3px solid currentColor; }
 .lp-motion-control[aria-pressed='true'] .lp-pause-symbol { width: 0; height: 0; border: 6px solid transparent; border-right: 0; border-left: 9px solid currentColor; margin-left: 2px; }
 .lp-platform-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -418,32 +412,7 @@ html body {
 .lp-compare-table th { color: var(--lp-title); font-weight: 600; }
 .lp-compare-table td:last-child { background: var(--lp-accent-soft); }
 
-/* Capability selector plus deployment options form one product catalogue. */
-.lp-tabs--products { gap: 6px; width: fit-content; max-width: calc(100% - 32px); margin: 40px auto 32px; padding: 5px; border: 1px solid var(--lp-border); border-radius: 28px; }
-.lp-tabs--products button { padding: 10px 26px; border: 0; border-radius: 22px; font-size: 16px; }
-.lp-tabs--products button[aria-selected='true'] { background: var(--lp-accent); color: var(--lp-accent-text); }
-.lp-capability { scroll-margin-top: 100px; }
-.lp-capability + .lp-capability { margin-top: 40px; }
-.has-tabs > .lp-capability { margin-top: 0; }
-.lp-capability-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; min-height: 390px; }
-.lp-capability-copy { padding: 40px; }
-.lp-capability-copy h3 { font-size: 28px; font-weight: 500; line-height: 1.2; }
-.lp-capability-copy > p { max-width: 48ch; margin-top: 20px; }
-.lp-protocols { display: grid; gap: 8px; font-size: 13px !important; }
-.lp-product-scene { position: relative; align-self: stretch; min-height: 390px; overflow: hidden; background: var(--lp-bg); }
-.lp-product-scene img { display: block; width: 100%; height: 100%; max-height: 380px; object-fit: contain; mix-blend-mode: multiply; animation: architecture-float 9s ease-in-out infinite; }
-:root:not([data-theme='light']) .lp-product-scene img { filter: invert(1) hue-rotate(180deg); mix-blend-mode: screen; }
-@keyframes architecture-float { 0%,100% { transform: translateY(4px); } 50% { transform: translateY(-8px); } }
-.lp-product-scene-label { position: absolute; bottom: 14px; left: 0; width: 100%; text-align: center; color: var(--lp-text); font-size: 12px; }
-.lp-canvas-fallback { position: absolute; inset: 50px; display: flex; align-items: center; justify-content: space-evenly; gap: 24px; }
-.lp-canvas-fallback span { display: grid; place-items: center; width: 100px; height: 100px; border: 1px solid var(--lp-border); border-radius: 50%; color: var(--lp-accent); font-size: 15px; }
-.canvas-ready .lp-canvas-fallback { display: none; }
-.lp-capability-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--lp-border); }
-.lp-capability-details details { padding: 22px 28px; }
-.lp-capability-details details + details { border-left: 1px solid var(--lp-border); }
-.lp-capability-details summary { color: var(--lp-title); font-size: 15px; line-height: 1.5; cursor: pointer; }
-.lp-capability-details p { margin-top: 16px; font-size: 14px; }
-.lp-capability-details .lp-link { font-size: 14px; }
+/* Deployment options follow the technical sections. */
 .lp-deployment { scroll-margin-top: 100px; }
 .lp-deployment-intro { padding: 44px 40px 28px; }
 .lp-deployment-intro h3 { font-size: 24px; font-weight: 500; }
@@ -516,18 +485,14 @@ html body {
 .lp-finale ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 48px; list-style: none; padding: 0; margin-top: 72px; font-size: 13px; }
 .will-reveal { opacity: 0; transform: translate3d(0,20px,0); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.65,.3,1); }
 .will-reveal.is-visible { opacity: 1; transform: translate3d(0,0,0); }
-.lp-motion-paused .lp-fragment, .lp-motion-paused .lp-product-scene img, .lp-motion-paused .lp-quantum-visual img { animation-play-state: paused; }
+.lp-motion-paused .lp-fragment, .lp-motion-paused .lp-quantum-visual img { animation-play-state: paused; }
 .lp-fragment-scene:not(.scene-visible) .lp-fragment,
-.lp-product-scene:not(.scene-visible) img,
 .lp-quantum-visual:not(.scene-visible) img { animation-play-state: paused; }
 
 @media (max-width: 1000px) {
   .lp-network-stage { height: 500px; }
-  .lp-network-note { width: 140px; padding: 12px; }
-  .lp-network-note--left { left: 8px; } .lp-network-note--right { right: 8px; }
   .lp-platform-points article { padding: 28px 24px; }
   .lp-case { margin-inline: 32px; gap: 32px; }
-  .lp-capability-copy { padding: 32px; }
   .lp-team-workflow { padding-inline: 28px; }
   .lp-team-open { padding: 28px; }
   .lp-team-feature { padding-inline: 24px; }
@@ -538,12 +503,7 @@ html body {
   .lp-section-heading { padding-inline: 24px; }
   .lp-section-heading h2 { font-size: 38px; }
   .lp-section-heading > p { font-size: 17px; }
-  .lp-network-stage { height: 430px; }
-  .lp-network-note { top: auto; bottom: 40px; background: transparent; }
-  .lp-network-note--right { right: 0; text-align: right; }
-  .lp-network-note--left { left: 0; }
-  .lp-network-note strong { font-size: 26px; }
-  .lp-network .lp-network-caption { display: none; }
+  .lp-network-stage { height: 480px; }
   .lp-motion-control { right: 12px; bottom: 6px; width: 30px; height: 30px; }
   .lp-platform-points article { padding: 24px 20px; }
   .lp-platform-points h3 { font-size: 17px; }
@@ -558,13 +518,6 @@ html body {
   .lp-comparison-side h3 { font-size: 34px; }
   .lp-fragment-scene, .lp-unified-scene { height: 260px; margin-inline: -20px; }
   .lp-fragment { font-size: 11px; max-width: 110px; padding: 6px; }
-  .lp-capability-main { grid-template-columns: minmax(0, 1fr); }
-  .lp-capability-copy { padding: 32px; }
-  .lp-product-scene { min-height: 320px; }
-  .lp-product-scene img { max-height: 320px; }
-  .lp-capability-details { grid-template-columns: minmax(0, 1fr); }
-  .lp-capability-details details + details { border-left: 0; border-top: 1px solid var(--lp-border); }
-  .lp-capability-details details { padding-block: 18px; }
   .lp-deployment-option { padding: 24px 20px; }
   .lp-deployment-option h3 { font-size: 24px; }
   .lp-team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -590,12 +543,8 @@ html body {
   .lp-section-heading { padding-inline: 16px; }
   .lp-section-heading h2 { font-size: 32px; }
   .lp-section-heading > p { margin-top: 16px; font-size: 16px; }
-  .lp-network-stage { height: 330px; margin-top: 8px; }
-  .lp-network-image { width: 140%; max-width: none; margin-left: -20%; height: 270px; }
-  .lp-network-canvas { height: 270px !important; }
-  .lp-network-note { bottom: 24px; width: 150px; padding: 8px 16px; gap: 4px; }
-  .lp-network-note strong { font-size: 24px; }
-  .lp-network-note span { font-size: 12px; }
+  .lp-network-stage { height: 410px; margin-top: 24px; }
+
   .lp-motion-control { bottom: 0; right: calc(50% - 15px); }
   .lp-platform-points { grid-template-columns: minmax(0, 1fr); }
   .lp-platform-points article { padding: 24px; }
@@ -619,14 +568,6 @@ html body {
   .lp-fragment { font-size: 12px; }
   .lp-compare-details { padding-inline: 16px; }
   .lp-compare-table table { min-width: 700px; }
-  .lp-tabs--products { margin-block: 28px 24px; width: calc(100% - 32px); gap: 0; padding: 4px; }
-  .lp-tabs--products button { flex: 1; min-width: 0; padding: 9px 8px; font-size: 13px; }
-  .lp-capability-copy { padding: 28px 24px; }
-  .lp-capability-copy h3 { font-size: 26px; }
-  .lp-product-scene { min-height: 280px; }
-  .lp-product-scene img { max-height: 280px; }
-  .lp-product-scene-label { font-size: 10px; }
-  .lp-capability-details details { padding-inline: 24px; }
   .lp-deployment-intro { padding: 32px 24px 24px; }
   .lp-deployment-grid { grid-template-columns: minmax(0, 1fr); }
   .lp-deployment-option { padding: 28px 24px; }

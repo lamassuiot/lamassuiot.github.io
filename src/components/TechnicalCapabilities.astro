@@ -1,0 +1,121 @@
+---
+import type { landingTranslations } from '../lib/landing-content';
+import '../styles/technical-capabilities.css';
+
+interface Props { home: typeof landingTranslations.es.home }
+const { home } = Astro.props;
+const ui = home.technical;
+const products = [
+  { id: 'pki', key: 'pki', data: home.pki, doc: home.docs.pki, docKey: 'pki' },
+  { id: 'automation', key: 'devices', data: home.devices, doc: home.docs.enrollment, docKey: 'enrollment' },
+  { id: 'keys', key: 'keys', data: home.keys, doc: home.docs.keys, docKey: 'keys' },
+];
+// Restored from 10a7019: sample console data, never live telemetry.
+const authorities = [
+  { name: 'Lamassu Root CA', algorithm: 'RSA 4096', engine: 'PKCS#11 HSM', status: 'active', depth: 0 },
+  { name: 'Factory Issuing CA', algorithm: 'ECDSA P-384', engine: 'AWS KMS', status: 'active', depth: 1 },
+  { name: 'Line 3 Devices CA', algorithm: 'ECDSA P-256', engine: 'AWS KMS', status: 'active', depth: 2 },
+  { name: 'Field Gateways CA', algorithm: 'ECDSA P-256', engine: 'Azure Key Vault', status: 'expiring', depth: 1 },
+  { name: 'Legacy OT CA', algorithm: 'RSA 2048', engine: 'Imported', status: 'revoked', depth: 0 },
+] as const;
+const events = [
+  { time: '10:42:07', operation: '/simpleenroll', device: 'plc-line3-0042', status: 'issued' },
+  { time: '10:41:55', operation: '/simplereenroll', device: 'gw-north-17', status: 'renewed' },
+  { time: '10:40:12', operation: '/cacerts', device: 'hmi-panel-08', status: 'served' },
+  { time: '10:38:40', operation: 'revoke', device: 'lock-b2-883', status: 'revoked' },
+  { time: '10:37:02', operation: '/simpleenroll', device: 'bms-rack-12', status: 'issued' },
+  { time: '10:35:19', operation: '/serverkeygen', device: 'meter-ft-2207', status: 'issued' },
+] as const;
+const engines = [
+  { name: 'PKCS#11 HSM', id: 'pkcs11-hsm-01', connection: 'PKCS#11', custody: 'hardware' },
+  { name: 'AWS KMS', id: 'aws-kms-eu-west-1', connection: 'AWS API', custody: 'cloud' },
+  { name: 'Azure Key Vault Keys', id: 'azure-kv-prod', connection: 'Azure API', custody: 'cloud' },
+  { name: 'HashiCorp Vault', id: 'vault-kv-plant', connection: 'KV v2', custody: 'software' },
+  { name: 'File system', id: 'fs-dev', connection: 'local', custody: 'software' },
+] as const;
+const icons = [
+  ['M12 3v6M5 15v-4h14v4M12 11v4M9 3h6v5H9zM2 16h6v5H2zM9 16h6v5H9zM16 16h6v5h-6z', 'M14 3H5v18h14V8zM14 3v6h5M8 13h8M8 17h6', 'M12 3l8 3v6c0 4-3 7-8 9-5-2-8-5-8-9V6z'],
+  ['M14 4h6v16h-6M3 12h12M10 7l5 5-5 5', 'M20 7a9 9 0 1 0 1 7M20 3v5h-5', 'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z'],
+  ['M7 7h10v10H7zM9 3v4M15 3v4M9 17v4M15 17v4M3 9h4M3 15h4M17 9h4M17 15h4', 'M4 4h16v16H4zM4 9h16M8 6h1M12 13v4M10 15h4', 'M12 3v12M7 10l5 5 5-5M4 16v5h16v-5'],
+];
+---
+
+<nav class="lp-tech-nav" aria-label={ui.navigation} data-i18n-attr-aria-label="home.technical.navigation">
+  {products.map((product, i) => <a href={`#${product.id}`} data-i18n={`home.redesign.productTabs.${i}`}>{home.redesign.productTabs[i]}</a>)}
+</nav>
+
+{products.map((product, index) => (
+  <section class="lp-technical" id={product.id} aria-labelledby={`${product.id}-title`}>
+    <header class="lp-technical-heading" data-reveal>
+      <div>
+        <h3 id={`${product.id}-title`} data-i18n={`home.${product.key}.title`}>{product.data.title}</h3>
+        <p data-i18n={`home.${product.key}.lead`}>{product.data.lead}</p>
+        {index === 1 && <ul class="lp-tech-protocols">{home.devices.protocols.map((protocol, i) => <li data-i18n={`home.devices.protocols.${i}`}>{protocol}</li>)}</ul>}
+      </div>
+      <a class="lp-btn lp-btn--primary" href={product.doc} data-i18n-attr-href={`home.docs.${product.docKey}`} data-i18n={`home.${product.key}.cta`}>{product.data.cta}</a>
+    </header>
+
+    <div class="lp-technical-body" data-reveal>
+      <ul class="lp-tech-features">
+        {product.data.features.map((feature, i) => (
+          <li>
+            <svg class="lp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={icons[index][i]} /></svg>
+            <div>
+              <h4 data-i18n={`home.${product.key}.features.${i}.tag`}>{feature.tag}</h4>
+              <p data-i18n={`home.${product.key}.features.${i}.body`}>{feature.body}</p>
+              {'href' in feature && <a class="lp-link" href={feature.href} data-i18n-attr-href={`home.${product.key}.features.${i}.href`} data-i18n={`home.${product.key}.features.${i}.link`}>{feature.link}</a>}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <figure class="lp-console-example" data-ui>
+        <div class="lp-console-head">
+          <div>
+            <p class="lp-console-title" data-i18n={`home.technical.${['authorities', 'events', 'engines'][index]}`}>{[ui.authorities, ui.events, ui.engines][index]}</p>
+            <p class="lp-console-subtitle" {...(index !== 1 ? { 'data-i18n': `home.technical.${index === 0 ? 'hierarchy' : 'connectedEngines'}` } : {})}>{[ui.hierarchy, 'DMS · factory-line-3 · /.well-known/est', ui.connectedEngines][index]}</p>
+          </div>
+          <a class="lp-console-open" href="https://lab.lamassu.io" target="_blank" rel="noopener"><span data-i18n="home.technical.openConsole">{ui.openConsole}</span><span aria-hidden="true">↗</span></a>
+        </div>
+
+        <span class="lp-console-scroll-hint" id={`${product.id}-scroll-hint`} data-i18n="home.technical.scrollTable">{ui.scrollTable}</span>
+        <div class="lp-console-scroll" tabindex="0" role="region" aria-labelledby={`${product.id}-title`} aria-describedby={`${product.id}-scroll-hint`}>
+          {index === 0 && <table class="lp-console-table lp-ca-table">
+            <thead><tr>{['name', 'algorithm', 'engine', 'status'].map(key => <th scope="col" data-i18n={`home.technical.${key}`}>{ui[key as keyof typeof ui]}</th>)}</tr></thead>
+            <tbody>{authorities.map((row, i) => <tr id={`ca-example-${i}`} data-ca-child={row.depth > 0 ? '' : undefined}>
+              <th scope="row"><span class:list={['lp-ca-name', `lp-ca-depth-${row.depth}`]}>
+                {i === 0 ? <button class="lp-ca-toggle" type="button" data-ca-toggle hidden aria-expanded="true" aria-controls="ca-example-1 ca-example-2 ca-example-3" aria-label={ui.toggleHierarchy} data-i18n-attr-aria-label="home.technical.toggleHierarchy"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg></button> : row.depth > 0 && <span class="lp-ca-branch" aria-hidden="true">└</span>}
+                {row.name}
+              </span></th>
+              <td>{row.algorithm}</td><td {...(row.engine === 'Imported' ? { 'data-i18n': 'home.technical.imported' } : {})}>{row.engine === 'Imported' ? ui.imported : row.engine}</td>
+              <td><span class={`lp-console-status lp-console-status--${row.status}`} data-i18n={`home.technical.${row.status}`}>{ui[row.status]}</span></td>
+            </tr>)}</tbody>
+          </table>}
+
+          {index === 1 && <table class="lp-console-table lp-events-table">
+            <thead><tr>{['time', 'operation', 'device', 'status'].map(key => <th scope="col" data-i18n={`home.technical.${key}`}>{ui[key as keyof typeof ui]}</th>)}</tr></thead>
+            <tbody>{events.map(event => <tr><td>{event.time}</td><td><code>{event.operation}</code></td><th scope="row">{event.device}</th><td><span class={`lp-console-status lp-console-status--${event.status}`} data-i18n={`home.technical.${event.status}`}>{ui[event.status]}</span></td></tr>)}</tbody>
+          </table>}
+
+          {index === 2 && <table class="lp-console-table lp-engines-table">
+            <thead><tr>{['engine', 'connection', 'custody'].map(key => <th scope="col" data-i18n={`home.technical.${key}`}>{ui[key as keyof typeof ui]}</th>)}</tr></thead>
+            <tbody>{engines.map(engine => <tr><th scope="row">{engine.name}<span class="lp-engine-identifier">{engine.id}</span></th><td {...(engine.connection === 'local' ? { 'data-i18n': 'home.technical.local' } : {})}>{engine.connection === 'local' ? ui.local : engine.connection}</td><td data-i18n={`home.technical.${engine.custody}`}>{ui[engine.custody]}</td></tr>)}</tbody>
+          </table>}
+        </div>
+        <figcaption data-i18n="home.technical.example">{ui.example}</figcaption>
+      </figure>
+    </div>
+  </section>
+))}
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-ca-toggle]');
+  if (toggle) {
+    toggle.hidden = false;
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(expanded));
+      document.querySelectorAll<HTMLElement>('[data-ca-child]').forEach(row => { row.hidden = !expanded; });
+    });
+  }
+</script>
