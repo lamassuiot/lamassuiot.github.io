@@ -4,22 +4,12 @@ type Point = {
     x: number;
     y: number;
 };
-type PixelGlyph = { center: Point; width: number; height: number; kind: 'root' | 'authority' | 'issuer' | 'certificate' };
-type TrustLeaf = { anchor: Point; glyph: PixelGlyph };
-type TrustIssuer = { authority: Point; origin: Point; glyph: PixelGlyph; leaves: TrustLeaf[] };
 type Scene = {
     canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     width: number;
     height: number;
     visible: boolean;
-    hierarchy?: {
-        root: Point;
-        glyph: PixelGlyph;
-        branches: { authority: Point; origin: Point; glyph: PixelGlyph; issuers: TrustIssuer[] }[];
-        art?: HTMLCanvasElement;
-        palette?: string;
-    };
 };
 const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
 const root = document.documentElement;
@@ -93,130 +83,6 @@ function route(ctx: CanvasRenderingContext2D, a: Point, control: Point, b: Point
         if (progress >= 0 && progress <= 1)
             dot(ctx, quadratic(a, control, b, progress), n === 0 ? 2.2 : 1.3, color, (1 - n / 12) * .9);
     }
-}
-/** A deterministic raster drawing: detailed enough to read as pixel art, never an image filter. */
-function pixelGlyph(ctx: CanvasRenderingContext2D, glyph: PixelGlyph) {
-    const { center, width, height, kind } = glyph;
-    const unit = kind === 'certificate' ? Math.max(1, width / 8) : Math.max(1.25, width / 48);
-    const pixel = (x: number, y: number, opacity: number, color = colors.accent, size = unit * .8) => {
-        ctx.fillStyle = color;
-        ctx.globalAlpha = opacity;
-        ctx.fillRect(Math.round(x / unit) * unit, Math.round(y / unit) * unit, size, size);
-    };
-    if (kind === 'certificate') {
-        for (let y = 0; y < height; y += unit) {
-            for (let x = 0; x < width; x += unit) {
-                const edge = x < unit || y < unit || x >= width - unit || y >= height - unit;
-                const content = y > height * .3 && y < height * .7 && Math.round(y / unit) % 3 === 0 && x > width * .2 && x < width * .75;
-                if (edge || content) pixel(center.x - width / 2 + x, center.y - height / 2 + y, content ? .75 : .4);
-            }
-        }
-        ctx.globalAlpha = 1;
-        return;
-    }
-    const halfWidth = width * .48;
-    const halfHeight = height * .23;
-    const layers = kind === 'issuer' ? 2 : 3;
-    for (let layer = layers - 1; layer >= 0; layer--) {
-        const offset = (layer - (layers - 1) * .5) * height * .22;
-        for (let y = -halfHeight; y <= halfHeight; y += unit) {
-            for (let x = -halfWidth; x <= halfWidth; x += unit) {
-                const distance = Math.abs(x) / halfWidth + Math.abs(y) / halfHeight;
-                if (distance > 1) continue;
-                const col = Math.round(x / unit), row = Math.round(y / unit);
-                const pattern = Math.abs(col * 17 + row * 31 + layer * 11) % 13;
-                const edge = distance > .88;
-                const core = Math.abs(x) < width * .13 && Math.abs(y) < height * .09;
-                const trace = Math.abs(col) % 7 === 0 || Math.abs(row) % 5 === 0;
-                if (edge || core || pattern < 5 || trace) {
-                    const opacity = edge ? .85 : core ? .65 : trace ? .35 : .12 + (pattern / 13) * .2;
-                    pixel(center.x + x, center.y + y + offset, opacity, layer === 0 && core ? colors.cyan : colors.accent);
-                }
-            }
-        }
-        if (layer < layers - 1) {
-            for (const side of [-1, 1]) {
-                for (let y = 0; y < height * .22; y += unit) {
-                    pixel(center.x + side * halfWidth, center.y + offset + y, .65);
-                    pixel(center.x, center.y + halfHeight + offset + y, .4);
-                }
-            }
-        }
-    }
-    ctx.globalAlpha = 1;
-}
-
-function network(scene: Scene, t: number) {
-    const { context: ctx, hierarchy, width, height } = scene;
-    if (!hierarchy) return;
-    const step = width < 540 ? 1.5 : 2;
-    const curve = (a: Point, b: Point, u: number, lane = 0) => {
-        const bend = (b.y - a.y) * .55, v = 1 - u;
-        return point(
-            v ** 3 * a.x + 3 * v ** 2 * u * a.x + 3 * v * u ** 2 * b.x + u ** 3 * b.x + Math.sin(u * Math.PI) * lane,
-            v ** 3 * a.y + 3 * v ** 2 * u * (a.y + bend) + 3 * v * u ** 2 * (b.y - bend) + u ** 3 * b.y,
-        );
-    };
-    const links: { a: Point; b: Point; progress: number; lanes: number }[] = [];
-    const glyphs: PixelGlyph[] = [hierarchy.glyph];
-    hierarchy.branches.forEach((branch, index) => {
-        const phase = (t * .000085 + index * .28) % 1;
-        links.push({ a: hierarchy.root, b: branch.authority, progress: phase / .34, lanes: 3 });
-        glyphs.push(branch.glyph);
-        branch.issuers.forEach((issuer, issuerIndex) => {
-            links.push({ a: branch.origin, b: issuer.authority, progress: (phase - .28 - issuerIndex * .04) / .35, lanes: 2 });
-            glyphs.push(issuer.glyph);
-            issuer.leaves.forEach((leaf, leafIndex) => {
-                links.push({ a: issuer.origin, b: leaf.anchor, progress: (phase - .58 - issuerIndex * .03 - leafIndex * .04) / .3, lanes: 1 });
-                glyphs.push(leaf.glyph);
-            });
-        });
-    });
-    const palette = `${colors.accent}|${colors.cyan}|${colors.border}`;
-    if (!hierarchy.art || hierarchy.palette !== palette) {
-        const art = document.createElement('canvas');
-        const ratio = Math.min(window.devicePixelRatio || 1, 2);
-        art.width = Math.round(width * ratio); art.height = Math.round(height * ratio);
-        const background = art.getContext('2d');
-        if (!background) return;
-        background.setTransform(ratio, 0, 0, ratio, 0, 0);
-        background.fillStyle = colors.accent;
-        background.globalAlpha = .065;
-        for (let x = 20; x < width - 20; x += 12) {
-            for (let y = 20; y < height - 20; y += 12) {
-                if ((Math.round(x / 12) + Math.round(y / 12)) % 3 === 0) background.fillRect(x, y, 1, 1);
-            }
-        }
-        links.forEach(link => {
-            const count = Math.ceil((Math.abs(link.b.x - link.a.x) + Math.abs(link.b.y - link.a.y)) / step);
-            background.fillStyle = colors.accent;
-            for (let lane = 0; lane < link.lanes; lane++) {
-                background.globalAlpha = lane === 1 ? .27 : .13;
-                for (let n = 0; n <= count; n++) {
-                    const p = curve(link.a, link.b, n / count, (lane - (link.lanes - 1) / 2) * 4);
-                    background.fillRect(Math.round(p.x / step) * step, Math.round(p.y / step) * step, step * .65, step * .65);
-                }
-            }
-        });
-        background.globalAlpha = 1;
-        glyphs.forEach(glyph => pixelGlyph(background, glyph));
-        hierarchy.art = art;
-        hierarchy.palette = palette;
-    }
-    ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(hierarchy.art, 0, 0, width, height);
-    ctx.fillStyle = colors.accent;
-    links.forEach(link => {
-        for (let trail = 0; trail < 12; trail++) {
-            const u = link.progress - trail * .012;
-            if (u < 0 || u > 1) continue;
-            const p = curve(link.a, link.b, u);
-            ctx.globalAlpha = (1 - trail / 12) * .9;
-            const size = trail === 0 ? step * 1.6 : step;
-            ctx.fillRect(Math.round(p.x / step) * step, Math.round(p.y / step) * step, size, size);
-        }
-    });
-    ctx.globalAlpha = 1;
 }
 function fragmented(scene: Scene, t: number) {
     const { context: ctx, width: w, height: h } = scene;
@@ -390,9 +256,6 @@ function draw(scene: Scene, t: number) {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     switch (canvas.dataset.animation) {
-        case 'network':
-            network(scene, t);
-            break;
         case 'fragmented':
             fragmented(scene, t);
             break;
@@ -443,35 +306,6 @@ function resize(scene: Scene) {
     scene.canvas.width = Math.round(rect.width * ratio);
     scene.canvas.height = Math.round(rect.height * ratio);
     scene.context.setTransform(ratio, 0, 0, ratio, 0, 0);
-    if (scene.canvas.dataset.animation === 'network') {
-        const diagram = scene.canvas.parentElement;
-        const rootNode = diagram?.querySelector<HTMLElement>('[data-trust-root]');
-        if (diagram && rootNode) {
-            const anchor = (node: HTMLElement, edge: 'top' | 'bottom') => {
-                const box = node.getBoundingClientRect();
-                return point(box.left + box.width / 2 - rect.left, box[edge] - rect.top);
-            };
-            const glyph = (node: HTMLElement, kind: PixelGlyph['kind']): PixelGlyph => {
-                const box = node.getBoundingClientRect();
-                return { center: point(box.left + box.width / 2 - rect.left, box.top + box.height / 2 - rect.top), width: box.width, height: box.height, kind };
-            };
-            scene.hierarchy = {
-                root: anchor(rootNode, 'bottom'),
-                glyph: glyph(rootNode, 'root'),
-                branches: Array.from(diagram.querySelectorAll<HTMLElement>('[data-trust-authority]')).map((authority, index) => ({
-                    authority: anchor(authority, 'top'),
-                    origin: anchor(authority, 'bottom'),
-                    glyph: glyph(authority, 'authority'),
-                    issuers: Array.from(diagram.querySelectorAll<HTMLElement>(`[data-trust-issuer^="${index}-"]`)).map((issuer, issuerIndex) => ({
-                        authority: anchor(issuer, 'top'),
-                        origin: anchor(issuer, 'bottom'),
-                        glyph: glyph(issuer, 'issuer'),
-                        leaves: Array.from(diagram.querySelectorAll<HTMLElement>(`[data-trust-leaf^="${index}-${issuerIndex}-"]`)).map(leaf => ({ anchor: anchor(leaf, 'top'), glyph: glyph(leaf, 'certificate') })),
-                    })),
-                })),
-            };
-        }
-    }
     draw(scene, time);
 }
 function active() { return !userPaused && !preference.matches && !document.hidden && scenes.some(scene => scene.visible); }

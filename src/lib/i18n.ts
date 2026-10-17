@@ -533,8 +533,8 @@ export const homeTranslations = {
             body: 'HSMs over PKCS#11, AWS KMS and Azure Key Vault Keys: the key does not need to leave the module to sign.',
           },
           {
-            tag: 'Secret stores',
-            body: 'HashiCorp Vault, AWS Secrets Manager and Azure Key Vault Secrets, for environments where software custody is acceptable.',
+            tag: 'Key access control',
+            body: 'Control who can access and operate with your keys. Integrate via API and the PKCS#11 client.',
           },
           {
             tag: 'Bring your own key',
@@ -902,8 +902,8 @@ export const homeTranslations = {
             body: 'HSMs vía PKCS#11, AWS KMS y Azure Key Vault Keys: la clave no necesita salir del módulo para firmar.',
           },
           {
-            tag: 'Almacenes de secretos',
-            body: 'HashiCorp Vault, AWS Secrets Manager y Azure Key Vault Secrets, para los entornos donde la custodia por software es aceptable.',
+            tag: 'Control de acceso a las claves',
+            body: 'Controla quién puede acceder y operar con tus claves. Integración vía API y cliente PKCS#11.',
           },
           {
             tag: 'Trae tu propia clave',
@@ -1271,8 +1271,8 @@ export const homeTranslations = {
             body: 'HSMak PKCS#11 bidez, AWS KMS eta Azure Key Vault Keys: gakoak ez du modulutik atera beharrik sinatzeko.',
           },
           {
-            tag: 'Sekretu-biltegiak',
-            body: 'HashiCorp Vault, AWS Secrets Manager eta Azure Key Vault Secrets, software bidezko zaintza onargarria den inguruneetarako.',
+            tag: 'Gakoetarako sarbide-kontrola',
+            body: 'Kontrolatu nork atzitu eta erabil ditzakeen zure gakoak. Integrazioa APIaren eta PKCS#11 bezeroaren bidez.',
           },
           {
             tag: 'Ekarri zure gakoa',

@@ -1,210 +1,325 @@
 ---
-interface Props {
-  description: string;
-  branches: readonly string[];
-  devices: string;
-  rootLabel: string;
-}
+import type { landingTranslations } from '../lib/landing-content';
 
-const { description, branches, devices, rootLabel } = Astro.props;
+interface Props {
+  copy: (typeof landingTranslations)['es']['home']['redesign'];
+}
+const { copy } = Astro.props;
+
+// 24×24 line icons (Lucide-style); the wrapping <svg> sets the stroke.
+const icons: Record<string, string> = {
+  lock: '<rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><path d="M12 14.5v2.5"/>',
+  factory: '<path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1M12 18h1M7 18h1"/>',
+  gear: '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
+  cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>',
+  cpu: '<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+  arm: '<path d="M3 21h10M5 21v-2.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V21"/><path d="M8 17.5 10.5 10l6-4.5"/><circle cx="10.5" cy="10" r="1.6"/><circle cx="16.5" cy="5.5" r="1.6"/><path d="M17.8 6.8 20 9.5M18 4.2 21 3"/>',
+  server: '<rect x="3" y="3" width="18" height="7.5" rx="2"/><rect x="3" y="13.5" width="18" height="7.5" rx="2"/><path d="M7 6.75h.01M7 17.25h.01M11 6.75h6M11 17.25h6"/>',
+  router: '<rect x="2.5" y="14" width="19" height="7" rx="2"/><path d="M6.5 17.5h.01M10 17.5h.01M15 10.5V14"/><path d="M12.2 8.2a4 4 0 0 1 5.6 0M9.4 5.4a8 8 0 0 1 11.2 0"/>',
+  car: '<path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.65 5H8.4a2 2 0 0 0-1.9 1.26L5 10 3 8"/><rect x="3" y="10" width="18" height="8" rx="2"/><path d="M7 14h.01M17 14h.01M5 18v2M19 18v2"/>',
+  plane: '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>',
+  building: '<rect x="4" y="2.5" width="16" height="19" rx="2"/><path d="M9.5 21.5v-4h5v4M8.5 6.5h.01M12 6.5h.01M15.5 6.5h.01M8.5 10h.01M12 10h.01M15.5 10h.01M8.5 13.5h.01M12 13.5h.01M15.5 13.5h.01"/>',
+  rack: '<rect x="3" y="3" width="5" height="18" rx="1.2"/><rect x="9.5" y="3" width="5" height="18" rx="1.2"/><rect x="16" y="3" width="5" height="18" rx="1.2"/><path d="M5.5 7v2M12 7v2M18.5 7v2M5.5 17h.01M12 17h.01M18.5 17h.01"/>',
+  laptop: '<path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/>',
+  database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  renew: '<path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 3.5V8h4.5M4 13a8 8 0 0 0 14.3 4.9L20 16m0 4.5V16h-4.5"/>',
+  revoke: '<path d="M7 7l10 10M17 7 7 17"/>',
+};
+
+// Illustrative identities shown in the certificate card and event feed.
+const branches = [
+  { icon: 'factory', key: 'ECDSA P-256', devices: [['cpu', 'mcu-a7-0042'], ['arm', 'robot-07'], ['server', 'mes-srv-01'], ['router', 'gw-plant-03']] },
+  { icon: 'gear', key: 'ECDSA P-384', devices: [['car', 'veh-1187'], ['plane', 'avionics-12'], ['building', 'bms-hq-02'], ['router', 'rtu-field-09']] },
+  { icon: 'cloud', key: 'RSA 3072', devices: [['cloud', 'api-gateway'], ['rack', 'k8s-node-04'], ['laptop', 'ops-laptop-17'], ['database', 'telemetry-db']] },
+];
+const strings = [
+  ...Object.entries(copy.hierarchyCertificate).map(([key, value]) => [`cert-${key}`, `hierarchyCertificate.${key}`, value]),
+  ...Object.entries(copy.hierarchyStates).map(([key, value]) => [`state-${key}`, `hierarchyStates.${key}`, value]),
+  ...Object.entries(copy.hierarchyEvents).map(([key, value]) => [`event-${key}`, `hierarchyEvents.${key}`, value]),
+];
 ---
 
-<figure class="trust-hierarchy" aria-label={description} data-i18n-attr-aria-label="home.redesign.networkAlt">
-  <canvas class="lp-network-canvas" data-animation="network" aria-hidden="true"></canvas>
-  <div class="trust-root">
-    <span class="trust-root-node" data-trust-root aria-hidden="true">CA</span>
-    <strong>Root CA</strong>
-    <span class="trust-root-caption" data-i18n="home.redesign.networkLabels.2">{rootLabel}</span>
+<figure class="th" data-trust-hierarchy aria-label={copy.networkAlt} data-i18n-attr-aria-label="home.redesign.networkAlt">
+  <svg class="th-wires" aria-hidden="true"><g class="th-lines"></g><g class="th-dots"></g><g class="th-flows"></g></svg>
+  <div class="th-card th-root">
+    <span class="th-icon" data-icon="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.lock} /></span>
+    <span class="th-text"><strong>Root CA</strong><span data-i18n="home.redesign.networkLabels.2">{copy.networkLabels[2]}</span></span>
   </div>
-  <ol class="trust-branches">
-    {branches.map((branch, index) => (
-      <li class="trust-branch">
-        <div class="trust-authority">
-          <span class="trust-authority-node" data-trust-authority={index} aria-hidden="true">CA</span>
-          <span class="trust-authority-name" data-i18n={`home.redesign.hierarchyBranches.${index}`}>{branch}</span>
+  <ol class="th-branches">
+    {branches.map((branch, i) => (
+      <li class="th-branch">
+        <div class="th-card th-ca" data-key={branch.key}>
+          <span class="th-icon" data-icon={branch.icon}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[branch.icon]} /></span>
+          <span class="th-text"><strong data-i18n={`home.redesign.hierarchyBranches.${i}`}>{copy.hierarchyBranches[i]}</strong><span data-i18n={`home.redesign.hierarchyBranchLeads.${i}`}>{copy.hierarchyBranchLeads[i]}</span></span>
         </div>
-        <div class="trust-issuing" aria-hidden="true">
-          {[0, 1, 2].map((issuer) => (
-            <div class="trust-issuing-branch">
-              <span class="trust-issuing-node" data-trust-issuer={`${index}-${issuer}`}>CA</span>
-              <div class="trust-endpoints">
-                {[0, 1, 2].map((leaf) => <span class="trust-certificate" data-trust-leaf={`${index}-${issuer}-${leaf}`}></span>)}
-              </div>
-            </div>
-          ))}
+        <div class="th-leaf">
+          <ul class="th-devices" aria-hidden="true">
+            {branch.devices.map(([icon, cn], j) => (
+              <li class="th-device" data-branch={i} data-index={j} data-cn={cn}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} />
+                <span class="th-life"><i></i></span>
+                <span class="th-badge">
+                  {['issue', 'renew', 'revoke'].map((mark) => <svg class={`th-mark-${mark}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" set:html={icons[mark === 'issue' ? 'check' : mark]} />)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <span class="th-caption" data-i18n="home.redesign.hierarchyDevices">{copy.hierarchyDevices}</span>
         </div>
-        <p class="trust-devices" data-i18n="home.redesign.hierarchyDevices">{devices}</p>
       </li>
     ))}
   </ol>
+  <div class="th-tip" aria-hidden="true"><span class="th-tip-state"></span><strong></strong><dl></dl><div class="th-tip-life"><i></i></div></div>
+  <div class="th-feed" aria-hidden="true"></div>
+  <span hidden>{strings.map(([name, key, value]) => <span data-th-string={name} data-i18n={`home.redesign.${key}`}>{value}</span>)}</span>
 </figure>
 
-<style>
-  .trust-hierarchy {
+<script>
+  import '../scripts/trust-hierarchy';
+</script>
+
+<!-- Global: wires, flights, feed lines and card rows are created at runtime. -->
+<style is:global>
+  /* figure.th outranks the landing's `.lp :where(figure)` margin reset. */
+  figure.th {
+    --th-wire: color-mix(in srgb, var(--lp-accent) 38%, var(--lp-border-strong));
+    --th-issue: var(--lp-accent);
+    --th-renew: var(--lp-cyan);
+    --th-warn: var(--lp-gold);
+    --th-revoke: var(--lp-red);
+    --th-dev: clamp(44px, 5.4vw, 62px);
+    --th-dev-gap: clamp(8px, 1.5vw, 18px);
+    --th-drop: 0 18px 40px -24px rgba(0, 0, 0, .8);
+    --th-ease: cubic-bezier(.2, .8, .2, 1);
     position: relative;
-    width: min(100%, 1040px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(52px, 7.5vw, 76px);
+    width: min(100%, 1080px);
     height: 100%;
     margin: 0 auto;
     color: var(--lp-title);
   }
-
-  .trust-root {
+  [data-theme='light'] .th { --th-drop: 0 14px 34px -22px rgba(13, 20, 36, .35); }
+  /* Faint dot field behind the hierarchy. */
+  .th::before {
+    content: '';
     position: absolute;
-    top: 34px;
-    left: 50%;
-    display: grid;
-    justify-items: center;
-    gap: 12px;
-    transform: translateX(-50%);
-    text-align: center;
-    white-space: nowrap;
+    inset: 0 -8%;
+    background-image: radial-gradient(circle, color-mix(in srgb, var(--lp-muted) 32%, transparent) 1px, transparent 1.5px);
+    background-size: 24px 24px;
+    -webkit-mask-image: radial-gradient(ellipse 52% 58% at 50% 46%, #000 15%, transparent 70%);
+    mask-image: radial-gradient(ellipse 52% 58% at 50% 46%, #000 15%, transparent 70%);
+    pointer-events: none;
   }
 
-  .trust-root-node {
+  .th-wires { position: absolute; inset: 0; z-index: 0; overflow: visible; pointer-events: none; }
+  .th-wire { fill: none; stroke: var(--th-wire); stroke-width: 1.25; transition: opacity .3s ease, stroke .3s ease, stroke-width .3s ease; }
+  .th-dot { fill: var(--lp-accent); transition: opacity .3s ease; }
+  .th-pulse { fill: none; stroke-linecap: round; }
+  .th-pulse-tail { stroke-width: 3; opacity: .28; }
+  .th-pulse-core { stroke-width: 2.25; }
+  .th-flow { color: var(--th-issue); }
+  .th-flow.is-renew { color: var(--th-renew); }
+  .th-flow.is-revoke { color: var(--th-revoke); }
+  .th-flow path { stroke: currentColor; }
+  .th-flow circle { fill: currentColor; }
+  .th-flow .th-halo { opacity: .18; }
+
+  .th-card {
+    --th-hit: var(--th-issue);
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 20px 12px 12px;
+    border: 1px solid var(--lp-border);
+    border-radius: 12px;
+    background: var(--lp-surface);
+    box-shadow: var(--th-drop);
+    transition: opacity .5s ease, transform .7s var(--th-ease), border-color .4s ease;
+  }
+  .th-icon {
+    position: relative;
     display: grid;
+    flex: none;
     place-items: center;
-    width: 124px;
-    height: 88px;
-    border: 1px solid var(--lp-accent);
-    border-radius: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
     background: var(--lp-accent-soft);
     color: var(--lp-accent);
-    font-size: 23px;
-    font-weight: 500;
-    outline: 1px solid var(--lp-border);
-    outline-offset: 6px;
+    transition: background-color .4s ease, color .4s ease;
   }
+  .th-icon svg { width: 26px; height: 26px; transition: transform .6s var(--th-ease); }
+  .th-icon::after { content: ''; position: absolute; inset: 0; border: 1.5px solid var(--lp-accent); border-radius: inherit; opacity: 0; }
+  .th-text { display: grid; gap: 3px; min-width: 0; padding-left: 14px; border-left: 1px solid var(--lp-border); }
+  .th-text strong { font-size: 17px; font-weight: 700; line-height: 1.2; }
+  .th-text span { color: var(--lp-text); font-size: 13.5px; line-height: 1.3; }
+  .th-root { min-width: 300px; }
+  .th-root .th-text strong { font-size: 18px; }
+  .th-root.is-emit .th-icon::after { animation: th-ring 1s ease-out; }
+  .th-ca.is-renew { --th-hit: var(--th-renew); }
+  .th-ca.is-revoke { --th-hit: var(--th-revoke); }
+  .th-ca.is-pass { border-color: color-mix(in srgb, var(--th-hit) 55%, var(--lp-border)); }
+  .th-ca.is-pass .th-icon { background: color-mix(in srgb, var(--th-hit) 16%, transparent); color: var(--th-hit); }
+  .th-ca.is-pass [data-icon='gear'] svg { transform: rotate(60deg); }
+  .th-ca.is-pass :is([data-icon='factory'], [data-icon='cloud']) svg { transform: translateY(-2px); }
 
-  .trust-root strong {
+  .th-branches {
     position: relative;
-    padding-inline: 8px;
-    background: var(--lp-bg);
-    font-size: 19px;
-    font-weight: 500;
-    letter-spacing: -.02em;
-  }
-
-  .trust-root-caption {
-    position: relative;
-    padding-inline: 8px;
-    background: var(--lp-bg);
-    color: var(--lp-text);
-    font-size: 13px;
-  }
-
-  .trust-branches {
-    position: absolute;
-    top: 45%;
-    right: 4%;
-    left: 4%;
+    z-index: 1;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 42px;
+    column-gap: clamp(10px, 4vw, 48px);
+    width: 100%;
+    margin: 0;
     padding: 0;
     list-style: none;
   }
+  .th-branch { display: flex; flex-direction: column; align-items: center; gap: clamp(46px, 6vw, 64px); min-width: 0; }
+  .th-branch .th-ca { width: min(100%, 300px); }
+  .th-leaf { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .th-devices { display: flex; justify-content: center; gap: var(--th-dev-gap); margin: 0; padding: 0; list-style: none; }
 
-  .trust-branch { min-width: 0; text-align: center; }
-
-  .trust-authority {
-    display: grid;
-    justify-items: center;
-    gap: 14px;
-  }
-
-  .trust-authority-node {
+  .th-device {
+    --th-hit: var(--th-issue);
+    --life: 1;
+    position: relative;
     display: grid;
     place-items: center;
-    width: 70px;
-    height: 50px;
-    border: 1px solid var(--lp-accent);
-    border-radius: 0;
-    background: var(--lp-bg);
+    width: var(--th-dev);
+    height: var(--th-dev);
+    border: 1px solid var(--lp-border);
+    border-radius: 12px;
+    background: var(--lp-surface);
+    box-shadow: var(--th-drop);
     color: var(--lp-accent);
-    font-size: 13px;
-    font-weight: 500;
+    transition: opacity .45s ease, transform .5s var(--th-ease), border-color .35s ease, box-shadow .35s ease, color .35s ease;
   }
-
-  .trust-authority-name {
-    position: relative;
-    padding-inline: 8px;
-    background: var(--lp-bg);
-    font-size: 15px;
-    line-height: 1.4;
+  .th-device > svg { width: 42%; height: 42%; margin-bottom: 9%; }
+  .th-device.is-renew { --th-hit: var(--th-renew); }
+  .th-device.is-revoked { --th-hit: var(--th-revoke); color: var(--th-revoke); animation: th-shake .45s ease; }
+  .th-device.is-hit, .th-device.is-revoked {
+    border-color: var(--th-hit);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--th-hit) 14%, transparent), var(--th-drop);
+    transform: translateY(-2px);
   }
-
-  .trust-issuing {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 58px;
-  }
-
-  .trust-issuing-branch { display: grid; justify-items: center; min-width: 0; }
-  .trust-issuing-node { display: grid; place-items: center; width: 36px; height: 28px; border: 1px solid var(--lp-border-strong); color: var(--lp-accent); background: var(--lp-bg); font-size: 9px; }
-
-  .trust-endpoints {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin: 38px auto 0;
-  }
-
-  .trust-certificate {
-    position: relative;
-    display: block;
-    width: 12px;
-    height: 16px;
-    border: 1px solid var(--lp-border-strong);
-    border-radius: 0;
-    background: var(--lp-bg);
-  }
-
-  .trust-certificate::before,
-  .trust-certificate::after {
-    content: '';
+  .th-device.is-hit { color: var(--th-hit); }
+  /* Certificate validity: drains over time, refills on renewal. */
+  .th-life { position: absolute; right: 22%; bottom: 15%; left: 22%; height: 3px; overflow: hidden; border-radius: 3px; background: var(--lp-border); }
+  .th-life i { display: block; height: 100%; border-radius: inherit; background: var(--lp-accent); transform: scaleX(var(--life)); transform-origin: left; transition: background-color .3s ease; }
+  .th-device.is-expiring .th-life i { background: var(--th-warn); }
+  .th-device.is-revoked .th-life i { background: var(--th-revoke); }
+  .th-badge {
     position: absolute;
-    left: 3px;
-    width: 5px;
-    border-top: 1px solid var(--lp-accent);
+    top: -8px;
+    right: -8px;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--lp-bg);
+    border-radius: 50%;
+    background: var(--th-hit);
+    color: #fff;
+    transform: scale(0);
+    transition: transform .3s cubic-bezier(.3, 1.6, .5, 1);
   }
+  .th-badge svg { display: none; width: 11px; height: 11px; stroke-width: 3; }
+  .th-device:not(.is-renew, .is-revoked) .th-mark-issue,
+  .th-device.is-renew:not(.is-revoked) .th-mark-renew,
+  .th-device.is-revoked .th-mark-revoke { display: block; }
+  .th-device.is-renew .th-mark-renew { animation: th-spin .9s var(--th-ease); }
+  .th-device:is(.is-hit, .is-revoked) .th-badge { transform: scale(1); }
+  .th-caption { margin: 0; color: var(--lp-muted); font: 500 11px/1 var(--lp-mono); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; transition: opacity .5s ease; }
 
-  .trust-certificate::before { top: 5px; }
-  .trust-certificate::after { top: 10px; width: 3px; }
-  .trust-devices { margin-top: 16px !important; color: var(--lp-text); font-size: 12px !important; }
+  /* Focus: hovering a CA or device traces its chain of trust. */
+  .th.has-focus .th-wire { opacity: .3; }
+  .th.has-focus .th-wire.is-chain { opacity: 1; stroke: var(--lp-accent); stroke-width: 1.75; }
+  .th.has-focus :is(.th-ca, .th-device):not(.is-chain) { opacity: .4; }
+  .th.has-focus :is(.th-card, .th-device).is-chain { border-color: var(--lp-accent); }
 
-  .trust-hierarchy:global(.canvas-ready) :is(.trust-root-node, .trust-authority-node, .trust-issuing-node, .trust-certificate) {
-    color: transparent;
-    border-color: transparent;
-    outline-color: transparent;
-    background: transparent;
+  .th-tip {
+    --k: var(--th-issue);
+    position: absolute;
+    z-index: 4;
+    width: 236px;
+    padding: 12px 14px 14px;
+    border: 1px solid var(--lp-border);
+    border-radius: 10px;
+    background: var(--lp-surface);
+    box-shadow: 0 22px 48px -20px rgba(13, 20, 36, .4);
+    color: var(--lp-text);
+    font-size: 12.5px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, calc(-100% + 6px));
+    transition: opacity .18s ease, transform .18s ease;
   }
+  .th-tip.is-on { opacity: 1; transform: translate(-50%, -100%); }
+  .th-tip-state { display: inline-flex; align-items: center; gap: 6px; color: var(--k); font: 500 10.5px/1 var(--lp-mono); letter-spacing: .06em; text-transform: uppercase; }
+  .th-tip-state::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .th-tip strong { display: block; margin: 8px 0 10px; overflow: hidden; color: var(--lp-title); font: 500 13px var(--lp-mono); text-overflow: ellipsis; white-space: nowrap; }
+  .th-tip dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; }
+  .th-tip dt { color: var(--lp-muted); }
+  .th-tip dd { margin: 0; color: var(--lp-title); text-align: right; font-variant-numeric: tabular-nums; }
+  .th-tip-life { height: 4px; margin-top: 10px; overflow: hidden; border-radius: 4px; background: var(--lp-border); }
+  .th-tip-life i { display: block; height: 100%; background: var(--k); transform: scaleX(var(--life, 1)); transform-origin: left; }
 
-  .trust-hierarchy:global(.canvas-ready) .trust-certificate::before,
-  .trust-hierarchy:global(.canvas-ready) .trust-certificate::after { content: none; }
+  /* Event feed: the latest lifecycle event, one line. */
+  .th-feed { position: absolute; bottom: 10px; left: 50%; z-index: 1; width: min(100%, 560px); height: 28px; overflow: hidden; pointer-events: none; transform: translateX(-50%); }
+  .th-feed-line { --k: var(--th-issue); position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--lp-muted); font: 500 12px/1 var(--lp-mono); white-space: nowrap; animation: th-feed-in .45s var(--th-ease) both; }
+  .th-feed-line.is-renew { --k: var(--th-renew); }
+  .th-feed-line.is-revoke { --k: var(--th-revoke); }
+  .th-feed-line.is-out { animation: th-feed-out .35s ease both; }
+  .th-feed-kind { padding: 5px 7px; border-radius: 4px; background: color-mix(in srgb, var(--k) 12%, transparent); color: var(--k); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
+  .th-feed-line b { color: var(--lp-title); font-weight: 500; }
 
+  /* Intro: nodes appear as the first signatures reach them. */
+  .th.is-intro :is(.th-card, .th-device, .th-caption):not(.is-on) { opacity: 0; transform: translateY(10px) scale(.97); }
+  .th.is-intro .th-dot:not(.is-on) { opacity: 0; }
+  .th.is-intro .th-wire { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+  .th.is-paused * { animation-play-state: paused !important; }
+
+  @keyframes th-ring { from { opacity: .7; transform: scale(1); } to { opacity: 0; transform: scale(1.55); } }
+  @keyframes th-spin { from { transform: rotate(-180deg); } to { transform: none; } }
+  @keyframes th-shake { 25% { translate: -2px 0; } 50% { translate: 2px 0; } 75% { translate: -1px 0; } }
+  @keyframes th-feed-in { from { opacity: 0; transform: translateY(12px); } }
+  @keyframes th-feed-out { to { opacity: 0; transform: translateY(-12px); } }
+
+  @media (max-width: 900px) {
+    .th-text strong { font-size: 15px; }
+    .th-text span { font-size: 12px; }
+    .th-card { gap: 10px; padding: 10px 14px 10px 10px; }
+    .th-icon { width: 42px; height: 42px; }
+    .th-icon svg { width: 22px; height: 22px; }
+    .th-text { padding-left: 10px; }
+  }
   @media (max-width: 760px) {
-    .trust-root { top: 26px; gap: 10px; }
-    .trust-root-node { width: 106px; height: 76px; font-size: 20px; }
-    .trust-root strong { font-size: 17px; }
-    .trust-root-caption { font-size: 12px; }
-    .trust-branches { top: 44%; left: 2%; right: 2%; gap: 10px; }
-    .trust-authority-name { font-size: 13px; }
-    .trust-issuing { margin-top: 44px; gap: 8px; }
+    .th-branch .th-ca { flex-direction: column; gap: 8px; padding: 12px 8px; text-align: center; }
+    .th-branch .th-ca .th-text { padding-left: 0; border-left: 0; }
+    .th-branch .th-ca .th-text span { display: none; }
   }
-
-  @media (max-width: 540px) {
-    .trust-root { top: 22px; }
-    .trust-root-node { width: 88px; height: 62px; }
-    .trust-branches { top: 42%; gap: 12px; }
-    .trust-authority-node { width: 54px; height: 40px; font-size: 11px; }
-    .trust-authority-name { min-height: 32px; font-size: 11px; padding-inline: 2px; }
-    .trust-issuing { margin-top: 30px; gap: 2px; }
-    .trust-issuing-node { width: 24px; height: 18px; font-size: 6px; }
-    .trust-endpoints { margin-top: 26px; }
-    .trust-certificate { width: 7px; height: 10px; }
-    .trust-certificate::before { left: 1px; top: 3px; width: 3px; }
-    .trust-certificate::after { left: 1px; top: 6px; width: 2px; }
-    .trust-devices { font-size: 10px !important; }
+  @media (max-width: 640px) {
+    figure.th { --th-dev: 42px; --th-dev-gap: 10px; gap: 44px; }
+    .th-root { min-width: 0; }
+    .th-root .th-text strong { font-size: 16px; }
+    .th-branch { gap: 38px; }
+    .th-branch .th-ca { padding: 10px 4px; }
+    .th-branch .th-ca .th-text strong { font-size: 12px; }
+    .th-device:nth-child(n + 3) { display: none; }
+    .th-device { border-radius: 10px; }
+    .th-badge { top: -7px; right: -7px; width: 18px; height: 18px; }
+    .th-caption { display: none; }
+    .th-feed-line { gap: 8px; font-size: 10.5px; }
+    .th-feed-line time, .th-feed-line .th-feed-issuer { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .th *, .th *::after { transition: none !important; animation: none !important; }
   }
 </style>

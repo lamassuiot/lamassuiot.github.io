@@ -148,9 +148,13 @@ const experience = {
   "es": {
     "platformTitle": "Confianza, en cualquier lugar",
     "platformLead": "Una misma infraestructura de identidad para tus dispositivos. En fábrica, en campo y durante toda su vida útil.",
-    "networkAlt": "Jerarquía de certificación con una CA raíz, tres CAs intermedias, nueve CAs emisoras y certificados X.509 de dispositivos.",
+    "networkAlt": "Jerarquía de confianza con una CA raíz conectada a las CAs de fábrica, operación y servicios, y a sus dispositivos industriales.",
     "hierarchyBranches": ["CA de fábrica", "CA de operación", "CA de servicios"],
     "hierarchyDevices": "Dispositivos · X.509",
+    "hierarchyBranchLeads": ["Emisión en producción", "Gestión en campo", "Integración y servicios"],
+    "hierarchyCertificate": { "issuer": "Emisor", "root": "Raíz", "key": "Clave", "expires": "Caduca en", "days": "días" },
+    "hierarchyStates": { "ok": "Válido", "expiring": "Por renovar", "renewing": "Renovando", "revoked": "Revocado" },
+    "hierarchyEvents": { "issue": "Emitido", "renew": "Renovado", "revoke": "Revocado" },
     "networkLabels": [
       "De fábrica",
       "A cualquier destino",
@@ -199,9 +203,13 @@ const experience = {
   "en": {
     "platformTitle": "Trust, wherever you operate",
     "platformLead": "One identity infrastructure for your devices. On the factory floor, in the field and throughout their lifetime.",
-    "networkAlt": "Certificate hierarchy with a root CA, three intermediate CAs, nine issuing CAs and device X.509 certificates.",
+    "networkAlt": "Trust hierarchy connecting a root CA to manufacturing, operations and services CAs and their industrial devices.",
     "hierarchyBranches": ["Manufacturing CA", "Operations CA", "Services CA"],
     "hierarchyDevices": "Devices · X.509",
+    "hierarchyBranchLeads": ["Issued in production", "Managed in the field", "Integration and services"],
+    "hierarchyCertificate": { "issuer": "Issuer", "root": "Root", "key": "Key", "expires": "Expires in", "days": "days" },
+    "hierarchyStates": { "ok": "Valid", "expiring": "Due for renewal", "renewing": "Renewing", "revoked": "Revoked" },
+    "hierarchyEvents": { "issue": "Issued", "renew": "Renewed", "revoke": "Revoked" },
     "networkLabels": [
       "From the factory",
       "To any destination",
@@ -250,9 +258,13 @@ const experience = {
   "eus": {
     "platformTitle": "Konfiantza, edonon",
     "platformLead": "Identitate-azpiegitura bera zure gailuentzat. Fabrikan, eremuan eta bizitza erabilgarri osoan.",
-    "networkAlt": "Ziurtapen-hierarkia: erroko CA bat, tarteko hiru CA, bederatzi CA jaulkitzaile eta gailuen X.509 ziurtagiriak.",
+    "networkAlt": "Konfiantza-hierarkia: erroko CA bat fabrikako, eragiketetako eta zerbitzuetako CAekin eta industria-gailuekin lotuta.",
     "hierarchyBranches": ["Fabrikako CA", "Eragiketetako CA", "Zerbitzuetako CA"],
     "hierarchyDevices": "Gailuak · X.509",
+    "hierarchyBranchLeads": ["Ekoizpenean jaulkiak", "Eremuko kudeaketa", "Integrazioa eta zerbitzuak"],
+    "hierarchyCertificate": { "issuer": "Jaulkitzailea", "root": "Erroa", "key": "Gakoa", "expires": "Iraungitzeko", "days": "egun" },
+    "hierarchyStates": { "ok": "Baliozkoa", "expiring": "Berritzeko", "renewing": "Berritzen", "revoked": "Ezeztatua" },
+    "hierarchyEvents": { "issue": "Jaulkia", "renew": "Berritua", "revoke": "Ezeztatua" },
     "networkLabels": [
       "Fabrikatik",
       "Edozein helmugara",

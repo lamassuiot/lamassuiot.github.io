@@ -83,7 +83,7 @@ const faqJsonLd = {
           <p data-i18n="home.redesign.platformLead">{copy.platformLead}</p>
         </header>
         <div class="lp-network-stage" data-motion-scene data-reveal>
-          <TrustHierarchy description={copy.networkAlt} branches={copy.hierarchyBranches} devices={copy.hierarchyDevices} rootLabel={copy.networkLabels[2]} />
+          <TrustHierarchy copy={copy} />
           <button class="lp-motion-control" type="button" data-motion-toggle aria-pressed="false" aria-label={copy.pauseMotion} data-pause-label={copy.pauseMotion} data-resume-label={copy.resumeMotion} data-i18n-attr-data-pause-label="home.redesign.pauseMotion" data-i18n-attr-data-resume-label="home.redesign.resumeMotion">
             <span class="lp-pause-symbol" aria-hidden="true"></span>
           </button>
