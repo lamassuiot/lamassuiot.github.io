@@ -63,7 +63,7 @@ export const sharedTranslations = {
           "links": [
             {
               "label": "Documentation",
-              "href": "/docs/"
+              "href": "https://www.lamassu.io/docs/"
             },
             {
               "label": "Architecture",
@@ -195,7 +195,7 @@ export const sharedTranslations = {
           "links": [
             {
               "label": "Documentación",
-              "href": "/docs/es/"
+              "href": "https://www.lamassu.io/docs/es/"
             },
             {
               "label": "Arquitectura",
@@ -327,7 +327,7 @@ export const sharedTranslations = {
           "links": [
             {
               "label": "Dokumentazioa",
-              "href": "/docs/"
+              "href": "https://www.lamassu.io/docs/"
             },
             {
               "label": "Arkitektura",
@@ -416,9 +416,9 @@ export const homeTranslations = {
     },
     home: {
       docs: {
-        pki: '/docs/platform/pki/overview',
-        enrollment: '/docs/platform/iot-fleets/enrollment/overview',
-        keys: '/docs/platform/pki/key-management',
+        pki: 'https://www.lamassu.io/docs/platform/pki/overview',
+        enrollment: 'https://www.lamassu.io/docs/platform/iot-fleets/enrollment/overview',
+        keys: 'https://www.lamassu.io/docs/platform/pki/key-management',
       },
       hero: {
         announceTag: 'Preview',
@@ -477,19 +477,19 @@ export const homeTranslations = {
             tag: 'Hierarchy & rotation',
             body: 'Root and intermediate CAs, reissue on the same key or rotate to a successor CA, with the whole lineage linked and visible as a tree or a graph.',
             link: 'Hierarchy and rotation',
-            href: '/docs/platform/pki/ca-hierarchy-and-rotation',
+            href: 'https://www.lamassu.io/docs/platform/pki/ca-hierarchy-and-rotation',
           },
           {
             tag: 'Issuance profiles',
             body: 'Templates for IoT devices, TLS servers or code signing that fix validity, key usages and which algorithms and sizes are accepted.',
             link: 'Certificate profiles',
-            href: '/docs/platform/pki/certificate-profiles',
+            href: 'https://www.lamassu.io/docs/platform/pki/certificate-profiles',
           },
           {
             tag: 'CRL & OCSP',
             body: 'Every CA publishes its CRL and answers OCSP per RFC 6960. And from the browser you can inspect, validate and zlint any certificate.',
             link: 'Certificate validation',
-            href: '/docs/platform/pki/certificate-validation',
+            href: 'https://www.lamassu.io/docs/platform/pki/certificate-validation',
           },
         ],
       },
@@ -505,19 +505,19 @@ export const homeTranslations = {
             tag: 'Enrolment over EST',
             body: 'RFC 7030 endpoints per fleet: /cacerts, /simpleenroll, /simplereenroll and /serverkeygen. Authenticate with a factory certificate, an authorization webhook or both.',
             link: 'EST reference',
-            href: '/docs/platform/iot-fleets/enrollment/est-reference',
+            href: 'https://www.lamassu.io/docs/platform/iot-fleets/enrollment/est-reference',
           },
           {
             tag: 'Renewal by policy',
             body: 'Renewal windows and warning thresholds per fleet: the device re-enrols before it expires, and you see which state each one is in.',
             link: 'Renewal and recovery',
-            href: '/docs/platform/iot-fleets/enrollment/renewal-and-recovery',
+            href: 'https://www.lamassu.io/docs/platform/iot-fleets/enrollment/renewal-and-recovery',
           },
           {
             tag: 'Groups & states',
             body: 'Dynamic groups by tags and metadata, identity history and an event timeline for every device.',
             link: 'Device groups',
-            href: '/docs/platform/iot-fleets/device-groups',
+            href: 'https://www.lamassu.io/docs/platform/iot-fleets/device-groups',
           },
         ],
       },
@@ -653,7 +653,7 @@ export const homeTranslations = {
             operatedBy: 'Us, end to end',
             bestFor: 'Teams that want production without operating a PKI',
             cta: 'See plans',
-            href: '/docs/deployment/saas',
+            href: 'https://www.lamassu.io/docs/deployment/saas',
           },
           {
             tag: 'AWS Marketplace',
@@ -663,7 +663,7 @@ export const homeTranslations = {
             operatedBy: 'You, in your AWS account',
             bestFor: 'Cloud-first organisations that keep data in their own account',
             cta: 'AWS guide',
-            href: '/docs/deployment/aws-marketplace',
+            href: 'https://www.lamassu.io/docs/deployment/aws-marketplace',
           },
           {
             tag: 'Kubernetes · Helm',
@@ -673,7 +673,7 @@ export const homeTranslations = {
             operatedBy: 'You, on your infrastructure',
             bestFor: 'Regulated and industrial environments with sovereignty requirements',
             cta: 'Helm guide',
-            href: '/docs/deployment/self-hosted/helm',
+            href: 'https://www.lamassu.io/docs/deployment/self-hosted/helm',
           },
         ],
         keys: 'In all three models you choose where your CA keys live: HSM over PKCS#11, AWS KMS, Azure Key Vault, HashiCorp Vault or AWS Secrets Manager.',
@@ -699,6 +699,12 @@ export const homeTranslations = {
         tabsAria: 'Sectors',
         sectorLabel: 'Sector',
         cta: 'See the case',
+        stepsTitle: 'How it works',
+        steps: ['Device identity', 'Connected operation', 'Lifecycle management'],
+        close: 'Close',
+        approach: 'Our approach',
+        contact: 'Talk to our team',
+        details: ['Certificates for trains, signalling and station systems can be managed through shared policies for issuance, renewal and revocation across operational domains.', 'Manage identities for equipment across multiple locations, with shared certificate policies for connected devices and services.', 'Define certificate policies for controllers, gateways and services across distributed energy installations, with lifecycle management throughout operation.', 'Provide identities to controllers and telemetry modules, supporting secure remote maintenance across industrial fleets.', 'Manage certificates for readers, controllers and locks across buildings, with centralised lifecycle policies.'],
         cards: [
           {
             sector: 'Railway',
@@ -785,9 +791,9 @@ export const homeTranslations = {
     },
     home: {
       docs: {
-        pki: '/docs/es/platform/pki/overview',
-        enrollment: '/docs/es/platform/iot-fleets/enrollment/overview',
-        keys: '/docs/es/platform/pki/key-management',
+        pki: 'https://www.lamassu.io/docs/es/platform/pki/overview',
+        enrollment: 'https://www.lamassu.io/docs/es/platform/iot-fleets/enrollment/overview',
+        keys: 'https://www.lamassu.io/docs/es/platform/pki/key-management',
       },
       hero: {
         announceTag: 'Preview',
@@ -846,19 +852,19 @@ export const homeTranslations = {
             tag: 'Jerarquía y rotación',
             body: 'CAs raíz e intermedias, reemisión sobre la misma clave o rotación a una CA sucesora, con todo el linaje enlazado y visible como árbol o como grafo.',
             link: 'Jerarquía y rotación',
-            href: '/docs/es/platform/pki/ca-hierarchy-and-rotation',
+            href: 'https://www.lamassu.io/docs/es/platform/pki/ca-hierarchy-and-rotation',
           },
           {
             tag: 'Perfiles de emisión',
             body: 'Plantillas para dispositivos IoT, servidores TLS o firma de código que fijan validez, usos de clave y qué algoritmos y tamaños se aceptan.',
             link: 'Perfiles de certificado',
-            href: '/docs/es/platform/pki/certificate-profiles',
+            href: 'https://www.lamassu.io/docs/es/platform/pki/certificate-profiles',
           },
           {
             tag: 'CRL y OCSP',
             body: 'Cada CA publica su CRL y responde OCSP según la RFC 6960. Y desde el navegador puedes inspeccionar, validar y pasar zlint a cualquier certificado.',
             link: 'Validación de certificados',
-            href: '/docs/es/platform/pki/certificate-validation',
+            href: 'https://www.lamassu.io/docs/es/platform/pki/certificate-validation',
           },
         ],
       },
@@ -874,19 +880,19 @@ export const homeTranslations = {
             tag: 'Alta con EST',
             body: 'Endpoints RFC 7030 por flota: /cacerts, /simpleenroll, /simplereenroll y /serverkeygen. Autenticación con certificado de fábrica, con webhook de autorización o con ambos.',
             link: 'Referencia EST',
-            href: '/docs/es/platform/iot-fleets/enrollment/est-reference',
+            href: 'https://www.lamassu.io/docs/es/platform/iot-fleets/enrollment/est-reference',
           },
           {
             tag: 'Renovación por política',
             body: 'Ventanas de renovación y umbrales de aviso por flota: el dispositivo se re-enrola antes de caducar y tú ves en qué estado está cada uno.',
             link: 'Renovación y recuperación',
-            href: '/docs/es/platform/iot-fleets/enrollment/renewal-and-recovery',
+            href: 'https://www.lamassu.io/docs/es/platform/iot-fleets/enrollment/renewal-and-recovery',
           },
           {
             tag: 'Grupos y estados',
             body: 'Grupos dinámicos por etiquetas y metadatos, historial de identidad y una línea temporal de eventos para cada dispositivo.',
             link: 'Grupos de dispositivos',
-            href: '/docs/es/platform/iot-fleets/device-groups',
+            href: 'https://www.lamassu.io/docs/es/platform/iot-fleets/device-groups',
           },
         ],
       },
@@ -1022,7 +1028,7 @@ export const homeTranslations = {
             operatedBy: 'Nosotros, de principio a fin',
             bestFor: 'Equipos que quieren llegar a producción sin operar una PKI',
             cta: 'Ver planes',
-            href: '/docs/es/deployment/saas',
+            href: 'https://www.lamassu.io/docs/es/deployment/saas',
           },
           {
             tag: 'AWS Marketplace',
@@ -1032,7 +1038,7 @@ export const homeTranslations = {
             operatedBy: 'Tú, en tu cuenta de AWS',
             bestFor: 'Organizaciones cloud-first que quieren los datos en su propia cuenta',
             cta: 'Guía de AWS',
-            href: '/docs/es/deployment/aws-marketplace',
+            href: 'https://www.lamassu.io/docs/es/deployment/aws-marketplace',
           },
           {
             tag: 'Kubernetes · Helm',
@@ -1042,7 +1048,7 @@ export const homeTranslations = {
             operatedBy: 'Tú, en tu infraestructura',
             bestFor: 'Entornos regulados e industriales con requisitos de soberanía',
             cta: 'Guía de Helm',
-            href: '/docs/es/deployment/self-hosted/helm',
+            href: 'https://www.lamassu.io/docs/es/deployment/self-hosted/helm',
           },
         ],
         keys: 'En los tres modelos eliges dónde viven las claves de tus CAs: HSM vía PKCS#11, AWS KMS, Azure Key Vault, HashiCorp Vault o AWS Secrets Manager.',
@@ -1068,6 +1074,12 @@ export const homeTranslations = {
         tabsAria: 'Sectores',
         sectorLabel: 'Sector',
         cta: 'Ver el caso',
+        stepsTitle: 'Cómo funciona',
+        steps: ['Identidad de los dispositivos', 'Operación conectada', 'Gestión del ciclo de vida'],
+        close: 'Cerrar',
+        approach: 'Nuestro enfoque',
+        contact: 'Habla con nuestro equipo',
+        details: ['Los certificados de trenes, señalización y sistemas de estación pueden gestionarse con políticas comunes de emisión, renovación y revocación, adaptadas a cada dominio operativo.', 'Gestiona las identidades de los equipos de múltiples locales con políticas comunes para los certificados de dispositivos y servicios conectados.', 'Define políticas de certificados para controladores, gateways y servicios de instalaciones energéticas distribuidas, y gestiona su ciclo de vida durante la operación.', 'Asigna identidades a controladores y módulos de telemetría para facilitar el mantenimiento remoto seguro de flotas industriales.', 'Gestiona los certificados de lectores, controladores y cerraduras entre edificios mediante políticas centralizadas de ciclo de vida.'],
         cards: [
           {
             sector: 'Ferroviario',
@@ -1154,9 +1166,9 @@ export const homeTranslations = {
     },
     home: {
       docs: {
-        pki: '/docs/platform/pki/overview',
-        enrollment: '/docs/platform/iot-fleets/enrollment/overview',
-        keys: '/docs/platform/pki/key-management',
+        pki: 'https://www.lamassu.io/docs/platform/pki/overview',
+        enrollment: 'https://www.lamassu.io/docs/platform/iot-fleets/enrollment/overview',
+        keys: 'https://www.lamassu.io/docs/platform/pki/key-management',
       },
       hero: {
         announceTag: 'Preview',
@@ -1215,19 +1227,19 @@ export const homeTranslations = {
             tag: 'Hierarkia eta errotazioa',
             body: 'Erro- eta tarteko CAak, gako berean berrargitaratzea edo CA ondorengo batera errotatzea, leinu osoa lotuta eta zuhaitz edo grafo gisa ikusgai.',
             link: 'Hierarkia eta errotazioa',
-            href: '/docs/platform/pki/ca-hierarchy-and-rotation',
+            href: 'https://www.lamassu.io/docs/platform/pki/ca-hierarchy-and-rotation',
           },
           {
             tag: 'Jaulkipen-profilak',
             body: 'IoT gailu, TLS zerbitzari edo kode-sinadurarako txantiloiak, baliozkotasuna, gako-erabilerak eta onartutako algoritmo eta tamainak finkatzen dituztenak.',
             link: 'Ziurtagiri-profilak',
-            href: '/docs/platform/pki/certificate-profiles',
+            href: 'https://www.lamassu.io/docs/platform/pki/certificate-profiles',
           },
           {
             tag: 'CRL eta OCSP',
             body: 'CA bakoitzak bere CRLa argitaratzen du eta OCSPri erantzuten dio RFC 6960ren arabera. Eta nabigatzailetik edozein ziurtagiri ikuskatu, balidatu eta zlint bidez azter dezakezu.',
             link: 'Ziurtagirien balidazioa',
-            href: '/docs/platform/pki/certificate-validation',
+            href: 'https://www.lamassu.io/docs/platform/pki/certificate-validation',
           },
         ],
       },
@@ -1243,19 +1255,19 @@ export const homeTranslations = {
             tag: 'Alta EST bidez',
             body: 'RFC 7030 endpointak flotako: /cacerts, /simpleenroll, /simplereenroll eta /serverkeygen. Autentifikazioa fabrikako ziurtagiriaren bidez, baimen-webhook bidez edo biak batera.',
             link: 'EST erreferentzia',
-            href: '/docs/platform/iot-fleets/enrollment/est-reference',
+            href: 'https://www.lamassu.io/docs/platform/iot-fleets/enrollment/est-reference',
           },
           {
             tag: 'Berritzea politika bidez',
             body: 'Berritze-leihoak eta abisu-atalaseak flotako: gailua iraungi aurretik erroldatzen da berriro, eta bakoitza zein egoeratan dagoen ikusten duzu.',
             link: 'Berritzea eta berreskuratzea',
-            href: '/docs/platform/iot-fleets/enrollment/renewal-and-recovery',
+            href: 'https://www.lamassu.io/docs/platform/iot-fleets/enrollment/renewal-and-recovery',
           },
           {
             tag: 'Taldeak eta egoerak',
             body: 'Etiketa eta metadatuen araberako talde dinamikoak, identitate-historia eta gertaeren denbora-lerroa gailu bakoitzeko.',
             link: 'Gailu-taldeak',
-            href: '/docs/platform/iot-fleets/device-groups',
+            href: 'https://www.lamassu.io/docs/platform/iot-fleets/device-groups',
           },
         ],
       },
@@ -1391,7 +1403,7 @@ export const homeTranslations = {
             operatedBy: 'Guk, hasieratik bukaeraraino',
             bestFor: 'PKI bat kudeatu gabe ekoizpenera iritsi nahi duten taldeak',
             cta: 'Ikusi planak',
-            href: '/docs/deployment/saas',
+            href: 'https://www.lamassu.io/docs/deployment/saas',
           },
           {
             tag: 'AWS Marketplace',
@@ -1401,7 +1413,7 @@ export const homeTranslations = {
             operatedBy: 'Zuk, zure AWS kontuan',
             bestFor: 'Datuak beren kontuan nahi dituzten cloud-first erakundeak',
             cta: 'AWS gida',
-            href: '/docs/deployment/aws-marketplace',
+            href: 'https://www.lamassu.io/docs/deployment/aws-marketplace',
           },
           {
             tag: 'Kubernetes · Helm',
@@ -1411,7 +1423,7 @@ export const homeTranslations = {
             operatedBy: 'Zuk, zure azpiegituran',
             bestFor: 'Subiranotasun-eskakizunak dituzten ingurune arautu eta industrialak',
             cta: 'Helm gida',
-            href: '/docs/deployment/self-hosted/helm',
+            href: 'https://www.lamassu.io/docs/deployment/self-hosted/helm',
           },
         ],
         keys: 'Hiru ereduetan zuk aukeratzen duzu non bizi diren zure CAen gakoak: HSMa PKCS#11 bidez, AWS KMS, Azure Key Vault, HashiCorp Vault edo AWS Secrets Manager.',
@@ -1437,6 +1449,12 @@ export const homeTranslations = {
         tabsAria: 'Sektoreak',
         sectorLabel: 'Sektorea',
         cta: 'Ikusi kasua',
+        stepsTitle: 'Nola funtzionatzen duen',
+        steps: ['Gailuen identitatea', 'Eragiketa konektatua', 'Bizi-zikloaren kudeaketa'],
+        close: 'Itxi',
+        approach: 'Gure ikuspegia',
+        contact: 'Hitz egin gure taldearekin',
+        details: ['Trenen, seinaleztapenaren eta geltokietako sistemen ziurtagiriak jaulkipen, berritze eta baliogabetze politika komunen bidez kudea daitezke, eremu operatibo bakoitzera egokituta.', 'Kudeatu hainbat lokaletako ekipoen identitateak, gailu eta zerbitzu konektatuentzako ziurtagiri politika komunekin.', 'Definitu kontrolagailu, gateway eta zerbitzuentzako ziurtagiri politikak energia instalazio banatuetan, eta kudeatu haien bizi-zikloa.', 'Esleitu identitateak kontrolagailuei eta telemetria moduluei, flota industrialen urruneko mantentze segurua errazteko.', 'Kudeatu eraikinetako irakurgailu, kontrolagailu eta sarrailen ziurtagiriak bizi-zikloaren politika zentralizatuekin.'],
         cards: [
           {
             sector: 'Ferroviarioa',

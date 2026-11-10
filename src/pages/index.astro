@@ -16,7 +16,15 @@ const customerLogos = [
   { name: 'GH Cranes & Components', src: '/company/gh.png' },
   { name: 'Fagor Professional', src: '/company/fagor_professional.svg' },
 ];
-const referenceLinks = ['/ferroviario/', '/hosteleria-conectada/', '/energia-baterias/', '/gruas/', '/puertas-de-acceso-conectadas/'];
+const backerGroups = [
+  { kind: 0, variant: 'industry', logos: [
+    { name: 'LKS Next', src: '/sponsors/lks-next.png', width: 400, height: 400, variant: 'lks', dark: { src: '/sponsors/lks-next-white.png', width: 247, height: 158 } },
+  ] },
+  { kind: 1, variant: 'public', logos: [
+    { name: 'Eusko Jaurlaritza / Gobierno Vasco · Grupo SPRI', src: '/sponsors/gobierno-vasco-spri.png', width: 1569, height: 391, variant: 'basque', dark: { src: '/sponsors/gobierno-vasco-spri-white.png', width: 1600, height: 484 } },
+    { name: 'Gobierno de España · Ministerio de Ciencia, Innovación y Universidades · CDTI Innovación', src: '/sponsors/ministerio-cdti.png', width: 1600, height: 281, variant: 'spain', dark: { src: '/sponsors/ministerio-cdti-white.png', width: 1600, height: 283 } },
+  ] },
+];
 const pillarLinks = ['#pki', '#automation', '#deployment'];
 const faqJsonLd = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -107,9 +115,47 @@ const faqJsonLd = {
           </div>
           {home.references.cards.map((card, index) => (
             <article class="lp-case" id={`story-${index}`} data-tab-panel aria-labelledby={`story-tab-${index}`}>
-              <div class="lp-case-monogram" aria-hidden="true"><span>{['CAF', 'FAGOR', 'CEGASA', 'GH', 'IoT'][index]}</span><canvas data-animation="industry" data-variant={index} aria-hidden="true"></canvas></div>
-              <div class="lp-case-copy"><h3 data-i18n={`home.references.cards.${index}.title`}>{card.title}</h3><p class="lp-case-outcome" data-i18n={`home.references.cards.${index}.highlight`}>{card.highlight}</p><p data-i18n={`home.references.cards.${index}.body`}>{card.body}</p><a class="lp-link" href={referenceLinks[index]} data-i18n="home.references.cta">{home.references.cta}</a></div>
+              
+              <div class:list={['lp-case-monogram', index === 0 && 'lp-case-monogram--rail']}>
+                {index === 0 ? <img src="https://cdn.britannica.com/28/233928-050-CC617C2B/high-speed-railway-commuter-train.jpg" alt="" loading="lazy" /> : index === 3 ? <img src="/imgs/crane-port.jpg" alt="" loading="lazy" /> : <canvas data-animation="industry" data-variant={index} aria-hidden="true"></canvas>}
+                <div class="lp-case-steps">
+                  <h3 data-i18n={`home.references.cards.${index}.title`}>{card.title}</h3>
+                  <p class="lp-case-steps-title" data-i18n="home.references.stepsTitle">{home.references.stepsTitle}</p>
+                  <div class="lp-case-timeline" data-case-timeline>
+                  {[card.body, card.highlight, home.references.details[index]].map((description, step) => (
+                    <details open={step === 0}>
+                      <summary data-i18n={`home.references.steps.${step}`}>{home.references.steps[step]}</summary>
+                      <p data-i18n={step === 0 ? `home.references.cards.${index}.body` : step === 1 ? `home.references.cards.${index}.highlight` : `home.references.details.${index}`}>{description}</p>
+                    </details>
+                  ))}
+                  </div>
+                </div>
+              </div>
             </article>
+          ))}
+        </div>
+
+      </section>
+
+      <section class="lp-region lp-backers" id="backers" aria-labelledby="backers-title">
+        <div class="lp-backers-grid lp-frame" data-reveal>
+          <div class="lp-backers-intro">
+            <p class="lp-backers-eyebrow" data-i18n="home.redesign.backersEyebrow">{copy.backersEyebrow}</p>
+            <h2 id="backers-title" data-i18n="home.redesign.backersTitle">{copy.backersTitle}</h2>
+            <p data-i18n="home.redesign.backersLead">{copy.backersLead}</p>
+          </div>
+          {backerGroups.map((group) => (
+            <figure class={`lp-backer lp-backer--${group.variant}`}>
+              <figcaption data-i18n={`home.redesign.backersKinds.${group.kind}`}>{copy.backersKinds[group.kind]}</figcaption>
+              <ul class="lp-backer-logos">
+                {group.logos.map((logo) => (
+                  <li class={`lp-backer-logo--${logo.variant}`}>
+                    <img class="lp-backer-img--light" src={logo.src} alt={logo.name} width={logo.width} height={logo.height} loading="lazy" decoding="async" />
+                    <img class="lp-backer-img--dark" src={logo.dark.src} alt={logo.name} width={logo.dark.width} height={logo.dark.height} loading="lazy" decoding="async" />
+                  </li>
+                ))}
+              </ul>
+            </figure>
           ))}
         </div>
       </section>
@@ -215,6 +261,51 @@ const faqJsonLd = {
           const index = panels.findIndex((panel) => '#' + panel.id === link.hash);
           if (index >= 0) select(index);
         });
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-case-timeline]').forEach((timeline) => {
+      const steps = Array.from(timeline.querySelectorAll<HTMLDetailsElement>('details'));
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let selected = steps.find((step) => step.open) ?? steps[0];
+      const animations = new WeakMap<HTMLDetailsElement, Animation>();
+
+      steps.forEach((step) => {
+        const summary = step.querySelector('summary');
+        const selectStep = () => {
+          if (step === selected) return;
+          const previous = selected;
+          selected = step;
+          animations.get(previous)?.cancel();
+          animations.get(step)?.cancel();
+          steps.forEach((item) => { if (item !== previous && item !== step) item.open = false; });
+
+          if (reducedMotion.matches) {
+            previous.open = false;
+            step.open = true;
+            return;
+          }
+
+          const oldText = previous.querySelector('p');
+          const newText = step.querySelector('p');
+          if (!oldText || !newText) {
+            previous.open = false;
+            step.open = true;
+            return;
+          }
+          step.open = true;
+          const options: KeyframeAnimationOptions = { duration: 320, easing: 'ease-in-out', fill: 'both' };
+          const close = previous.animate([{ height: `${previous.offsetHeight}px`, opacity: 1 }, { height: `${previous.querySelector('summary')?.offsetHeight ?? 0}px`, opacity: .7 }], options);
+          const open = step.animate([{ height: `${step.querySelector('summary')?.offsetHeight ?? 0}px` }, { height: `${step.offsetHeight}px` }], options);
+          newText.animate([{ opacity: 0 }, { opacity: 1 }], options);
+          animations.set(previous, close);
+          animations.set(step, open);
+          close.onfinish = () => { if (selected !== previous) previous.open = false; close.cancel(); };
+          open.onfinish = () => open.cancel();
+        };
+        summary?.addEventListener('click', (event) => { event.preventDefault(); selectStep(); });
+        summary?.addEventListener('pointerenter', (event) => { if (event.pointerType === 'mouse') selectStep(); });
+        summary?.addEventListener('focus', selectStep);
       });
     });
 

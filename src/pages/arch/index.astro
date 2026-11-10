@@ -1,21 +1,96 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import '../styles/landing-tokens.css';
+import '../styles/landing.css';
+
+// Light is the landing's default; a choice made with the theme toggle still wins.
+const themeScript = `try {
+  if (!localStorage.getItem('ls-theme')) document.documentElement.setAttribute('data-theme', 'light');
+} catch (e) {}`;
 ---
 
 <SiteLayout title="Lamassu PKI Architecture" lang="en" activeNav="arch">
-  <main class="architecture-viewer">
-    <iframe
-      src="/arch/lamassu-k8s-architecture-2d-3d_11/"
-      title="Interactive Lamassu Kubernetes architecture diagram"
-      loading="eager"
-    ></iframe>
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline set:html={themeScript} />
+  </Fragment>
+
+  <main class="lp arch-page">
+    <section class="lp-frame arch-frame" id="arch">
+      <div class="lp-wrap arch-inner">
+        <header class="arch-heading">
+          <p class="arch-tag">Architecture</p>
+          <h1>Lamassu PKI architecture</h1>
+          <p class="arch-lead">
+            Interactive map of the Kubernetes deployment: control plane, trust services
+            and the 3D topology behind the platform.
+          </p>
+        </header>
+        <div class="architecture-viewer">
+          <iframe
+            src="/arch/lamassu-k8s-architecture-2d-3d_11/"
+            title="Interactive Lamassu Kubernetes architecture diagram"
+            loading="eager"
+          ></iframe>
+        </div>
+      </div>
+    </section>
   </main>
 </SiteLayout>
 
 <style>
+  .arch-frame {
+    padding: clamp(40px, 5vw, 88px) 0 clamp(24px, 3vw, 44px);
+  }
+
+  .arch-inner {
+    padding-top: 112px;
+  }
+
+  .arch-heading {
+    max-width: 920px;
+    margin: 0 auto;
+    padding-inline: 32px;
+    text-align: center;
+  }
+
+  .arch-heading h1 {
+    font-size: clamp(32px, 4vw, 54px);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.045em;
+    color: var(--lp-title);
+  }
+
+  .arch-tag {
+    color: var(--lp-cyan);
+    font-family: var(--lp-mono);
+    font-size: var(--lp-label-size);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .arch-lead {
+    max-width: 66ch;
+    margin: 20px auto 0;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--lp-text);
+  }
+
   .architecture-viewer {
-    width: 100%;
-    height: max(560px, calc(100dvh - var(--shell-header-h) - 5px));
+    margin-top: 40px;
+    height: max(560px, calc(100dvh - var(--shell-header-h) - 140px));
+    border: 1px solid var(--lp-border);
+    border-radius: var(--lp-radius-md);
+    overflow: hidden;
+    background: var(--lp-surface);
   }
 
   .architecture-viewer iframe {
