@@ -1,9 +1,9 @@
-name: Deploy to Firebase Hosting
+name: Deploy dev to Firebase Hosting (lamaland-1965e.web.app)
 
 on:
   push:
     branches:
-      - main
+      - dev
   workflow_dispatch:
 
 jobs:
