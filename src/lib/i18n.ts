@@ -17,7 +17,7 @@ export const sharedTranslations = {
         pqc: 'Post-quantum',
         automation: 'Automation',
         deployment: 'Deployment',
-        cases: 'Success stories',
+        cases: 'Case studies',
         docs: 'Docs',
         arch: 'Arch',
       },
@@ -72,10 +72,6 @@ export const sharedTranslations = {
             {
               "label": "Source code",
               "href": "https://github.com/lamassuiot"
-            },
-            {
-              "label": "Blog",
-              "href": "https://www.lamassu.io/blog/"
             }
           ]
         },
@@ -117,11 +113,7 @@ export const sharedTranslations = {
             },
             {
               "label": "LinkedIn",
-              "href": "https://www.linkedin.com/company/lamassu-iot/"
-            },
-            {
-              "label": "Slack community",
-              "href": "https://www.lamassu.io/slack/"
+              "href": "https://www.linkedin.com/company/lks-next"
             }
           ]
         }
@@ -149,7 +141,7 @@ export const sharedTranslations = {
         pqc: 'Post-cuántica',
         automation: 'Automatización',
         deployment: 'Despliegue',
-        cases: 'Casos de éxito',
+        cases: 'Casos de estudio',
         docs: 'Docs',
         arch: 'Arch',
       },
@@ -204,10 +196,6 @@ export const sharedTranslations = {
             {
               "label": "Código fuente",
               "href": "https://github.com/lamassuiot"
-            },
-            {
-              "label": "Blog",
-              "href": "https://www.lamassu.io/blog/"
             }
           ]
         },
@@ -249,11 +237,7 @@ export const sharedTranslations = {
             },
             {
               "label": "LinkedIn",
-              "href": "https://www.linkedin.com/company/lamassu-iot/"
-            },
-            {
-              "label": "Comunidad de Slack",
-              "href": "https://www.lamassu.io/slack/"
+              "href": "https://www.linkedin.com/company/lks-next"
             }
           ]
         }
@@ -281,7 +265,7 @@ export const sharedTranslations = {
         pqc: 'Post-kuantikoa',
         automation: 'Automatizazioa',
         deployment: 'Hedapena',
-        cases: 'Arrakasta kasuak',
+        cases: 'Azterketa kasuak',
         docs: 'Docs',
         arch: 'Arch',
       },
@@ -336,10 +320,6 @@ export const sharedTranslations = {
             {
               "label": "Iturburu-kodea",
               "href": "https://github.com/lamassuiot"
-            },
-            {
-              "label": "Bloga",
-              "href": "https://www.lamassu.io/blog/"
             }
           ]
         },
@@ -381,11 +361,7 @@ export const sharedTranslations = {
             },
             {
               "label": "LinkedIn",
-              "href": "https://www.linkedin.com/company/lamassu-iot/"
-            },
-            {
-              "label": "Slack komunitatea",
-              "href": "https://www.lamassu.io/slack/"
+              "href": "https://www.linkedin.com/company/lks-next"
             }
           ]
         }
@@ -516,8 +492,6 @@ export const homeTranslations = {
           {
             tag: 'Groups & states',
             body: 'Dynamic groups by tags and metadata, identity history and an event timeline for every device.',
-            link: 'Device groups',
-            href: 'https://www.lamassu.io/docs/platform/iot-fleets/device-groups',
           },
         ],
       },
@@ -649,7 +623,7 @@ export const homeTranslations = {
             tag: 'SaaS',
             title: 'Lamassu SaaS',
             body: 'We run it, with backups and upgrades included. The shortest path from evaluation to production.',
-            chips: ['Starter · 1,000 devices', 'Professional · 10,000', 'Enterprise · unlimited'],
+            chips: [],
             operatedBy: 'Us, end to end',
             bestFor: 'Teams that want production without operating a PKI',
             cta: 'See plans',
@@ -663,7 +637,7 @@ export const homeTranslations = {
             operatedBy: 'You, in your AWS account',
             bestFor: 'Cloud-first organisations that keep data in their own account',
             cta: 'AWS guide',
-            href: 'https://www.lamassu.io/docs/deployment/aws-marketplace',
+            href: 'https://aws.amazon.com/marketplace/pp/prodview-fyfailowg3ewc',
           },
           {
             tag: 'Kubernetes · Helm',
@@ -693,8 +667,8 @@ export const homeTranslations = {
         ],
       },
       references: {
-        label: 'Success stories',
-        title: 'Success stories in energy and connected industry',
+        label: 'Case studies',
+        title: 'Case studies in energy and connected industry',
         lead: 'Real references where Lamassu reduced operational friction and raised the security posture of OT and IoT environments.',
         tabsAria: 'Sectors',
         sectorLabel: 'Sector',
@@ -891,8 +865,6 @@ export const homeTranslations = {
           {
             tag: 'Grupos y estados',
             body: 'Grupos dinámicos por etiquetas y metadatos, historial de identidad y una línea temporal de eventos para cada dispositivo.',
-            link: 'Grupos de dispositivos',
-            href: 'https://www.lamassu.io/docs/es/platform/iot-fleets/device-groups',
           },
         ],
       },
@@ -1024,7 +996,7 @@ export const homeTranslations = {
             tag: 'SaaS',
             title: 'Lamassu SaaS',
             body: 'Lo operamos nosotros, con copias de seguridad y actualizaciones incluidas. El camino más corto de la evaluación a producción.',
-            chips: ['Starter · 1.000 dispositivos', 'Professional · 10.000', 'Enterprise · sin límite'],
+            chips: [],
             operatedBy: 'Nosotros, de principio a fin',
             bestFor: 'Equipos que quieren llegar a producción sin operar una PKI',
             cta: 'Ver planes',
@@ -1038,7 +1010,7 @@ export const homeTranslations = {
             operatedBy: 'Tú, en tu cuenta de AWS',
             bestFor: 'Organizaciones cloud-first que quieren los datos en su propia cuenta',
             cta: 'Guía de AWS',
-            href: 'https://www.lamassu.io/docs/es/deployment/aws-marketplace',
+            href: 'https://aws.amazon.com/marketplace/pp/prodview-fyfailowg3ewc',
           },
           {
             tag: 'Kubernetes · Helm',
@@ -1068,8 +1040,8 @@ export const homeTranslations = {
         ],
       },
       references: {
-        label: 'Casos de éxito',
-        title: 'Casos de éxito en energía e industria conectada',
+        label: 'Casos de estudio',
+        title: 'Casos de estudio en energía e industria conectada',
         lead: 'Referencias reales donde Lamassu redujo la fricción operativa y elevó la postura de seguridad en entornos OT e IoT.',
         tabsAria: 'Sectores',
         sectorLabel: 'Sector',
@@ -1266,8 +1238,6 @@ export const homeTranslations = {
           {
             tag: 'Taldeak eta egoerak',
             body: 'Etiketa eta metadatuen araberako talde dinamikoak, identitate-historia eta gertaeren denbora-lerroa gailu bakoitzeko.',
-            link: 'Gailu-taldeak',
-            href: 'https://www.lamassu.io/docs/platform/iot-fleets/device-groups',
           },
         ],
       },
@@ -1399,7 +1369,7 @@ export const homeTranslations = {
             tag: 'SaaS',
             title: 'Lamassu SaaS',
             body: 'Guk kudeatzen dugu, babeskopiak eta eguneratzeak barne. Ebaluaziotik ekoizpenera bide laburrena.',
-            chips: ['Starter · 1.000 gailu', 'Professional · 10.000', 'Enterprise · mugarik gabe'],
+            chips: [],
             operatedBy: 'Guk, hasieratik bukaeraraino',
             bestFor: 'PKI bat kudeatu gabe ekoizpenera iritsi nahi duten taldeak',
             cta: 'Ikusi planak',
@@ -1413,7 +1383,7 @@ export const homeTranslations = {
             operatedBy: 'Zuk, zure AWS kontuan',
             bestFor: 'Datuak beren kontuan nahi dituzten cloud-first erakundeak',
             cta: 'AWS gida',
-            href: 'https://www.lamassu.io/docs/deployment/aws-marketplace',
+            href: 'https://aws.amazon.com/marketplace/pp/prodview-fyfailowg3ewc',
           },
           {
             tag: 'Kubernetes · Helm',
@@ -1443,8 +1413,8 @@ export const homeTranslations = {
         ],
       },
       references: {
-        label: 'Arrakasta kasuak',
-        title: 'Energiako eta industria konektatuko arrakasta kasuak',
+        label: 'Azterketa kasuak',
+        title: 'Energiako eta industria konektatuko azterketa kasuak',
         lead: 'Lamassuk OT eta IoT inguruneetan frikzio operatiboa murriztu eta segurtasun-jarrera hobetu duen erreferentzia errealak.',
         tabsAria: 'Sektoreak',
         sectorLabel: 'Sektorea',
