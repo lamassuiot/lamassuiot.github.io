@@ -10,14 +10,16 @@ const products = [
   { id: 'automation', key: 'devices', data: home.devices, doc: home.docs.enrollment, docKey: 'enrollment' },
   { id: 'keys', key: 'keys', data: home.keys, doc: home.docs.keys, docKey: 'keys' },
 ];
-// Restored from 10a7019: sample console data, never live telemetry.
+// Sample console data, never live telemetry. The CA table recreates the real console's
+// /certificate-authorities view (lab.lamassu.io), so its labels stay in the product's own language.
 const authorities = [
-  { name: 'Lamassu Root CA', algorithm: 'RSA 4096', engine: 'PKCS#11 HSM', status: 'active', depth: 0 },
-  { name: 'Factory Issuing CA', algorithm: 'ECDSA P-384', engine: 'AWS KMS', status: 'active', depth: 1 },
-  { name: 'Line 3 Devices CA', algorithm: 'ECDSA P-256', engine: 'AWS KMS', status: 'active', depth: 2 },
-  { name: 'Field Gateways CA', algorithm: 'ECDSA P-256', engine: 'Azure Key Vault', status: 'expiring', depth: 1 },
-  { name: 'Legacy OT CA', algorithm: 'RSA 2048', engine: 'Imported', status: 'revoked', depth: 0 },
+  { name: 'Lamassu Root CA', status: 'active', type: 'Managed', engine: 'go1.27.3', subs: 2, depth: 0, key: 'RSA (4096 bit)', expires: '07/11/2036 17:14', relative: 'in almost 10 years' },
+  { name: 'Factory Issuing CA', status: 'active', type: 'Managed', engine: 'go1.27.3', subs: 1, depth: 1, key: 'ECDSA (384 bit)', expires: '09/11/2031 17:14', relative: 'in almost 5 years', span: '5 years before parent' },
+  { name: 'Line 3 Devices CA', status: 'active', type: 'Managed', engine: 'go1.27.3', subs: 0, depth: 2, key: 'ECDSA (256 bit)', expires: '09/11/2028 17:14', relative: 'in almost 2 years', span: '3 years before parent' },
+  { name: 'Pilot Line CA', status: 'expired', type: 'Managed', engine: 'go1.27.3', subs: 0, depth: 1, key: 'ECDSA (256 bit)', expires: '02/09/2026 09:30', relative: '2 months ago', span: '10 years before parent' },
+  { name: 'Legacy OT CA', status: 'revoked', type: 'Imported', engine: 'Imported', subs: 0, depth: 0, key: 'RSA (2048 bit)', expires: '14/05/2030 12:00', relative: 'in almost 4 years' },
 ] as const;
+const subject = (name: string) => `CN=${name}, OU=Factory Floor, O=LamassuIoT, L=Arrasate, ST=Gipuzkoa, C=ES`;
 const events = [
   { time: '10:42:07', operation: '/simpleenroll', device: 'plc-line3-0042', status: 'issued' },
   { time: '10:41:55', operation: '/simplereenroll', device: 'gw-north-17', status: 'renewed' },
@@ -45,7 +47,7 @@ const icons = [
 </nav>
 
 {products.map((product, index) => (
-  <section class="lp-technical" id={product.id} aria-labelledby={`${product.id}-title`}>
+  <section class:list={['lp-technical', index === 0 && 'lp-technical--wide']} id={product.id} aria-labelledby={`${product.id}-title`}>
     <header class="lp-technical-heading" data-reveal>
       <div>
         <h3 id={`${product.id}-title`} data-i18n={`home.${product.key}.title`}>{product.data.title}</h3>
@@ -73,22 +75,34 @@ const icons = [
         <div class="lp-console-head">
           <div>
             <p class="lp-console-title" data-i18n={`home.technical.${['authorities', 'events', 'engines'][index]}`}>{[ui.authorities, ui.events, ui.engines][index]}</p>
-            <p class="lp-console-subtitle" {...(index !== 1 ? { 'data-i18n': `home.technical.${index === 0 ? 'hierarchy' : 'connectedEngines'}` } : {})}>{[ui.hierarchy, 'DMS · factory-line-3 · /.well-known/est', ui.connectedEngines][index]}</p>
+            {index !== 0 && <p class="lp-console-subtitle" {...(index === 2 ? { 'data-i18n': 'home.technical.connectedEngines' } : {})}>{index === 1 ? 'DMS · factory-line-3 · /.well-known/est' : ui.connectedEngines}</p>}
           </div>
-          <a class="lp-console-open" href="https://lab.lamassu.io" target="_blank" rel="noopener"><span data-i18n="home.technical.openConsole">{ui.openConsole}</span><span aria-hidden="true">↗</span></a>
+          <a class="lp-console-open" href={index === 0 ? 'https://lab.lamassu.io/certificate-authorities' : 'https://lab.lamassu.io'} target="_blank" rel="noopener"><span data-i18n="home.technical.openConsole">{ui.openConsole}</span><span aria-hidden="true">↗</span></a>
         </div>
 
-        <span class="lp-console-scroll-hint" id={`${product.id}-scroll-hint`} data-i18n="home.technical.scrollTable">{ui.scrollTable}</span>
-        <div class="lp-console-scroll" tabindex="0" role="region" aria-labelledby={`${product.id}-title`} aria-describedby={`${product.id}-scroll-hint`}>
+        {index !== 0 && <span class="lp-console-scroll-hint" id={`${product.id}-scroll-hint`} data-i18n="home.technical.scrollTable">{ui.scrollTable}</span>}
+        <div class={index === 0 ? undefined : 'lp-console-scroll'} {...(index === 0 ? {} : { tabindex: 0, role: 'region', 'aria-labelledby': `${product.id}-title`, 'aria-describedby': `${product.id}-scroll-hint` })}>
           {index === 0 && <table class="lp-console-table lp-ca-table">
-            <thead><tr>{['name', 'algorithm', 'engine', 'status'].map(key => <th scope="col" data-i18n={`home.technical.${key}`}>{ui[key as keyof typeof ui]}</th>)}</tr></thead>
-            <tbody>{authorities.map((row, i) => <tr id={`ca-example-${i}`} data-ca-child={row.depth > 0 ? '' : undefined}>
-              <th scope="row"><span class:list={['lp-ca-name', `lp-ca-depth-${row.depth}`]}>
-                {i === 0 ? <button class="lp-ca-toggle" type="button" data-ca-toggle hidden aria-expanded="true" aria-controls="ca-example-1 ca-example-2 ca-example-3" aria-label={ui.toggleHierarchy} data-i18n-attr-aria-label="home.technical.toggleHierarchy"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg></button> : row.depth > 0 && <span class="lp-ca-branch" aria-hidden="true">└</span>}
-                {row.name}
-              </span></th>
-              <td>{row.algorithm}</td><td {...(row.engine === 'Imported' ? { 'data-i18n': 'home.technical.imported' } : {})}>{row.engine === 'Imported' ? ui.imported : row.engine}</td>
-              <td><span class={`lp-console-status lp-console-status--${row.status}`} data-i18n={`home.technical.${row.status}`}>{ui[row.status]}</span></td>
+            <thead><tr>
+              <th scope="col">Certification Authority <svg class="lp-ca-sort lp-ca-sort--active" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 13V3M2.5 5.5 5 3l2.5 2.5M11 3v10M8.5 10.5 11 13l2.5-2.5" /></svg></th>
+              <th scope="col">Status</th><th scope="col" class="lp-ca-c-origin">Origin</th><th scope="col">Key</th>
+              <th scope="col">Expires <svg class="lp-ca-sort" viewBox="0 0 16 16" aria-hidden="true"><path d="m5 6.5 3-3 3 3M5 9.5l3 3 3-3" /></svg></th>
+              <th scope="col" class="lp-ca-c-span">Expires vs. parent</th>
+            </tr></thead>
+            <tbody>{authorities.map(ca => <tr data-ca-depth={ca.depth}>
+              <th scope="row"><div class="lp-ca-name" style={`padding-left:${ca.depth * 16}px`}>
+                {ca.subs > 0 ? <button class="lp-ca-toggle" type="button" data-ca-toggle hidden aria-expanded="true" aria-label={`${ca.name}: ${ui.toggleHierarchy}`}><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg></button> : ca.depth > 0 ? <span class="lp-ca-branch" aria-hidden="true">↳</span> : <span class="lp-ca-branch-space" aria-hidden="true"></span>}
+                <span class="lp-ca-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><circle cx="12" cy="12" r="1.6" /><path d="M13.4 13.4 16 16M15 15l1.2-1.2" /></svg></span>
+                <div>
+                  <div class="lp-ca-title"><span>{ca.name}</span>{ca.subs > 0 && <span class="lp-ca-count">{ca.subs} sub-{ca.subs === 1 ? 'CA' : 'CAs'}</span>}</div>
+                  <div class="lp-ca-subject" title={subject(ca.name)}>{subject(ca.name)}</div>
+                </div>
+              </div></th>
+              <td><span class={`lp-console-status lp-console-status--${ca.status}`}>{ca.status.toUpperCase()}</span></td>
+              <td class="lp-ca-c-origin"><span class="lp-ca-type">{ca.type === 'Managed' ? <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4.5h10M6 4.5V3h4v1.5M4.5 4.5l.6 8.5h5.8l.6-8.5M7 7v3.5M9 7v3.5" /></svg> : <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v7M5.2 6.8 8 9.6l2.8-2.8M3 10.5v2h10v-2" /></svg>}{ca.type}</span></td>
+              <td class="lp-ca-c-key"><div class="lp-ca-strong">{ca.key}</div><div class="lp-ca-sub">{ca.engine}</div></td>
+              <td><div class="lp-ca-strong">{ca.expires}</div><div class="lp-ca-sub">{ca.relative}</div></td>
+              <td class="lp-ca-c-span">{'span' in ca ? <div class="lp-ca-span"><div class="lp-ca-span-tags"><span class="lp-ca-tag lp-ca-tag--this">this CA</span><span class="lp-ca-tag">parent CA</span></div><div class="lp-ca-bar" aria-hidden="true"></div><div class="lp-ca-sub">{ca.span}</div></div> : <span class="lp-ca-sub">Self-signed · Root</span>}</td>
             </tr>)}</tbody>
           </table>}
 
@@ -102,20 +116,31 @@ const icons = [
             <tbody>{engines.map(engine => <tr><th scope="row">{engine.name}<span class="lp-engine-identifier">{engine.id}</span></th><td {...(engine.connection === 'local' ? { 'data-i18n': 'home.technical.local' } : {})}>{engine.connection === 'local' ? ui.local : engine.connection}</td><td data-i18n={`home.technical.${engine.custody}`}>{ui[engine.custody]}</td></tr>)}</tbody>
           </table>}
         </div>
-        <figcaption data-i18n="home.technical.example">{ui.example}</figcaption>
+        {index !== 0 && <figcaption data-i18n="home.technical.example">{ui.example}</figcaption>}
       </figure>
     </div>
   </section>
 ))}
 
 <script>
-  const toggle = document.querySelector<HTMLButtonElement>('[data-ca-toggle]');
-  if (toggle) {
+  // Each parent CA collapses its descendants; a row is visible only while every ancestor is expanded.
+  const rows = [...document.querySelectorAll<HTMLTableRowElement>('.lp-ca-table tbody tr')];
+  const sync = () => {
+    const open: boolean[] = [];
+    rows.forEach(row => {
+      const depth = Number(row.dataset.caDepth);
+      row.hidden = !open.slice(0, depth).every(Boolean);
+      const toggle = row.querySelector<HTMLButtonElement>('[data-ca-toggle]');
+      open[depth] = toggle ? toggle.getAttribute('aria-expanded') === 'true' : true;
+    });
+  };
+  rows.forEach(row => {
+    const toggle = row.querySelector<HTMLButtonElement>('[data-ca-toggle]');
+    if (!toggle) return;
     toggle.hidden = false;
     toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') !== 'true';
-      toggle.setAttribute('aria-expanded', String(expanded));
-      document.querySelectorAll<HTMLElement>('[data-ca-child]').forEach(row => { row.hidden = !expanded; });
+      toggle.setAttribute('aria-expanded', String(toggle.getAttribute('aria-expanded') !== 'true'));
+      sync();
     });
-  }
+  });
 </script>

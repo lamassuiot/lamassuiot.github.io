@@ -798,8 +798,8 @@ export const homeTranslations = {
       hero: {
         announceTag: 'Preview',
         announce: 'Certificados post-cuánticos en acceso anticipado',
-        title: 'Identidad de confianza para cada',
-        titleMark: 'dispositivo conectado',
+        title: 'Una PKI soberana:',
+        titleMark: 'tus claves, tus reglas',
         lead:
           'Lamassu es una PKI abierta para flotas IoT e industriales. Crea tus autoridades de certificación, da de alta dispositivos con EST y gestiona cada identidad X.509 —emisión, renovación y revocación— con las claves en el HSM o KMS que elijas.',
         ctaPrimary: 'Habla con un experto',
@@ -816,10 +816,10 @@ export const homeTranslations = {
       platform: {
         label: 'La plataforma',
         title: 'Una',
-        titleMark: 'PKI completa',
+        titleMark: 'PKI soberana',
         titleEnd: 'para la identidad de tus dispositivos',
         lead:
-          'Lamassu une una raíz de confianza, una política de emisión y cada dispositivo que necesita demostrar quién es. Todo en una consola y una API, con control de acceso y trazabilidad.',
+          'Lamassu une una raíz de confianza, una política de emisión y cada dispositivo que necesita demostrar quién es. La soberanía es tuya: tus CAs, tus claves, tus políticas. Todo en una consola y una API, con control de acceso y trazabilidad.',
         items: [
           {
             title: 'Autoridades de certificación',
