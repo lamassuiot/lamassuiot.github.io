@@ -370,7 +370,7 @@ html body {
 .lp-point-arrow { display: inline-block; color: var(--lp-accent); margin-top: 20px; text-decoration: none; font-size: 22px; }
 
 /* Existing customer evidence with the spacious treatment of the reference. */
-.lp-customer-logos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 36px; list-style: none; padding: 0 48px; margin: 50px 0 56px !important; }
+.lp-customer-logos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 36px; list-style: none; padding: 0 48px; margin: 50px 0 56px !important; }
 .lp-customer-logos li { display: grid; place-items: center; min-height: 64px; }
 .lp-customer-logos img { display: block; width: auto; max-width: min(100%, 172px); height: 40px; object-fit: contain; filter: grayscale(1) brightness(0); opacity: .75; }
 :root:not([data-theme='light']) .lp-customer-logos img { filter: grayscale(1) brightness(0) invert(1); }
