@@ -1,7 +1,7 @@
-/** Connector demo: one certificate event travels PKI → connector → platform per cycle.
+/** One lifecycle event is distributed from the central Lamassu hub to all connected platforms per cycle.
  * CSS owns the choreography; this only picks the event and restarts the cycle.
- * The clock element's animationend marks the end of a cycle, so the landing's pause
- * button (which pauses CSS animations) and off-screen pausing hold the loop for free. */
+ * The clock element's animationend advances the event and restarts the cycle. Reduced motion
+ * disables animation; the landing's pause button and off-screen pausing hold the loop for free. */
 const EVENTS = 3;
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -13,7 +13,12 @@ document.querySelectorAll<HTMLElement>('[data-integration-demo]').forEach((demo)
   const show = (index: number) => {
     event = (index + EVENTS) % EVENTS;
     demo.dataset.event = String(event);
-    steps.forEach((step, i) => step.setAttribute('aria-pressed', String(i === event)));
+    steps.forEach((step, i) => {
+      const active = i === event;
+      step.setAttribute('aria-pressed', String(active));
+      step.setAttribute('aria-expanded', String(active));
+      step.querySelector<HTMLElement>('.lp-integration-step-description')?.setAttribute('aria-hidden', String(!active));
+    });
   };
 
   const restart = () => {

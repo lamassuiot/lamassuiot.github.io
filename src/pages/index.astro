@@ -16,6 +16,13 @@ const customerLogos = [
   { name: 'Onnera Group', src: '/company/onnera.png' },
   { name: 'Erreka', src: '/company/erreka.png' },
 ];
+
+const integrationTargets = [
+  { name: 'EMQX', light: '/integrations/iot/emqx.png', dark: '/integrations/iot/emqxw.png' },
+  { name: 'AWS IoT Core', light: '/integrations/iot/iotcore.png', dark: '/integrations/iot/iotcore.png' },
+  { name: 'Azure IoT Hub', light: '/integrations/iot/iot-hub.svg', dark: '/integrations/iot/iot-hub.svg' },
+  { name: 'ThingsBoard', light: '/integrations/iot/thingsboard_logo_black%20big.svg', dark: '/integrations/iot/thingsboard_logo_black%20big.svg' },
+];
 const backerGroups = [
   { kind: 0, variant: 'industry', logos: [
     { name: 'LKS Next', src: '/sponsors/lks-next.png', width: 400, height: 400, variant: 'lks', dark: { src: '/sponsors/lks-next-white.png', width: 247, height: 158 } },
@@ -198,33 +205,51 @@ const faqJsonLd = {
           <p data-i18n="home.redesign.integrationsLead">{copy.integrationsLead}</p>
         </header>
         <div class="lp-integration-demo" data-integration-demo data-event="0">
-          <div class="lp-integration-list">
-            {[{ name: 'EMQX', light: '/integrations/iot/emqx.png', dark: '/integrations/iot/emqxw.png' }, { name: 'AWS IoT Core', light: '/integrations/iot/iotcore.png', dark: '/integrations/iot/iotcore.png' }].map((integration, i) => (
-              <article class:list={["lp-integration", i === 1 && "lp-integration--blue"]} data-reveal>
-                <div class="lp-integration-copy">{i === 1 && <span class="lp-integration-aws-logo"><img src="/integrations/iot/awsw.png" alt="AWS" /></span>}<h3>{integration.name}</h3><p data-i18n={`home.redesign.integrationDescriptions.${i}`}>{copy.integrationDescriptions[i]}</p></div>
-                <div class="lp-integration-flow">
-                  <div class="lp-integration-node lp-integration-source"><div class="lp-integration-icon"><img class="lp-integration-light" src="/lamassu_logo_blue.svg" alt="" /><img class="lp-integration-dark" src="/lamassu_logo_white.svg" alt="" /></div><strong>Lamassu PKI</strong></div>
-                  <div class="lp-integration-link lp-integration-link--event"><span class="lp-integration-link-label lp-integration-event-label">{copy.lifecycle.map((label, index) => <span data-event-label={index} data-i18n={`home.redesign.lifecycle.${index}`}>{label}</span>)}</span><div class="lp-integration-wire" aria-hidden="true"><i></i></div></div>
-                  <div class="lp-integration-node lp-integration-connector"><div class="lp-integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 13 4-4m-6 6-1 1a4.24 4.24 0 0 1-6-6l4-4a4.24 4.24 0 0 1 6 0m2 2 1-1a4.24 4.24 0 0 1 6 6l-4 4a4.24 4.24 0 0 1-6 0" transform="translate(1 1)"/></svg></div><strong data-i18n="home.redesign.integrationConnector">{copy.integrationConnector}</strong></div>
-                  <div class="lp-integration-link lp-integration-link--update"><span class="lp-integration-link-label" data-i18n="home.redesign.integrationUpdate">{copy.integrationUpdate}</span><div class="lp-integration-wire" aria-hidden="true"><i></i></div></div>
-                  <div class:list={["lp-integration-node", "lp-integration-target", i === 1 && "lp-integration-target--aws"]}>
-                    <div class="lp-integration-icon">
-                      <img class="lp-integration-light" src={integration.light} alt="" /><img class="lp-integration-dark" src={integration.dark} alt="" />
-                      <span class="lp-integration-badge" aria-hidden="true">
-                        <svg data-badge="0" viewBox="0 0 16 16"><path d="m4 8.4 2.6 2.6L12 5.4" /></svg>
-                        <svg data-badge="1" viewBox="0 0 16 16"><path d="M12.2 6.6A4.4 4.4 0 0 0 4.3 5.5M3.8 9.4a4.4 4.4 0 0 0 7.9 1.1M4 3v2.7h2.7M12 13v-2.7H9.3" /></svg>
-                        <svg data-badge="2" viewBox="0 0 16 16"><path d="m5 5 6 6m0-6-6 6" /></svg>
-                      </span>
+          <div class="lp-integration-layout">
+            <div class="lp-integration-steps" role="group" aria-label={copy.integrationEvents} data-i18n-attr-aria-label="home.redesign.integrationEvents">
+              {copy.lifecycle.map((label, index) => (
+                <button type="button" data-event-step={index} aria-pressed={index === 0 ? 'true' : 'false'} aria-expanded={index === 0 ? 'true' : 'false'} aria-controls={`integration-description-${index}`}>
+                  <span class="lp-integration-step-title" data-i18n={`home.redesign.lifecycle.${index}`}>{label}</span>
+                  <span class="lp-integration-step-description" id={`integration-description-${index}`} aria-hidden={index !== 0 ? 'true' : 'false'} data-i18n={`home.redesign.lifecycleDescriptions.${index}`}>{copy.lifecycleDescriptions[index]}</span>
+                  <i aria-hidden="true"></i>
+                </button>
+              ))}
+            </div>
+            <div class="lp-integration-map" role="img" aria-label={copy.integrationDiagram} data-i18n-attr-aria-label="home.redesign.integrationDiagram">
+              <div class="lp-integration-node lp-integration-hub">
+                <div class="lp-integration-icon"><img class="lp-integration-light" src="/lamassu_logo_blue.svg" alt="" /><img class="lp-integration-dark" src="/lamassu_logo_white.svg" alt="" /></div>
+                <strong>Lamassu PKI</strong>
+                <span class="lp-integration-event-label">{copy.lifecycle.map((label, index) => <span data-event-label={index} data-i18n={`home.redesign.lifecycle.${index}`}>{label}</span>)}</span>
+              </div>
+              <div class="lp-integration-segment lp-integration-segment--source" aria-hidden="true"><div class="lp-integration-wire"><i></i></div></div>
+              <div class="lp-integration-node lp-integration-connector">
+                <div class="lp-integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 13 4-4m-6 6-1 1a4.24 4.24 0 0 1-6-6l4-4a4.24 4.24 0 0 1 6 0m2 2 1-1a4.24 4.24 0 0 1 6 6l-4 4a4.24 4.24 0 0 1-6 0" transform="translate(1 1)"/></svg></div>
+                <strong data-i18n="home.redesign.integrationConnector">{copy.integrationConnector}</strong>
+              </div>
+              <div class="lp-integration-segment lp-integration-segment--branch" aria-hidden="true"><div class="lp-integration-wire"><i></i></div></div>
+              <div class="lp-integration-branch" aria-hidden="true"></div>
+              <div class="lp-integration-targets">
+                {integrationTargets.map((integration, index) => (
+                  <article class:list={['lp-integration-target', `lp-integration-target--${index}`]}>
+                    <div class="lp-integration-wire" aria-hidden="true"><i></i></div>
+                    <div class:list={['lp-integration-platform', index === 3 && 'lp-integration-platform--thingsboard']}>
+                      <div class="lp-integration-icon">
+                        <span class="lp-integration-logo">
+                          <img class="lp-integration-light" src={integration.light} alt="" /><img class="lp-integration-dark" src={integration.dark} alt="" />
+                        </span>
+                        <span class="lp-integration-badge" aria-hidden="true">
+                          <svg data-badge="0" viewBox="0 0 16 16"><path d="m4 8.4 2.6 2.6L12 5.4" /></svg>
+                          <svg data-badge="1" viewBox="0 0 16 16"><path d="M12.2 6.6A4.4 4.4 0 0 0 4.3 5.5M3.8 9.4a4.4 4.4 0 0 0 7.9 1.1M4 3v2.7h2.7M12 13v-2.7H9.3" /></svg>
+                          <svg data-badge="2" viewBox="0 0 16 16"><path d="m5 5 6 6m0-6-6 6" /></svg>
+                        </span>
+                      </div>
+                      <strong>{integration.name}</strong>
+                      {index === 2 && <span class="lp-integration-coming-soon" data-i18n="home.redesign.integrationComingSoon">{copy.integrationComingSoon}</span>}
                     </div>
-                    <strong>{integration.name}</strong>
-                  </div>
-                </div>
-                <p class="lp-integration-result" aria-hidden={i === 1 ? undefined : 'true'}>{i === 1 && copy.integrationResultsAws.map((result, index) => <span data-event-result={index} data-i18n={`home.redesign.integrationResultsAws.${index}`}>{result}</span>)}</p>
-              </article>
-            ))}
-          </div>
-          <div class="lp-integration-steps" role="group" aria-label={copy.integrationEvents} data-i18n-attr-aria-label="home.redesign.integrationEvents">
-            {copy.lifecycle.map((label, index) => <button type="button" data-event-step={index} aria-pressed={index === 0 ? 'true' : 'false'}><span data-i18n={`home.redesign.lifecycle.${index}`}>{label}</span><i aria-hidden="true"></i></button>)}
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
           <span class="lp-integration-clock" aria-hidden="true"></span>
         </div>
