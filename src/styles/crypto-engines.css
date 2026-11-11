@@ -1,0 +1,38 @@
+.lp-crypto-security { margin-top: 36px; }
+.lp-crypto-levels > div { padding: 24px 32px; }
+.lp-crypto-levels dt { margin: 0; color: var(--lp-title); font-size: 18px; font-weight: 600; line-height: 1.4; letter-spacing: -.025em; }
+.lp-crypto-levels dd { margin: 10px 0 0; color: var(--lp-text); font-size: 15px; line-height: 1.6; }
+.lp-crypto-levels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
+.lp-crypto-levels > div + div { border-left: 1px solid var(--lp-border); }
+.lp-crypto-list { margin-top: 32px; }
+.lp-crypto-security-label { color: var(--lp-muted); font-size: 12px; }
+.lp-crypto-security-value { color: var(--lp-title); font-size: 16px; font-weight: 600; }
+.lp-crypto-custody > span, .lp-crypto-security-value { display: block; }
+.lp-crypto-security-value { margin: 4px 0 8px; }
+.lp-crypto-engine { display: grid; grid-template-columns: 80px minmax(0, 1fr) minmax(160px, 220px); align-items: center; gap: 32px; padding: 28px 32px; }
+.lp-crypto-engine:nth-child(odd) { background: var(--lp-surface); }
+:root:not([data-theme='light']) .lp-crypto-engine:nth-child(odd) { background: transparent; }
+.lp-crypto-filters { position: absolute; pointer-events: none; }
+.lp-crypto-logo { display: flex; align-items: center; justify-content: center; width: 80px; height: 80px; }
+.lp-crypto-logo img { display: block; width: 64px; height: 64px; object-fit: contain; }
+.lp-crypto-logo--aws img { border-radius: 8px; }
+.lp-crypto-logo--azure img { filter: url(#crypto-remove-white); }
+:root:not([data-theme='light']) .lp-crypto-logo--invert img { filter: invert(1); }
+.lp-crypto-copy h3 { margin: 0; color: var(--lp-title); font-size: 22px; font-weight: 600; line-height: 1.25; letter-spacing: -.025em; }
+.lp-crypto-copy p { max-width: 65ch; margin: 10px 0 0; }
+.lp-crypto-engine .lp-crypto-custody { margin: 0; color: var(--lp-accent); font-size: 14px; line-height: 1.5; }
+@media (max-width: 767px) {
+  .lp-crypto-levels { grid-template-columns: 1fr; }
+  .lp-crypto-levels > div { padding: 20px 24px; }
+  .lp-crypto-levels > div + div { border-left: 0; border-top: 1px solid var(--lp-border); }
+  .lp-crypto-engine { grid-template-columns: 64px minmax(0, 1fr); gap: 12px 20px; padding: 24px; align-items: start; }
+  .lp-crypto-logo { width: 64px; height: 64px; }
+  .lp-crypto-logo img { width: 52px; height: 52px; }
+  .lp-crypto-copy h3 { font-size: 20px; }
+  .lp-crypto-custody { grid-column: 2; }
+}
+@media (max-width: 420px) {
+  .lp-crypto-levels > div { padding-inline: 16px; }
+  .lp-crypto-engine { gap: 12px 16px; padding-inline: 16px; }
+  .lp-crypto-copy h3 { font-size: 18px; }
+}

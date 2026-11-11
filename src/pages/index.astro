@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import CryptoEngines from '../components/CryptoEngines.astro';
 import TrustHierarchy from '../components/TrustHierarchy.astro';
 import TechnicalCapabilities from '../components/TechnicalCapabilities.astro';
 import { landingTranslations } from '../lib/landing-content';
@@ -12,7 +13,6 @@ const copy = home.redesign;
 const customerLogos = [
   { name: 'Cegasa', src: '/company/cegasa.svg' },
   { name: 'GH Cranes & Components', src: '/company/gh.png' },
-  { name: 'Fagor Professional', src: '/company/fagor_professional.svg' },
   { name: 'Onnera Group', src: '/company/onnera.png' },
   { name: 'Erreka', src: '/company/erreka.png' },
 ];
@@ -190,6 +190,8 @@ const faqJsonLd = {
         </div>
       </section>
 
+      <CryptoEngines />
+
       <section class="lp-region lp-integrations" id="integrations">
         <header class="lp-section-heading" data-reveal>
           <h2 data-i18n="home.redesign.integrationsTitle">{copy.integrationsTitle}</h2>
@@ -197,9 +199,9 @@ const faqJsonLd = {
         </header>
         <div class="lp-integration-demo" data-integration-demo data-event="0">
           <div class="lp-integration-list">
-            {[{ name: 'EMQX', light: '/integrations/emqx.png', dark: '/integrations/emqxw.png' }, { name: 'AWS IoT Core', light: '/integrations/iotcore.png', dark: '/integrations/iotcore.png' }].map((integration, i) => (
+            {[{ name: 'EMQX', light: '/integrations/iot/emqx.png', dark: '/integrations/iot/emqxw.png' }, { name: 'AWS IoT Core', light: '/integrations/iot/iotcore.png', dark: '/integrations/iot/iotcore.png' }].map((integration, i) => (
               <article class:list={["lp-integration", i === 1 && "lp-integration--blue"]} data-reveal>
-                <div class="lp-integration-copy">{i === 1 && <span class="lp-integration-aws-logo"><img src="/integrations/awsw.png" alt="AWS" /></span>}<h3>{integration.name}</h3><p data-i18n={`home.redesign.integrationDescriptions.${i}`}>{copy.integrationDescriptions[i]}</p></div>
+                <div class="lp-integration-copy">{i === 1 && <span class="lp-integration-aws-logo"><img src="/integrations/iot/awsw.png" alt="AWS" /></span>}<h3>{integration.name}</h3><p data-i18n={`home.redesign.integrationDescriptions.${i}`}>{copy.integrationDescriptions[i]}</p></div>
                 <div class="lp-integration-flow">
                   <div class="lp-integration-node lp-integration-source"><div class="lp-integration-icon"><img class="lp-integration-light" src="/lamassu_logo_blue.svg" alt="" /><img class="lp-integration-dark" src="/lamassu_logo_white.svg" alt="" /></div><strong>Lamassu PKI</strong></div>
                   <div class="lp-integration-link lp-integration-link--event"><span class="lp-integration-link-label lp-integration-event-label">{copy.lifecycle.map((label, index) => <span data-event-label={index} data-i18n={`home.redesign.lifecycle.${index}`}>{label}</span>)}</span><div class="lp-integration-wire" aria-hidden="true"><i></i></div></div>
