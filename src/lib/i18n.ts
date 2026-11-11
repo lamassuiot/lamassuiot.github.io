@@ -399,7 +399,7 @@ export const homeTranslations = {
       hero: {
         announceTag: 'Preview',
         announce: 'Post-quantum certificates in early access',
-        title: 'Trusted identity for every',
+        title: 'Sovereign PKI, trusted identity for every',
         titleMark: 'connected device',
         lead:
           'Lamassu is an open PKI for IoT and industrial fleets. Create your certificate authorities, enrol devices over EST and manage every X.509 identity — issuance, renewal and revocation — with keys in the HSM or KMS you choose.',
@@ -772,8 +772,8 @@ export const homeTranslations = {
       hero: {
         announceTag: 'Preview',
         announce: 'Certificados post-cuánticos en acceso anticipado',
-        title: 'Una PKI soberana:',
-        titleMark: 'tus claves, tus reglas',
+        title: 'PKI soberana, identidad confiable para cada',
+        titleMark: 'dispositivo conectado',
         lead:
           'Lamassu es una PKI abierta para flotas IoT e industriales. Crea tus autoridades de certificación, da de alta dispositivos con EST y gestiona cada identidad X.509 —emisión, renovación y revocación— con las claves en el HSM o KMS que elijas.',
         ctaPrimary: 'Habla con un experto',
@@ -1145,7 +1145,7 @@ export const homeTranslations = {
       hero: {
         announceTag: 'Preview',
         announce: 'Ziurtagiri post-kuantikoak aurretiazko sarbidean',
-        title: 'Konfiantzazko identitatea',
+        title: 'PKI subiranoa, konfiantzazko identitatea',
         titleMark: 'konektatutako gailu bakoitzarentzat',
         lead:
           'Lamassu IoT eta industria-flotetarako PKI irekia da. Sortu zure ziurtapen-agintariak, eman gailuei alta EST bidez eta kudeatu X.509 identitate bakoitza —jaulkipena, berritzea eta ezeztapena— gakoak zuk aukeratutako HSM edo KMSan dituzula.',
