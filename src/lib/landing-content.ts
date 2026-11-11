@@ -5,6 +5,14 @@ import { technicalTranslations } from './technical-content';
 // This copy gives the homepage its platform-first narrative in all supported languages.
 const redesign = {
   es: {
+    integrationsTitle: 'Conecta tu PKI con la nube',
+    integrationsLead: 'Los eventos del ciclo de vida de los certificados mantienen conectadas tu PKI y las plataformas que utilizan tus dispositivos.',
+    integrationEvents: 'Emisión · renovación · revocación',
+    integrationConnector: 'Conector específico',
+    integrationUpdate: 'Actualización',
+    integrationDescriptions: ['El conector traslada los cambios de los certificados al broker MQTT de EMQX.', 'El conector traslada los cambios de los certificados a AWS IoT Core.'],
+    // What the AWS IoT connector does per event (lamassuiot/connectors/awsiot).
+    integrationResultsAws: ['Thing registrado y certificado adjunto', 'Shadow: UPDATE_CERTIFICATE', 'Certificado REVOKED y sesión cerrada'],
     platformTitle: 'Una plataforma. Toda tu flota.',
     platformLead: 'Conecta autoridades, claves y dispositivos en una misma infraestructura de confianza. Desde la primera identidad en fábrica hasta su retirada en campo.',
     diagramAria: 'Lamassu conecta los motores de claves con las autoridades de certificación y las flotas de dispositivos mediante estándares abiertos.',
@@ -55,6 +63,13 @@ const redesign = {
     backersKinds: ['Industria', 'Administración pública'],
   },
   en: {
+    integrationsTitle: 'Connect your PKI to the cloud',
+    integrationsLead: 'Certificate lifecycle events keep your PKI connected to the platforms your devices use.',
+    integrationEvents: 'Issuance · renewal · revocation',
+    integrationConnector: 'Dedicated connector',
+    integrationUpdate: 'Update',
+    integrationDescriptions: ['The connector carries certificate changes to the EMQX MQTT broker.', 'The connector carries certificate changes to AWS IoT Core.'],
+    integrationResultsAws: ['Thing registered, certificate attached', 'Shadow: UPDATE_CERTIFICATE', 'Certificate REVOKED, session closed'],
     platformTitle: 'One platform. Your entire fleet.',
     platformLead: 'Connect authorities, keys and devices in one trust infrastructure. From the first identity on the factory floor to decommissioning in the field.',
     diagramAria: 'Lamassu connects key engines, certificate authorities and device fleets through open standards.',
@@ -105,6 +120,13 @@ const redesign = {
     backersKinds: ['Industry', 'Public sector'],
   },
   eus: {
+    integrationsTitle: 'Konektatu zure PKIa hodeira',
+    integrationsLead: 'Ziurtagirien bizi-zikloko gertaerek zure PKIa eta gailuek erabiltzen dituzten plataformak konektatuta mantentzen dituzte.',
+    integrationEvents: 'Jaulkipena · berritzea · ezeztapena',
+    integrationConnector: 'Konektore espezifikoa',
+    integrationUpdate: 'Eguneratzea',
+    integrationDescriptions: ['Konektoreak ziurtagirien aldaketak EMQX MQTT brokerrera eramaten ditu.', 'Konektoreak ziurtagirien aldaketak AWS IoT Corera eramaten ditu.'],
+    integrationResultsAws: ['Thing-a erregistratuta, ziurtagiria lotuta', 'Shadow: UPDATE_CERTIFICATE', 'Ziurtagiria REVOKED, saioa itxita'],
     platformTitle: 'Plataforma bat. Zure flota osoa.',
     platformLead: 'Lotu agintariak, gakoak eta gailuak konfiantza-azpiegitura berean. Fabrikako lehen identitatetik eremuan erretiratu arte.',
     diagramAria: 'Lamassuk gako-motorrak, ziurtapen-agintariak eta gailu-flotak estandar irekien bidez lotzen ditu.',

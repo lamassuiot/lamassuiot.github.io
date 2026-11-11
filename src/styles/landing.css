@@ -289,6 +289,14 @@ html body {
   letter-spacing: var(--lp-h1-tracking);
 }
 
+html:lang(es) .lp-hero h1 {
+  font-size: clamp(36px, 5.5vw, 76px);
+}
+
+html:lang(eu) .lp-hero h1 {
+  font-size: clamp(36px, 5.3vw, 72px);
+}
+
 .lp-hero h1 .lp-mark {
   padding: 0;
   color: transparent;
@@ -725,3 +733,266 @@ html body {
 .lp-case-timeline::before { content: none; }
 .lp-case-steps details:not(:last-child)::before { content: ''; position: absolute; left: 4px; top: 8px; bottom: -8px; width: 1px; background: rgba(255,255,255,.5); }
 
+
+/* ═══ Integrations ═════════════════════════════════════════════════
+   One certificate event per cycle travels PKI → connector → platform.
+   Static (no JS / reduced motion) shows the finished state; `.is-running`
+   adds the choreography, timed in seconds from the start of each panel. */
+@property --integration-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+.lp-integration-demo {
+  --integration-clock: 6.4s;
+  --integration-color: var(--lp-accent);
+  --integration-panel-bg: var(--lp-accent);
+  --integration-panel-ink: var(--lp-accent-text);
+  --integration-ease: cubic-bezier(.65, 0, .35, 1);
+  margin-top: 40px;
+}
+.lp-integration-demo[data-event='1'] { --integration-color: var(--lp-cyan); }
+.lp-integration-demo[data-event='2'] { --integration-color: var(--lp-red); }
+
+/* Panels */
+.lp-integration-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.lp-integration {
+  --integration-on: var(--lp-bg);
+  --integration-delay: 0s;
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  min-width: 0; min-height: 480px; padding: 44px 32px 56px;
+  text-align: center; background: var(--lp-surface-2);
+}
+.lp-integration + .lp-integration { --integration-delay: .4s; }
+.lp-integration-copy { position: relative; width: 100%; min-height: 142px; }
+.lp-integration-copy h3 { font-size: clamp(30px, 3.5vw, 46px); font-weight: 500; line-height: 1.15; letter-spacing: -.05em; }
+.lp-integration-copy p { max-width: 36ch; margin: 18px auto 0; font-size: 15px; line-height: 1.6; }
+.lp-integration-aws-logo { position: absolute; left: 0; top: -25px; }
+.lp-integration-aws-logo img { display: block; width: 110px; height: 64px; object-fit: contain; object-position: left center; }
+
+.lp-integration--blue {
+  --lp-surface-2: var(--integration-panel-bg);
+  --lp-surface: var(--integration-panel-bg);
+  --lp-title: var(--integration-panel-ink);
+  --lp-text: var(--integration-panel-ink);
+  --lp-border-strong: color-mix(in srgb, var(--integration-panel-ink) 40%, var(--integration-panel-bg));
+  --lp-accent: var(--integration-panel-ink);
+  --lp-bg: var(--integration-panel-bg);
+  --integration-color: var(--integration-panel-ink);
+  background: var(--integration-panel-bg);
+  color: var(--integration-panel-ink);
+}
+
+/* Logos follow the theme; the accent panel inverts it. */
+.lp-integration-dark { display: none; }
+:root:not([data-theme='light']) .lp-integration-light { display: none; }
+:root:not([data-theme='light']) .lp-integration-dark { display: block; }
+.lp-integration--blue .lp-integration-light { display: none; }
+.lp-integration--blue .lp-integration-dark { display: block; }
+:root:not([data-theme='light']) .lp-integration--blue .lp-integration-light { display: block; }
+:root:not([data-theme='light']) .lp-integration--blue .lp-integration-dark { display: none; }
+
+/* Flow: node · link · node · link · node. Links sit at half the icon height. */
+.lp-integration-flow {
+  --icon: 72px;
+  display: grid; grid-template-columns: var(--icon) minmax(20px, 1fr) 96px minmax(20px, 1fr) var(--icon);
+  align-items: start; width: 100%; margin-block: auto; padding: 44px 0 18px;
+}
+.lp-integration-node { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 18px; color: var(--lp-title); font-size: 12px; line-height: 1.5; }
+.lp-integration-node strong { font-weight: 500; }
+.lp-integration-icon {
+  position: relative; display: grid; place-items: center;
+  width: var(--icon); height: var(--icon);
+  border: 1px solid var(--lp-border-strong); border-radius: 10px;
+  background: var(--lp-surface);
+}
+.lp-integration--blue .lp-integration-icon { background: rgba(255, 255, 255, .06); }
+.lp-integration-icon img { width: 70%; height: 70%; object-fit: contain; }
+.lp-integration-connector .lp-integration-icon svg { width: 44%; height: 44%; color: var(--integration-color); transition: color .4s ease; }
+.lp-integration-target--aws .lp-integration-icon > img { width: 100%; height: 100%; object-fit: cover; border-radius: 9px; }
+.lp-integration--blue .lp-integration-target--aws .lp-integration-icon { border-color: transparent; }
+
+/* Arrival ring, shared by every node. */
+.lp-integration-icon::before {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit;
+  border: 1px solid var(--integration-color); opacity: 0; pointer-events: none;
+}
+/* Connector "processing" sweep. */
+.lp-integration-connector .lp-integration-icon::after {
+  content: ''; position: absolute; inset: -6px; padding: 1.5px; border-radius: 15px;
+  background: conic-gradient(from var(--integration-angle), transparent 0 60%, var(--integration-color));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0; pointer-events: none;
+}
+
+/* Status badge on the platform: issued ✓, renewed ↻, revoked ×. */
+.lp-integration-badge {
+  position: absolute; right: -9px; bottom: -9px; display: grid; place-items: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--integration-color); color: var(--integration-on);
+  border: 3px solid var(--lp-surface-2);
+}
+.lp-integration-badge svg { display: none; width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+[data-event='0'] [data-badge='0'], [data-event='1'] [data-badge='1'], [data-event='2'] [data-badge='2'] { display: block; }
+
+/* Links */
+.lp-integration-link { position: relative; padding-top: calc(var(--icon) / 2); color: var(--lp-text); font-size: 11px; line-height: 1.4; }
+.lp-integration-link-label { position: absolute; top: 4px; left: 50%; width: max-content; max-width: 94px; transform: translateX(-50%); }
+.lp-integration-event-label {
+  display: grid; justify-items: center; padding: 2px 9px; border-radius: 999px;
+  color: var(--integration-color); font-weight: 600;
+  background: color-mix(in srgb, var(--integration-color) 14%, transparent);
+  transition: color .4s ease, background-color .4s ease;
+}
+.lp-integration-event-label span { grid-area: 1 / 1; opacity: 0; transform: translateY(5px); transition: opacity .35s ease, transform .35s ease; }
+[data-event='0'] [data-event-label='0'], [data-event='1'] [data-event-label='1'], [data-event='2'] [data-event-label='2'] { opacity: 1; transform: none; }
+
+.lp-integration-wire { position: relative; height: 1px; margin-inline: 10px; background: var(--lp-border-strong); clip-path: inset(-14px -4px); }
+.lp-integration-wire::after {
+  content: ''; position: absolute; right: 1px; top: 50%; width: 6px; height: 6px;
+  border-top: 1.5px solid var(--lp-border-strong); border-right: 1.5px solid var(--lp-border-strong);
+  transform: translateY(-50%) rotate(45deg);
+}
+/* Lit trail left behind by the packet. */
+.lp-integration-wire::before {
+  content: ''; position: absolute; inset: -.5px 0; transform-origin: left;
+  background: color-mix(in srgb, var(--integration-color) 55%, transparent);
+  transform: scaleX(0); opacity: 0;
+}
+/* The packet: a gradient tail with a glowing head. */
+.lp-integration-wire i {
+  position: absolute; left: 0; top: 50%; width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent calc(100% - 56px), var(--integration-color));
+  transform: translate(-100%, -50%); opacity: 0;
+}
+.lp-integration-wire i::after {
+  content: ''; position: absolute; right: -3.5px; top: 50%; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--integration-color); transform: translateY(-50%);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--integration-color) 22%, transparent), 0 0 14px 2px color-mix(in srgb, var(--integration-color) 55%, transparent);
+}
+
+/* Event selector with cycle progress. */
+.lp-integration-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 168px)); justify-content: center; gap: 16px; margin-top: 28px; }
+.lp-integration-steps button {
+  --step-color: var(--lp-accent);
+  position: relative; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px 0 0; border: 0; background: none; cursor: pointer;
+  color: var(--lp-muted); font: 500 13px/1.2 var(--lp-font-body); letter-spacing: -.01em;
+  transition: color .2s ease;
+}
+.lp-integration-steps [data-event-step='1'] { --step-color: var(--lp-cyan); }
+.lp-integration-steps [data-event-step='2'] { --step-color: var(--lp-red); }
+.lp-integration-steps button::before { content: ''; position: absolute; inset: 0 0 auto; height: 2px; background: var(--lp-border); }
+.lp-integration-steps button span::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: 8px; border-radius: 50%; background: var(--step-color); vertical-align: .1em; opacity: .45; transition: opacity .2s ease; }
+.lp-integration-steps button:hover, .lp-integration-steps button[aria-pressed='true'] { color: var(--lp-title); }
+.lp-integration-steps button[aria-pressed='true'] span::before { opacity: 1; }
+.lp-integration-steps i { position: absolute; inset: 0 0 auto; height: 2px; background: var(--step-color); transform: scaleX(0); transform-origin: left; }
+.lp-integration-steps [aria-pressed='true'] i { transform: none; }
+.lp-integration-clock { display: block; width: 0; height: 0; overflow: hidden; }
+
+/* ── Choreography (6.4s clock; the second panel trails by 0.4s) ── */
+.is-running .lp-integration-clock { animation: integration-clock var(--integration-clock) linear both; }
+.is-running .lp-integration-steps [aria-pressed='true'] i { animation: integration-progress var(--integration-clock) linear both; }
+
+.is-running .lp-integration-source .lp-integration-icon { animation: integration-hit 1s ease-out var(--integration-delay) both; }
+.is-running .lp-integration-source .lp-integration-icon::before { animation: integration-ring .9s cubic-bezier(.2, .7, .3, 1) var(--integration-delay) both; }
+
+.is-running .lp-integration-link--event .lp-integration-wire i { animation: integration-packet 1.1s var(--integration-ease) calc(var(--integration-delay) + .35s) both; }
+.is-running .lp-integration-link--event .lp-integration-wire::before { animation: integration-trail 2s var(--integration-ease) calc(var(--integration-delay) + .35s) both; }
+
+.is-running .lp-integration-connector .lp-integration-icon { animation: integration-hit 1.7s ease-out calc(var(--integration-delay) + 1.4s) both; }
+.is-running .lp-integration-connector .lp-integration-icon::before { animation: integration-ring .9s cubic-bezier(.2, .7, .3, 1) calc(var(--integration-delay) + 1.4s) both; }
+.is-running .lp-integration-connector .lp-integration-icon::after { animation: integration-process 1.2s linear calc(var(--integration-delay) + 1.45s) both; }
+.is-running .lp-integration-connector .lp-integration-icon svg { animation: integration-press .5s ease-out calc(var(--integration-delay) + 1.4s) both; }
+
+.is-running .lp-integration-link--update .lp-integration-wire i { animation: integration-packet 1s var(--integration-ease) calc(var(--integration-delay) + 2.55s) both; }
+.is-running .lp-integration-link--update .lp-integration-wire::before { animation: integration-trail 1.9s var(--integration-ease) calc(var(--integration-delay) + 2.55s) both; }
+
+.is-running .lp-integration-target .lp-integration-icon { animation: integration-hit 1.9s ease-out calc(var(--integration-delay) + 3.5s) both; }
+.is-running .lp-integration-target .lp-integration-icon::before { animation: integration-ring .9s cubic-bezier(.2, .7, .3, 1) calc(var(--integration-delay) + 3.5s) both; }
+.is-running .lp-integration-badge { animation: integration-badge 2.3s linear calc(var(--integration-delay) + 3.6s) both; }
+
+@keyframes integration-clock { from { opacity: 0; } to { opacity: 0; } }
+@keyframes integration-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+/* Only the lit frames are declared, so each node returns to its own resting border. */
+@keyframes integration-hit {
+  15%, 65% {
+    border-color: var(--integration-color);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--integration-color) 14%, transparent), 0 10px 28px -10px color-mix(in srgb, var(--integration-color) 70%, transparent);
+  }
+}
+@keyframes integration-ring { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(1.4); } }
+@keyframes integration-packet {
+  0% { transform: translate(-100%, -50%); opacity: 0; }
+  12%, 82% { opacity: 1; }
+  100% { transform: translate(0, -50%); opacity: 0; }
+}
+@keyframes integration-trail {
+  0% { transform: scaleX(0); opacity: 1; animation-timing-function: var(--integration-ease); }
+  55% { transform: scaleX(1); opacity: 1; animation-timing-function: ease-in; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+@keyframes integration-process {
+  0% { opacity: 0; --integration-angle: 0deg; }
+  15%, 75% { opacity: 1; }
+  100% { opacity: 0; --integration-angle: 540deg; }
+}
+@keyframes integration-press { 0%, 100% { transform: scale(1); } 35% { transform: scale(.86); } }
+@keyframes integration-badge {
+  0% { opacity: 0; transform: scale(.3); animation-timing-function: cubic-bezier(.34, 1.56, .64, 1); }
+  16% { opacity: 1; transform: scale(1); }
+  82% { opacity: 1; transform: scale(1); animation-timing-function: ease-in; }
+  100% { opacity: 0; transform: scale(.85); }
+}
+
+/* The motion toggle and off-screen panels hold the whole cycle in place. */
+.lp-integration-demo:not(.is-inview) *, .lp-integration-demo:not(.is-inview) *::before, .lp-integration-demo:not(.is-inview) *::after,
+.lp-motion-paused .lp-integration-demo *, .lp-motion-paused .lp-integration-demo *::before, .lp-motion-paused .lp-integration-demo *::after { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .lp-integration-demo *, .lp-integration-demo *::before, .lp-integration-demo *::after { animation: none !important; }
+  .lp-integration-event-label span { transition: none; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 1000px) and (min-width: 901px) {
+  .lp-integration { padding-inline: 20px; }
+  .lp-integration-flow { --icon: 62px; grid-template-columns: var(--icon) minmax(16px, 1fr) 84px minmax(16px, 1fr) var(--icon); }
+}
+@media (max-width: 900px) {
+  .lp-integration-list { grid-template-columns: 1fr; }
+  .lp-integration { min-height: 430px; padding-inline: 40px; }
+  .lp-integration-copy { min-height: 135px; }
+  .lp-integration-flow { max-width: 520px; }
+}
+@media (max-width: 540px) {
+  .lp-integration-demo { margin-top: 28px; }
+  .lp-integration { min-height: 410px; padding: 40px 18px 32px; }
+  .lp-integration-copy h3 { font-size: 32px; }
+  .lp-integration-copy p { max-width: 30ch; font-size: 14px; }
+  .lp-integration-aws-logo { top: -24px; }
+  .lp-integration-aws-logo img { width: 80px; height: 46px; }
+  .lp-integration-flow { --icon: 56px; grid-template-columns: 60px minmax(14px, 1fr) 80px minmax(14px, 1fr) 60px; justify-items: center; padding-top: 36px; }
+  .lp-integration-link { justify-self: stretch; }
+  .lp-integration-node { font-size: 11px; }
+  .lp-integration-link-label { top: -2px; max-width: 76px; font-size: 10px; }
+  .lp-integration-wire { margin-inline: 4px; }
+  .lp-integration-badge { width: 22px; height: 22px; right: -7px; bottom: -7px; }
+  .lp-integration-badge svg { width: 12px; height: 12px; }
+  .lp-integration-steps { gap: 10px; }
+  .lp-integration-steps button { font-size: 12px; }
+}
+
+/* Platform-side result of the current event (AWS: from the connector's handlers). */
+.lp-integration-result {
+  display: grid; justify-items: center; min-height: 1.6em; margin-top: 4px; max-width: 100%;
+  color: var(--lp-text); font: 500 11px/1.6 ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas, monospace; letter-spacing: 0; text-wrap: balance;
+}
+.lp-integration-result span { grid-area: 1 / 1; display: none; align-items: center; gap: 8px; }
+.lp-integration-result span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--integration-color); box-shadow: 0 0 0 3px color-mix(in srgb, var(--integration-color) 22%, transparent); }
+[data-event='0'] [data-event-result='0'], [data-event='1'] [data-event-result='1'], [data-event='2'] [data-event-result='2'] { display: inline-flex; }
+.is-running .lp-integration-result span { animation: integration-result 2.3s ease calc(var(--integration-delay) + 3.75s) both; }
+@keyframes integration-result {
+  0% { opacity: 0; transform: translateY(6px); }
+  14%, 82% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+@media (max-width: 540px) { .lp-integration-result { font-size: 10px; } }
