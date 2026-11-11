@@ -1,0 +1,48 @@
+---
+import { cryptoTranslations } from '../lib/crypto-content';
+import '../styles/crypto-engines.css';
+
+const copy = cryptoTranslations.es;
+const securityLevels = ['SL2', 'SL2', 'SL1', 'SL2 · Keys / SL1 · Secrets', 'SL1'];
+const logos = ['hsm', 'aws-kms', 'aws-sm', 'az-keyvault', 'vault'];
+---
+
+<section class="lp-region lp-crypto" id="crypto-engines" aria-labelledby="crypto-engines-title">
+  <svg class="lp-crypto-filters" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="crypto-remove-white" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 3 0" />
+      </filter>
+    </defs>
+  </svg>
+  <header class="lp-section-heading" data-reveal>
+    <h2 id="crypto-engines-title" data-i18n="home.crypto.title">{copy.title}</h2>
+    <p data-i18n="home.crypto.lead">{copy.lead}</p>
+  </header>
+  <div class="lp-crypto-security lp-frame" data-reveal>
+    <dl class="lp-crypto-levels">
+      {copy.levels.map((level, i) => (
+        <div>
+          <dt data-i18n={`home.crypto.levels.${i}.name`}>{level.name}</dt>
+          <dd data-i18n={`home.crypto.levels.${i}.body`}>{level.body}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+  <div class="lp-crypto-list">
+    {copy.engines.map((engine, i) => (
+      <article class="lp-crypto-engine" data-reveal>
+        <div class:list={['lp-crypto-logo', { 'lp-crypto-logo--aws': logos[i].startsWith('aws-'), 'lp-crypto-logo--invert': ['hsm', 'vault'].includes(logos[i]), 'lp-crypto-logo--azure': logos[i] === 'az-keyvault' }]}><img src={`/integrations/ce/${logos[i]}.png`} alt="" width="72" height="72" loading="lazy" decoding="async" /></div>
+        <div class="lp-crypto-copy">
+          <h3 data-i18n={`home.crypto.engines.${i}.name`}>{engine.name}</h3>
+          <p data-i18n={`home.crypto.engines.${i}.body`}>{engine.body}</p>
+        </div>
+        <div class="lp-crypto-custody">
+          <span class="lp-crypto-security-label" data-i18n="home.crypto.securityLabel">{copy.securityLabel}</span>
+          <strong class="lp-crypto-security-value">{securityLevels[i]}</strong>
+          <span data-i18n={`home.crypto.engines.${i}.custody`}>{engine.custody}</span>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

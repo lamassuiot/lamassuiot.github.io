@@ -1,4 +1,5 @@
 import { homeTranslations } from './i18n';
+import { cryptoTranslations } from './crypto-content';
 import { technicalTranslations } from './technical-content';
 
 // The opening hero and the technical reference copy stay in the shared dictionary.
@@ -347,7 +348,7 @@ const experience = {
 } as const;
 
 export const landingTranslations = {
-  es: { ...homeTranslations.es, home: { ...homeTranslations.es.home, technical: technicalTranslations.es, redesign: { ...redesign.es, ...experience.es } } },
-  en: { ...homeTranslations.en, home: { ...homeTranslations.en.home, technical: technicalTranslations.en, redesign: { ...redesign.en, ...experience.en } } },
-  eus: { ...homeTranslations.eus, home: { ...homeTranslations.eus.home, technical: technicalTranslations.eus, redesign: { ...redesign.eus, ...experience.eus } } },
+  es: { ...homeTranslations.es, home: { ...homeTranslations.es.home, technical: technicalTranslations.es, crypto: cryptoTranslations.es, redesign: { ...redesign.es, ...experience.es } } },
+  en: { ...homeTranslations.en, home: { ...homeTranslations.en.home, technical: technicalTranslations.en, crypto: cryptoTranslations.en, redesign: { ...redesign.en, ...experience.en } } },
+  eus: { ...homeTranslations.eus, home: { ...homeTranslations.eus.home, technical: technicalTranslations.eus, crypto: cryptoTranslations.eus, redesign: { ...redesign.eus, ...experience.eus } } },
 } as const;

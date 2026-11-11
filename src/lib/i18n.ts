@@ -690,7 +690,7 @@ export const homeTranslations = {
             sector: 'Connected hospitality',
             title: 'Multi-site hospitality and restaurant chains.',
             highlight: 'Secure onboarding for on-site devices.',
-            body: 'Identity control for smart locks, POS terminals, kiosks and sensors, with simplified operations.',
+            body: 'Identity control for cloud-connected ovens, kiosks, laundry equipment and industrial dishwashers.',
           },
           {
             sector: 'Energy · Batteries',
@@ -1063,7 +1063,7 @@ export const homeTranslations = {
             sector: 'Hostelería conectada',
             title: 'Cadenas multi-sede de hostelería y restauración.',
             highlight: 'Onboarding seguro para dispositivos de local.',
-            body: 'Control de identidad para cerraduras inteligentes, TPV, kioscos y sensores con operación simplificada.',
+            body: 'Control de identidad para hornos, kioscos, equipos de lavandería y lavavajillas industriales conectados a la nube.',
           },
           {
             sector: 'Energía · Baterías',
@@ -1436,7 +1436,7 @@ export const homeTranslations = {
             sector: 'Ostalaritza konektatua',
             title: 'Ostalaritza eta jatetxe kate multi-siteak.',
             highlight: 'Lokaleko gailuentzako onboarding segurua.',
-            body: 'Identitate-kontrola sarraila adimendunentzat, TPVentzat, kioskoentzat eta sentsoreentzat, eragiketa sinplifikatuarekin.',
+            body: 'Identitate-kontrola hodeira konektatutako labe, kiosko, garbitegiko ekipo eta ontzi-garbigailu industrialentzat.',
           },
           {
             sector: 'Energia · Bateriak',
